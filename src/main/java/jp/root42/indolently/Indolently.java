@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -41,7 +42,6 @@ import java.util.regex.Pattern;
  * The Java syntax sugar collection for indolent person (like you).
  *
  * @author takahashikzn
- * @version $Id: Sugar.java 16282 2014-07-20 12:32:52Z kaz $
  */
 @SuppressWarnings("javadoc")
 public class Indolently {
@@ -49,7 +49,7 @@ public class Indolently {
     @SuppressWarnings("rawtypes")
     private static final Class<? extends Map> MAP_TYPE = LinkedHashMap.class;
 
-    // not private for subclass
+    // non private for subclass
     protected Indolently() {
     }
 
@@ -58,7 +58,6 @@ public class Indolently {
      *
      * @param <T> self type
      * @author takahashikzn
-     * @version $Id$
      */
     protected interface Freezable<T> {
 
@@ -77,7 +76,6 @@ public class Indolently {
      * @param <K> key type
      * @param <V> value type
      * @author takahashikzn
-     * @version $Id$
      */
     public interface Smap<K, V>
         extends Map<K, V>, Freezable<Map<K, V>> {
@@ -99,10 +97,31 @@ public class Indolently {
          */
         Smap<K, V> pushAll(Map<? extends K, ? extends V> map);
 
+        /**
+         * put key/value pair and return this instance only if value exists.
+         * otherwise, do nothing.
+         *
+         * @param key key
+         * @param value nullable value
+         * @return {@code this} instance
+         */
         Smap<K, V> push(K key, Optional<? extends V> value);
 
+        /**
+         * put all key/value pairs and return this instance only if map exists.
+         * otherwise, do nothing.
+         *
+         * @param map nullable map
+         * @return {@code this} instance
+         */
         Smap<K, V> pushAll(Optional<? extends Map<? extends K, ? extends V>> map);
 
+        /**
+         * remove keys and return this instance.
+         *
+         * @param keys keys to remove
+         * @return {@code this} instance
+         */
         Smap<K, V> delete(Iterable<? extends K> keys);
 
         /**
@@ -112,48 +131,192 @@ public class Indolently {
          */
         Sset<K> keys();
 
+        /**
+         * construct new map which having keys you specify.
+         * a key which does not exist is ignored.
+         *
+         * @return new map
+         */
         Smap<K, V> slice(Iterable<? extends K> keys);
     }
 
+    /**
+     * common method definition for set/list
+     *
+     * @param <T> value type
+     * @param <SELF> self type
+     * @author takahashikzn
+     */
     protected interface Scol<T, SELF extends Scol<T, SELF>>
         extends Collection<T> {
 
+        /**
+         * add value and return this instance.
+         *
+         * @param value value
+         * @return {@code this} instance
+         */
         SELF push(T value);
 
+        /**
+         * add all values and return this instance.
+         *
+         * @param values values
+         * @return {@code this} instance
+         */
         SELF pushAll(Iterable<? extends T> values);
 
+        /**
+         * add value and return this instance only if value exists.
+         * otherwise, do nothing.
+         *
+         * @param value nullable value
+         * @return {@code this} instance
+         */
         SELF push(Optional<? extends T> value);
 
+        /**
+         * add all values and return this instance only if values exists.
+         * otherwise, do nothing.
+         *
+         * @param values nullable values
+         * @return {@code this} instance
+         */
         SELF pushAll(Optional<? extends Iterable<? extends T>> values);
 
+        /**
+         * remove values and return this instance.
+         *
+         * @param values values to remove
+         * @return {@code this} instance
+         */
         SELF delete(Iterable<? extends T> values);
 
+        /**
+         * get first value.
+         *
+         * @return first value
+         * @throws NoSuchElementException if empty
+         */
         T first();
 
+        /**
+         * get last value.
+         *
+         * @return first value
+         * @throws NoSuchElementException if empty
+         */
         T last();
 
+        /**
+         * get rest of this collection.
+         *
+         * @return collection values except for first value.
+         * if this instance is {@link #isEmpty() empty}, return empty collection.
+         */
         SELF tail();
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default SELF each(final Function<T, ? extends T> f) {
+
+            this.stream().map(f).close();
+
+            @SuppressWarnings("unchecked")
+            final SELF self = (SELF) this;
+
+            return self;
+        }
     }
 
+    /**
+     * Extended {@link List} class for indolent person.
+     *
+     * @param <T> value type
+     * @author takahashikzn
+     */
     public interface Slist<T>
         extends Scol<T, Slist<T>>, List<T>, Freezable<List<T>> {
 
+        /**
+         * convert this list to {@link Sset}.
+         *
+         * @return a set of this list.
+         */
         Sset<T> set();
 
+        /**
+         * insert value at specified index and return this instance.
+         *
+         * @param idx insertion position.
+         * negative value is acceptable. for example, {@code slist.push(-1, "x")} means
+         * {@code slist.push(slist.size() - 1, "x")}
+         * @param value value
+         * @return {@code this} instance
+         */
         Slist<T> push(int idx, T value);
 
+        /**
+         * insert all values at specified index and return this instance.
+         *
+         * @param idx insertion position.
+         * negative value is acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
+         * {@code slist.pushAll(slist.size() - 1,  list("x", "y"))}
+         * @param value values
+         * @return {@code this} instance
+         */
         Slist<T> pushAll(int idx, Iterable<? extends T> values);
 
+        /**
+         * insert value at specified index and return this instance only if value exists.
+         * otherwise, do nothing.
+         *
+         * @param idx insertion position.
+         * negative value is acceptable. for example, {@code slist.push(-1, "x")} means
+         * {@code slist.push(slist.size() - 1, "x")}
+         * @param value nullable value
+         * @return {@code this} instance
+         */
         Slist<T> push(int idx, Optional<? extends T> value);
 
+        /**
+         * insert all values at specified index and return this instance only if values exist.
+         * otherwise, do nothing.
+         *
+         * @param idx insertion position.
+         * negative value is acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
+         * {@code slist.pushAll(slist.size() - 1,  list("x", "y"))}
+         * @param value nullable values
+         * @return {@code this} instance
+         */
         Slist<T> pushAll(int idx, Optional<? extends Iterable<? extends T>> values);
 
+        /**
+         * an alias of {@link #subList(int, int)} but newly constructed (detached) view.
+         *
+         * @return detached sub list
+         */
         Slist<T> slice(int from, int to);
     }
 
+    /**
+     * Extended {@link Set} class for indolent person.
+     *
+     * @param <T> value type
+     * @author takahashikzn
+     */
     public interface Sset<T>
         extends Scol<T, Sset<T>>, Set<T>, Freezable<Set<T>> {
 
+        /**
+         * convert this set to {@link Slist}.
+         *
+         * @return a list of this set.
+         */
         Slist<T> list();
     }
 
@@ -323,17 +486,17 @@ public class Indolently {
     }
 
     public static <T> Sset<T> set(final Optional<? extends T> value) {
-        return new SSetImpl<T>().push(value);
+        return new SsetImpl<T>().push(value);
     }
 
     public static <T> Sset<T> set(final Iterable<? extends T> values) {
-        return new SSetImpl<T>().pushAll(optional(values));
+        return new SsetImpl<T>().pushAll(optional(values));
     }
 
     @SafeVarargs
     public static <T> Sset<T> set(final T... values) {
 
-        final Sset<T> set = new SSetImpl<>();
+        final Sset<T> set = new SsetImpl<>();
 
         if (values != null) {
             for (final T v : values) {
@@ -349,7 +512,7 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> Sset<T> sort(final Set<? extends T> values) {
-        return new SSetImpl<>(new TreeSet<>(values));
+        return new SsetImpl<>(new TreeSet<>(values));
     }
 
     public static <T extends Comparable<T>> Slist<T> sort(final List<? extends T> values) {
@@ -858,7 +1021,7 @@ public class Indolently {
 
         @Override
         public Sset<K> keys() {
-            return new SSetImpl<>(this.keySet());
+            return new SsetImpl<>(this.keySet());
         }
 
         @Override
@@ -940,7 +1103,7 @@ public class Indolently {
 
         @Override
         public Sset<T> set() {
-            return new SSetImpl<>(new LinkedHashSet<>(this));
+            return new SsetImpl<>(new LinkedHashSet<>(this));
         }
 
         @Override
@@ -1057,6 +1220,12 @@ public class Indolently {
         }
 
         @Override
+        public Slist<T> each(final Function<T, ? extends T> f) {
+            this.stream().map(f).close();
+            return this;
+        }
+
+        @Override
         public String toString() {
             return this.store.toString();
         }
@@ -1072,7 +1241,7 @@ public class Indolently {
         }
     }
 
-    private static final class SSetImpl<T>
+    private static final class SsetImpl<T>
         extends AbstractSet<T>
         implements Sset<T>, Serializable {
 
@@ -1080,11 +1249,11 @@ public class Indolently {
 
         private final Set<T> store;
 
-        SSetImpl() {
+        SsetImpl() {
             this(new HashSet<>());
         }
 
-        SSetImpl(final Set<T> store) {
+        SsetImpl(final Set<T> store) {
             this.store = store;
         }
 
