@@ -1,5 +1,6 @@
-# @author takahashikzn
-# @version $Id$
+<!--
+  @author takahashikzn
+-->
 
 Indolently
 =================
