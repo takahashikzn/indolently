@@ -27,6 +27,11 @@ How to use
 import static jp.root42.indolently.Indolently.*;
 
 
+final Map<String, Integer> shortMapDecl = map(); // equivalent to "new HashMap<>()"
+final List<Integer> shortListDecl = list();      // equivalent to "new ArrayList<>()"
+final Set<String> shortSetDecl = set();          // equivalent to "new HashSet<>()"
+
+
 final Map<String, Object> simple = map(
     "int", 1,
     "string", "abc",
@@ -39,7 +44,9 @@ final Map<String, Object> simple = map(
     )
 );
 
-final Map<Object, Object> boring = new HashMap<Object, Object>() {
+
+// a boring instruction for building 'simple' instance equivalence
+final Map<String, Object> boring = new HashMap<String, Object>() {
     {
         final Map<String, Object> level1 = new HashMap<>();
         final Map<String, Object> level2 = new HashMap<>();
