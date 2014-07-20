@@ -281,7 +281,7 @@ public class Indolently {
         /**
          * convert this list to {@link Sset}.
          *
-         * @return a set of this list.
+         * @return a set constructed from this instance.
          */
         Sset<T> set();
 
@@ -351,7 +351,7 @@ public class Indolently {
         /**
          * convert this set to {@link Slist}.
          *
-         * @return a list of this set.
+         * @return a list constructed from this instance.
          */
         Slist<T> list();
     }
