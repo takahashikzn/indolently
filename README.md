@@ -5,7 +5,7 @@
 Indolently
 =================
 
-A Java synax sugar library for indolent person.
+A Java syntax sugar library for indolent person.
 
 
 Requirement
