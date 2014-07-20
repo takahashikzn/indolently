@@ -8,6 +8,12 @@ Indolently
 A Java synax sugar library for indolent person.
 
 
+Requirement
+=================
+
+Java8. That is all.
+
+
 Dependencies
 =================
 
