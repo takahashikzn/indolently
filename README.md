@@ -25,5 +25,5 @@ See JUnit testcase.
 Translation wanted!
 =================
 
-Currently all documents are written in Japanese.
+Currently most documents would written in Japanese.
 Your contribution is welcome.
