@@ -33,6 +33,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -138,6 +141,29 @@ public class Indolently {
          * @return new map
          */
         Smap<K, V> slice(Iterable<? extends K> keys);
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default Smap<K, V> each(final BiConsumer<? super K, ? super V> f) {
+
+            this.forEach(f);
+
+            return this;
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default Smap<K, V> each(final BiFunction<? super K, ? super V, ? extends V> f) {
+            throw new UnsupportedOperationException("not implemented yet");
+        }
     }
 
     /**
@@ -222,14 +248,24 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
-        default SELF each(final Function<T, ? extends T> f) {
+        default SELF each(final Consumer<? super T> f) {
 
-            this.stream().map(f).close();
+            this.forEach(f);
 
             @SuppressWarnings("unchecked")
             final SELF self = (SELF) this;
 
             return self;
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default SELF each(final Function<? super T, ? extends T> f) {
+            throw new UnsupportedOperationException("not implemented yet");
         }
     }
 
@@ -989,7 +1025,7 @@ public class Indolently {
             .push(k28, v28).push(k29, v29).push(k30, v30).push(k31, v31);
     }
 
-    // CHECKSTYLE:OFF
+    // CHECKSTYLE:ON
 
     private static final class SmapImpl<K, V>
         extends AbstractMap<K, V>
@@ -1217,12 +1253,6 @@ public class Indolently {
         @Override
         public Slist<T> slice(final int from, final int to) {
             return Indolently.list(this.subList(from, to));
-        }
-
-        @Override
-        public Slist<T> each(final Function<T, ? extends T> f) {
-            this.stream().map(f).close();
-            return this;
         }
 
         @Override
