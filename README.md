@@ -23,7 +23,7 @@ There is no dependencies.
 How to use
 =================
 
-'''java
+```java
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -57,7 +57,7 @@ final Map<Object, Object> boring = new HashMap<Object, Object>() {
         level4.put("level4", 42);
     }
 };
-'''
+```
 
 See JUnit testcase for more details.
 
