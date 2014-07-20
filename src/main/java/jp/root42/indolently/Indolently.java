@@ -91,6 +91,12 @@ public class Indolently {
          */
         Smap<K, V> push(K key, V value);
 
+        /**
+         * put all key/value pairs and return this instance.
+         *
+         * @param map map
+         * @return {@code this} instance
+         */
         Smap<K, V> pushAll(Map<? extends K, ? extends V> map);
 
         Smap<K, V> push(K key, Optional<? extends V> value);
@@ -99,6 +105,11 @@ public class Indolently {
 
         Smap<K, V> delete(Iterable<? extends K> keys);
 
+        /**
+         * an alias of {@link Map#keySet()} and newly constructed (detached) key view.
+         *
+         * @return keys
+         */
         Sset<K> keys();
 
         Smap<K, V> slice(Iterable<? extends K> keys);
@@ -280,7 +291,7 @@ public class Indolently {
     }
 
     public static Object[] oarray(final Object... values) {
-        return array(Object.class, values);
+        return values;
     }
 
     public static char[] parray(final char... values) {

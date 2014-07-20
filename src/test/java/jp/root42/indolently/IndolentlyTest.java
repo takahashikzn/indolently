@@ -123,12 +123,12 @@ public class IndolentlyTest {
 
         final Smap<String, Object> actualNestedMap = map( //
             "int", 1 //
-            , "level1" //
-            , map("level2" //
-                , map("level3", list( //
-                    map("level4", 42)))));
+            , "string", "abc" //
+            , "level1", map( //
+                "level2", map( //
+                    "level3", list(map("level4", 42)))));
 
-        final Map<Object, Object> expectedNestedMap = new HashMap<Object, Object>() {
+        final Map<String, Object> expectedNestedMap = new HashMap<String, Object>() {
             private static final long serialVersionUID = 1L;
             {
                 final Map<String, Object> level1 = new HashMap<>();
@@ -137,6 +137,7 @@ public class IndolentlyTest {
                 final Map<String, Object> level4 = new HashMap<>();
 
                 this.put("int", 1);
+                this.put("string", "abc");
                 this.put("level1", level1);
                 level1.put("level2", level2);
                 level2.put("level3", level3);
