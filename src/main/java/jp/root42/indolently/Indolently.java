@@ -189,7 +189,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default Smap<K, V> each(final Consumer<? super V> f) {
-            return each((key, val) -> f.accept(val));
+            return this.each((key, val) -> f.accept(val));
         }
 
         /**
@@ -349,7 +349,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF each(final Consumer<? super T> f) {
-            return each((idx, val) -> f.accept(val));
+            return this.each((idx, val) -> f.accept(val));
         }
 
         /**
@@ -377,7 +377,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF map(final Function<? super T, ? extends T> f) {
-            return map((idx, val) -> f.apply(val));
+            return this.map((idx, val) -> f.apply(val));
         }
 
         /**
@@ -480,7 +480,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default Slist<T> push(final int idx, final Optional<? extends T> value) {
-            return Indolently.empty(value) ? this : push(idx, value.get());
+            return Indolently.empty(value) ? this : this.push(idx, value.get());
         }
 
         /**
@@ -494,7 +494,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default Slist<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
-            return Indolently.empty(values) ? this : pushAll(idx, values.get());
+            return Indolently.empty(values) ? this : this.pushAll(idx, values.get());
         }
 
         /**
