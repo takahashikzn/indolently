@@ -20,6 +20,12 @@ Dependencies
 There is no dependencies.
 
 
+Installation
+=================
+
+Copy single file "Indolently.java" to your source directory.
+
+
 How to use
 =================
 
