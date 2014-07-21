@@ -22,8 +22,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import jp.root42.indolently.Indolently.Freezable;
 import jp.root42.indolently.Indolently.Slist;
 import jp.root42.indolently.Indolently.Smap;
+import jp.root42.indolently.Indolently.Sset;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -161,6 +163,24 @@ public class IndolentlyTest {
         assertThat( //
             actualNestedMap).describedAs("nested structure") //
             .isEqualTo(expectedNestedMap);
+    }
+
+    /**
+     * {@link Freezable#freeze()}
+     */
+    @Test
+    public void testFreeze() {
+
+        final Smap<String, Smap<String, Slist<Sset<Integer>>>> frozen = map( //
+            "level1", map( //
+                "level2", list(optional(set(42))))).freeze();
+
+        try {
+            frozen.get("level1").get("level2").get(0).add(43);
+            fail();
+        } catch (final UnsupportedOperationException e) {
+            assert true;
+        }
     }
 
     /**
