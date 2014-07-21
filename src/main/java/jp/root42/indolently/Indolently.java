@@ -527,7 +527,7 @@ public class Indolently {
 
         @Override
         default Sset<T> tail() {
-            return set(this.list().tail());
+            return Indolently.set(this.list().tail());
         }
 
         /**
