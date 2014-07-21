@@ -280,7 +280,14 @@ public class Indolently {
          * @return {@code this} instance
          */
         default Smap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
-            throw new UnsupportedOperationException("not implemented yet");
+
+            for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
+                if (f.test(e.getKey(), e.getValue())) {
+                    this.remove(e.getKey());
+                }
+            }
+
+            return this;
         }
 
         /**
@@ -300,7 +307,12 @@ public class Indolently {
          * @return {@code this} instance
          */
         default Smap<K, V> map(final BiFunction<? super K, ? super V, ? extends V> f) {
-            throw new UnsupportedOperationException("not implemented yet");
+
+            for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
+                this.put(e.getKey(), f.apply(e.getKey(), e.getValue()));
+            }
+
+            return this;
         }
     }
 
@@ -471,9 +483,7 @@ public class Indolently {
          * @param f function. first argument is loop index.
          * @return {@code this} instance
          */
-        default SELF map(final BiFunction<Integer, ? super T, ? extends T> f) {
-            throw new UnsupportedOperationException("not implemented yet");
-        }
+        SELF map(BiFunction<Integer, ? super T, ? extends T> f);
 
         /**
          * internal iterator.
@@ -491,9 +501,7 @@ public class Indolently {
          * @param f function. first argument is loop index.
          * @return {@code this} instance
          */
-        default SELF filter(final BiPredicate<Integer, ? super T> f) {
-            throw new UnsupportedOperationException("not implemented yet");
-        }
+        SELF filter(BiPredicate<Integer, ? super T> f);
 
         /**
          * internal iterator.
@@ -501,8 +509,15 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
-        default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
-            throw new UnsupportedOperationException("not implemented yet");
+        default Optional<T> reduce(final Optional<? extends T> initial,
+            final BiFunction<? super T, ? super T, ? extends T> f) {
+
+            T memo = initial.get();
+            for (final T val : this) {
+                memo = f.apply(memo, val);
+            }
+
+            return Optional.ofNullable(memo);
         }
     }
 
@@ -610,6 +625,28 @@ public class Indolently {
         default Slist<T> slice(final int from, final int to) {
             return Indolently.list(this.subList(from, to));
         }
+
+        @Override
+        default Slist<T> map(final BiFunction<Integer, ? super T, ? extends T> f) {
+
+            for (int i = 0; i < this.size(); i++) {
+                this.set(i, f.apply(i, this.get(i)));
+            }
+
+            return this;
+        }
+
+        @Override
+        default Slist<T> filter(final BiPredicate<Integer, ? super T> f) {
+
+            for (int i = 0; i < this.size(); i++) {
+                if (f.test(i, this.get(i))) {
+                    this.remove(i);
+                }
+            }
+
+            return this;
+        }
     }
 
     private static int idx(final List<?> list, final int idx) {
@@ -642,6 +679,31 @@ public class Indolently {
          */
         default Slist<T> list() {
             return Indolently.list(this);
+        }
+
+        @Override
+        default Sset<T> map(final BiFunction<Integer, ? super T, ? extends T> f) {
+
+            int i = 0;
+            for (final T val : Indolently.list(this)) {
+                this.remove(val);
+                this.add(f.apply(i++, val));
+            }
+
+            return this;
+        }
+
+        @Override
+        default Sset<T> filter(final BiPredicate<Integer, ? super T> f) {
+
+            int i = 0;
+            for (final T val : Indolently.list(this)) {
+                if (f.test(i++, val)) {
+                    this.remove(val);
+                }
+            }
+
+            return identity();
         }
     }
 
