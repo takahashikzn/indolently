@@ -7,7 +7,7 @@ What this is
 
 A Java syntax sugar library for indolent person.
 
-Intend to provide object semi-literal syntax like list/set/map.
+Intend to provide semi-literal syntax like list/set/map.
 
 
 Requirement
@@ -50,7 +50,7 @@ final Map<String, Object> simple = map(
             )
         )
     )
-).freeze();
+).freeze(); // recursively freeze
 
 
 // a boring instruction for building 'simple' instance equivalence
