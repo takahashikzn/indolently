@@ -38,7 +38,6 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 
 /**
@@ -857,10 +856,6 @@ public class Indolently {
         }
 
         return rslt;
-    }
-
-    public static Pattern regex(final String ptrn) {
-        return Pattern.compile(ptrn);
     }
 
     public static Class<?> typed(@SuppressWarnings("rawtypes")
