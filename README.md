@@ -74,6 +74,7 @@ final Map<String, Object> boring = new HashMap<String, Object>() {
 
 // internal iteration
 range(1, 10)
+    .slice(-5, 0)
     .map((i) -> i * i)
     .each(System.out::println)
     .reduce((i, k) -> i + k)
