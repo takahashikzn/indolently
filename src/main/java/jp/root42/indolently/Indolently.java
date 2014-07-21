@@ -93,7 +93,7 @@ public class Indolently {
         }
 
         /**
-         * put key/value pair and return this instance.
+         * put key/value pair then return this instance.
          *
          * @param key key to put
          * @param value value to put
@@ -105,7 +105,7 @@ public class Indolently {
         }
 
         /**
-         * put all key/value pairs and return this instance.
+         * put all key/value pairs then return this instance.
          *
          * @param map map to put
          * @return {@code this} instance
@@ -116,7 +116,7 @@ public class Indolently {
         }
 
         /**
-         * put key/value pair and return this instance only if value exists.
+         * put key/value pair then return this instance only if value exists.
          * otherwise, do nothing.
          *
          * @param key key to put
@@ -128,7 +128,7 @@ public class Indolently {
         }
 
         /**
-         * put all key/value pairs and return this instance only if map exists.
+         * put all key/value pairs then return this instance only if map exists.
          * otherwise, do nothing.
          *
          * @param map nullable map to put
@@ -139,7 +139,7 @@ public class Indolently {
         }
 
         /**
-         * remove keys and return this instance.
+         * remove keys then return this instance.
          *
          * @param keys keys to remove
          * @return {@code this} instance
@@ -156,7 +156,7 @@ public class Indolently {
         }
 
         /**
-         * An alias of {@link Map#keySet()} and newly constructed (detached) key view.
+         * An alias of {@link Map#keySet()} then newly constructed (detached) key view.
          * Equivalent to {@code Indolently.set(map.keySet())}.
          *
          * @return keys
@@ -297,7 +297,7 @@ public class Indolently {
         extends Collection<T> {
 
         /**
-         * add value and return this instance.
+         * add value then return this instance.
          *
          * @param value value to add
          * @return {@code this} instance
@@ -311,7 +311,7 @@ public class Indolently {
         }
 
         /**
-         * add all values and return this instance.
+         * add all values then return this instance.
          *
          * @param values values to add
          * @return {@code this} instance
@@ -327,7 +327,7 @@ public class Indolently {
         }
 
         /**
-         * add value and return this instance only if value exists.
+         * add value then return this instance only if value exists.
          * otherwise, do nothing.
          *
          * @param value nullable value to add
@@ -346,7 +346,7 @@ public class Indolently {
         }
 
         /**
-         * add all values and return this instance only if values exists.
+         * add all values then return this instance only if values exists.
          * otherwise, do nothing.
          *
          * @param values nullable values to add
@@ -365,7 +365,7 @@ public class Indolently {
         }
 
         /**
-         * remove values and return this instance.
+         * remove values then return this instance.
          *
          * @param values values to remove
          * @return {@code this} instance
@@ -554,7 +554,7 @@ public class Indolently {
         }
 
         /**
-         * insert value at specified index and return this instance.
+         * insert value at specified index then return this instance.
          *
          * @param idx insertion position.
          * negative value is acceptable. for example, {@code slist.push(-1, "x")} means
@@ -568,7 +568,7 @@ public class Indolently {
         }
 
         /**
-         * insert all values at specified index and return this instance.
+         * insert all values at specified index then return this instance.
          *
          * @param idx insertion position.
          * negative value is acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
@@ -582,7 +582,7 @@ public class Indolently {
         }
 
         /**
-         * insert value at specified index and return this instance only if value exists.
+         * insert value at specified index then return this instance only if value exists.
          * otherwise, do nothing.
          *
          * @param idx insertion position.
@@ -596,7 +596,7 @@ public class Indolently {
         }
 
         /**
-         * insert all values at specified index and return this instance only if values exist.
+         * insert all values at specified index then return this instance only if values exist.
          * otherwise, do nothing.
          *
          * @param idx insertion position.
