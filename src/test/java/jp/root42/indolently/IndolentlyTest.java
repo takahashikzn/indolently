@@ -47,6 +47,20 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
+     * internal iterators.
+     */
+    @Test
+    public void testInternalIterators() {
+
+        assertThat(range(1, 10) //
+            .slice(-5, 0) //
+            .map((i) -> i * i) //
+            .each(System.out::println) //
+            .reduce(0, (i, k) -> i + k).get()) //
+            .isEqualTo(330);
+    }
+
+    /**
      * {@link Indolently#list(Object...)}
      *
      * @param desc description
