@@ -208,6 +208,16 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
+        default Smap<K, V> map(final Function<? super V, ? extends V> f) {
+            throw new UnsupportedOperationException("not implemented yet");
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
         default Smap<K, V> map(final BiFunction<? super K, ? super V, ? extends V> f) {
             throw new UnsupportedOperationException("not implemented yet");
         }
@@ -753,15 +763,30 @@ public class Indolently {
     }
 
     public static <K, V> Map<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        return Collections.unmodifiableMap(map);
+        @SuppressWarnings("unchecked")
+        final Smap<K, V> rslt = new SmapImpl<>(Collections.unmodifiableMap(map(map).map(freezer())));
+        return rslt;
     }
 
-    public static <T> Set<T> freeze(final Set<? extends T> values) {
-        return Collections.unmodifiableSet(values);
+    public static <T> Sset<T> freeze(final Set<? extends T> values) {
+        @SuppressWarnings("unchecked")
+        final Sset<T> rslt = new SsetImpl<>(Collections.unmodifiableSet(set(values).map(freezer())));
+        return rslt;
     }
 
-    public static <T> List<T> freeze(final List<? extends T> values) {
-        return Collections.unmodifiableList(values);
+    public static <T> Slist<T> freeze(final List<? extends T> values) {
+        @SuppressWarnings("unchecked")
+        final Slist<T> rslt = new SlistImpl<>(Collections.unmodifiableList(list(values).map(freezer())));
+        return rslt;
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private static Function freezer() {
+
+        return (x) -> (x instanceof List) ? freeze((List) x) //
+            : (x instanceof Set) ? freeze((Set) x) //
+                : (x instanceof Map) ? freeze((Map) x) //
+                    : x;
     }
 
     public static boolean empty(final Iterable<?> i) {
