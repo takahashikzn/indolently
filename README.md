@@ -72,11 +72,12 @@ final Map<String, Object> boring = new HashMap<String, Object>() {
 };
 
 
-// internal iterators
-list(1, 2, 3)
+// internal iteration
+range(1, 10)
     .map((i) -> i * i)
+    .each(System.out::println)
     .reduce((i, k) -> i + k)
-    .each(System.out::println);
+    .ifPresent(System.out::println);
 ```
 
 See JUnit testcase for more details.
