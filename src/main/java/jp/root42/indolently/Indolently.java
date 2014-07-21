@@ -564,9 +564,19 @@ public class Indolently {
             return this.get(0);
         }
 
+        /**
+         * Equivalent to {@code list.subList(idx, list.size())}.
+         *
+         * @param from from index. negative index is acceptable.
+         * @return sub list
+         */
+        default List<T> subList(final int from) {
+            return this.subList(Indolently.idx(this, from), this.size());
+        }
+
         @Override
         default Slist<T> tail() {
-            return (this.size() <= 1) ? Indolently.list() : Indolently.list(this.subList(1, -1));
+            return (this.size() <= 1) ? Indolently.list() : Indolently.list(this.subList(1));
         }
 
         // for optimization
