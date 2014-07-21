@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -82,10 +83,10 @@ public class Indolently {
      * @author takahashikzn
      */
     public interface Smap<K, V>
-        extends Map<K, V>, Freezable<Map<K, V>> {
+        extends Map<K, V>, Freezable<Smap<K, V>> {
 
         @Override
-        default Map<K, V> freeze() {
+        default Smap<K, V> freeze() {
             return Indolently.freeze(this);
         }
 
@@ -364,7 +365,7 @@ public class Indolently {
         /**
          * internal iterator.
          *
-         * @param f function
+         * @param f function. first argument is loop index.
          * @return {@code this} instance
          */
         default SELF each(final BiConsumer<Integer, ? super T> f) {
@@ -392,7 +393,7 @@ public class Indolently {
         /**
          * internal iterator.
          *
-         * @param f function
+         * @param f function. first argument is loop index.
          * @return {@code this} instance
          */
         default SELF map(final BiFunction<Integer, ? super T, ? extends T> f) {
@@ -417,10 +418,10 @@ public class Indolently {
      * @author takahashikzn
      */
     public interface Slist<T>
-        extends Scol<T, Slist<T>>, List<T>, Freezable<List<T>> {
+        extends Scol<T, Slist<T>>, List<T>, Freezable<Slist<T>> {
 
         @Override
-        default List<T> freeze() {
+        default Slist<T> freeze() {
             return Indolently.freeze(this);
         }
 
@@ -527,10 +528,10 @@ public class Indolently {
      * @author takahashikzn
      */
     public interface Sset<T>
-        extends Scol<T, Sset<T>>, Set<T>, Freezable<Set<T>> {
+        extends Scol<T, Sset<T>>, Set<T>, Freezable<Sset<T>> {
 
         @Override
-        default Set<T> freeze() {
+        default Sset<T> freeze() {
             return Indolently.freeze(this);
         }
 
@@ -594,7 +595,7 @@ public class Indolently {
     }
 
     /**
-     * An alias of {@link #optional(Object)}.
+     * An alias of {@link #optional(T)}.
      *
      * @param value value
      * @return Optional representation of value
@@ -604,7 +605,7 @@ public class Indolently {
     }
 
     /**
-     * An alias of {@link Optional#ofNullable(Object)}.
+     * An alias of {@link Optional#ofNullable(T)}.
      *
      * @param value value
      * @return Optional representation of value
@@ -762,7 +763,7 @@ public class Indolently {
         return list(new TreeSet<>(values));
     }
 
-    public static <K, V> Map<K, V> freeze(final Map<? extends K, ? extends V> map) {
+    public static <K, V> Smap<K, V> freeze(final Map<? extends K, ? extends V> map) {
         @SuppressWarnings("unchecked")
         final Smap<K, V> rslt = new SmapImpl<>(Collections.unmodifiableMap(map(map).map(freezer())));
         return rslt;
@@ -814,7 +815,7 @@ public class Indolently {
     }
 
     public static boolean blank(final CharSequence cs) {
-        return empty(cs) || cs.chars().allMatch(c -> Character.isWhitespace(c));
+        return empty(cs) || cs.chars().allMatch(Character::isWhitespace);
     }
 
     public static boolean empty(final Object[] ary) {
@@ -1334,6 +1335,11 @@ public class Indolently {
         @Override
         public List<T> subList(final int from, final int to) {
             return this.store.subList(Indolently.idx(this, from), Indolently.idx(this, to));
+        }
+
+        @Override
+        public ListIterator<T> listIterator(final int i) {
+            return this.store.listIterator(Indolently.idx(this, i));
         }
 
         @Override
