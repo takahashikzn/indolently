@@ -50,11 +50,11 @@ final Map<String, Object> simple = map(
             )
         )
     )
-);
+).freeze();
 
 
 // a boring instruction for building 'simple' instance equivalence
-final Map<String, Object> boring = new HashMap<String, Object>() {
+final Map<String, Object> boring = Collections.unmodifiableMap(new HashMap<String, Object>() {
     {
         final Map<String, Object> level1 = new HashMap<>();
         final Map<String, Object> level2 = new HashMap<>();
@@ -69,7 +69,7 @@ final Map<String, Object> boring = new HashMap<String, Object>() {
         level3.add(level4);
         level4.put("level4", 42);
     }
-};
+});
 
 
 // internal iteration
