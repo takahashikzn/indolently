@@ -623,7 +623,7 @@ public class Indolently {
      * @author takahashikzn
      */
     public interface Sset<T>
-        extends Scol<T, Sset<T>>, Set<T>, Freezable<Sset<T>>, Identical<Sset<T>> {
+        extends Scol<T, Sset<T>>, Set<T>, Freezable<Sset<T>> {
 
         @Override
         default Sset<T> freeze() {
