@@ -455,23 +455,19 @@ public class Indolently {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
+        final Slist<Integer> list = list();
+
         if (from < to) {
-
-            final Slist<Integer> list = list();
-
-            for (int i = from; i <= to; i += Math.abs(step)) {
+            for (int i = from; i <= to; i += step) {
                 list.add(i);
             }
-
-            return list;
-        } else {
-
-            final Slist<Integer> list = range(to, from, step);
-
-            Collections.reverse(list);
-
-            return list;
+        } else if (to < from) {
+            for (int i = from; to <= i; i -= step) {
+                list.add(i);
+            }
         }
+
+        return list;
     }
 
     public static <T> T[] array(final Iterable<? extends T> values) {
