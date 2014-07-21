@@ -59,10 +59,10 @@ public class Indolently {
     }
 
     /**
-     * @param <T> self type
+     * @param <SELF> self type
      * @author takahashikzn
      */
-    protected interface Freezable<T> {
+    protected interface Freezable<SELF extends Freezable<SELF>> {
 
         /**
          * construct freezed new {@link Collections#unmodifiableList(List) List}/
@@ -74,7 +74,25 @@ public class Indolently {
          * @see Collections#unmodifiableMap(Map)
          * @see Collections#unmodifiableSet(Set)
          */
-        T freeze();
+        SELF freeze();
+    }
+
+    /**
+     * @param <SELF> self type
+     * @author takahashikzn
+     */
+    protected interface Identical<SELF extends Identical<SELF>> {
+
+        /**
+         * return this instance.
+         *
+         * @return {@code this} instance.
+         */
+        default SELF identity() {
+            @SuppressWarnings("unchecked")
+            final SELF self = (SELF) this;
+            return self;
+        }
     }
 
     /**
@@ -85,7 +103,7 @@ public class Indolently {
      * @author takahashikzn
      */
     public interface Smap<K, V>
-        extends Map<K, V>, Freezable<Smap<K, V>> {
+        extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>> {
 
         @Override
         default Smap<K, V> freeze() {
@@ -294,7 +312,7 @@ public class Indolently {
      * @author takahashikzn
      */
     protected interface Scol<T, SELF extends Scol<T, SELF>>
-        extends Collection<T> {
+        extends Collection<T>, Identical<SELF> {
 
         /**
          * add value then return this instance.
@@ -304,10 +322,7 @@ public class Indolently {
          */
         default SELF push(final T value) {
             this.add(value);
-
-            @SuppressWarnings("unchecked")
-            final SELF self = (SELF) this;
-            return self;
+            return identity();
         }
 
         /**
@@ -321,9 +336,7 @@ public class Indolently {
                 this.add(val);
             }
 
-            @SuppressWarnings("unchecked")
-            final SELF self = (SELF) this;
-            return self;
+            return identity();
         }
 
         /**
@@ -334,15 +347,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF push(final Optional<? extends T> value) {
-
-            if (Indolently.empty(value)) {
-
-                @SuppressWarnings("unchecked")
-                final SELF self = (SELF) this;
-                return self;
-            } else {
-                return this.push(value.get());
-            }
+            return Indolently.empty(value) ? identity() : this.push(value.get());
         }
 
         /**
@@ -353,15 +358,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF pushAll(final Optional<? extends Iterable<? extends T>> values) {
-
-            if (Indolently.empty(values)) {
-
-                @SuppressWarnings("unchecked")
-                final SELF self = (SELF) this;
-                return self;
-            } else {
-                return this.pushAll(values.get());
-            }
+            return Indolently.empty(values) ? identity() : this.pushAll(values.get());
         }
 
         /**
@@ -374,9 +371,7 @@ public class Indolently {
         default SELF delete(final Iterable<? extends T> values) {
             this.removeAll(Indolently.list(values));
 
-            @SuppressWarnings("unchecked")
-            final SELF self = (SELF) this;
-            return self;
+            return identity();
         }
 
         /**
@@ -437,9 +432,7 @@ public class Indolently {
                 f.accept(i++, val);
             }
 
-            @SuppressWarnings("unchecked")
-            final SELF self = (SELF) this;
-            return self;
+            return identity();
         }
 
         /**
@@ -630,7 +623,7 @@ public class Indolently {
      * @author takahashikzn
      */
     public interface Sset<T>
-        extends Scol<T, Sset<T>>, Set<T>, Freezable<Sset<T>> {
+        extends Scol<T, Sset<T>>, Set<T>, Freezable<Sset<T>>, Identical<Sset<T>> {
 
         @Override
         default Sset<T> freeze() {
