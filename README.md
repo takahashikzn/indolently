@@ -64,9 +64,9 @@ final Map<String, Object> boring = Collections.unmodifiableMap(new HashMap<Strin
         this.put("int", 1);
         this.put("string", "abc");
         this.put("level1", level1);
-        level1.put("level2", level2);
-        level2.put("level3", level3);
-        level3.add(level4);
+        level1.put("level2", Collections.unmodifiableMap(level2));
+        level2.put("level3", Collections.unmodifiableList(level3));
+        level3.add(Collections.unmodifiableMap(level4));
         level4.put("level4", 42);
     }
 });
