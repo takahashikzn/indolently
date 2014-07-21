@@ -95,8 +95,8 @@ public class Indolently {
         /**
          * put key/value pair and return this instance.
          *
-         * @param key key
-         * @param value value
+         * @param key key to put
+         * @param value value to put
          * @return {@code this} instance
          */
         default Smap<K, V> push(final K key, final V value) {
@@ -107,7 +107,7 @@ public class Indolently {
         /**
          * put all key/value pairs and return this instance.
          *
-         * @param map map
+         * @param map map to put
          * @return {@code this} instance
          */
         default Smap<K, V> pushAll(final Map<? extends K, ? extends V> map) {
@@ -119,8 +119,8 @@ public class Indolently {
          * put key/value pair and return this instance only if value exists.
          * otherwise, do nothing.
          *
-         * @param key key
-         * @param value nullable value
+         * @param key key to put
+         * @param value nullable value to put
          * @return {@code this} instance
          */
         default Smap<K, V> push(final K key, final Optional<? extends V> value) {
@@ -131,7 +131,7 @@ public class Indolently {
          * put all key/value pairs and return this instance only if map exists.
          * otherwise, do nothing.
          *
-         * @param map nullable map
+         * @param map nullable map to put
          * @return {@code this} instance
          */
         default Smap<K, V> pushAll(final Optional<? extends Map<? extends K, ? extends V>> map) {
@@ -169,7 +169,7 @@ public class Indolently {
          * construct new map which having keys you specify.
          * a key which does not exist is ignored.
          *
-         * @return new map
+         * @return extracted new map
          */
         default Smap<K, V> slice(final Iterable<? extends K> keys) {
 
@@ -299,7 +299,7 @@ public class Indolently {
         /**
          * add value and return this instance.
          *
-         * @param value value
+         * @param value value to add
          * @return {@code this} instance
          */
         default SELF push(final T value) {
@@ -313,7 +313,7 @@ public class Indolently {
         /**
          * add all values and return this instance.
          *
-         * @param values values
+         * @param values values to add
          * @return {@code this} instance
          */
         default SELF pushAll(final Iterable<? extends T> values) {
@@ -330,7 +330,7 @@ public class Indolently {
          * add value and return this instance only if value exists.
          * otherwise, do nothing.
          *
-         * @param value nullable value
+         * @param value nullable value to add
          * @return {@code this} instance
          */
         default SELF push(final Optional<? extends T> value) {
@@ -349,7 +349,7 @@ public class Indolently {
          * add all values and return this instance only if values exists.
          * otherwise, do nothing.
          *
-         * @param values nullable values
+         * @param values nullable values to add
          * @return {@code this} instance
          */
         default SELF pushAll(final Optional<? extends Iterable<? extends T>> values) {
@@ -559,7 +559,7 @@ public class Indolently {
          * @param idx insertion position.
          * negative value is acceptable. for example, {@code slist.push(-1, "x")} means
          * {@code slist.push(slist.size() - 1, "x")}
-         * @param value value
+         * @param value value to add
          * @return {@code this} instance
          */
         default Slist<T> push(final int idx, final T value) {
@@ -573,7 +573,7 @@ public class Indolently {
          * @param idx insertion position.
          * negative value is acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
          * {@code slist.pushAll(slist.size() - 1,  list("x", "y"))}
-         * @param value values
+         * @param values values to add
          * @return {@code this} instance
          */
         default Slist<T> pushAll(final int idx, final Iterable<? extends T> values) {
@@ -588,7 +588,7 @@ public class Indolently {
          * @param idx insertion position.
          * negative value is acceptable. for example, {@code slist.push(-1, "x")} means
          * {@code slist.push(slist.size() - 1, "x")}
-         * @param value nullable value
+         * @param value nullable value to add
          * @return {@code this} instance
          */
         default Slist<T> push(final int idx, final Optional<? extends T> value) {
@@ -602,7 +602,7 @@ public class Indolently {
          * @param idx insertion position.
          * negative value is acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
          * {@code slist.pushAll(slist.size() - 1,  list("x", "y"))}
-         * @param value nullable values
+         * @param values nullable values to add
          * @return {@code this} instance
          */
         default Slist<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
