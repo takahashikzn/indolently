@@ -125,7 +125,7 @@ public class IndolentlyTest {
             , "string", "abc" //
             , "level1", map( //
                 "level2", map( //
-                    "level3", list(map("level4", 42)))));
+                    "level3", list(map("level4", 42))))).freeze();
 
         final Map<String, Object> expectedNestedMap = new HashMap<String, Object>() {
             {
