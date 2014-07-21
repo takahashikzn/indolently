@@ -85,6 +85,11 @@ public class Indolently {
     public interface Smap<K, V>
         extends Map<K, V>, Freezable<Map<K, V>> {
 
+        @Override
+        default Map<K, V> freeze() {
+            return Indolently.freeze(this);
+        }
+
         /**
          * put key/value pair and return this instance.
          *
@@ -92,7 +97,10 @@ public class Indolently {
          * @param value value
          * @return {@code this} instance
          */
-        Smap<K, V> push(K key, V value);
+        default Smap<K, V> push(final K key, final V value) {
+            this.put(key, value);
+            return this;
+        }
 
         /**
          * put all key/value pairs and return this instance.
@@ -100,7 +108,10 @@ public class Indolently {
          * @param map map
          * @return {@code this} instance
          */
-        Smap<K, V> pushAll(Map<? extends K, ? extends V> map);
+        default Smap<K, V> pushAll(final Map<? extends K, ? extends V> map) {
+            this.putAll(map);
+            return this;
+        }
 
         /**
          * put key/value pair and return this instance only if value exists.
@@ -110,7 +121,9 @@ public class Indolently {
          * @param value nullable value
          * @return {@code this} instance
          */
-        Smap<K, V> push(K key, Optional<? extends V> value);
+        default Smap<K, V> push(final K key, final Optional<? extends V> value) {
+            return Indolently.empty(value) ? this : this.push(key, value.get());
+        }
 
         /**
          * put all key/value pairs and return this instance only if map exists.
@@ -119,7 +132,9 @@ public class Indolently {
          * @param map nullable map
          * @return {@code this} instance
          */
-        Smap<K, V> pushAll(Optional<? extends Map<? extends K, ? extends V>> map);
+        default Smap<K, V> pushAll(final Optional<? extends Map<? extends K, ? extends V>> map) {
+            return Indolently.empty(map) ? this : this.pushAll(map.get());
+        }
 
         /**
          * remove keys and return this instance.
@@ -127,7 +142,16 @@ public class Indolently {
          * @param keys keys to remove
          * @return {@code this} instance
          */
-        Smap<K, V> delete(Iterable<? extends K> keys);
+        default Smap<K, V> delete(final Iterable<? extends K> keys) {
+
+            if (keys != null) {
+                for (final K key : keys) {
+                    this.remove(key);
+                }
+            }
+
+            return this;
+        }
 
         /**
          * an alias of {@link Map#keySet()} and newly constructed (detached) key view.
@@ -135,7 +159,9 @@ public class Indolently {
          *
          * @return keys
          */
-        Sset<K> keys();
+        default Sset<K> keys() {
+            return Indolently.set(keySet());
+        }
 
         /**
          * construct new map which having keys you specify.
@@ -143,7 +169,28 @@ public class Indolently {
          *
          * @return new map
          */
-        Smap<K, V> slice(Iterable<? extends K> keys);
+        default Smap<K, V> slice(final Iterable<? extends K> keys) {
+
+            final Smap<K, V> map = Indolently.map();
+
+            for (final K key : keys) {
+                if (this.containsKey(key)) {
+                    map.put(key, this.get(key));
+                }
+            }
+
+            return map;
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default Smap<K, V> each(final Consumer<? super V> f) {
+            return each((key, val) -> f.accept(val));
+        }
 
         /**
          * internal iterator.
@@ -152,9 +199,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default Smap<K, V> each(final BiConsumer<? super K, ? super V> f) {
-
             this.forEach(f);
-
             return this;
         }
 
@@ -164,13 +209,13 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
-        default Smap<K, V> each(final BiFunction<? super K, ? super V, ? extends V> f) {
+        default Smap<K, V> map(final BiFunction<? super K, ? super V, ? extends V> f) {
             throw new UnsupportedOperationException("not implemented yet");
         }
     }
 
     /**
-     * common method definition for {@link Sset}/{@link Slist}.
+     * common method definition for {@link Scol}/{@link Sset}/{@link Slist}.
      *
      * @param <T> value type
      * @param <SELF> self type
@@ -185,7 +230,13 @@ public class Indolently {
          * @param value value
          * @return {@code this} instance
          */
-        SELF push(T value);
+        default SELF push(final T value) {
+            this.add(value);
+
+            @SuppressWarnings("unchecked")
+            final SELF self = (SELF) this;
+            return self;
+        }
 
         /**
          * add all values and return this instance.
@@ -193,7 +244,15 @@ public class Indolently {
          * @param values values
          * @return {@code this} instance
          */
-        SELF pushAll(Iterable<? extends T> values);
+        default SELF pushAll(final Iterable<? extends T> values) {
+            for (final T val : values) {
+                this.add(val);
+            }
+
+            @SuppressWarnings("unchecked")
+            final SELF self = (SELF) this;
+            return self;
+        }
 
         /**
          * add value and return this instance only if value exists.
@@ -202,7 +261,17 @@ public class Indolently {
          * @param value nullable value
          * @return {@code this} instance
          */
-        SELF push(Optional<? extends T> value);
+        default SELF push(final Optional<? extends T> value) {
+
+            if (Indolently.empty(value)) {
+
+                @SuppressWarnings("unchecked")
+                final SELF self = (SELF) this;
+                return self;
+            } else {
+                return this.push(value.get());
+            }
+        }
 
         /**
          * add all values and return this instance only if values exists.
@@ -211,7 +280,17 @@ public class Indolently {
          * @param values nullable values
          * @return {@code this} instance
          */
-        SELF pushAll(Optional<? extends Iterable<? extends T>> values);
+        default SELF pushAll(final Optional<? extends Iterable<? extends T>> values) {
+
+            if (Indolently.empty(values)) {
+
+                @SuppressWarnings("unchecked")
+                final SELF self = (SELF) this;
+                return self;
+            } else {
+                return this.pushAll(values.get());
+            }
+        }
 
         /**
          * remove values and return this instance.
@@ -220,7 +299,13 @@ public class Indolently {
          * @return {@code this} instance
          * @see #removeAll(Collection)
          */
-        SELF delete(Iterable<? extends T> values);
+        default SELF delete(final Iterable<? extends T> values) {
+            this.removeAll(Indolently.list(values));
+
+            @SuppressWarnings("unchecked")
+            final SELF self = (SELF) this;
+            return self;
+        }
 
         /**
          * get first value.
@@ -228,7 +313,9 @@ public class Indolently {
          * @return first value
          * @throws NoSuchElementException if empty
          */
-        T first();
+        default T first() {
+            return this.iterator().next();
+        }
 
         /**
          * get last value.
@@ -236,7 +323,16 @@ public class Indolently {
          * @return first value
          * @throws NoSuchElementException if empty
          */
-        T last();
+        default T last() {
+
+            for (final Iterator<T> i = this.iterator(); i.hasNext();) {
+                if (!i.hasNext()) {
+                    return i.next();
+                }
+            }
+
+            throw new NoSuchElementException();
+        }
 
         /**
          * get rest of this collection.
@@ -253,12 +349,24 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF each(final Consumer<? super T> f) {
+            return each((idx, val) -> f.accept(val));
+        }
 
-            this.forEach(f);
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default SELF each(final BiConsumer<Integer, ? super T> f) {
+
+            int i = 0;
+            for (final T val : this) {
+                f.accept(i++, val);
+            }
 
             @SuppressWarnings("unchecked")
             final SELF self = (SELF) this;
-
             return self;
         }
 
@@ -268,7 +376,27 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
-        default SELF each(final Function<? super T, ? extends T> f) {
+        default SELF map(final Function<? super T, ? extends T> f) {
+            return map((idx, val) -> f.apply(val));
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default SELF map(final BiFunction<Integer, ? super T, ? extends T> f) {
+            throw new UnsupportedOperationException("not implemented yet");
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default SELF reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
             throw new UnsupportedOperationException("not implemented yet");
         }
     }
@@ -282,12 +410,36 @@ public class Indolently {
     public interface Slist<T>
         extends Scol<T, Slist<T>>, List<T>, Freezable<List<T>> {
 
+        @Override
+        default List<T> freeze() {
+            return Indolently.freeze(this);
+        }
+
+        // for optimization
+        @Override
+        default T first() {
+            return this.get(0);
+        }
+
+        @Override
+        default Slist<T> tail() {
+            return (this.size() <= 1) ? Indolently.list() : Indolently.list(this.subList(1, -1));
+        }
+
+        // for optimization
+        @Override
+        default T last() {
+            return this.get(-1);
+        }
+
         /**
          * convert this list to {@link Sset}.
          *
          * @return a set constructed from this instance.
          */
-        Sset<T> set();
+        default Sset<T> set() {
+            return Indolently.set(this);
+        }
 
         /**
          * insert value at specified index and return this instance.
@@ -298,7 +450,10 @@ public class Indolently {
          * @param value value
          * @return {@code this} instance
          */
-        Slist<T> push(int idx, T value);
+        default Slist<T> push(final int idx, final T value) {
+            this.add(Indolently.idx(this, idx), value);
+            return this;
+        }
 
         /**
          * insert all values at specified index and return this instance.
@@ -309,7 +464,10 @@ public class Indolently {
          * @param value values
          * @return {@code this} instance
          */
-        Slist<T> pushAll(int idx, Iterable<? extends T> values);
+        default Slist<T> pushAll(final int idx, final Iterable<? extends T> values) {
+            this.addAll(Indolently.idx(this, idx), Indolently.list(values));
+            return this;
+        }
 
         /**
          * insert value at specified index and return this instance only if value exists.
@@ -321,7 +479,9 @@ public class Indolently {
          * @param value nullable value
          * @return {@code this} instance
          */
-        Slist<T> push(int idx, Optional<? extends T> value);
+        default Slist<T> push(final int idx, final Optional<? extends T> value) {
+            return Indolently.empty(value) ? this : push(idx, value.get());
+        }
 
         /**
          * insert all values at specified index and return this instance only if values exist.
@@ -333,14 +493,22 @@ public class Indolently {
          * @param value nullable values
          * @return {@code this} instance
          */
-        Slist<T> pushAll(int idx, Optional<? extends Iterable<? extends T>> values);
+        default Slist<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
+            return Indolently.empty(values) ? this : pushAll(idx, values.get());
+        }
 
         /**
          * an alias of {@link #subList(int, int)} but newly constructed (detached) view.
          *
          * @return detached sub list
          */
-        Slist<T> slice(int from, int to);
+        default Slist<T> slice(final int from, final int to) {
+            return Indolently.list(this.subList(from, to));
+        }
+    }
+
+    private static int idx(final List<?> list, final int idx) {
+        return 0 <= idx ? idx : list.size() + idx;
     }
 
     /**
@@ -352,12 +520,24 @@ public class Indolently {
     public interface Sset<T>
         extends Scol<T, Sset<T>>, Set<T>, Freezable<Set<T>> {
 
+        @Override
+        default Set<T> freeze() {
+            return Indolently.freeze(this);
+        }
+
+        @Override
+        default Sset<T> tail() {
+            return set(this.list().tail());
+        }
+
         /**
          * convert this set to {@link Slist}.
          *
          * @return a list constructed from this instance.
          */
-        Slist<T> list();
+        default Slist<T> list() {
+            return Indolently.list(this);
+        }
     }
 
     /**
@@ -1064,67 +1244,13 @@ public class Indolently {
         }
 
         @Override
-        public Smap<K, V> slice(final Iterable<? extends K> keys) {
-
-            final Smap<K, V> map = Indolently.map();
-
-            for (final K key : keys) {
-                if (this.containsKey(key)) {
-                    map.put(key, this.get(key));
-                }
-            }
-
-            return map;
-        }
-
-        @Override
-        public Sset<K> keys() {
-            return new SsetImpl<>(this.keySet());
-        }
-
-        @Override
         public V put(final K key, final V value) {
             return this.store.put(key, value);
         }
 
         @Override
-        public SmapImpl<K, V> push(final K key, final V value) {
-            this.put(key, value);
-            return this;
-        }
-
-        @Override
-        public SmapImpl<K, V> pushAll(final Map<? extends K, ? extends V> map) {
-            this.putAll(map);
-            return this;
-        }
-
-        @Override
         public Set<Entry<K, V>> entrySet() {
             return this.store.entrySet();
-        }
-
-        @Override
-        public Map<K, V> freeze() {
-            return Indolently.freeze(this);
-        }
-
-        @Override
-        public Smap<K, V> push(final K key, final Optional<? extends V> value) {
-            return Indolently.empty(value) ? this : this.push(key, value.get());
-        }
-
-        @Override
-        public Smap<K, V> pushAll(final Optional<? extends Map<? extends K, ? extends V>> map) {
-            return Indolently.empty(map) ? this : this.pushAll(map.get());
-        }
-
-        @Override
-        public Smap<K, V> delete(final Iterable<? extends K> keys) {
-            for (final K key : keys) {
-                this.remove(key);
-            }
-            return this;
         }
 
         @Override
@@ -1159,6 +1285,7 @@ public class Indolently {
             this.store = store;
         }
 
+        // keep original order
         @Override
         public Sset<T> set() {
             return new SsetImpl<>(new LinkedHashSet<>(this));
@@ -1166,115 +1293,32 @@ public class Indolently {
 
         @Override
         public T set(final int i, final T val) {
-            return this.store.set(this.idx(i), val);
+            return this.store.set(Indolently.idx(this, i), val);
         }
 
         @Override
         public void add(final int i, final T val) {
-            this.store.add(this.idx(i), val);
+            this.store.add(Indolently.idx(this, i), val);
         }
 
         @Override
         public T remove(final int i) {
-            return this.store.remove(this.idx(i));
-        }
-
-        @Override
-        public Slist<T> push(final T value) {
-            this.store.add(value);
-            return this;
-        }
-
-        @Override
-        public Slist<T> pushAll(final Iterable<? extends T> values) {
-            for (final T val : values) {
-                this.store.add(val);
-            }
-            return this;
-        }
-
-        @Override
-        public Slist<T> push(final Optional<? extends T> value) {
-            return Indolently.empty(value) ? this : this.push(value.get());
-        }
-
-        @Override
-        public Slist<T> pushAll(final Optional<? extends Iterable<? extends T>> values) {
-            return Indolently.empty(values) ? this : this.pushAll(values.get());
-        }
-
-        @Override
-        public Slist<T> push(final int idx, final T value) {
-            this.add(idx, value);
-            return this;
-        }
-
-        @Override
-        public Slist<T> pushAll(final int idx, final Iterable<? extends T> values) {
-            for (final T val : values) {
-                this.add(idx, val);
-            }
-            return this;
-        }
-
-        @Override
-        public Slist<T> push(final int idx, final Optional<? extends T> value) {
-            return Indolently.empty(value) ? this : this.push(idx, value.get());
-        }
-
-        @Override
-        public Slist<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
-            return Indolently.empty(values) ? this : this.pushAll(idx, values.get());
-        }
-
-        @Override
-        public List<T> freeze() {
-            return Indolently.freeze(this);
+            return this.store.remove(Indolently.idx(this, i));
         }
 
         @Override
         public T get(final int i) {
-            return this.store.get(this.idx(i));
-        }
-
-        private int idx(final int i) {
-            return (i < 0) ? this.size() + i : i;
+            return this.store.get(Indolently.idx(this, i));
         }
 
         @Override
         public List<T> subList(final int from, final int to) {
-            return this.store.subList(this.idx(from), this.idx(to));
+            return this.store.subList(Indolently.idx(this, from), Indolently.idx(this, to));
         }
 
         @Override
         public int size() {
             return this.store.size();
-        }
-
-        @Override
-        public T first() {
-            return this.get(0);
-        }
-
-        @Override
-        public Slist<T> tail() {
-            return (this.size() <= 1) ? Indolently.list() : Indolently.list(this.subList(1, -1));
-        }
-
-        @Override
-        public T last() {
-            return this.get(-1);
-        }
-
-        @Override
-        public Slist<T> delete(final Iterable<? extends T> values) {
-            this.removeAll(Indolently.list(values));
-            return this;
-        }
-
-        @Override
-        public Slist<T> slice(final int from, final int to) {
-            return Indolently.list(this.subList(from, to));
         }
 
         @Override
@@ -1310,42 +1354,8 @@ public class Indolently {
         }
 
         @Override
-        public Slist<T> list() {
-            return new SlistImpl<T>().pushAll(this);
-        }
-
-        @Override
         public boolean add(final T element) {
             return this.store.add(element);
-        }
-
-        @Override
-        public Sset<T> push(final T value) {
-            this.store.add(value);
-            return this;
-        }
-
-        @Override
-        public Sset<T> pushAll(final Iterable<? extends T> values) {
-            for (final T val : values) {
-                this.store.add(val);
-            }
-            return this;
-        }
-
-        @Override
-        public Sset<T> push(final Optional<? extends T> value) {
-            return Indolently.empty(value) ? this : this.push(value.get());
-        }
-
-        @Override
-        public Sset<T> pushAll(final Optional<? extends Iterable<? extends T>> values) {
-            return Indolently.empty(values) ? this : this.pushAll(values.get());
-        }
-
-        @Override
-        public Set<T> freeze() {
-            return Indolently.freeze(this);
         }
 
         @Override
@@ -1356,35 +1366,6 @@ public class Indolently {
         @Override
         public Iterator<T> iterator() {
             return this.store.iterator();
-        }
-
-        @Override
-        public T first() {
-            return this.iterator().next();
-        }
-
-        @Override
-        public Sset<T> tail() {
-            return (this.size() <= 1) ? Indolently.set() : Indolently.set(Indolently.list(this).subList(1,
-                this.size() - 1));
-        }
-
-        @Override
-        public T last() {
-
-            for (final Iterator<T> i = this.iterator(); i.hasNext();) {
-                if (!i.hasNext()) {
-                    return i.next();
-                }
-            }
-
-            throw new NoSuchElementException();
-        }
-
-        @Override
-        public Sset<T> delete(final Iterable<? extends T> values) {
-            this.removeAll(Indolently.list(values));
-            return this;
         }
 
         @Override

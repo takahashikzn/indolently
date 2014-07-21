@@ -70,7 +70,7 @@ public class IndolentlyTest {
 
         return Arrays.asList( //
             new Object[] { "int list", Arrays.asList(1, 2, 3), new Object[] { 1, 2, 3 } } //
-            , new Object[] { "mixed list", Arrays.asList(1, "a"), new Object[] { 1, "a" } } //
+            , new Object[] { "compound typed list", Arrays.asList(1, "a"), new Object[] { 1, "a" } } //
             , new Object[] { "null args", new ArrayList<>(), null } //
             , new Object[] { "empty list", new ArrayList<>(), new Object[] {} });
     }
@@ -83,7 +83,7 @@ public class IndolentlyTest {
 
         final Slist<Object[]> actual = list( //
             oarray("int list", list(1, 2, 3), oarray(1, 2, 3)) //
-            , oarray("mixed list", list(1, "a"), oarray(1, "a")) //
+            , oarray("compound typed list", list(1, "a"), oarray(1, "a")) //
             , oarray("null args", list(), null) //
             , oarray("empty list", list(), oarray()));
 
@@ -112,7 +112,7 @@ public class IndolentlyTest {
                 }
             });
 
-        assertThat(map("int", 1, "string", "abc")).describedAs("mixed type values") //
+        assertThat(map("int", 1, "string", "abc")).describedAs("compound typed map") //
             .isEqualTo(new HashMap<Object, Object>() {
                 {
                     this.put("int", 1);
@@ -172,10 +172,10 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestSetVarArgs() {
 
         return Arrays.asList( //
-            new Object[] { "int Set", new HashSet<>(Arrays.asList(1, 2, 3)), new Object[] { 1, 2, 3 } } //
-            , new Object[] { "mixed Set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } } //
+            new Object[] { "int set", new HashSet<>(Arrays.asList(1, 2, 3)), new Object[] { 1, 2, 3 } } //
+            , new Object[] { "compound typed set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } } //
             , new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } } //
-            , new Object[] { "empty Set", new HashSet<>(), new Object[] {} });
+            , new Object[] { "empty set", new HashSet<>(), new Object[] {} });
     }
 
     /**
