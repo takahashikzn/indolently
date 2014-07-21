@@ -42,6 +42,7 @@ import static org.junit.Assert.*;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("serial")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
 
@@ -65,8 +66,17 @@ public class IndolentlyTest {
             .isEqualTo(expected);
     }
 
+    static List<Object[]> parametersForTestListVarArgs() {
+
+        return Arrays.asList( //
+            new Object[] { "int list", Arrays.asList(1, 2, 3), new Object[] { 1, 2, 3 } } //
+            , new Object[] { "mixed list", Arrays.asList(1, "a"), new Object[] { 1, "a" } } //
+            , new Object[] { "null args", new ArrayList<>(), null } //
+            , new Object[] { "empty list", new ArrayList<>(), new Object[] {} });
+    }
+
     /**
-     * {@link Indolently#array(Object...)}
+     * {@link Indolently#oarray(Object...)}
      */
     @Test
     public void testObjectArray() {
@@ -86,15 +96,6 @@ public class IndolentlyTest {
         assertArrayEquals(actual.get(3), expected.get(3));
     }
 
-    static List<Object[]> parametersForTestListVarArgs() {
-
-        return Arrays.asList( //
-            new Object[] { "int list", Arrays.asList(1, 2, 3), new Object[] { 1, 2, 3 } } //
-            , new Object[] { "mixed list", Arrays.asList(1, "a"), new Object[] { 1, "a" } } //
-            , new Object[] { "null args", new ArrayList<>(), null } //
-            , new Object[] { "empty list", new ArrayList<>(), new Object[] {} });
-    }
-
     /**
      * {@link Indolently#map()}
      */
@@ -106,7 +107,6 @@ public class IndolentlyTest {
 
         assertThat(map("key", "value")).describedAs("single key/value pair") //
             .isEqualTo(new HashMap<Object, Object>() {
-                private static final long serialVersionUID = 1L;
                 {
                     this.put("key", "value");
                 }
@@ -114,7 +114,6 @@ public class IndolentlyTest {
 
         assertThat(map("int", 1, "string", "abc")).describedAs("mixed type values") //
             .isEqualTo(new HashMap<Object, Object>() {
-                private static final long serialVersionUID = 1L;
                 {
                     this.put("int", 1);
                     this.put("string", "abc");
@@ -129,7 +128,6 @@ public class IndolentlyTest {
                     "level3", list(map("level4", 42)))));
 
         final Map<String, Object> expectedNestedMap = new HashMap<String, Object>() {
-            private static final long serialVersionUID = 1L;
             {
                 final Map<String, Object> level1 = new HashMap<>();
                 final Map<String, Object> level2 = new HashMap<>();
@@ -178,5 +176,32 @@ public class IndolentlyTest {
             , new Object[] { "mixed Set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } } //
             , new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } } //
             , new Object[] { "empty Set", new HashSet<>(), new Object[] {} });
+    }
+
+    /**
+     * {@link Indolently#range(int, int, int)}
+     *
+     * @param desc description
+     * @param expected expected value
+     * @param from from
+     * @param to to
+     * @param step step
+     */
+    @Parameters
+    @Test
+    public void testRange(final String desc, final List<Integer> expected, final int from, final int to, final int step) {
+
+        assertThat(range(from, to, step)).describedAs(desc) //
+            .isEqualTo(expected);
+    }
+
+    static List<Object[]> parametersForTestRange() {
+
+        return list( //
+            oarray("1..4 (stepping 1)", list(1, 2, 3, 4), 1, 4, 1) //
+            , oarray("4..1 (stepping 2)", list(4, 2), 4, 1, 2) //
+            , oarray("-2..2 (stepping 1)", list(-2, -1, 0, 1, 2), -2, 2, 1) //
+            , oarray("0..0 (stepping 1)", list(), 0, 0, 1) //
+        );
     }
 }
