@@ -52,23 +52,25 @@ public class Indolently {
     @SuppressWarnings("rawtypes")
     private static final Class<? extends Map> MAP_TYPE = LinkedHashMap.class;
 
-    // non private for subclass
+    /** non private for subtyping. */
     protected Indolently() {
     }
 
     /**
-     * Express this object is freezable.
-     *
      * @param <T> self type
      * @author takahashikzn
      */
     protected interface Freezable<T> {
 
         /**
-         * return freezed new {@link Collections#unmodifiableList(List) List}/{@link Collections#unmodifiableMap(Map)
+         * construct freezed new {@link Collections#unmodifiableList(List) List}/
+         * {@link Collections#unmodifiableMap(Map)
          * Map}/{@link Collections#unmodifiableSet(Set) Set} instance.
          *
          * @return freezed new instance
+         * @see Collections#unmodifiableList(List)
+         * @see Collections#unmodifiableMap(Map)
+         * @see Collections#unmodifiableSet(Set)
          */
         T freeze();
     }
@@ -129,6 +131,7 @@ public class Indolently {
 
         /**
          * an alias of {@link Map#keySet()} and newly constructed (detached) key view.
+         * Equivalent to {@code Indolently.set(map.keySet())}.
          *
          * @return keys
          */
@@ -167,7 +170,7 @@ public class Indolently {
     }
 
     /**
-     * common method definition for set/list
+     * common method definition for {@link Sset}/{@link Slist}.
      *
      * @param <T> value type
      * @param <SELF> self type
@@ -215,6 +218,7 @@ public class Indolently {
          *
          * @param values values to remove
          * @return {@code this} instance
+         * @see #removeAll(Collection)
          */
         SELF delete(Iterable<? extends T> values);
 
@@ -238,7 +242,7 @@ public class Indolently {
          * get rest of this collection.
          *
          * @return collection values except for first value.
-         * if this instance is {@link #isEmpty() empty}, return empty collection.
+         * if this instance is empty, i.e. {@code col.isEmpty()} returns true, return empty collection.
          */
         SELF tail();
 
@@ -356,26 +360,66 @@ public class Indolently {
         Slist<T> list();
     }
 
+    /**
+     * An alias of {@link #optionalEmpty(CharSequence)}.
+     *
+     * @param value string value
+     * @return Optional representation of string
+     */
     public static <T extends CharSequence> Optional<T> nonEmpty(final T value) {
         return optionalEmpty(value);
     }
 
+    /**
+     * {@link Optional} representation of string.
+     * Equivalent to {@code empty(str) ? Optional.empty() : Optional.of(str)}.
+     *
+     * @param value string value
+     * @return Optional representation of string
+     * @see #empty(CharSequence)
+     */
     public static <T extends CharSequence> Optional<T> optionalEmpty(final T value) {
-        return optional(empty(value) ? null : value);
+        return empty(value) ? Optional.empty() : Optional.of(value);
     }
 
+    /**
+     * An alias of {@link #optionalBlank(CharSequence)}.
+     *
+     * @param value string value
+     * @return Optional representation of string
+     */
     public static <T extends CharSequence> Optional<T> nonBlank(final T value) {
         return optionalBlank(value);
     }
 
+    /**
+     * {@link Optional} representation of string.
+     * Equivalent to {@code blank(str) ? Optional.empty() : Optional.of(str)}.
+     *
+     * @param value string value
+     * @return Optional representation of string
+     * @see #blank(CharSequence)
+     */
     public static <T extends CharSequence> Optional<T> optionalBlank(final T value) {
-        return optional(blank(value) ? null : value);
+        return blank(value) ? Optional.empty() : Optional.of(value);
     }
 
+    /**
+     * An alias of {@link #optional(Object)}.
+     *
+     * @param value value
+     * @return Optional representation of value
+     */
     public static <T> Optional<T> nonNull(final T value) {
         return optional(value);
     }
 
+    /**
+     * An alias of {@link Optional#ofNullable(Object)}.
+     *
+     * @param value value
+     * @return Optional representation of value
+     */
     public static <T> Optional<T> optional(final T value) {
         return Optional.ofNullable(value);
     }
@@ -435,11 +479,11 @@ public class Indolently {
             throw new IllegalArgumentException("can't infer empty array type");
         }
 
-        // 実際はObject[]であることに注意
+        // pseudo typing. actually this type wouldn't be T[].
         @SuppressWarnings("unchecked")
-        final T[] pseudo = (T[]) list(values).toArray();
+        final T[] pseudoTyped = (T[]) list(values).toArray();
 
-        return array(pseudo);
+        return array(pseudoTyped);
     }
 
     @SafeVarargs
@@ -451,23 +495,7 @@ public class Indolently {
         @SuppressWarnings("unchecked")
         final T[] ary = (T[]) Array.newInstance(values[0].getClass(), values.length);
 
-        for (int i = 0; i < values.length; i++) {
-
-            final T val = values[i];
-
-            try {
-                Array.set(ary, i, val);
-            } catch (final IllegalArgumentException e) {
-
-                final String msg =
-                    String.format("arrayType: %s, valueType: %s", ary.getClass().getName(), (val == null ? "null" : val
-                        .getClass().getName()));
-
-                throw new IllegalArgumentException(msg, e);
-            }
-        }
-
-        return ary;
+        return list(values).toArray(ary);
     }
 
     @SafeVarargs
@@ -482,11 +510,7 @@ public class Indolently {
         @SuppressWarnings("unchecked")
         final T[] ary = (T[]) Array.newInstance(type, values.length);
 
-        for (int i = 0; i < values.length; i++) {
-            Array.set(ary, i, values[i]);
-        }
-
-        return ary;
+        return list(values).toArray(ary);
     }
 
     public static Object[] oarray(final Object... values) {
@@ -535,9 +559,7 @@ public class Indolently {
         final Sset<T> set = new SsetImpl<>();
 
         if (values != null) {
-            for (final T v : values) {
-                set.add(v);
-            }
+            set.addAll(list(values));
         }
 
         return set;
@@ -572,7 +594,7 @@ public class Indolently {
             return true;
         }
 
-        if (i instanceof Collection) {
+        if (i instanceof Collection) { // for optimization
             return ((Collection<?>) i).isEmpty();
         } else {
             return i.iterator().hasNext();
@@ -608,22 +630,24 @@ public class Indolently {
             }
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("all values are null");
     }
 
     @SafeVarargs
-    public static <T> T choose(final Supplier<T>... values) {
+    public static <T> T choose(final Supplier<? extends T>... suppliers) {
 
-        for (final Supplier<T> o : values) {
+        for (final Supplier<? extends T> s : suppliers) {
 
-            final T val = o.get();
+            if (s != null) {
+                final T val = s.get();
 
-            if (val != null) {
-                return val;
+                if (val != null) {
+                    return val;
+                }
             }
         }
 
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("all suppliers return null");
     }
 
     public static <T extends Comparable<T>> T max(final T l, final T r) {
@@ -1049,7 +1073,9 @@ public class Indolently {
             final Smap<K, V> map = Indolently.map();
 
             for (final K key : keys) {
-                map.put(key, this.get(key));
+                if (this.containsKey(key)) {
+                    map.put(key, this.get(key));
+                }
             }
 
             return map;
