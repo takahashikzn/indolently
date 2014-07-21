@@ -30,6 +30,7 @@ import jp.root42.indolently.Indolently.Sset;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -181,6 +182,23 @@ public class IndolentlyTest {
         } catch (final UnsupportedOperationException e) {
             assert true;
         }
+    }
+
+    /**
+     * {@link Freezable#freeze()} (not implemented yet)
+     */
+    @Ignore
+    @Test
+    public void testCircularFreeze() {
+
+        final Slist<Object> list0 = list(0);
+        final Slist<Object> list1 = list(1);
+
+        list0.add(list1);
+        list1.add(list0);
+
+        list0.freeze();
+        list1.freeze();
     }
 
     /**
