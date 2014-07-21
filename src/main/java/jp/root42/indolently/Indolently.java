@@ -509,10 +509,22 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
+        default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
+            return reduce(Optional.empty(), f);
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param initial initial value
+         * @param f function
+         * @return {@code this} instance
+         */
         default Optional<T> reduce(final Optional<? extends T> initial,
             final BiFunction<? super T, ? super T, ? extends T> f) {
 
-            T memo = initial.get();
+            T memo = initial.orElse(null);
+
             for (final T val : this) {
                 memo = f.apply(memo, val);
             }
