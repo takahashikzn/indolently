@@ -954,30 +954,43 @@ public class Indolently {
     }
 
     public static <K, V> Smap<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        @SuppressWarnings("unchecked")
-        final Smap<K, V> rslt = new SmapImpl<>(Collections.unmodifiableMap(map(map).map(freezer())));
-        return rslt;
+        return freeze0(list(), map);
     }
 
     public static <T> Sset<T> freeze(final Set<? extends T> values) {
-        @SuppressWarnings("unchecked")
-        final Sset<T> rslt = new SsetImpl<>(Collections.unmodifiableSet(set(values).map(freezer())));
-        return rslt;
+        return freeze0(list(), values);
     }
 
     public static <T> Slist<T> freeze(final List<? extends T> values) {
+        return freeze0(list(), values);
+    }
+
+    private static <K, V> Smap<K, V> freeze0(final List<Object> proceed, final Map<? extends K, ? extends V> map) {
         @SuppressWarnings("unchecked")
-        final Slist<T> rslt = new SlistImpl<>(Collections.unmodifiableList(list(values).map(freezer())));
+        final Smap<K, V> rslt = new SmapImpl<>(Collections.unmodifiableMap(map(map).map(freezer(proceed))));
+        return rslt;
+    }
+
+    private static <T> Sset<T> freeze0(final List<Object> proceed, final Set<? extends T> values) {
+        @SuppressWarnings("unchecked")
+        final Sset<T> rslt = new SsetImpl<>(Collections.unmodifiableSet(set(values).map(freezer(proceed))));
+        return rslt;
+    }
+
+    private static <T> Slist<T> freeze0(final List<Object> proceed, final List<? extends T> values) {
+        @SuppressWarnings("unchecked")
+        final Slist<T> rslt = new SlistImpl<>(Collections.unmodifiableList(list(values).map(freezer(proceed))));
         return rslt;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static Function freezer() {
+    private static Function freezer(final List<Object> proceed) {
 
-        return (x) -> (x instanceof List) ? freeze((List) x) //
-            : (x instanceof Set) ? freeze((Set) x) //
-                : (x instanceof Map) ? freeze((Map) x) //
-                    : x;
+        return (x) -> proceed.contains(x) ? x //
+            : (x instanceof List) ? freeze0(proceed, (List) x) //
+                : (x instanceof Set) ? freeze0(proceed, (Set) x) //
+                    : (x instanceof Map) ? freeze0(proceed, (Map) x) //
+                        : x;
     }
 
     public static boolean empty(final Iterable<?> i) {
