@@ -520,10 +520,21 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
+        default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
+            return reduce(Optional.of(initial), f);
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param initial initial value
+         * @param f function
+         * @return {@code this} instance
+         */
         default Optional<T> reduce(final Optional<? extends T> initial,
             final BiFunction<? super T, ? super T, ? extends T> f) {
 
-            T memo = initial.orElse(null);
+            T memo = Indolently.empty(initial) ? null : initial.get();
 
             for (final T val : this) {
                 memo = f.apply(memo, val);
@@ -1503,7 +1514,11 @@ public class Indolently {
 
         @Override
         public List<T> subList(final int from, final int to) {
-            return this.store.subList(Indolently.idx(this, from), Indolently.idx(this, to));
+
+            final int actFrom = Indolently.idx(this, from);
+            final int actTo = Indolently.idx(this, to);
+
+            return this.store.subList(actFrom, ((from < 0) && (actTo == 0)) ? this.size() : actTo);
         }
 
         @Override
