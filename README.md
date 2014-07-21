@@ -74,7 +74,7 @@ final Map<String, Object> boring = Collections.unmodifiableMap(new HashMap<Strin
 
 // internal iteration
 range(1, 10)
-    .slice(-5, 0)
+    .slice(-5, 0) // negative index is acceptable - take last five elements
     .map((i) -> i * i)
     .each(System.out::println)
     .reduce((i, k) -> i + k)
