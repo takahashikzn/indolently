@@ -77,7 +77,7 @@ range(1, 10)
     .slice(-5, 0) // negative index is acceptable - take last five elements
     .map((i) -> i * i)
     .each(System.out::println)
-    .reduce((i, k) -> i + k)
+    .reduce(0, (i, k) -> i + k)
     .ifPresent(System.out::println);
 ```
 
