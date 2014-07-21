@@ -78,7 +78,7 @@ range(1, 10)
     .map((i) -> i * i)
     .each(System.out::println)
     .reduce(0, (i, k) -> i + k)
-    .ifPresent(System.out::println);
+    .ifPresent(System.out::println); // print 330
 ```
 
 See JUnit testcase for more details.
