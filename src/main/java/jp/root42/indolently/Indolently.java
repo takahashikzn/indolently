@@ -396,7 +396,7 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
-        default SELF reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
+        default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
             throw new UnsupportedOperationException("not implemented yet");
         }
     }
