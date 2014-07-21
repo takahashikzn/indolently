@@ -36,8 +36,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 
@@ -209,8 +211,28 @@ public class Indolently {
          * @param f function
          * @return {@code this} instance
          */
-        default Smap<K, V> map(final Function<? super V, ? extends V> f) {
+        default Smap<K, V> filter(final Predicate<? super V> f) {
+            return this.filter((key, val) -> f.test(val));
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default Smap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
             throw new UnsupportedOperationException("not implemented yet");
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default Smap<K, V> map(final Function<? super V, ? extends V> f) {
+            return this.map((key, val) -> f.apply(val));
         }
 
         /**
@@ -397,6 +419,26 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF map(final BiFunction<Integer, ? super T, ? extends T> f) {
+            throw new UnsupportedOperationException("not implemented yet");
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function
+         * @return {@code this} instance
+         */
+        default SELF filter(final Predicate<? super T> f) {
+            return this.filter((idx, val) -> f.test(val));
+        }
+
+        /**
+         * internal iterator.
+         *
+         * @param f function. first argument is loop index.
+         * @return {@code this} instance
+         */
+        default SELF filter(final BiPredicate<Integer, ? super T> f) {
             throw new UnsupportedOperationException("not implemented yet");
         }
 
