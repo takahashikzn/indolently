@@ -2,7 +2,7 @@
   @author takahashikzn
 -->
 
-What is this
+What this is
 =================
 
 A Java syntax sugar library for indolent person.
