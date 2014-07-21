@@ -2,10 +2,12 @@
   @author takahashikzn
 -->
 
-Indolently
+What is this
 =================
 
 A Java syntax sugar library for indolent person.
+
+Intend to provide object literal syntax like list/set/map.
 
 
 Requirement
