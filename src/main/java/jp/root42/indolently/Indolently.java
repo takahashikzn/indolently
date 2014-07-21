@@ -322,7 +322,7 @@ public class Indolently {
          */
         default SELF push(final T value) {
             this.add(value);
-            return identity();
+            return this.identity();
         }
 
         /**
@@ -336,7 +336,7 @@ public class Indolently {
                 this.add(val);
             }
 
-            return identity();
+            return this.identity();
         }
 
         /**
@@ -347,7 +347,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF push(final Optional<? extends T> value) {
-            return Indolently.empty(value) ? identity() : this.push(value.get());
+            return Indolently.empty(value) ? this.identity() : this.push(value.get());
         }
 
         /**
@@ -358,7 +358,7 @@ public class Indolently {
          * @return {@code this} instance
          */
         default SELF pushAll(final Optional<? extends Iterable<? extends T>> values) {
-            return Indolently.empty(values) ? identity() : this.pushAll(values.get());
+            return Indolently.empty(values) ? this.identity() : this.pushAll(values.get());
         }
 
         /**
@@ -371,7 +371,7 @@ public class Indolently {
         default SELF delete(final Iterable<? extends T> values) {
             this.removeAll(Indolently.list(values));
 
-            return identity();
+            return this.identity();
         }
 
         /**
@@ -432,7 +432,7 @@ public class Indolently {
                 f.accept(i++, val);
             }
 
-            return identity();
+            return this.identity();
         }
 
         /**
