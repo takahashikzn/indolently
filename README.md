@@ -70,6 +70,13 @@ final Map<String, Object> boring = new HashMap<String, Object>() {
         level4.put("level4", 42);
     }
 };
+
+
+// internal iterators
+list(1, 2, 3)
+    .map((i) -> i * i)
+    .reduce((i, k) -> i + k)
+    .each(System.out::println);
 ```
 
 See JUnit testcase for more details.
