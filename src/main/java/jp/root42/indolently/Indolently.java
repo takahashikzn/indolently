@@ -156,7 +156,7 @@ public class Indolently {
         }
 
         /**
-         * an alias of {@link Map#keySet()} and newly constructed (detached) key view.
+         * An alias of {@link Map#keySet()} and newly constructed (detached) key view.
          * Equivalent to {@code Indolently.set(map.keySet())}.
          *
          * @return keys
@@ -203,6 +203,46 @@ public class Indolently {
         default Smap<K, V> each(final BiConsumer<? super K, ? super V> f) {
             this.forEach(f);
             return this;
+        }
+
+        /**
+         * Test at least one value satisfy condition.
+         *
+         * @param f condition
+         * @return test result
+         */
+        default boolean anyMatch(final Predicate<? super V> f) {
+            return !this.filter((key, val) -> f.negate().test(val)).isEmpty();
+        }
+
+        /**
+         * Test all values satisfy condition.
+         *
+         * @param f condition
+         * @return test result
+         */
+        default boolean allMatch(final Predicate<? super V> f) {
+            return this.filter((key, val) -> f.negate().test(val)).size() == this.size();
+        }
+
+        /**
+         * Test at least one key/value pair satisfy condition.
+         *
+         * @param f condition
+         * @return test result
+         */
+        default boolean anyMatch(final BiPredicate<? super K, ? super V> f) {
+            return !this.filter(f.negate()).isEmpty();
+        }
+
+        /**
+         * Test all key/value pairs satisfy condition.
+         *
+         * @param f condition
+         * @return test result
+         */
+        default boolean allMatch(final BiPredicate<? super K, ? super V> f) {
+            return this.filter(f.negate()).size() == this.size();
         }
 
         /**
@@ -400,6 +440,26 @@ public class Indolently {
             @SuppressWarnings("unchecked")
             final SELF self = (SELF) this;
             return self;
+        }
+
+        /**
+         * Test at least one value satisfy condition.
+         *
+         * @param f condition
+         * @return test result
+         */
+        default boolean anyMatch(final Predicate<? super T> f) {
+            return !this.filter(f.negate()).isEmpty();
+        }
+
+        /**
+         * Test all values satisfy condition.
+         *
+         * @param f condition
+         * @return test result
+         */
+        default boolean allMatch(final Predicate<? super T> f) {
+            return this.filter(f.negate()).size() == this.size();
         }
 
         /**
