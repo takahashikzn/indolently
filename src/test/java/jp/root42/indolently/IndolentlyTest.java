@@ -177,6 +177,20 @@ public class IndolentlyTest {
                 "level2", list(optional(set(42))))).freeze();
 
         try {
+            frozen.put("level1.1", map("level2.1", list(optional(set(43)))));
+            fail();
+        } catch (final UnsupportedOperationException e) {
+            assert true;
+        }
+
+        try {
+            frozen.get("level1").put("level2.1", list(optional(set(43))));
+            fail();
+        } catch (final UnsupportedOperationException e) {
+            assert true;
+        }
+
+        try {
             frozen.get("level1").get("level2").get(0).add(43);
             fail();
         } catch (final UnsupportedOperationException e) {
