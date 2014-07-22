@@ -921,17 +921,22 @@ public class Indolently {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        final int[] i = { from };
-
         return () -> new Iterator<Integer>() {
+
+            private long i = from;
+
             @Override
             public boolean hasNext() {
-                return true;
+                return this.i <= Integer.MAX_VALUE;
             }
 
             @Override
             public Integer next() {
-                return i[0] += step;
+                if (!this.hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
+                return (int) this.i++;
             }
         };
     }
