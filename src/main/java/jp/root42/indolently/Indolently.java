@@ -237,8 +237,8 @@ public class Indolently {
          * @param f condition
          * @return test result
          */
-        default boolean anyMatch(final Predicate<? super V> f) {
-            return this.anyMatch((key, val) -> f.test(val));
+        default boolean some(final Predicate<? super V> f) {
+            return this.some((key, val) -> f.test(val));
         }
 
         /**
@@ -247,8 +247,8 @@ public class Indolently {
          * @param f condition
          * @return test result
          */
-        default boolean allMatch(final Predicate<? super V> f) {
-            return this.allMatch((key, val) -> f.test(val));
+        default boolean every(final Predicate<? super V> f) {
+            return this.every((key, val) -> f.test(val));
         }
 
         /**
@@ -257,7 +257,7 @@ public class Indolently {
          * @param f condition
          * @return test result
          */
-        default boolean anyMatch(final BiPredicate<? super K, ? super V> f) {
+        default boolean some(final BiPredicate<? super K, ? super V> f) {
             return !this.filter(f).isEmpty();
         }
 
@@ -267,7 +267,7 @@ public class Indolently {
          * @param f condition
          * @return test result
          */
-        default boolean allMatch(final BiPredicate<? super K, ? super V> f) {
+        default boolean every(final BiPredicate<? super K, ? super V> f) {
             return this.filter(f).size() == this.size();
         }
 
@@ -491,7 +491,7 @@ public class Indolently {
          * @param f condition
          * @return test result
          */
-        default boolean anyMatch(final Predicate<? super T> f) {
+        default boolean some(final Predicate<? super T> f) {
             return !this.filter(f).isEmpty();
         }
 
@@ -501,7 +501,7 @@ public class Indolently {
          * @param f condition
          * @return test result
          */
-        default boolean allMatch(final Predicate<? super T> f) {
+        default boolean every(final Predicate<? super T> f) {
             return this.filter(f).size() == this.size();
         }
 
@@ -813,6 +813,37 @@ public class Indolently {
             }
 
             return this;
+        }
+
+        /**
+         * compute union of set.
+         *
+         * @param values
+         * @return newly constructed set as a computed union
+         */
+        default Sset<T> union(final Iterable<? extends T> values) {
+            return Indolently.set(this).pushAll(values);
+        }
+
+        /**
+         * compute intersection of set.
+         *
+         * @param values
+         * @return newly constructed set as a computed intersection.
+         */
+        default Sset<T> intersect(final Iterable<? extends T> values) {
+            Indolently.set(this).retainAll(Indolently.set(values));
+            return this;
+        }
+
+        /**
+         * compute difference of set.
+         *
+         * @param values
+         * @return newly constructed set as a computed difference.
+         */
+        default Sset<T> diff(final Iterable<? extends T> values) {
+            return Indolently.set(this).delete(values);
         }
     }
 
