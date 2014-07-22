@@ -83,9 +83,8 @@ public class Indolently {
     protected interface Freezable<SELF extends Freezable<SELF>> {
 
         /**
-         * construct freezed new {@link Collections#unmodifiableList(List) List}/
-         * {@link Collections#unmodifiableMap(Map)
-         * Map}/{@link Collections#unmodifiableSet(Set) Set} instance.
+         * construct freezed new {@link Collections#unmodifiableList(List) List} /
+         * {@link Collections#unmodifiableMap(Map) Map} / {@link Collections#unmodifiableSet(Set) Set} instance.
          * Circular structure is not supported yet.
          *
          * @return freezed new instance
@@ -426,7 +425,12 @@ public class Indolently {
          */
         @Destructive
         default SELF delete(final Iterable<? extends T> values) {
-            this.removeAll(Indolently.list(values));
+
+            // optimization
+            final Collection<?> vals =
+                (values instanceof Collection) ? (Collection<? extends T>) values : Indolently.list(values);
+
+            this.removeAll(vals);
 
             return this.identity();
         }
@@ -662,7 +666,13 @@ public class Indolently {
          */
         @Destructive
         default Slist<T> pushAll(final int idx, final Iterable<? extends T> values) {
-            this.addAll(Indolently.idx(this, idx), Indolently.list(values));
+
+            // optimization
+            final Collection<? extends T> vals =
+                (values instanceof Collection) ? (Collection<? extends T>) values : Indolently.list(values);
+
+            this.addAll(Indolently.idx(this, idx), vals);
+
             return this;
         }
 
