@@ -79,12 +79,17 @@ public class IndolentlyTest {
     @Test
     public void testInternalIterators() {
 
+        final Slist<Integer> ints = list();
+
         assertThat(range(1, 10) //
             .slice(-5, 0) //
             .map((i) -> i * i) //
-            .each(System.out::println) //
+            .each((i) -> ints.add(i)) //
             .reduce(0, (i, k) -> i + k).get()) //
             .isEqualTo(330);
+
+        assertThat(ints) //
+            .isEqualTo(list(36, 49, 64, 81, 100));
     }
 
     /**
