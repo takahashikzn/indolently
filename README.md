@@ -72,7 +72,7 @@ final Map<String, Object> boring = Collections.unmodifiableMap(new HashMap<Strin
 });
 
 
-// do streaming without the "unfriendly" java.util.Stream
+// operation chaining without the "unfriendly" java.util.Stream
 range(1, 10)
     .slice(-5, 0) // negative index is acceptable - take last five elements
     .map((i) -> i * i)
