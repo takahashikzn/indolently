@@ -552,7 +552,7 @@ public class Indolently {
          * @return result value
          */
         default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
-            return reduce(Optional.empty(), f);
+            return this.reduce(Optional.empty(), f);
         }
 
         /**
@@ -563,7 +563,7 @@ public class Indolently {
          * @return result value
          */
         default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-            return reduce(Optional.of(initial), f);
+            return this.reduce(Optional.of(initial), f);
         }
 
         /**
