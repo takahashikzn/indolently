@@ -254,7 +254,7 @@ public class Indolently {
          * @return test result
          */
         default boolean anyMatch(final Predicate<? super V> f) {
-            return !this.filter((key, val) -> f.negate().test(val)).isEmpty();
+            return !this.filter((key, val) -> f.test(val)).isEmpty();
         }
 
         /**
@@ -264,7 +264,7 @@ public class Indolently {
          * @return test result
          */
         default boolean allMatch(final Predicate<? super V> f) {
-            return this.filter((key, val) -> f.negate().test(val)).size() == this.size();
+            return this.filter((key, val) -> f.test(val)).size() == this.size();
         }
 
         /**
@@ -274,7 +274,7 @@ public class Indolently {
          * @return test result
          */
         default boolean anyMatch(final BiPredicate<? super K, ? super V> f) {
-            return !this.filter(f.negate()).isEmpty();
+            return !this.filter(f).isEmpty();
         }
 
         /**
@@ -284,11 +284,11 @@ public class Indolently {
          * @return test result
          */
         default boolean allMatch(final BiPredicate<? super K, ? super V> f) {
-            return this.filter(f.negate()).size() == this.size();
+            return this.filter(f).size() == this.size();
         }
 
         /**
-         * Filter entries.
+         * Returns entries as a map which satisfying condition.
          * This operation is constructive.
          *
          * @param f function
@@ -299,10 +299,10 @@ public class Indolently {
         }
 
         /**
-         * Filter entries.
+         * Returns entries as a map which satisfying condition.
          * This operation is constructive.
          *
-         * @param f function
+         * @param f condition
          * @return new filtered map
          */
         default Smap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
@@ -314,7 +314,7 @@ public class Indolently {
                 final K key = e.getKey();
                 final V val = e.getValue();
 
-                if (!f.test(key, val)) {
+                if (f.test(key, val)) {
                     rslt.put(key, val);
                 }
             }
@@ -499,7 +499,7 @@ public class Indolently {
          * @return test result
          */
         default boolean anyMatch(final Predicate<? super T> f) {
-            return !this.filter(f.negate()).isEmpty();
+            return !this.filter(f).isEmpty();
         }
 
         /**
@@ -509,7 +509,7 @@ public class Indolently {
          * @return test result
          */
         default boolean allMatch(final Predicate<? super T> f) {
-            return this.filter(f.negate()).size() == this.size();
+            return this.filter(f).size() == this.size();
         }
 
         default SELF map(final Function<? super T, ? extends T> f) {
@@ -526,10 +526,10 @@ public class Indolently {
         SELF map(BiFunction<Integer, ? super T, ? extends T> f);
 
         /**
-         * Filter values.
+         * Returns values which satisfying condition.
          * This operation is constructive.
          *
-         * @param f function.
+         * @param f condition
          * @return new filtered collection
          */
         default SELF filter(final Predicate<? super T> f) {
@@ -537,10 +537,10 @@ public class Indolently {
         }
 
         /**
-         * Filter values.
+         * Returns values which satisfying condition.
          * This operation is constructive.
          *
-         * @param f function. first argument is loop index.
+         * @param f condition. first argument is loop index.
          * @return new filtered collection
          */
         SELF filter(BiPredicate<Integer, ? super T> f);
@@ -725,7 +725,7 @@ public class Indolently {
 
             int i = 0;
             for (final T val : this) {
-                if (!f.test(i++, val)) {
+                if (f.test(i++, val)) {
                     rslt.add(val);
                 }
             }
