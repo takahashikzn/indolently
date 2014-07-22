@@ -888,6 +888,7 @@ public class Indolently {
      * Examples
      * <ul>
      * <li>{@code range(1, 3)} -&gt; {@code [1, 2, 3]}</li>
+     * <li>{@code range(3, 1)} -&gt; {@code [3, 2, 1]}</li>
      * <li>{@code range(-3, 1)} -&gt; {@code [-3, -2, -1, 0, 1]}</li>
      * </ul>
      * </p>
