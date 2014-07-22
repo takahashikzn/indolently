@@ -628,7 +628,7 @@ public class Indolently {
         /**
          * Equivalent to {@code list.subList(idx, list.size())}.
          *
-         * @param from from index. negative index is acceptable.
+         * @param from from index. negative index also acceptable.
          * @return sub list
          */
         default List<T> subList(final int from) {
@@ -659,7 +659,7 @@ public class Indolently {
          * insert value at specified index then return this instance.
          *
          * @param idx insertion position.
-         * negative value is acceptable. for example, {@code slist.push(-1, "x")} means
+         * negative index also acceptable. for example, {@code slist.push(-1, "x")} means
          * {@code slist.push(slist.size() - 1, "x")}
          * @param value value to add
          * @return {@code this} instance
@@ -674,7 +674,7 @@ public class Indolently {
          * insert all values at specified index then return this instance.
          *
          * @param idx insertion position.
-         * negative value is acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
+         * negative index also acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
          * {@code slist.pushAll(slist.size() - 1,  list("x", "y"))}
          * @param values values to add
          * @return {@code this} instance
@@ -696,7 +696,7 @@ public class Indolently {
          * otherwise, do nothing.
          *
          * @param idx insertion position.
-         * negative value is acceptable. for example, {@code slist.push(-1, "x")} means
+         * negative index also acceptable. for example, {@code slist.push(-1, "x")} means
          * {@code slist.push(slist.size() - 1, "x")}
          * @param value nullable value to add
          * @return {@code this} instance
@@ -711,7 +711,7 @@ public class Indolently {
          * otherwise, do nothing.
          *
          * @param idx insertion position.
-         * negative value is acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
+         * negative index also acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
          * {@code slist.pushAll(slist.size() - 1,  list("x", "y"))}
          * @param values nullable values to add
          * @return {@code this} instance
