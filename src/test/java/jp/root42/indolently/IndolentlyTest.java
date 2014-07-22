@@ -17,8 +17,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,6 +50,28 @@ import static org.junit.Assert.*;
 @SuppressWarnings("serial")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
+
+    /**
+     * {@link Indolently#sequence(int)}
+     */
+    @Test
+    public void testSequence() {
+
+        final Iterator<Integer> i = sequence(Integer.MAX_VALUE - 1).iterator();
+
+        assertTrue(i.hasNext());
+        assertThat(i.next()).isEqualTo(Integer.MAX_VALUE - 1);
+        assertTrue(i.hasNext());
+        assertThat(i.next()).isEqualTo(Integer.MAX_VALUE);
+        assertFalse(i.hasNext());
+
+        try {
+            i.next();
+            fail();
+        } catch (final NoSuchElementException e) {
+            assert true;
+        }
+    }
 
     /**
      * internal iterators.
