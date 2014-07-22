@@ -757,6 +757,17 @@ public class Indolently {
 
             return this;
         }
+
+        /**
+         * Reverse this list.
+         *
+         * @return newly constructed reversed list
+         */
+        default Slist<T> reverse() {
+            final Slist<T> rslt = Indolently.list(this);
+            Collections.reverse(rslt);
+            return rslt;
+        }
     }
 
     private static int idx(final List<?> list, final int idx) {
