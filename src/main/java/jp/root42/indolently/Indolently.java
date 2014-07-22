@@ -253,7 +253,7 @@ public class Indolently {
          * @return test result
          */
         default boolean anyMatch(final Predicate<? super V> f) {
-            return !this.filter((key, val) -> f.test(val)).isEmpty();
+            return this.anyMatch((key, val) -> f.test(val));
         }
 
         /**
@@ -263,7 +263,7 @@ public class Indolently {
          * @return test result
          */
         default boolean allMatch(final Predicate<? super V> f) {
-            return this.filter((key, val) -> f.test(val)).size() == this.size();
+            return this.allMatch((key, val) -> f.test(val));
         }
 
         /**
