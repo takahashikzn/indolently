@@ -186,13 +186,7 @@ public class Indolently {
          */
         @Destructive
         default Smap<K, V> delete(final Iterable<? extends K> keys) {
-
-            if (keys != null) {
-                for (final K key : keys) {
-                    this.remove(key);
-                }
-            }
-
+            this.keySet().retainAll(this.keys().delete(keys));
             return this;
         }
 
@@ -213,16 +207,7 @@ public class Indolently {
          * @return extracted new map
          */
         default Smap<K, V> slice(final Iterable<? extends K> keys) {
-
-            final Smap<K, V> map = Indolently.map();
-
-            for (final K key : keys) {
-                if (this.containsKey(key)) {
-                    map.put(key, this.get(key));
-                }
-            }
-
-            return map;
+            return Indolently.map(this).delete(this.keys().delete(keys));
         }
 
         /**
