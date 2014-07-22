@@ -832,16 +832,7 @@ public class Indolently {
          * @return newly constructed set as a computed intersection.
          */
         default Sset<T> intersect(final Iterable<? extends T> values) {
-
-            final Sset<T> rslt = Indolently.set(this);
-
-            // optimization
-            final Collection<?> vals =
-                (values instanceof Collection) ? (Collection<? extends T>) values : Indolently.set(values);
-
-            rslt.retainAll(vals);
-
-            return rslt;
+            return this.union(values).delete(this.diff(values));
         }
 
         /**
@@ -851,7 +842,9 @@ public class Indolently {
          * @return newly constructed set as a computed difference.
          */
         default Sset<T> diff(final Iterable<? extends T> values) {
-            return this.union(values).delete(this.intersect(values));
+            @SuppressWarnings({ "unchecked", "rawtypes" })
+            final Sset<T> rslt = Indolently.set(this).delete(values).union(Indolently.set(values).delete((Set) this));
+            return rslt;
         }
     }
 
