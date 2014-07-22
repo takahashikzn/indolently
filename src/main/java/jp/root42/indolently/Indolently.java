@@ -186,7 +186,7 @@ public class Indolently {
          */
         @Destructive
         default Smap<K, V> delete(final Iterable<? extends K> keys) {
-            this.keySet().retainAll(this.keys().delete(keys));
+            this.keySet().removeAll(Indolently.set(keys));
             return this;
         }
 
