@@ -287,6 +287,7 @@ public class Indolently {
         }
 
         /**
+         * Filter operation.
          * Returns entries as a map which satisfying condition.
          * This operation is constructive.
          *
@@ -298,6 +299,7 @@ public class Indolently {
         }
 
         /**
+         * Filter operation.
          * Returns entries as a map which satisfying condition.
          * This operation is constructive.
          *
@@ -322,6 +324,7 @@ public class Indolently {
         }
 
         /**
+         * Map operation.
          * Convert values.
          * This operation is constructive.
          *
@@ -333,6 +336,7 @@ public class Indolently {
         }
 
         /**
+         * Map operation.
          * Convert values.
          * This operation is constructive.
          *
@@ -516,11 +520,20 @@ public class Indolently {
             return this.filter(f).size() == this.size();
         }
 
+        /**
+         * Map operation.
+         * Convert values.
+         * This operation is constructive.
+         *
+         * @param f function
+         * @return newly constructed collection which contains converted values
+         */
         default SELF map(final Function<? super T, ? extends T> f) {
             return this.map((idx, val) -> f.apply(val));
         }
 
         /**
+         * Map operation.
          * Convert values.
          * This operation is constructive.
          *
@@ -530,6 +543,7 @@ public class Indolently {
         SELF map(BiFunction<Integer, ? super T, ? extends T> f);
 
         /**
+         * Filter operation.
          * Returns values which satisfying condition.
          * This operation is constructive.
          *
@@ -541,6 +555,7 @@ public class Indolently {
         }
 
         /**
+         * Filter operation.
          * Returns values which satisfying condition.
          * This operation is constructive.
          *
@@ -770,7 +785,7 @@ public class Indolently {
         /**
          * convert this set to {@link Slist}.
          *
-         * @return a list constructed from this instance.
+         * @return a list newly constructed from this instance.
          */
         default Slist<T> list() {
             return Indolently.list(this);
