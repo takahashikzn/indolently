@@ -68,6 +68,7 @@ public class Indolently {
          * construct freezed new {@link Collections#unmodifiableList(List) List}/
          * {@link Collections#unmodifiableMap(Map)
          * Map}/{@link Collections#unmodifiableSet(Set) Set} instance.
+         * Circular structure is not supported yet.
          *
          * @return freezed new instance
          * @see Collections#unmodifiableList(List)
@@ -180,7 +181,7 @@ public class Indolently {
          * @return keys
          */
         default Sset<K> keys() {
-            return Indolently.set(keySet());
+            return Indolently.set(this.keySet());
         }
 
         /**
@@ -224,7 +225,7 @@ public class Indolently {
         }
 
         /**
-         * Test at least one value satisfy condition.
+         * Test whether at least one value satisfy condition.
          *
          * @param f condition
          * @return test result
@@ -234,7 +235,7 @@ public class Indolently {
         }
 
         /**
-         * Test all values satisfy condition.
+         * Test whether all values satisfy condition.
          *
          * @param f condition
          * @return test result
@@ -244,7 +245,7 @@ public class Indolently {
         }
 
         /**
-         * Test at least one key/value pair satisfy condition.
+         * Test whether at least one key/value pair satisfy condition.
          *
          * @param f condition
          * @return test result
@@ -254,7 +255,7 @@ public class Indolently {
         }
 
         /**
-         * Test all key/value pairs satisfy condition.
+         * Test whether all key/value pairs satisfy condition.
          *
          * @param f condition
          * @return test result
@@ -448,7 +449,7 @@ public class Indolently {
         }
 
         /**
-         * Test at least one value satisfy condition.
+         * Test whether at least one value satisfy condition.
          *
          * @param f condition
          * @return test result
@@ -458,7 +459,7 @@ public class Indolently {
         }
 
         /**
-         * Test all values satisfy condition.
+         * Test whether all values satisfy condition.
          *
          * @param f condition
          * @return test result
@@ -468,7 +469,7 @@ public class Indolently {
         }
 
         /**
-         * internal iterator.
+         * Convert all values then return {@code this} instance.
          *
          * @param f function
          * @return {@code this} instance
@@ -478,15 +479,15 @@ public class Indolently {
         }
 
         /**
-         * internal iterator.
+         * Convert all values then return {@code this} instance.
          *
          * @param f function. first argument is loop index.
-         * @return {@code this} instance
+         * @return {@code this} instance.
          */
         SELF map(BiFunction<Integer, ? super T, ? extends T> f);
 
         /**
-         * internal iterator.
+         * Filter all values then return {@code this} instance..
          *
          * @param f function
          * @return {@code this} instance
@@ -496,7 +497,7 @@ public class Indolently {
         }
 
         /**
-         * internal iterator.
+         * Filter all values then return {@code this} instance..
          *
          * @param f function. first argument is loop index.
          * @return {@code this} instance
@@ -504,7 +505,7 @@ public class Indolently {
         SELF filter(BiPredicate<Integer, ? super T> f);
 
         /**
-         * internal iterator.
+         * Reduce operation.
          *
          * @param f function
          * @return {@code this} instance
@@ -514,7 +515,7 @@ public class Indolently {
         }
 
         /**
-         * internal iterator.
+         * Reduce operation.
          *
          * @param initial initial value
          * @param f function
@@ -525,7 +526,7 @@ public class Indolently {
         }
 
         /**
-         * internal iterator.
+         * Reduce operation.
          *
          * @param initial initial value
          * @param f function
@@ -736,7 +737,7 @@ public class Indolently {
                 }
             }
 
-            return identity();
+            return this;
         }
     }
 
@@ -804,14 +805,32 @@ public class Indolently {
         return Optional.ofNullable(value);
     }
 
+    /**
+     * construct new list which contains specified value.
+     *
+     * @param value to add
+     * @return new list
+     */
     public static <T> Slist<T> list(final Optional<? extends T> value) {
         return new SlistImpl<T>().push(value);
     }
 
+    /**
+     * construct new list which contains specified values.
+     *
+     * @param values to add
+     * @return new list
+     */
     public static <T> Slist<T> list(final Iterable<? extends T> values) {
         return new SlistImpl<T>().pushAll(optional(values));
     }
 
+    /**
+     * construct new list which contains specified values.
+     *
+     * @param values to add
+     * @return new list
+     */
     @SafeVarargs
     public static <T> Slist<T> list(final T... values) {
 
@@ -826,10 +845,75 @@ public class Indolently {
         return list;
     }
 
+    /**
+     * Generate infinite integer sequence.
+     *
+     * @param from the value start from (inclusive).
+     * @return infinite integer sequence.
+     */
+    public static Iterable<Integer> sequence(final int from) {
+        return sequence(from, 1);
+    }
+
+    /**
+     * Generate infinite integer sequence.
+     *
+     * @param from the value start from (inclusive).
+     * @param step count stepping
+     * @return infinite integer sequence.
+     */
+    public static Iterable<Integer> sequence(final int from, final int step) {
+        if (step <= 0) {
+            throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
+        }
+
+        final int[] i = { from };
+
+        return () -> new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                return i[0] += step;
+            }
+        };
+    }
+
+    /**
+     * Generate integer list.
+     * <p>
+     * Examples
+     * <ul>
+     * <li>{@code range(1, 3)} -&gt; {@code [1, 2, 3]}</li>
+     * <li>{@code range(-3, 1)} -&gt; {@code [-3, -2, -1, 0, 1]}</li>
+     * </ul>
+     * </p>
+     *
+     * @param from the value start from (inclusive).
+     * @param to the value end to (inclusive).
+     * @return integer list.
+     */
     public static Slist<Integer> range(final int from, final int to) {
         return range(from, to, 1);
     }
 
+    /**
+     * Generate integer list.
+     * <p>
+     * Examples
+     * <ul>
+     * <li>{@code range(1, 6, 2)} -&gt; {@code [1, 3, 5]}</li>
+     * </ul>
+     * </p>
+     *
+     * @param from the value start from (inclusive).
+     * @param to the value end to (inclusive).
+     * @param step count stepping
+     * @return integer list.
+     */
     public static Slist<Integer> range(final int from, final int to, final int step) {
         if (step <= 0) {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
