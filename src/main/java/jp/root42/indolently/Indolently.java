@@ -14,6 +14,12 @@
 package jp.root42.indolently;
 
 import java.io.Serializable;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.AbstractMap;
@@ -56,6 +62,18 @@ public class Indolently {
 
     /** non private for subtyping. */
     protected Indolently() {
+    }
+
+    /**
+     * Express a method is destructive operation.
+     *
+     * @author takahashikzn
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target(ElementType.METHOD)
+    @Documented
+    @Inherited
+    public @interface Destructive {
     }
 
     /**
@@ -118,6 +136,7 @@ public class Indolently {
          * @param value value to put
          * @return {@code this} instance
          */
+        @Destructive
         default Smap<K, V> push(final K key, final V value) {
             this.put(key, value);
             return this;
@@ -129,6 +148,7 @@ public class Indolently {
          * @param map map to put
          * @return {@code this} instance
          */
+        @Destructive
         default Smap<K, V> pushAll(final Map<? extends K, ? extends V> map) {
             this.putAll(map);
             return this;
@@ -142,6 +162,7 @@ public class Indolently {
          * @param value nullable value to put
          * @return {@code this} instance
          */
+        @Destructive
         default Smap<K, V> push(final K key, final Optional<? extends V> value) {
             return Indolently.empty(value) ? this : this.push(key, value.get());
         }
@@ -153,6 +174,7 @@ public class Indolently {
          * @param map nullable map to put
          * @return {@code this} instance
          */
+        @Destructive
         default Smap<K, V> pushAll(final Optional<? extends Map<? extends K, ? extends V>> map) {
             return Indolently.empty(map) ? this : this.pushAll(map.get());
         }
@@ -163,6 +185,7 @@ public class Indolently {
          * @param keys keys to remove
          * @return {@code this} instance
          */
+        @Destructive
         default Smap<K, V> delete(final Iterable<? extends K> keys) {
 
             if (keys != null) {
@@ -265,55 +288,71 @@ public class Indolently {
         }
 
         /**
-         * internal iterator.
+         * Filter entries.
+         * This operation is constructive.
          *
          * @param f function
-         * @return {@code this} instance
+         * @return new filtered map
          */
         default Smap<K, V> filter(final Predicate<? super V> f) {
             return this.filter((key, val) -> f.test(val));
         }
 
         /**
-         * internal iterator.
+         * Filter entries.
+         * This operation is constructive.
          *
          * @param f function
-         * @return {@code this} instance
+         * @return new filtered map
          */
         default Smap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
 
+            final Smap<K, V> rslt = Indolently.map();
+
             for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
-                if (f.test(e.getKey(), e.getValue())) {
-                    this.remove(e.getKey());
+
+                final K key = e.getKey();
+                final V val = e.getValue();
+
+                if (!f.test(key, val)) {
+                    rslt.put(key, val);
                 }
             }
 
-            return this;
+            return rslt;
         }
 
         /**
-         * internal iterator.
+         * Convert values.
+         * This operation is constructive.
          *
          * @param f function
-         * @return {@code this} instance
+         * @return new converted map
          */
         default Smap<K, V> map(final Function<? super V, ? extends V> f) {
             return this.map((key, val) -> f.apply(val));
         }
 
         /**
-         * internal iterator.
+         * Convert values.
+         * This operation is constructive.
          *
          * @param f function
-         * @return {@code this} instance
+         * @return new converted map
          */
         default Smap<K, V> map(final BiFunction<? super K, ? super V, ? extends V> f) {
 
+            final Smap<K, V> rslt = Indolently.map();
+
             for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
-                this.put(e.getKey(), f.apply(e.getKey(), e.getValue()));
+
+                final K key = e.getKey();
+                final V val = e.getValue();
+
+                rslt.put(key, f.apply(key, val));
             }
 
-            return this;
+            return rslt;
         }
     }
 
@@ -333,6 +372,7 @@ public class Indolently {
          * @param value value to add
          * @return {@code this} instance
          */
+        @Destructive
         default SELF push(final T value) {
             this.add(value);
             return this.identity();
@@ -344,6 +384,7 @@ public class Indolently {
          * @param values values to add
          * @return {@code this} instance
          */
+        @Destructive
         default SELF pushAll(final Iterable<? extends T> values) {
             for (final T val : values) {
                 this.add(val);
@@ -359,6 +400,7 @@ public class Indolently {
          * @param value nullable value to add
          * @return {@code this} instance
          */
+        @Destructive
         default SELF push(final Optional<? extends T> value) {
             return Indolently.empty(value) ? this.identity() : this.push(value.get());
         }
@@ -370,6 +412,7 @@ public class Indolently {
          * @param values nullable values to add
          * @return {@code this} instance
          */
+        @Destructive
         default SELF pushAll(final Optional<? extends Iterable<? extends T>> values) {
             return Indolently.empty(values) ? this.identity() : this.pushAll(values.get());
         }
@@ -381,6 +424,7 @@ public class Indolently {
          * @return {@code this} instance
          * @see #removeAll(Collection)
          */
+        @Destructive
         default SELF delete(final Iterable<? extends T> values) {
             this.removeAll(Indolently.list(values));
 
@@ -468,39 +512,36 @@ public class Indolently {
             return this.filter(f.negate()).size() == this.size();
         }
 
-        /**
-         * Convert all values then return {@code this} instance.
-         *
-         * @param f function
-         * @return {@code this} instance
-         */
         default SELF map(final Function<? super T, ? extends T> f) {
             return this.map((idx, val) -> f.apply(val));
         }
 
         /**
-         * Convert all values then return {@code this} instance.
+         * Convert values.
+         * This operation is constructive.
          *
          * @param f function. first argument is loop index.
-         * @return {@code this} instance.
+         * @return newly constructed collection which contains converted values
          */
         SELF map(BiFunction<Integer, ? super T, ? extends T> f);
 
         /**
-         * Filter all values then return {@code this} instance..
+         * Filter values.
+         * This operation is constructive.
          *
-         * @param f function
-         * @return {@code this} instance
+         * @param f function.
+         * @return new filtered collection
          */
         default SELF filter(final Predicate<? super T> f) {
             return this.filter((idx, val) -> f.test(val));
         }
 
         /**
-         * Filter all values then return {@code this} instance..
+         * Filter values.
+         * This operation is constructive.
          *
          * @param f function. first argument is loop index.
-         * @return {@code this} instance
+         * @return new filtered collection
          */
         SELF filter(BiPredicate<Integer, ? super T> f);
 
@@ -508,7 +549,7 @@ public class Indolently {
          * Reduce operation.
          *
          * @param f function
-         * @return {@code this} instance
+         * @return result value
          */
         default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
             return reduce(Optional.empty(), f);
@@ -519,7 +560,7 @@ public class Indolently {
          *
          * @param initial initial value
          * @param f function
-         * @return {@code this} instance
+         * @return result value
          */
         default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
             return reduce(Optional.of(initial), f);
@@ -530,7 +571,7 @@ public class Indolently {
          *
          * @param initial initial value
          * @param f function
-         * @return {@code this} instance
+         * @return result value
          */
         default Optional<T> reduce(final Optional<? extends T> initial,
             final BiFunction<? super T, ? super T, ? extends T> f) {
@@ -604,6 +645,7 @@ public class Indolently {
          * @param value value to add
          * @return {@code this} instance
          */
+        @Destructive
         default Slist<T> push(final int idx, final T value) {
             this.add(Indolently.idx(this, idx), value);
             return this;
@@ -618,6 +660,7 @@ public class Indolently {
          * @param values values to add
          * @return {@code this} instance
          */
+        @Destructive
         default Slist<T> pushAll(final int idx, final Iterable<? extends T> values) {
             this.addAll(Indolently.idx(this, idx), Indolently.list(values));
             return this;
@@ -633,6 +676,7 @@ public class Indolently {
          * @param value nullable value to add
          * @return {@code this} instance
          */
+        @Destructive
         default Slist<T> push(final int idx, final Optional<? extends T> value) {
             return Indolently.empty(value) ? this : this.push(idx, value.get());
         }
@@ -647,6 +691,7 @@ public class Indolently {
          * @param values nullable values to add
          * @return {@code this} instance
          */
+        @Destructive
         default Slist<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
             return Indolently.empty(values) ? this : this.pushAll(idx, values.get());
         }
@@ -663,19 +708,25 @@ public class Indolently {
         @Override
         default Slist<T> map(final BiFunction<Integer, ? super T, ? extends T> f) {
 
-            for (int i = 0; i < this.size(); i++) {
-                this.set(i, f.apply(i, this.get(i)));
+            final Slist<T> rslt = Indolently.list();
+
+            int i = 0;
+            for (final T val : this) {
+                rslt.add(f.apply(i++, val));
             }
 
-            return this;
+            return rslt;
         }
 
         @Override
         default Slist<T> filter(final BiPredicate<Integer, ? super T> f) {
 
-            for (int i = 0; i < this.size(); i++) {
-                if (f.test(i, this.get(i))) {
-                    this.remove(i);
+            final Slist<T> rslt = Indolently.list();
+
+            int i = 0;
+            for (final T val : this) {
+                if (!f.test(i++, val)) {
+                    rslt.add(val);
                 }
             }
 
@@ -718,22 +769,25 @@ public class Indolently {
         @Override
         default Sset<T> map(final BiFunction<Integer, ? super T, ? extends T> f) {
 
+            final Sset<T> rslt = Indolently.set();
+
             int i = 0;
-            for (final T val : Indolently.list(this)) {
-                this.remove(val);
-                this.add(f.apply(i++, val));
+            for (final T val : this) {
+                rslt.add(f.apply(i++, val));
             }
 
-            return this;
+            return rslt;
         }
 
         @Override
         default Sset<T> filter(final BiPredicate<Integer, ? super T> f) {
 
+            final Sset<T> rslt = Indolently.set();
+
             int i = 0;
-            for (final T val : Indolently.list(this)) {
-                if (f.test(i++, val)) {
-                    this.remove(val);
+            for (final T val : this) {
+                if (!f.test(i++, val)) {
+                    rslt.add(val);
                 }
             }
 
