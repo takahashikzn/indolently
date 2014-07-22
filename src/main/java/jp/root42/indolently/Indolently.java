@@ -936,7 +936,9 @@ public class Indolently {
                     throw new NoSuchElementException();
                 }
 
-                return (int) this.i++;
+                final int val = (int) this.i;
+                this.i += step;
+                return val;
             }
         };
     }
