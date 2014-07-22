@@ -1016,6 +1016,9 @@ public class Indolently {
             for (int i = from; to <= i; i -= step) {
                 list.add(i);
             }
+        } else {
+            assert from == to;
+            list.add(from);
         }
 
         return list;
