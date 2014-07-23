@@ -807,7 +807,7 @@ public class Indolently {
 
             int i = 0;
             for (final T val : this) {
-                if (!f.test(i++, val)) {
+                if (f.test(i++, val)) {
                     rslt.add(val);
                 }
             }
@@ -1156,20 +1156,33 @@ public class Indolently {
     }
 
     public static <K, V> Smap<K, V> freeze(final Map<? extends K, ? extends V> map) {
+
+        final Smap<? extends K, ? extends V> smap =
+            (map instanceof Smap) ? (Smap<? extends K, ? extends V>) map : map(map);
+
         @SuppressWarnings("unchecked")
-        final Smap<K, V> rslt = new SmapImpl<>(Collections.unmodifiableMap(map(map).map(freezer())));
+        final Smap<K, V> rslt = new SmapImpl<>(Collections.unmodifiableMap(smap.map(freezer())));
+
         return rslt;
     }
 
     public static <T> Sset<T> freeze(final Set<? extends T> values) {
+
+        final Sset<? extends T> sset = values instanceof Sset ? (Sset<? extends T>) values : set(values);
+
         @SuppressWarnings("unchecked")
-        final Sset<T> rslt = new SsetImpl<>(Collections.unmodifiableSet(set(values).map(freezer())));
+        final Sset<T> rslt = new SsetImpl<>(Collections.unmodifiableSet(sset.map(freezer())));
+
         return rslt;
     }
 
     public static <T> Slist<T> freeze(final List<? extends T> values) {
+
+        final Slist<? extends T> slist = (values instanceof Slist) ? (Slist<? extends T>) values : list(values);
+
         @SuppressWarnings("unchecked")
-        final Slist<T> rslt = new SlistImpl<>(Collections.unmodifiableList(list(values).map(freezer())));
+        final Slist<T> rslt = new SlistImpl<>(Collections.unmodifiableList(slist.map(freezer())));
+
         return rslt;
     }
 
@@ -1253,27 +1266,12 @@ public class Indolently {
 
     @SafeVarargs
     public static <T extends Comparable<T>> T max(final T... values) {
-        return minmax(true, values);
+        return list(values).reduce(Indolently::max).get();
     }
 
     @SafeVarargs
     public static <T extends Comparable<T>> T min(final T... values) {
-        return minmax(false, values);
-    }
-
-    private static <T extends Comparable<T>> T minmax(final boolean max, final T[] values) {
-
-        if (empty(values)) {
-            return null;
-        }
-
-        T rslt = values[0];
-
-        for (final T value : values) {
-            rslt = max ? max(value, rslt) : min(value, rslt);
-        }
-
-        return rslt;
+        return list(values).reduce(Indolently::min).get();
     }
 
     public static Class<?> typed(@SuppressWarnings("rawtypes")
