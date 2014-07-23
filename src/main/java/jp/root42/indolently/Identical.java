@@ -4,6 +4,8 @@
 package jp.root42.indolently;
 
 /**
+ * Express this instance can be identical.
+ *
  * @param <SELF> self type
  * @author takahashikzn
  */

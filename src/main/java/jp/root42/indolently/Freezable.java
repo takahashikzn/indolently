@@ -10,6 +10,8 @@ import java.util.Set;
 
 
 /**
+ * Express this instance knows freeze operation.
+ *
  * @param <SELF> self type
  * @author takahashikzn
  */

@@ -16,11 +16,13 @@ import java.util.function.Predicate;
 
 
 /**
- * common method definition for {@link Scol}/{@link Sset}/{@link Slist}.
+ * common method definition for {@link Sset} / {@link Slist}.
  *
  * @param <T> value type
  * @param <SELF> self type
  * @author takahashikzn
+ * @see Slist
+ * @see Sset
  */
 public interface Scol<T, SELF extends Scol<T, SELF>>
     extends Collection<T>, Freezable<SELF>, Identical<SELF> {
