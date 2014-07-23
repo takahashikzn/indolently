@@ -474,13 +474,13 @@ public class Indolently {
     }
 
     @SafeVarargs
-    public static <T extends Comparable<T>> T max(final T first, final T... rest) {
-        return list(first).pushAll(list(rest)).reduce(Indolently::max).get();
+    public static <T extends Comparable<T>> T max(final T first, final T second, final T... rest) {
+        return list(first).push(second).pushAll(list(rest)).reduce(Indolently::max).get();
     }
 
     @SafeVarargs
-    public static <T extends Comparable<T>> T min(final T first, final T... rest) {
-        return list(first).pushAll(list(rest)).reduce(Indolently::min).get();
+    public static <T extends Comparable<T>> T min(final T first, final T second, final T... rest) {
+        return list(first).push(second).pushAll(list(rest)).reduce(Indolently::min).get();
     }
 
     public static <T extends Comparable<T>> T max(final Iterable<? extends T> values) {
