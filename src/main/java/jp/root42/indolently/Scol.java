@@ -217,7 +217,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @return result value
      */
     default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.reduce(Optional.empty(), f);
+        return this.reduce((T) null, f);
     }
 
     /**
@@ -228,7 +228,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @return result value
      */
     default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.reduce(Optional.of(initial), f);
+        return this.reduce(Optional.ofNullable(initial), f);
     }
 
     /**
@@ -240,7 +240,8 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      */
     default Optional<T> reduce(final Optional<? extends T> initial,
         final BiFunction<? super T, ? super T, ? extends T> f) {
-        return mapred(initial, f);
+
+        return this.mapred(initial, f);
     }
 
     /**
@@ -251,7 +252,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @return result value
      */
     default <M> Optional<M> mapred(final BiFunction<? super M, ? super T, ? extends M> f) {
-        return this.mapred(Optional.empty(), f);
+        return this.mapred((M) null, f);
     }
 
     /**
@@ -263,7 +264,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @return result value
      */
     default <M> Optional<M> mapred(final M initial, final BiFunction<? super M, ? super T, ? extends M> f) {
-        return this.mapred(Optional.of(initial), f);
+        return this.mapred(Optional.ofNullable(initial), f);
     }
 
     /**
