@@ -21,6 +21,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 
@@ -213,9 +214,10 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      *
      * @param f function
      * @return result value
+     * @throws NoSuchElementException the collection size is less than two
      */
     default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.reduce((T) null, f);
+        return this.mapred(Function.identity(), f);
     }
 
     /**
@@ -226,7 +228,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @return result value
      */
     default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.reduce(Optional.ofNullable(initial), f);
+        return this.mapred(Optional.ofNullable(initial), f);
     }
 
     /**
@@ -238,7 +240,6 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      */
     default Optional<T> reduce(final Optional<? extends T> initial,
         final BiFunction<? super T, ? super T, ? extends T> f) {
-
         return this.mapred(initial, f);
     }
 
@@ -246,11 +247,17 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * Map then Reduce operation.
      *
      * @param <M> mapping target type
-     * @param f function
+     * @param fm mapper function
+     * @param fr reducer function
      * @return result value
+     * @throws NoSuchElementException this collection is empty
      */
-    default <M> Optional<M> mapred(final BiFunction<? super M, ? super T, ? extends M> f) {
-        return this.mapred((M) null, f);
+    default <M> Optional<M> mapred(final Function<? super T, ? extends M> fm,
+        final BiFunction<? super M, ? super M, ? extends M> fr) {
+
+        return this.tail().mapred( //
+            fm.apply(this.first()), //
+            (rem, val) -> fr.apply(rem, fm.apply(val)));
     }
 
     /**
@@ -276,12 +283,12 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     default <M> Optional<M> mapred(final Optional<? extends M> initial,
         final BiFunction<? super M, ? super T, ? extends M> f) {
 
-        M memo = Indolently.empty(initial) ? null : initial.get();
+        M rem = Indolently.empty(initial) ? null : initial.get();
 
         for (final T val : this) {
-            memo = f.apply(memo, val);
+            rem = f.apply(rem, val);
         }
 
-        return Optional.ofNullable(memo);
+        return Optional.ofNullable(rem);
     }
 }

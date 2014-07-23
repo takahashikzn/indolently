@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,6 +46,27 @@ import static org.junit.Assert.*;
 @SuppressWarnings("serial")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
+
+    /**
+     * {@link Indolently#min(Comparable, Comparable...)} / {@link Indolently#min(Comparable, Comparable...)}
+     */
+    @Test
+    public void testMinMax() {
+
+        final List<Integer> ints = range(1, 100);
+
+        Collections.shuffle(ints);
+
+        assertThat(min(ints)) //
+            .isEqualTo(1);
+        assertThat(max(ints)) //
+            .isEqualTo(100);
+
+        assertThat(min(1)) //
+            .isEqualTo(1);
+        assertThat(max(1)) //
+            .isEqualTo(1);
+    }
 
     /**
      * {@link Sset#union(Iterable)}

@@ -441,6 +441,15 @@ public class Indolently {
 
     @SafeVarargs
     public static <T> T choose(final Supplier<? extends T>... suppliers) {
+        return choose(null, suppliers);
+    }
+
+    @SafeVarargs
+    public static <T> T choose(final T initial, final Supplier<? extends T>... suppliers) {
+
+        if (initial != null) {
+            return initial;
+        }
 
         for (final Supplier<? extends T> s : suppliers) {
 
@@ -457,21 +466,29 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> T max(final T l, final T r) {
-        return (0 <= l.compareTo(r)) ? r : l;
+        return (0 <= l.compareTo(r)) ? l : r;
     }
 
     public static <T extends Comparable<T>> T min(final T l, final T r) {
-        return (l.compareTo(r) < 0) ? r : l;
+        return (l.compareTo(r) < 0) ? l : r;
     }
 
     @SafeVarargs
-    public static <T extends Comparable<T>> T max(final T... values) {
-        return list(values).reduce(Indolently::max).get();
+    public static <T extends Comparable<T>> T max(final T first, final T... rest) {
+        return list(first).pushAll(list(rest)).reduce(Indolently::max).get();
     }
 
     @SafeVarargs
-    public static <T extends Comparable<T>> T min(final T... values) {
-        return list(values).reduce(Indolently::min).get();
+    public static <T extends Comparable<T>> T min(final T first, final T... rest) {
+        return list(first).pushAll(list(rest)).reduce(Indolently::min).get();
+    }
+
+    public static <T extends Comparable<T>> T max(final Iterable<? extends T> values) {
+        return list(values).reduce((l, r) -> max(l, r)).get();
+    }
+
+    public static <T extends Comparable<T>> T min(final Iterable<? extends T> values) {
+        return list(values).reduce((l, r) -> min(l, r)).get();
     }
 
     public static Class<?> typed(@SuppressWarnings("rawtypes")
