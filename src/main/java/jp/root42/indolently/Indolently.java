@@ -416,7 +416,7 @@ public class Indolently {
         default SELF delete(final Iterable<? extends T> values) {
 
             // optimization
-            final Collection<?> vals =
+            final Collection<? extends T> vals =
                 (values instanceof Collection) ? (Collection<? extends T>) values : Indolently.list(values);
 
             this.removeAll(vals);
