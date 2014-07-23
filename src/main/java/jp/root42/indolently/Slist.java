@@ -151,8 +151,7 @@ public interface Slist<T>
     }
 
     /**
-     * Map operation.
-     * Map value to another type value.
+     * Map operation: map value to another type value.
      *
      * @param <M> mapped value type
      * @param f function
@@ -163,8 +162,7 @@ public interface Slist<T>
     }
 
     /**
-     * Map operation.
-     * Map value to another type value.
+     * Map operation: map value to another type value.
      *
      * @param <M> mapped value type
      * @param f function. first argument is loop index.

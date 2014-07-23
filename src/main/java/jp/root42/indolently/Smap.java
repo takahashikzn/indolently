@@ -194,8 +194,7 @@ public interface Smap<K, V>
     }
 
     /**
-     * Filter operation.
-     * Returns entries as a map which satisfying condition.
+     * Filter operation: returns entries as a map which satisfying condition.
      * This operation is constructive.
      *
      * @param f function
@@ -206,8 +205,7 @@ public interface Smap<K, V>
     }
 
     /**
-     * Filter operation.
-     * Returns entries as a map which satisfying condition.
+     * Filter operation: returns entries as a map which satisfying condition.
      * This operation is constructive.
      *
      * @param f condition
@@ -231,8 +229,7 @@ public interface Smap<K, V>
     }
 
     /**
-     * Map operation.
-     * Map value to another type value.
+     * Map operation: map value to another type value.
      * This operation is constructive.
      *
      * @param <M> mapping target type
@@ -244,8 +241,7 @@ public interface Smap<K, V>
     }
 
     /**
-     * Map operation.
-     * Map value to another type value.
+     * Map operation: map value to another type value.
      * This operation is constructive.
      *
      * @param <M> mapping target type

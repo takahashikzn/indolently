@@ -189,8 +189,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     }
 
     /**
-     * Filter operation.
-     * Returns values which satisfying condition.
+     * Filter operation: returns values which satisfying condition.
      * This operation is constructive.
      *
      * @param f condition
@@ -201,8 +200,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     }
 
     /**
-     * Filter operation.
-     * Returns values which satisfying condition.
+     * Filter operation: returns values which satisfying condition.
      * This operation is constructive.
      *
      * @param f condition. first argument is loop index.
