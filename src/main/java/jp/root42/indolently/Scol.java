@@ -214,7 +214,8 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      *
      * @param f function
      * @return result value
-     * @throws NoSuchElementException the collection size is less than two
+     * @throws NoSuchElementException this collection is empty
+     * @see #mapred(Function, BiFunction)
      */
     default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
         return this.mapred(Function.identity(), f);
@@ -226,6 +227,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @param initial initial value
      * @param f function
      * @return result value
+     * @see #mapred(Object, BiFunction)
      */
     default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
         return this.mapred(Optional.ofNullable(initial), f);
@@ -237,6 +239,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @param initial initial value
      * @param f function
      * @return result value
+     * @see #mapred(Optional, BiFunction)
      */
     default Optional<T> reduce(final Optional<? extends T> initial,
         final BiFunction<? super T, ? super T, ? extends T> f) {
