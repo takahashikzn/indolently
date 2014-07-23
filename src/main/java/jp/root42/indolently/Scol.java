@@ -21,7 +21,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 
@@ -190,28 +189,6 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     }
 
     /**
-     * Map operation.
-     * Convert values.
-     * This operation is constructive.
-     *
-     * @param f function
-     * @return newly constructed collection which contains converted values
-     */
-    default SELF map(final Function<? super T, ? extends T> f) {
-        return this.map((idx, val) -> f.apply(val));
-    }
-
-    /**
-     * Map operation.
-     * Convert values.
-     * This operation is constructive.
-     *
-     * @param f function. first argument is loop index.
-     * @return newly constructed collection which contains converted values
-     */
-    SELF map(BiFunction<Integer, ? super T, ? extends T> f);
-
-    /**
      * Filter operation.
      * Returns values which satisfying condition.
      * This operation is constructive.
@@ -263,8 +240,44 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      */
     default Optional<T> reduce(final Optional<? extends T> initial,
         final BiFunction<? super T, ? super T, ? extends T> f) {
+        return mapred(initial, f);
+    }
 
-        T memo = Indolently.empty(initial) ? null : initial.get();
+    /**
+     * Map then Reduce operation.
+     *
+     * @param <M> mapping target type
+     * @param f function
+     * @return result value
+     */
+    default <M> Optional<M> mapred(final BiFunction<? super M, ? super T, ? extends M> f) {
+        return this.mapred(Optional.empty(), f);
+    }
+
+    /**
+     * Map then Reduce operation.
+     *
+     * @param <M> mapping target type
+     * @param initial initial value
+     * @param f function
+     * @return result value
+     */
+    default <M> Optional<M> mapred(final M initial, final BiFunction<? super M, ? super T, ? extends M> f) {
+        return this.mapred(Optional.of(initial), f);
+    }
+
+    /**
+     * Map then Reduce operation.
+     *
+     * @param <M> mapping target type
+     * @param initial initial value
+     * @param f function
+     * @return result value
+     */
+    default <M> Optional<M> mapred(final Optional<? extends M> initial,
+        final BiFunction<? super M, ? super T, ? extends M> f) {
+
+        M memo = Indolently.empty(initial) ? null : initial.get();
 
         for (final T val : this) {
             memo = f.apply(memo, val);

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 
 /**
@@ -149,10 +150,29 @@ public interface Slist<T>
         return Indolently.list(this.subList(from, to));
     }
 
-    @Override
-    default Slist<T> map(final BiFunction<Integer, ? super T, ? extends T> f) {
+    /**
+     * Map operation.
+     * Map value to another type value.
+     *
+     * @param <M> mapped value type
+     * @param f function
+     * @return newly constructed list which contains converted values
+     */
+    default <M> Slist<M> map(final Function<? super T, ? extends M> f) {
+        return this.map((idx, val) -> f.apply(val));
+    }
 
-        final Slist<T> rslt = Indolently.list();
+    /**
+     * Map operation.
+     * Map value to another type value.
+     *
+     * @param <M> mapped value type
+     * @param f function. first argument is loop index.
+     * @return newly constructed list which contains converted values
+     */
+    default <M> Slist<M> map(final BiFunction<Integer, ? super T, ? extends M> f) {
+
+        final Slist<M> rslt = Indolently.list();
 
         int i = 0;
         for (final T val : this) {
