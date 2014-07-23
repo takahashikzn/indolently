@@ -25,7 +25,10 @@ There is no dependencies.
 Installation
 =================
 
-Copy single file "Indolently.java" to your source directory.
+Copy the directory "jp/root42/indolently" to your source directory.
+
+
+After a time, the build file(s) for ant/maven would be available.
 
 
 How to use
