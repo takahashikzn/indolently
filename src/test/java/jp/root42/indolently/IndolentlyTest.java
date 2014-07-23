@@ -24,11 +24,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
-import jp.root42.indolently.Indolently.Freezable;
-import jp.root42.indolently.Indolently.Slist;
-import jp.root42.indolently.Indolently.Smap;
-import jp.root42.indolently.Indolently.Sset;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
