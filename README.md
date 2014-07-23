@@ -10,6 +10,9 @@ A Java syntax sugar library for indolent person.
 Intend to provide semi-literal syntax like list/set/map.
 
 
+This is also my study of English/GitHub/Java8-Lambda.
+
+
 Requirement
 =================
 
