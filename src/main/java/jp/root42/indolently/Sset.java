@@ -50,27 +50,27 @@ public interface Sset<T>
 
     /**
      * Map operation.
-     * Convert values.
+     * Map value to another type value.
      *
-     * @param <C> converted value type
+     * @param <M> mapped value type
      * @param f function
      * @return newly constructed set which contains converted values
      */
-    default <C> Sset<C> map(final Function<? super T, C> f) {
+    default <M> Sset<M> map(final Function<? super T, ? extends M> f) {
         return this.map((idx, val) -> f.apply(val));
     }
 
     /**
      * Map operation.
-     * Convert values.
+     * Map value to another type value.
      *
-     * @param <C> converted value type
+     * @param <M> mapped value type
      * @param f function. first argument is loop index.
      * @return newly constructed set which contains converted values
      */
-    default <C> Sset<C> map(final BiFunction<Integer, ? super T, C> f) {
+    default <M> Sset<M> map(final BiFunction<Integer, ? super T, ? extends M> f) {
 
-        final Sset<C> rslt = Indolently.set();
+        final Sset<M> rslt = Indolently.set();
 
         int i = 0;
         for (final T val : this) {
