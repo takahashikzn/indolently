@@ -48,7 +48,8 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
-     * {@link Indolently#min(Comparable, Comparable...)} / {@link Indolently#min(Comparable, Comparable...)}
+     * {@link Indolently#min(Comparable, Comparable, Comparable...)} /
+     * {@link Indolently#min(Comparable, Comparable, Comparable...)}
      */
     @Test
     public void testMinMax() {
@@ -57,15 +58,8 @@ public class IndolentlyTest {
 
         Collections.shuffle(ints);
 
-        assertThat(min(ints)) //
-            .isEqualTo(1);
-        assertThat(max(ints)) //
-            .isEqualTo(100);
-
-        assertThat(min(1)) //
-            .isEqualTo(1);
-        assertThat(max(1)) //
-            .isEqualTo(1);
+        assertThat(min(ints)).isEqualTo(1);
+        assertThat(max(ints)).isEqualTo(100);
     }
 
     /**
