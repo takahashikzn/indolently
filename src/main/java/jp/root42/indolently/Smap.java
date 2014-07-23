@@ -222,27 +222,29 @@ public interface Smap<K, V>
 
     /**
      * Map operation.
-     * Convert values.
+     * Map value to another type value.
      * This operation is constructive.
      *
+     * @param <M> mapping target type
      * @param f function
      * @return new converted map
      */
-    default Smap<K, V> map(final Function<? super V, ? extends V> f) {
+    default <M> Smap<K, M> map(final Function<? super V, ? extends M> f) {
         return this.map((key, val) -> f.apply(val));
     }
 
     /**
      * Map operation.
-     * Convert values.
+     * Map value to another type value.
      * This operation is constructive.
      *
+     * @param <M> mapping target type
      * @param f function
      * @return new converted map
      */
-    default Smap<K, V> map(final BiFunction<? super K, ? super V, ? extends V> f) {
+    default <M> Smap<K, M> map(final BiFunction<? super K, ? super V, ? extends M> f) {
 
-        final Smap<K, V> rslt = Indolently.map();
+        final Smap<K, M> rslt = Indolently.map();
 
         for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
 
