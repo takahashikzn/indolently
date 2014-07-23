@@ -13,6 +13,7 @@ import java.util.function.BiPredicate;
 
 /**
  * Extended {@link List} class for indolent person.
+ * It's name comes from "Sugared list".
  *
  * @param <T> value type
  * @author takahashikzn

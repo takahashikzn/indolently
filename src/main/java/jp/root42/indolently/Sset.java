@@ -10,6 +10,7 @@ import java.util.function.BiPredicate;
 
 /**
  * Extended {@link Set} class for indolent person.
+ * It's name comes from "Sugared set".
  *
  * @param <T> value type
  * @author takahashikzn

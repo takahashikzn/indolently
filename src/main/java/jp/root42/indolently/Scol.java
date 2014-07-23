@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 
 /**
  * common method definition for {@link Sset} / {@link Slist}.
+ * It's name comes from "Sugared collection".
  *
  * @param <T> value type
  * @param <SELF> self type

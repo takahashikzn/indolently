@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 
 /**
  * Extended Map class for indolent person.
+ * It's name comes from "Sugared map".
  *
  * @param <K> key type
  * @param <V> value type
