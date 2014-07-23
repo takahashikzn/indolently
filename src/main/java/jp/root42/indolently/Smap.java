@@ -112,6 +112,16 @@ public interface Smap<K, V>
     }
 
     /**
+     * An alias of {@link Map#values()} then newly constructed (detached) value view.
+     * Equivalent to {@code Indolently.list(map.values())}.
+     *
+     * @return values
+     */
+    default Slist<V> vals() {
+        return Indolently.list(this.values());
+    }
+
+    /**
      * construct new map which having keys you specify.
      * a key which does not exist is ignored.
      *
