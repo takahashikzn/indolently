@@ -95,7 +95,7 @@ public class Indolently {
     /**
      * An alias of {@link #optional(T)}.
      *
-     * @param value value
+     * @param value the value
      * @return Optional representation of value
      */
     public static <T> Optional<T> nonNull(final T value) {
@@ -105,7 +105,7 @@ public class Indolently {
     /**
      * An alias of {@link Optional#ofNullable(T)}.
      *
-     * @param value value
+     * @param value the value
      * @return Optional representation of value
      */
     public static <T> Optional<T> optional(final T value) {
@@ -113,38 +113,38 @@ public class Indolently {
     }
 
     /**
-     * construct new list which contains specified value.
+     * construct new list which contains specified elements.
      *
-     * @param value to add
+     * @param elems elements of the list
      * @return new list
      */
-    public static <T> Slist<T> list(final Optional<? extends T> value) {
-        return new SlistImpl<T>().push(value);
+    public static <T> Slist<T> list(final Optional<? extends T> elems) {
+        return new SlistImpl<T>().push(elems);
     }
 
     /**
-     * construct new list which contains specified values.
+     * construct new list which contains specified elements.
      *
-     * @param values to add
+     * @param elems elements of the list
      * @return new list
      */
-    public static <T> Slist<T> list(final Iterable<? extends T> values) {
-        return new SlistImpl<T>().pushAll(optional(values));
+    public static <T> Slist<T> list(final Iterable<? extends T> elems) {
+        return new SlistImpl<T>().pushAll(optional(elems));
     }
 
     /**
-     * construct new list which contains specified values.
+     * construct new list which contains specified elements.
      *
-     * @param values to add
+     * @param elems elements of the list
      * @return new list
      */
     @SafeVarargs
-    public static <T> Slist<T> list(final T... values) {
+    public static <T> Slist<T> list(final T... elems) {
 
         final Slist<T> list = new SlistImpl<>();
 
-        if (values != null) {
-            for (final T v : values) {
+        if (elems != null) {
+            for (final T v : elems) {
                 list.add(v);
             }
         }
@@ -252,92 +252,121 @@ public class Indolently {
         return list;
     }
 
-    public static <T> T[] array(final Iterable<? extends T> values) {
-        if (empty(values)) {
+    /**
+     * Convert {@link Iterable} to typed array.
+     * The array type is same as first element type.
+     *
+     * @param elems elements
+     * @return typed array
+     * @throws IllegalArgumentException iterable don't contain any element.
+     */
+    public static <T> T[] array(final Iterable<? extends T> elems) {
+        if (empty(elems)) {
             throw new IllegalArgumentException("can't infer empty array type");
         }
+
+        final Slist<? extends T> list = list(elems);
 
         // pseudo typing. actually this type wouldn't be T[].
         @SuppressWarnings("unchecked")
-        final T[] pseudoTyped = (T[]) list(values).toArray();
+        final T[] pseudoTyped = (T[]) list.tail().toArray();
 
-        return array(pseudoTyped);
+        return array(list.first(), pseudoTyped);
     }
 
+    /**
+     * Convert arguments to typed array.
+     * The array type is same as first element type.
+     *
+     * @param elems first element
+     * @param elems rest elements
+     * @return typed array
+     * @throws IllegalArgumentException first element is null..
+     */
     @SafeVarargs
-    public static <T> T[] array(final T... values) {
-        if (empty(values)) {
+    public static <T> T[] array(final T first, final T... rest) {
+        if (first == null) {
             throw new IllegalArgumentException("can't infer empty array type");
         }
 
+        final int len = 1 + ((rest == null) ? 0 : rest.length);
         @SuppressWarnings("unchecked")
-        final T[] ary = (T[]) Array.newInstance(values[0].getClass(), values.length);
+        final T[] ary = (T[]) Array.newInstance(first.getClass(), len);
 
-        return list(values).toArray(ary);
+        return list(first).pushAll(list(rest)).toArray(ary);
     }
 
+    /**
+     * Convert arguments to typed array.
+     *
+     * @param type array type
+     * @param elems first element
+     * @param elems rest elements
+     * @return typed array
+     */
     @SafeVarargs
-    public static <T, V extends T> T[] array(final Class<T> type, final V... values) {
+    public static <T, V extends T> T[] array(final Class<T> type, final V first, final V... rest) {
 
-        if (empty(values)) {
+        if (first == null) {
             @SuppressWarnings("unchecked")
             final T[] ary = (T[]) Array.newInstance(type, 0);
             return ary;
         }
 
+        final int len = 1 + ((rest == null) ? 0 : rest.length);
         @SuppressWarnings("unchecked")
-        final T[] ary = (T[]) Array.newInstance(type, values.length);
+        final T[] ary = (T[]) Array.newInstance(first.getClass(), len);
 
-        return list(values).toArray(ary);
+        return list(first).pushAll(list(rest)).toArray(ary);
     }
 
-    public static Object[] oarray(final Object... values) {
-        return values;
+    public static Object[] oarray(final Object... elems) {
+        return elems;
     }
 
-    public static char[] parray(final char... values) {
-        return values;
+    public static char[] parray(final char... elems) {
+        return elems;
     }
 
-    public static int[] parray(final int... values) {
-        return values;
+    public static int[] parray(final int... elems) {
+        return elems;
     }
 
-    public static long[] parray(final long... values) {
-        return values;
+    public static long[] parray(final long... elems) {
+        return elems;
     }
 
-    public static float[] parray(final float... values) {
-        return values;
+    public static float[] parray(final float... elems) {
+        return elems;
     }
 
-    public static byte[] parray(final byte... values) {
-        return values;
+    public static byte[] parray(final byte... elems) {
+        return elems;
     }
 
-    public static double[] parray(final double... values) {
-        return values;
+    public static double[] parray(final double... elems) {
+        return elems;
     }
 
-    public static boolean[] parray(final boolean... values) {
-        return values;
+    public static boolean[] parray(final boolean... elems) {
+        return elems;
     }
 
     public static <T> Sset<T> set(final Optional<? extends T> value) {
         return new SsetImpl<T>().push(value);
     }
 
-    public static <T> Sset<T> set(final Iterable<? extends T> values) {
-        return new SsetImpl<T>().pushAll(optional(values));
+    public static <T> Sset<T> set(final Iterable<? extends T> elems) {
+        return new SsetImpl<T>().pushAll(optional(elems));
     }
 
     @SafeVarargs
-    public static <T> Sset<T> set(final T... values) {
+    public static <T> Sset<T> set(final T... elems) {
 
         final Sset<T> set = new SsetImpl<>();
 
-        if (values != null) {
-            set.addAll(list(values));
+        if (elems != null) {
+            set.addAll(list(elems));
         }
 
         return set;
@@ -347,12 +376,12 @@ public class Indolently {
         return new SmapImpl<>(new TreeMap<>(map));
     }
 
-    public static <T extends Comparable<T>> Sset<T> sort(final Set<? extends T> values) {
-        return new SsetImpl<>(new TreeSet<>(values));
+    public static <T extends Comparable<T>> Sset<T> sort(final Set<? extends T> elems) {
+        return new SsetImpl<>(new TreeSet<>(elems));
     }
 
-    public static <T extends Comparable<T>> Slist<T> sort(final List<? extends T> values) {
-        return list(new TreeSet<>(values));
+    public static <T extends Comparable<T>> Slist<T> sort(final List<? extends T> elems) {
+        return list(new TreeSet<>(elems));
     }
 
     public static <K, V> Smap<K, V> freeze(final Map<? extends K, ? extends V> map) {
@@ -366,9 +395,9 @@ public class Indolently {
         return rslt;
     }
 
-    public static <T> Sset<T> freeze(final Set<? extends T> values) {
+    public static <T> Sset<T> freeze(final Set<? extends T> elems) {
 
-        final Sset<? extends T> sset = values instanceof Sset ? (Sset<? extends T>) values : set(values);
+        final Sset<? extends T> sset = elems instanceof Sset ? (Sset<? extends T>) elems : set(elems);
 
         @SuppressWarnings("unchecked")
         final Sset<T> rslt = new SsetImpl<>(Collections.unmodifiableSet(sset.map(freezer())));
@@ -376,9 +405,9 @@ public class Indolently {
         return rslt;
     }
 
-    public static <T> Slist<T> freeze(final List<? extends T> values) {
+    public static <T> Slist<T> freeze(final List<? extends T> elems) {
 
-        final Slist<? extends T> slist = (values instanceof Slist) ? (Slist<? extends T>) values : list(values);
+        final Slist<? extends T> slist = (elems instanceof Slist) ? (Slist<? extends T>) elems : list(elems);
 
         @SuppressWarnings("unchecked")
         final Slist<T> rslt = new SlistImpl<>(Collections.unmodifiableList(slist.map(freezer())));
@@ -428,15 +457,15 @@ public class Indolently {
     }
 
     @SafeVarargs
-    public static <T> T choose(final T... values) {
+    public static <T> T choose(final T... elems) {
 
-        for (final T val : values) {
+        for (final T val : elems) {
             if (val != null) {
                 return val;
             }
         }
 
-        throw new IllegalArgumentException("all values are null");
+        throw new IllegalArgumentException("all elements are null");
     }
 
     @SafeVarargs
