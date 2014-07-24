@@ -465,6 +465,87 @@ public class Indolently {
         throw new IllegalArgumentException("all suppliers return null");
     }
 
+    /**
+     * Test the value is gerater than lower and less than upper.
+     * i.e. this method tests {@code lower < val < upper}.
+     *
+     * @param lower lower value
+     * @param val value
+     * @param upper upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gtlt(final T lower, final T val, final T upper) {
+        return (lower.compareTo(val) < 0) && (val.compareTo(upper) < 0);
+    }
+
+    /**
+     * Test the value is gerater equal lower and less than upper.
+     * i.e. this method tests {@code lower <= val < upper}.
+     *
+     * @param lower lower value
+     * @param val value
+     * @param upper upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gelt(final T lower, final T val, final T upper) {
+        return (lower.compareTo(val) <= 0) && (val.compareTo(upper) < 0);
+    }
+
+    /**
+     * Test the value is gerater than lower and less equal upper.
+     * i.e. this method tests {@code lower < val <= upper}.
+     *
+     * @param lower lower value
+     * @param val value
+     * @param upper upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gtle(final T lower, final T val, final T upper) {
+        return (lower.compareTo(val) < 0) && (val.compareTo(upper) <= 0);
+    }
+
+    /**
+     * Test the value is gerater equal lower and less equal upper.
+     * i.e. this method tests {@code lower <= val <= upper}.
+     *
+     * @param lower lower value
+     * @param val value
+     * @param upper upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gele(final T lower, final T val, final T upper) {
+        return (lower.compareTo(val) <= 0) && (val.compareTo(upper) <= 0);
+    }
+
+    /**
+     * An alias of {@link #gele(Comparable, Comparable, Comparable)}.
+     *
+     * @param lower lower value
+     * @param val value
+     * @param upper upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean between(final T lower, final T val, final T upper) {
+        return gele(lower, val, upper);
+    }
+
+    @SafeVarargs
+    public static <T extends Comparable<T>> boolean equal(final T l, final T r, final T... rest) {
+        return list(r).pushAll(list(rest)).every(x -> equal(l, x));
+    }
+
+    public static boolean equal(final Object l, final Object r, final Object... rest) {
+        return list(r).pushAll(list(rest)).every(x -> equal(l, x));
+    }
+
+    public static <T extends Comparable<T>> boolean equal(final T l, final T r) {
+        return (l == null) ? (r == null) : (r == l) || (l.compareTo(r) == 0);
+    }
+
+    public static boolean equal(final Object l, final Object r) {
+        return (l == null) ? (r == null) : (l == r) || l.equals(r);
+    }
+
     public static <T extends Comparable<T>> T max(final T l, final T r) {
         return (0 <= l.compareTo(r)) ? l : r;
     }
@@ -475,12 +556,12 @@ public class Indolently {
 
     @SafeVarargs
     public static <T extends Comparable<T>> T max(final T first, final T second, final T... rest) {
-        return list(first).push(second).pushAll(list(rest)).reduce(Indolently::max).get();
+        return list(first, second).pushAll(list(rest)).reduce(Indolently::max).get();
     }
 
     @SafeVarargs
     public static <T extends Comparable<T>> T min(final T first, final T second, final T... rest) {
-        return list(first).push(second).pushAll(list(rest)).reduce(Indolently::min).get();
+        return list(first, second).pushAll(list(rest)).reduce(Indolently::min).get();
     }
 
     public static <T extends Comparable<T>> T max(final Iterable<? extends T> values) {
