@@ -495,7 +495,7 @@ public class Indolently {
     }
 
     /**
-     * Test the value is gerater than lower and less than upper.
+     * Test that the value is gerater than lower and less than upper.
      * i.e. this method tests {@code lower < val < upper}.
      *
      * @param lower lower value
@@ -508,7 +508,7 @@ public class Indolently {
     }
 
     /**
-     * Test the value is gerater equal lower and less than upper.
+     * Test that the value is gerater equal lower and less than upper.
      * i.e. this method tests {@code lower <= val < upper}.
      *
      * @param lower lower value
@@ -521,7 +521,7 @@ public class Indolently {
     }
 
     /**
-     * Test the value is gerater than lower and less equal upper.
+     * Test that the value is gerater than lower and less equal upper.
      * i.e. this method tests {@code lower < val <= upper}.
      *
      * @param lower lower value
@@ -534,7 +534,7 @@ public class Indolently {
     }
 
     /**
-     * Test the value is gerater equal lower and less equal upper.
+     * Test that the value is gerater equal lower and less equal upper.
      * i.e. this method tests {@code lower <= val <= upper}.
      *
      * @param lower lower value
