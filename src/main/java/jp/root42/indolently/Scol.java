@@ -219,7 +219,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      */
     default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
 
-        // "x -> x" occurs compilation error on OracleJDK compiler
+        // "(x) -> x" lambda literal occurs compilation error on OracleJDK compiler
         return this.mapred(Function.identity(), f);
     }
 
