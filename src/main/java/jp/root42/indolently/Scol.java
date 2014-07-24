@@ -218,7 +218,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @see #mapred(Function, BiFunction)
      */
     default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.mapred((x) -> x, f);
+        return this.mapred(x -> x, f);
     }
 
     /**
