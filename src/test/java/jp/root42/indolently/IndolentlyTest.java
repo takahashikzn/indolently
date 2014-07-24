@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -48,26 +49,33 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
-     * {@link Indolently#sort(List)} / {@link Indolently#sort(Set)} / {@link Indolently#sort(Map)}
+     * {@link Indolently#sort(List)} / {@link Indolently#sort(Set)}
      */
     @Test
-    public void testSort() {
+    public void testSortListSet() {
 
         final List<Integer> ints = range(1, 5);
         Collections.shuffle(ints);
 
         assertThat(sort(ints)) //
             .isEqualTo(list(1, 2, 3, 4, 5));
-        assertThat(list(sort(set(ints)))) //
+        assertThat(sort(set(ints)).list()) //
             .isEqualTo(list(1, 2, 3, 4, 5));
+    }
 
-        final Map<Integer, Integer> map = map();
-        for (final int i : ints) {
-            map.put(i, i);
-        }
+    /**
+     * {@link Indolently#sort(Map)}
+     */
+    @Test
+    public void testSortMap() {
 
-        assertThat((list(sort(map).keys()))) //
-            .isEqualTo(list(1, 2, 3, 4, 5));
+        final Smap<Integer, Integer> map = map(LinkedHashMap.class, 1, 1).push(3, 3).push(2, 2);
+
+        assertThat(list(map.keySet())) //
+            .isEqualTo(list(1, 3, 2));
+
+        assertThat(list(sort(map).keySet())) //
+            .isEqualTo(list(1, 2, 3));
     }
 
     /**
