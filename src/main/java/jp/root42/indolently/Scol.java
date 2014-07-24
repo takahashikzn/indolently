@@ -230,7 +230,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * @see #mapred(Object, BiFunction)
      */
     default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.mapred(Optional.ofNullable(initial), f);
+        return this.mapred(initial, f);
     }
 
     /**
@@ -243,6 +243,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      */
     default Optional<T> reduce(final Optional<? extends T> initial,
         final BiFunction<? super T, ? super T, ? extends T> f) {
+
         return this.mapred(initial, f);
     }
 
