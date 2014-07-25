@@ -334,17 +334,17 @@ public class IndolentlyTest {
 
         final Smap<String, Smap<String, Slist<Sset<Integer>>>> frozen = map( //
             "level1", map( //
-                "level2", list(optional(set(42))))).freeze();
+                "level2", listof(set(42)))).freeze();
 
         try {
-            frozen.put("level1.1", map("level2.1", list(optional(set(43)))));
+            frozen.put("level1.1", map("level2.1", listof(set(43))));
             fail();
         } catch (final UnsupportedOperationException e) {
             assert true;
         }
 
         try {
-            frozen.get("level1").put("level2.1", list(optional(set(43))));
+            frozen.get("level1").put("level2.1", listof(set(43)));
             fail();
         } catch (final UnsupportedOperationException e) {
             assert true;
