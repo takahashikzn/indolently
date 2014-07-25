@@ -43,6 +43,11 @@ public interface Slist<T>
         return Indolently.wrap(list);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see Indolently#freeze(List)
+     */
     @Override
     default Slist<T> freeze() {
         return Indolently.freeze(this);

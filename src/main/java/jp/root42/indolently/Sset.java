@@ -40,6 +40,11 @@ public interface Sset<T>
         return Indolently.wrap(set);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see Indolently#freeze(Set)
+     */
     @Override
     default Sset<T> freeze() {
         return Indolently.freeze(this);
