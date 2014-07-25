@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
@@ -110,13 +111,27 @@ public class Indolently {
     }
 
     /**
+     * Just an alias of {@link list(T...)} but not overloaded one.
+     * If compiler fail to do type inference on {@link list(T...)}, for example such a
+     * {@code List<List<Integer>> nested = list(list(42))}, you can use this method instead of.
+     *
+     * @param elems elements of list
+     * @return new list
+     * @see #list(Object...)
+     */
+    @SafeVarargs
+    public static <T> Slist<T> listof(final T... elems) {
+        return list(elems);
+    }
+
+    /**
      * construct new list which contains specified elements.
      *
-     * @param elems elements of the list
+     * @param elem element of the list
      * @return new list
      */
-    public static <T> Slist<T> list(final Optional<? extends T> elems) {
-        return new SlistImpl<T>().push(elems);
+    public static <T> Slist<T> list(final Optional<? extends T> elem) {
+        return new SlistImpl<T>().push(elem);
     }
 
     /**
@@ -186,9 +201,7 @@ public class Indolently {
                     throw new NoSuchElementException();
                 }
 
-                final int val = (int) this.i;
-                this.i += step;
-                return val;
+                return (int) this.i++;
             }
         };
     }
@@ -397,12 +410,26 @@ public class Indolently {
         return elems;
     }
 
-    public static <T> Sset<T> set(final Optional<? extends T> value) {
-        return new SsetImpl<T>().push(value);
+    public static <T> Sset<T> set(final Optional<? extends T> elem) {
+        return new SsetImpl<T>().push(elem);
     }
 
     public static <T> Sset<T> set(final Iterable<? extends T> elems) {
         return new SsetImpl<T>().pushAll(optional(elems));
+    }
+
+    /**
+     * Just an alias of {@link set(T...)} but not overloaded one.
+     * If compiler fail to do type inference on {@link set(T...)}, for example such a
+     * {@code Set<List<Integer>> nested = set(list(42))}, you can use this method instead of.
+     *
+     * @param elems elements of set
+     * @return new set
+     * @see #set(Object...)
+     */
+    @SafeVarargs
+    public static <T> Sset<T> setof(final T... elems) {
+        return set(elems);
     }
 
     @SafeVarargs
@@ -497,13 +524,9 @@ public class Indolently {
     @SafeVarargs
     public static <T> T choose(final T... elems) {
 
-        for (final T val : elems) {
-            if (val != null) {
-                return val;
-            }
-        }
-
-        throw new IllegalArgumentException("all elements are null");
+        return list(elems) //
+            .reduce((rem, val) -> rem != null ? rem : val) //
+            .orElseThrow(() -> new IllegalArgumentException("all elements are null"));
     }
 
     @SafeVarargs
@@ -518,18 +541,16 @@ public class Indolently {
             return initial;
         }
 
-        for (final Supplier<? extends T> s : suppliers) {
-
-            if (s != null) {
+        if (suppliers != null) {
+            for (final Supplier<? extends T> s : suppliers) {
                 final T val = s.get();
-
                 if (val != null) {
                     return val;
                 }
             }
         }
 
-        throw new IllegalArgumentException("all suppliers return null");
+        throw new IllegalArgumentException("all elements are null");
     }
 
     /**
@@ -674,7 +695,9 @@ public class Indolently {
      * @return wrapped map
      */
     public static <K, V> Smap<K, V> wrap(final Map<K, V> map) {
-        return (map instanceof Smap) ? (Smap<K, V>) map : new SmapImpl<>(map);
+        return (map == null) ? null //
+            : (map instanceof Smap) ? (Smap<K, V>) map //
+                : new SmapImpl<>(map);
     }
 
     /**
@@ -684,7 +707,9 @@ public class Indolently {
      * @return wrapped list
      */
     public static <T> Slist<T> wrap(final List<T> list) {
-        return (list instanceof Slist) ? (Slist<T>) list : new SlistImpl<>(list);
+        return (list == null) ? null //
+            : (list instanceof Slist) ? (Slist<T>) list //
+                : new SlistImpl<>(list);
     }
 
     /**
@@ -694,7 +719,9 @@ public class Indolently {
      * @return wrapped set
      */
     public static <T> Sset<T> wrap(final Set<T> set) {
-        return (set instanceof Sset) ? (Sset<T>) set : new SsetImpl<>(set);
+        return (set == null) ? null //
+            : (set instanceof Sset) ? (Sset<T>) set //
+                : new SsetImpl<>(set);
     }
 
     /**
@@ -706,7 +733,7 @@ public class Indolently {
      * @return wrapped map
      */
     public static <K, V> Smap<K, V> wrap(final Map<K, V> map, final K key, final V val) {
-        return wrap(map).push(key, val);
+        return wrap(Objects.requireNonNull(map, "map")).push(key, val);
     }
 
     /**
@@ -718,7 +745,7 @@ public class Indolently {
      */
     @SafeVarargs
     public static <T> Slist<T> wrap(final List<T> list, final T... elems) {
-        return wrap(list).pushAll(list(elems));
+        return wrap(Objects.requireNonNull(list, "list")).pushAll(list(elems));
     }
 
     /**
@@ -730,7 +757,7 @@ public class Indolently {
      */
     @SafeVarargs
     public static <T> Sset<T> wrap(final Set<T> set, final T... elems) {
-        return wrap(set).pushAll(list(elems));
+        return wrap(Objects.requireNonNull(set, "set")).pushAll(list(elems));
     }
 
     public static <K, V> Smap<K, V> map(final K key, final V val) {
