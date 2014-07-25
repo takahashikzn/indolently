@@ -29,6 +29,17 @@ import java.util.function.Function;
 public interface Sset<T>
     extends Scol<T, Sset<T>>, Set<T> {
 
+    /**
+     * Wrap a set.
+     * This method is an alias of {@link Indolently#wrap(Set)}.
+     *
+     * @param set set to wrap
+     * @return wrapped set
+     */
+    public static <T> Sset<T> of(final Set<T> set) {
+        return Indolently.wrap(set);
+    }
+
     @Override
     default Sset<T> freeze() {
         return Indolently.freeze(this);

@@ -32,6 +32,17 @@ import java.util.function.Function;
 public interface Slist<T>
     extends Scol<T, Slist<T>>, List<T> {
 
+    /**
+     * Wrap a list.
+     * This method is an alias of {@link Indolently#wrap(List)}.
+     *
+     * @param list list to wrap
+     * @return wrapped list
+     */
+    public static <T> Slist<T> of(final List<T> list) {
+        return Indolently.wrap(list);
+    }
+
     @Override
     default Slist<T> freeze() {
         return Indolently.freeze(this);

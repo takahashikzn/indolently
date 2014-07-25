@@ -69,7 +69,7 @@ public class IndolentlyTest {
     @Test
     public void testSortMap() {
 
-        final Smap<Integer, Integer> map = map(LinkedHashMap.class, 1, 1).push(3, 3).push(2, 2);
+        final Smap<Integer, Integer> map = wrap(new LinkedHashMap<>(), 1, 1).push(3, 3).push(2, 2);
 
         assertThat(list(map.keySet())) //
             .isEqualTo(list(1, 3, 2));
@@ -277,7 +277,7 @@ public class IndolentlyTest {
      * {@link Indolently#map()}
      */
     @Test
-    public void testMapVarArgs() {
+    public void testWrapVarArgs() {
 
         assertThat(map()) //
             .isEqualTo(new HashMap<>());
