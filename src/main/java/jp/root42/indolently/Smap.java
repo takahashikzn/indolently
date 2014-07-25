@@ -34,6 +34,17 @@ import java.util.function.Predicate;
 public interface Smap<K, V>
     extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>> {
 
+    /**
+     * Wrap a map.
+     * This method is an alias of {@link Indolently#wrap(Map)}.
+     *
+     * @param map map to wrap
+     * @return wrapped map
+     */
+    public static <K, V> Smap<K, V> of(final Map<K, V> map) {
+        return Indolently.wrap(map);
+    }
+
     @Override
     default Smap<K, V> freeze() {
         return Indolently.freeze(this);
