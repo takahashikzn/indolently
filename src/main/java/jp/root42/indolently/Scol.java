@@ -14,7 +14,6 @@
 package jp.root42.indolently;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -109,9 +108,9 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     }
 
     /**
-     * get first value.
+     * get first element.
      *
-     * @return first value
+     * @return first element
      * @throws NoSuchElementException if empty
      */
     default T first() {
@@ -119,26 +118,19 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     }
 
     /**
-     * get last value.
+     * get last element.
      *
-     * @return first value
+     * @return first element
      * @throws NoSuchElementException if empty
      */
     default T last() {
-
-        for (final Iterator<T> i = this.iterator(); i.hasNext();) {
-            if (!i.hasNext()) {
-                return i.next();
-            }
-        }
-
-        throw new NoSuchElementException();
+        return this.reduce((rem, val) -> val).get();
     }
 
     /**
-     * get rest of this collection.
+     * get rest elements of this collection.
      *
-     * @return collection values except for first value.
+     * @return collection elements except for first element.
      * if this instance is empty, i.e. {@code col.isEmpty()} returns true, return empty collection.
      */
     SELF tail();
