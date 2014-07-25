@@ -45,6 +45,11 @@ public interface Smap<K, V>
         return Indolently.wrap(map);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @see Indolently#freeze(Map)
+     */
     @Override
     default Smap<K, V> freeze() {
         return Indolently.freeze(this);
