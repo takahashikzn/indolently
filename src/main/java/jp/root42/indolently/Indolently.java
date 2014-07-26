@@ -191,7 +191,12 @@ public class Indolently {
 
         final Iterator<Supplier<? extends T>> i = list(yields).iterator();
 
-        return iterator(i::hasNext, () -> i.next().get());
+        return iterator(i::hasNext,
+        // NOTE {@code () -> i.next().get()} raises type inference error on OracleJDK compiler
+            () -> {
+                final T rslt = i.next().get();
+                return rslt;
+            });
     }
 
     /**
