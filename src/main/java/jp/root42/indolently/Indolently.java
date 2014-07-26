@@ -312,30 +312,28 @@ public class Indolently {
 
     @SafeVarargs
     public static <C, V> Match<C, V> match(final When.ThenGet<C, Optional<V>>... cases) {
-
         return (cond) -> {
-            for (final When.ThenGet<C, Optional<V>> when : cases) {
-                if (when.test(cond)) {
-                    return when.get();
-                }
-            }
-
-            return Optional.empty();
+            return optional(find(cond, cases).flatMap((x) -> x.get()).orElse(null));
         };
     }
 
     @SafeVarargs
     public static <C, V> Match<C, V> match(final When.ThenApply<C, Optional<V>>... cases) {
-
         return (cond) -> {
-            for (final When.ThenApply<C, Optional<V>> when : cases) {
-                if (when.test(cond)) {
-                    return when.apply(cond);
-                }
-            }
-
-            return Optional.empty();
+            return optional(find(cond, cases).flatMap((x) -> x.apply(cond)).orElse(null));
         };
+    }
+
+    @SafeVarargs
+    public static <V, T extends Predicate<V>> Optional<T> find(final V cond, final T... preds) {
+
+        for (final T p : preds) {
+            if (p.test(cond)) {
+                return Optional.of(p);
+            }
+        }
+
+        return Optional.empty();
     }
 
     /**
