@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -243,11 +244,30 @@ public class Indolently {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        final long[] i = { from };
+        final long[] cur = { from };
 
         return iterator( //
-            () -> i[0] <= Integer.MAX_VALUE, //
-            () -> (int) i[0]++);
+            () -> cur[0] <= Integer.MAX_VALUE, //
+            then(() -> (int) cur[0], () -> cur[0] += step));
+    }
+
+    @SafeVarargs
+    public static <T> Supplier<T> then(final Supplier<? extends T> expr, final Consumer<? super T>... after) {
+
+        return () -> {
+            final T rslt = expr.get();
+            list(after).each((c) -> c.accept(rslt));
+            return rslt;
+        };
+    }
+
+    public static <T> Supplier<T> then(final Supplier<? extends T> expr, final Closure... after) {
+
+        return () -> {
+            final T rslt = expr.get();
+            list(after).each((c) -> c.perform());
+            return rslt;
+        };
     }
 
     /**
