@@ -25,7 +25,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.Match.When.ThenApply;
+import jp.root42.indolently.Match.When.ThenGet;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -48,6 +52,43 @@ import static org.junit.Assert.*;
 @SuppressWarnings("serial")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
+
+    /**
+     * {@link Indolently#match(ThenApply...)} / {@link Indolently#match(ThenGet...)}
+     */
+    @Test
+    public void testMatch() {
+
+        final Function<Integer, String> f1 = match( //
+            when((final Integer x) -> x == 1, () -> "one")//
+            , when(x -> x == 2, () -> "two") //
+            ) //
+            .defaults((x) -> "" + x);
+
+        assertThat(f1.apply(1)).isEqualTo("one");
+        assertThat(f1.apply(2)).isEqualTo("two");
+        assertThat(f1.apply(3)).isEqualTo("3");
+    }
+
+    /**
+     * {@link Match#failure(Supplier)}
+     */
+    @Test
+    public void testMatchFailure() {
+
+        final Function<Integer, String> f1 = match( //
+            when((final Integer x) -> x == 1, () -> "one")//
+            , when(x -> x == 2, () -> "two") //
+            ) //
+            .failure((x) -> new RuntimeException("THE TEST OF " + x));
+
+        try {
+            f1.apply(42);
+            fail();
+        } catch (final RuntimeException e) {
+            assertThat(e.getMessage()).contains("THE TEST OF 42");
+        }
+    }
 
     /**
      * [@link {@link Indolently#generator(Supplier...)}

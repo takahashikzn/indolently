@@ -278,10 +278,6 @@ public class Indolently {
         };
     }
 
-    public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred) {
-        return pred::test;
-    }
-
     public static <C, V> When.ThenGet<C, Optional<V>> when(final Predicate<? super C> pred,
         final Supplier<? extends V> expr) {
 
@@ -627,15 +623,22 @@ public class Indolently {
     }
 
     public static boolean empty(final Iterable<?> i) {
-        if (i == null) {
-            return true;
-        }
 
-        if (i instanceof Collection) { // for optimization
-            return ((Collection<?>) i).isEmpty();
-        } else {
-            return i.iterator().hasNext();
-        }
+        // use match function instead of plain instruction
+        // to test whether OracleJDK can infer this expression or not.
+        return match( //
+            when((final Iterable<?> x) -> x == null, x -> true) //
+            , when(x -> (x instanceof Collection), x -> ((Collection<?>) x).isEmpty())) //
+            .defaults(x -> x.iterator().hasNext()).apply(i);
+
+        // if (i == null) {
+        // return true;
+        // }
+        // if (i instanceof Collection) { // for optimization
+        // return ((Collection<?>) i).isEmpty();
+        // } else {
+        // return i.iterator().hasNext();
+        // }
     }
 
     public static boolean empty(final Map<?, ?> map) {
