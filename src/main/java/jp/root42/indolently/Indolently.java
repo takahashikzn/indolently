@@ -312,16 +312,12 @@ public class Indolently {
 
     @SafeVarargs
     public static <C, V> Match<C, V> match(final When.ThenGet<C, Optional<V>>... cases) {
-        return (cond) -> {
-            return optional(find(cond, cases).flatMap((x) -> x.get()).orElse(null));
-        };
+        return (cond) -> optional(find(cond, cases).flatMap((x) -> x.get()).orElse(null));
     }
 
     @SafeVarargs
     public static <C, V> Match<C, V> match(final When.ThenApply<C, Optional<V>>... cases) {
-        return (cond) -> {
-            return optional(find(cond, cases).flatMap((x) -> x.apply(cond)).orElse(null));
-        };
+        return (cond) -> optional(find(cond, cases).flatMap((x) -> x.apply(cond)).orElse(null));
     }
 
     @SafeVarargs
