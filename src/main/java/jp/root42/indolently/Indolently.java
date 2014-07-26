@@ -278,46 +278,18 @@ public class Indolently {
         };
     }
 
-    public static <C, V> When.ThenGet<C, Optional<V>> when(final Predicate<? super C> pred,
-        final Supplier<? extends V> expr) {
-
-        return new When.ThenGet<C, Optional<V>>() {
-            @Override
-            public boolean test(final C cond) {
-                return pred.test(cond);
-            }
-
-            @Override
-            public Optional<V> get() {
-                return optional(expr.get());
-            }
-        };
+    public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
+        return When.of(pred, expr);
     }
 
-    public static <C, V> When.ThenApply<C, Optional<V>> when(final Predicate<? super C> pred,
+    public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred,
         final Function<? super C, ? extends V> expr) {
-
-        return new When.ThenApply<C, Optional<V>>() {
-            @Override
-            public boolean test(final C cond) {
-                return pred.test(cond);
-            }
-
-            @Override
-            public Optional<V> apply(final C cond) {
-                return optional(expr.apply(cond));
-            }
-        };
+        return When.of(pred, expr);
     }
 
     @SafeVarargs
-    public static <C, V> Match<C, V> match(final When.ThenGet<C, Optional<V>>... cases) {
-        return (cond) -> optional(find(cond, cases).flatMap((x) -> x.get()).orElse(null));
-    }
-
-    @SafeVarargs
-    public static <C, V> Match<C, V> match(final When.ThenApply<C, Optional<V>>... cases) {
-        return (cond) -> optional(find(cond, cases).flatMap((x) -> x.apply(cond)).orElse(null));
+    public static <C, V> Match<C, V> match(final When<C, Optional<V>>... cases) {
+        return Match.of(cases);
     }
 
     @SafeVarargs
