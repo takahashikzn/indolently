@@ -325,7 +325,7 @@ public class Indolently {
 
         final int len = 1 + ((rest == null) ? 0 : rest.length);
         @SuppressWarnings("unchecked")
-        final T[] ary = (T[]) Array.newInstance(first.getClass(), len);
+        final T[] ary = (T[]) Array.newInstance(type, len);
 
         return list(first).pushAll(list(rest)).toArray(ary);
     }

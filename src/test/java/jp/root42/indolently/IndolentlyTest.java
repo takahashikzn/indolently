@@ -49,6 +49,34 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
+     * {@link Indolently#array(Object, Object...)} / {@link Indolently#array(Iterable)} /
+     * {@link Indolently#array(Class, Object, Object...)}
+     */
+    @Test
+    public void testArray() {
+
+        assertThat(array(1, 2, 3)).as("int array") //
+            .isEqualTo(new Integer[] { 1, 2, 3 }) //
+            .isExactlyInstanceOf(Integer[].class);
+
+        assertThat(array(list(1, 2, 3))).as("int list -> array") //
+            .isEqualTo(new Integer[] { 1, 2, 3 }) //
+            .isExactlyInstanceOf(Integer[].class);
+
+        assertThat(array("a")).as("single element") //
+            .isEqualTo(new String[] { "a" }) //
+            .isExactlyInstanceOf(String[].class);
+
+        assertThat(array(Number.class, 1, 2, 3)).as("int array as Number[]") //
+            .isEqualTo(new Number[] { 1, 2, 3 }) //
+            .isExactlyInstanceOf(Number[].class);
+
+        assertThat(array(Number.class, (Integer) null)).as("number empty array") //
+            .isEqualTo(new Number[0]) //
+            .isExactlyInstanceOf(Number[].class);
+    }
+
+    /**
      * {@link Indolently#sort(List)} / {@link Indolently#sort(Set)}
      */
     @Test
@@ -267,10 +295,10 @@ public class IndolentlyTest {
         final List<Object[]> expected = parametersForTestListVarArgs();
 
         assertThat(actual).hasSize(4);
-        assertArrayEquals(actual.get(0), expected.get(0));
-        assertArrayEquals(actual.get(1), expected.get(1));
-        assertArrayEquals(actual.get(2), expected.get(2));
-        assertArrayEquals(actual.get(3), expected.get(3));
+        assertArrayEquals(expected.get(0), actual.get(0));
+        assertArrayEquals(expected.get(1), actual.get(1));
+        assertArrayEquals(expected.get(2), actual.get(2));
+        assertArrayEquals(expected.get(3), actual.get(3));
     }
 
     /**
