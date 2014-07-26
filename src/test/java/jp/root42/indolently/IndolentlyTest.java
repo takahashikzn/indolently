@@ -28,8 +28,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Match.When.ThenApply;
-import jp.root42.indolently.Match.When.ThenGet;
+import jp.root42.indolently.Match.When;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -54,7 +53,7 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
-     * {@link Indolently#match(ThenApply...)} / {@link Indolently#match(ThenGet...)}
+     * {@link Indolently#match(When...)}
      */
     @Test
     public void testMatch() {

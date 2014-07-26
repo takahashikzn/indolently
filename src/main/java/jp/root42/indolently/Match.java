@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 
 /**
- * A 'match' expression.
+ * The 'match' expression.
  *
  * @param <C> testing value type
  * @param <V> expression body value type
@@ -21,7 +21,18 @@ public interface Match<C, V>
     extends Function<C, Optional<V>> {
 
     /**
-     * Append 'default throw' clause to this match expression.
+     * Create match expression functor.
+     *
+     * @param cases case clauses
+     * @return match expression functor
+     */
+    @SafeVarargs
+    static <C, V> Match<C, V> of(final When<C, Optional<V>>... cases) {
+        return (cond) -> Indolently.optional(Indolently.find(cond, cases).flatMap((x) -> x.apply(cond)).orElse(null));
+    }
+
+    /**
+     * Append 'default throw' clause to the end of this expression.
      *
      * @param f exception supplier to throw
      * @return 'default' attached match expression
@@ -31,7 +42,7 @@ public interface Match<C, V>
     }
 
     /**
-     * Append 'default throw' clause to this match expression.
+     * Append 'default throw' clause to the end of this expression.
      *
      * @param f exception supplier to throw
      * @return 'default' attached match expression
@@ -43,7 +54,7 @@ public interface Match<C, V>
     }
 
     /**
-     * Append 'default' clause to this match expression.
+     * Append 'default' clause to the end of this match expression.
      *
      * @param f default value supplier
      * @return 'default' attached match expression
@@ -53,7 +64,7 @@ public interface Match<C, V>
     }
 
     /**
-     * Append 'default' clause to this match expression.
+     * Append 'default' clause to the end of this match expression.
      *
      * @param f default value supplier
      * @return 'default' attached match expression
@@ -63,68 +74,33 @@ public interface Match<C, V>
     }
 
     /**
-     * A 'when' expression in pattern matching expression.
+     * A 'case' clause of 'match' expression.
      *
      * @param <C> testing value type
      * @param <V> expression body value type
      * @author takahashikzn
      */
-    @FunctionalInterface
     interface When<C, V>
-        extends Predicate<C> {
+        extends Predicate<C>, Function<C, V> {
 
-        // default ThenApply<C, V> then(final Function<? super C, ? extends V> f) {
-        //
-        // return new ThenApply<C, V>() {
-        //
-        // @Override
-        // public boolean test(final C cond) {
-        // return When.this.test(cond);
-        // }
-        //
-        // @Override
-        // public V apply(final C cond) {
-        // return f.apply(cond);
-        // }
-        // };
-        // }
-
-        // default ThenGet<C, V> then(final Supplier<? extends V> f) {
-        //
-        // return new ThenGet<C, V>() {
-        //
-        // @Override
-        // public boolean test(final C cond) {
-        // return When.this.test(cond);
-        // }
-        //
-        // @Override
-        // public V get() {
-        // return f.get();
-        // }
-        // };
-        // }
-
-        /**
-         * A 'if-then' expression.
-         *
-         * @param <C> testing value type
-         * @param <V> expression body value type
-         * @author takahashikzn
-         */
-        interface ThenApply<C, V>
-            extends Predicate<C>, Function<C, V> {
+        static <C, V> When<C, Optional<V>> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
+            return of(pred, x -> expr.get());
         }
 
-        /**
-         * A 'if-then' expression.
-         *
-         * @param <C> testing value type
-         * @param <V> expression body value type
-         * @author takahashikzn
-         */
-        interface ThenGet<C, V>
-            extends Predicate<C>, Supplier<V> {
+        static <C, V> When<C, Optional<V>> of(final Predicate<? super C> pred,
+            final Function<? super C, ? extends V> expr) {
+
+            return new When<C, Optional<V>>() {
+                @Override
+                public boolean test(final C cond) {
+                    return pred.test(cond);
+                }
+
+                @Override
+                public Optional<V> apply(final C cond) {
+                    return Indolently.optional(expr.apply(cond));
+                }
+            };
         }
     }
 }
