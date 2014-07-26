@@ -60,10 +60,9 @@ public class IndolentlyTest {
     public void testMatch() {
 
         final Function<Integer, String> f1 = match( //
-            when((final Integer x) -> x == 1, () -> "one")//
+            when((final Integer x) -> x == 1, () -> "one") //
             , when(x -> x == 2, () -> "two") //
-            ) //
-            .defaults((x) -> "" + x);
+            ).defaults((x) -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
@@ -79,8 +78,7 @@ public class IndolentlyTest {
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one")//
             , when(x -> x == 2, () -> "two") //
-            ) //
-            .failure((x) -> new RuntimeException("THE TEST OF " + x));
+            ).failure((x) -> new RuntimeException("THE TEST OF " + x));
 
         try {
             f1.apply(42);
@@ -96,39 +94,28 @@ public class IndolentlyTest {
     @Test
     public void testGenerator() {
 
-        final boolean[] eval = { false, false, false };
+        final int[] eval = { 0, 0, 0 };
 
         final Iterator<Integer> g = generator( //
-            () -> {
-                eval[0] = true;
-                return 1 * 1;
-            }, //
-            () -> {
-                eval[1] = true;
-                return 2 * 2;
-            }, //
-            () -> {
-                eval[2] = true;
-                return 3 * 3;
-            }).iterator();
+            () -> eval[0] = 1, //
+            () -> eval[1] = 2, //
+            () -> eval[2] = 3).iterator();
 
-        assertThat(eval) //
-            .isEqualTo(parray(false, false, false));
+        assertThat(eval).isEqualTo(parray(0, 0, 0));
 
-        assertThat(g.next()) //
-            .isEqualTo(1);
-        assertThat(eval) //
-            .isEqualTo(parray(true, false, false));
+        assertThat(g.hasNext()).isEqualTo(true);
+        assertThat(g.next()).isEqualTo(1);
+        assertThat(eval).isEqualTo(parray(1, 0, 0));
 
-        assertThat(g.next()) //
-            .isEqualTo(4);
-        assertThat(eval) //
-            .isEqualTo(parray(true, true, false));
+        assertThat(g.hasNext()).isEqualTo(true);
+        assertThat(g.next()).isEqualTo(2);
+        assertThat(eval).isEqualTo(parray(1, 2, 0));
 
-        assertThat(g.next()) //
-            .isEqualTo(9);
-        assertThat(eval) //
-            .isEqualTo(parray(true, true, true));
+        assertThat(g.hasNext()).isEqualTo(true);
+        assertThat(g.next()).isEqualTo(3);
+        assertThat(eval).isEqualTo(parray(1, 2, 3));
+
+        assertThat(g.hasNext()).isEqualTo(false);
     }
 
     /**
