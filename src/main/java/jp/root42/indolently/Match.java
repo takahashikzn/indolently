@@ -21,6 +21,28 @@ public interface Match<C, V>
     extends Function<C, Optional<V>> {
 
     /**
+     * Append 'default throw' clause to this match expression.
+     *
+     * @param f exception supplier to throw
+     * @return 'default' attached match expression
+     */
+    default Function<C, V> failure(final Supplier<? extends RuntimeException> f) {
+        return this.failure((x) -> f.get());
+    }
+
+    /**
+     * Append 'default throw' clause to this match expression.
+     *
+     * @param f exception supplier to throw
+     * @return 'default' attached match expression
+     */
+    default Function<C, V> failure(final Function<? super C, ? extends RuntimeException> f) {
+        return this.defaults((x) -> {
+            throw f.apply(x);
+        });
+    }
+
+    /**
      * Append 'default' clause to this match expression.
      *
      * @param f default value supplier
@@ -51,37 +73,37 @@ public interface Match<C, V>
     interface When<C, V>
         extends Predicate<C> {
 
-        default ThenApply<C, V> then(final Function<? super C, ? extends V> f) {
+        // default ThenApply<C, V> then(final Function<? super C, ? extends V> f) {
+        //
+        // return new ThenApply<C, V>() {
+        //
+        // @Override
+        // public boolean test(final C cond) {
+        // return When.this.test(cond);
+        // }
+        //
+        // @Override
+        // public V apply(final C cond) {
+        // return f.apply(cond);
+        // }
+        // };
+        // }
 
-            return new ThenApply<C, V>() {
-
-                @Override
-                public boolean test(final C cond) {
-                    return When.this.test(cond);
-                }
-
-                @Override
-                public V apply(final C cond) {
-                    return f.apply(cond);
-                }
-            };
-        }
-
-        default ThenGet<C, V> then(final Supplier<? extends V> f) {
-
-            return new ThenGet<C, V>() {
-
-                @Override
-                public boolean test(final C cond) {
-                    return When.this.test(cond);
-                }
-
-                @Override
-                public V get() {
-                    return f.get();
-                }
-            };
-        }
+        // default ThenGet<C, V> then(final Supplier<? extends V> f) {
+        //
+        // return new ThenGet<C, V>() {
+        //
+        // @Override
+        // public boolean test(final C cond) {
+        // return When.this.test(cond);
+        // }
+        //
+        // @Override
+        // public V get() {
+        // return f.get();
+        // }
+        // };
+        // }
 
         /**
          * A 'if-then' expression.
