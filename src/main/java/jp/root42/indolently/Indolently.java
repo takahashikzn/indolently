@@ -619,7 +619,7 @@ public class Indolently {
     public static boolean empty(final Iterable<?> i) {
 
         // use match function instead of plain instruction
-        // to test whether OracleJDK can infer this expression or not.
+        // to test whether OracleJDK can infer this expression correctly or not.
         return match( //
             when((final Iterable<?> x) -> x == null, x -> true) //
             , when(x -> (x instanceof Collection), x -> ((Collection<?>) x).isEmpty())) //
