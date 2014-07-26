@@ -28,7 +28,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.Match.When;
 
 
 /**
@@ -275,6 +278,70 @@ public class Indolently {
         };
     }
 
+    public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred) {
+        return pred::test;
+    }
+
+    public static <C, V> When.ThenGet<C, Optional<V>> when(final Predicate<? super C> pred,
+        final Supplier<? extends V> expr) {
+
+        return new When.ThenGet<C, Optional<V>>() {
+            @Override
+            public boolean test(final C cond) {
+                return pred.test(cond);
+            }
+
+            @Override
+            public Optional<V> get() {
+                return optional(expr.get());
+            }
+        };
+    }
+
+    public static <C, V> When.ThenApply<C, Optional<V>> when(final Predicate<? super C> pred,
+        final Function<? super C, ? extends V> expr) {
+
+        return new When.ThenApply<C, Optional<V>>() {
+            @Override
+            public boolean test(final C cond) {
+                return pred.test(cond);
+            }
+
+            @Override
+            public Optional<V> apply(final C cond) {
+                return optional(expr.apply(cond));
+            }
+        };
+    }
+
+    @SafeVarargs
+    public static <C, V> Match<C, V> match(final When.ThenGet<C, Optional<V>>... cases) {
+
+        return (cond) -> {
+            for (final When.ThenGet<C, Optional<V>> when : cases) {
+                if (when.test(cond)) {
+                    return when.get();
+                }
+            }
+
+            return Optional.empty();
+        };
+    }
+
+    @SafeVarargs
+    public static <C, V> Match<C, V> match(final When.ThenApply<C, Optional<V>>... cases) {
+
+        return (cond) -> {
+            for (final When.ThenApply<C, Optional<V>> when : cases) {
+                if (when.test(cond)) {
+                    return when.apply(cond);
+                }
+            }
+
+            return Optional.empty();
+        };
+    }
+
     /**
      * Generate integer list.
      * <p>
@@ -514,11 +581,11 @@ public class Indolently {
     }
 
     public static <K, V> Smap<K, V> sort(final Map<K, V> map) {
-        return new SmapImpl<>(new TreeMap<>(map));
+        return wrap(new TreeMap<>(map));
     }
 
     public static <T extends Comparable<T>> Sset<T> sort(final Set<? extends T> elems) {
-        return new SsetImpl<>(new TreeSet<>(elems));
+        return wrap(new TreeSet<>(elems));
     }
 
     public static <T extends Comparable<T>> Slist<T> sort(final List<? extends T> elems) {
@@ -528,7 +595,7 @@ public class Indolently {
     public static <K, V> Smap<K, V> freeze(final Map<? extends K, ? extends V> map) {
 
         @SuppressWarnings("unchecked")
-        final Smap<K, V> rslt = new SmapImpl<>(Collections.unmodifiableMap(wrap(map).map(freezer())));
+        final Smap<K, V> rslt = wrap(Collections.unmodifiableMap(wrap(map).map(freezer())));
 
         return rslt;
     }
@@ -536,7 +603,7 @@ public class Indolently {
     public static <T> Sset<T> freeze(final Set<? extends T> elems) {
 
         @SuppressWarnings("unchecked")
-        final Sset<T> rslt = new SsetImpl<>(Collections.unmodifiableSet(wrap(elems).map(freezer())));
+        final Sset<T> rslt = wrap(Collections.unmodifiableSet(wrap(elems).map(freezer())));
 
         return rslt;
     }
@@ -544,7 +611,7 @@ public class Indolently {
     public static <T> Slist<T> freeze(final List<? extends T> elems) {
 
         @SuppressWarnings("unchecked")
-        final Slist<T> rslt = new SlistImpl<>(Collections.unmodifiableList(wrap(elems).map(freezer())));
+        final Slist<T> rslt = wrap(Collections.unmodifiableList(wrap(elems).map(freezer())));
 
         return rslt;
     }
@@ -552,10 +619,11 @@ public class Indolently {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Function freezer() {
 
-        return (x) -> (x instanceof List) ? freeze((List) x) //
-            : (x instanceof Set) ? freeze((Set) x) //
-                : (x instanceof Map) ? freeze((Map) x) //
-                    : x;
+        return match( //
+            when(x -> (x instanceof List), x -> freeze((List) x)) //
+            , when(x -> (x instanceof Set), x -> freeze((Set) x)) //
+            , when(x -> (x instanceof Map), x -> freeze((Map) x))) //
+            .defaults((Function) Function.identity());
     }
 
     public static boolean empty(final Iterable<?> i) {
