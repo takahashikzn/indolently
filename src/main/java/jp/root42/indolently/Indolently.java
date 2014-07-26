@@ -111,8 +111,8 @@ public class Indolently {
     }
 
     /**
-     * Just an alias of {@link list(T...)} but not overloaded one.
-     * If compiler fail to do type inference on {@link list(T...)}, for example such a
+     * Just an alias of {@link #list(Object...)} but not overloaded one.
+     * If compiler fail to do type inference on {@link #list(Object...)}, for example such a
      * {@code List<List<Integer>> nested = list(list(42))}, you can use this method instead of.
      *
      * @param elems elements of list
@@ -165,6 +165,63 @@ public class Indolently {
     }
 
     /**
+     * create iterator which simulates <a
+     * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
+     * <p>
+     * Example
+     *
+     * <pre>
+     * <code>
+     * generator(
+     *     () -> 1 * 1,
+     *     () -> 2 * 2,
+     *     () -> 3 * 3).forEach(System.out::println); // print 1, 4, 9
+     * </code>
+     * </pre>
+     *
+     * </p>
+     *
+     * @param yields lazy evaluated yield expressions
+     * @return generator as {@link Iterable}
+     * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
+     */
+    @SafeVarargs
+    public static <T> Iterable<T> generator(final Supplier<? extends T>... yields) {
+
+        final Iterator<Supplier<? extends T>> i = list(yields).iterator();
+
+        return iterator(i::hasNext, () -> i.next().get());
+    }
+
+    /**
+     * shortcut notation of iterator.
+     * This is shortcut notation of creating {@code Iterable<T>}.
+     *
+     * @param hasNext {@link Iterator#hasNext} implementation
+     * @param next {@link Iterator#next} implementation
+     * @return iterator as {@link Iterable}
+     */
+    public static <T> Iterable<T> iterator(final Supplier<Boolean> hasNext, final Supplier<? extends T> next) {
+
+        return () -> new Iterator<T>() {
+
+            @Override
+            public boolean hasNext() {
+                return hasNext.get();
+            }
+
+            @Override
+            public T next() {
+                if (!this.hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
+                return next.get();
+            }
+        };
+    }
+
+    /**
      * Generate infinite integer sequence.
      *
      * @param from the value start from (inclusive).
@@ -186,24 +243,11 @@ public class Indolently {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        return () -> new Iterator<Integer>() {
+        final long[] i = { from };
 
-            private long i = from;
-
-            @Override
-            public boolean hasNext() {
-                return this.i <= Integer.MAX_VALUE;
-            }
-
-            @Override
-            public Integer next() {
-                if (!this.hasNext()) {
-                    throw new NoSuchElementException();
-                }
-
-                return (int) this.i++;
-            }
-        };
+        return iterator( //
+            () -> i[0] <= Integer.MAX_VALUE, //
+            () -> (int) i[0]++);
     }
 
     /**
@@ -419,8 +463,8 @@ public class Indolently {
     }
 
     /**
-     * Just an alias of {@link set(T...)} but not overloaded one.
-     * If compiler fail to do type inference on {@link set(T...)}, for example such a
+     * Just an alias of {@link #set(Object...)} but not overloaded one.
+     * If compiler fail to do type inference on {@link #set(Object...)}, for example such a
      * {@code Set<List<Integer>> nested = set(list(42))}, you can use this method instead of.
      *
      * @param elems elements of set

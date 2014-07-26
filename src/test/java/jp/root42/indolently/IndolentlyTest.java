@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -47,6 +48,47 @@ import static org.junit.Assert.*;
 @SuppressWarnings("serial")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
+
+    /**
+     * [@link {@link Indolently#generator(Supplier...)}
+     */
+    @Test
+    public void testGenerator() {
+
+        final boolean[] eval = { false, false, false };
+
+        final Iterator<Integer> g = generator( //
+            () -> {
+                eval[0] = true;
+                return 1 * 1;
+            }, //
+            () -> {
+                eval[1] = true;
+                return 2 * 2;
+            }, //
+            () -> {
+                eval[2] = true;
+                return 3 * 3;
+            }).iterator();
+
+        assertThat(eval) //
+            .isEqualTo(parray(false, false, false));
+
+        assertThat(g.next()) //
+            .isEqualTo(1);
+        assertThat(eval) //
+            .isEqualTo(parray(true, false, false));
+
+        assertThat(g.next()) //
+            .isEqualTo(4);
+        assertThat(eval) //
+            .isEqualTo(parray(true, true, false));
+
+        assertThat(g.next()) //
+            .isEqualTo(9);
+        assertThat(eval) //
+            .isEqualTo(parray(true, true, true));
+    }
 
     /**
      * {@link Indolently#array(Object, Object...)} / {@link Indolently#array(Iterable)} /
