@@ -13,13 +13,17 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
+
+
 /**
  * @author takahashikzn
  * @version $Id$
  */
 public class IntRef
     extends AbstractRef<Integer>
-    implements Comparable<IntRef> {
+    implements Comparable<IntRef>, IntSupplier, IntConsumer {
 
     private static final long serialVersionUID = -5827553121494604722L;
 
@@ -50,6 +54,16 @@ public class IntRef
     @Override
     public Integer get() {
         return this.val;
+    }
+
+    @Override
+    public int getAsInt() {
+        return this.val;
+    }
+
+    @Override
+    public void accept(final int val) {
+        this.val = val;
     }
 
     @Override

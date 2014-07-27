@@ -13,13 +13,16 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.function.BooleanSupplier;
+
+
 /**
  * @author takahashikzn
  * @version $Id$
  */
 public class BoolRef
     extends AbstractRef<Boolean>
-    implements Comparable<BoolRef> {
+    implements Comparable<BoolRef>, BooleanSupplier {
 
     private static final long serialVersionUID = 8087914133902951131L;
 
@@ -49,6 +52,11 @@ public class BoolRef
 
     @Override
     public Boolean get() {
+        return this.val;
+    }
+
+    @Override
+    public boolean getAsBoolean() {
         return this.val;
     }
 

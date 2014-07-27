@@ -13,13 +13,17 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
+
+
 /**
  * @author takahashikzn
  * @version $Id$
  */
 public class DoubleRef
     extends AbstractRef<Double>
-    implements Comparable<DoubleRef> {
+    implements Comparable<DoubleRef>, DoubleSupplier, DoubleConsumer {
 
     private static final long serialVersionUID = -3198217652103277386L;
 
@@ -49,6 +53,16 @@ public class DoubleRef
 
     @Override
     public Double get() {
+        return this.val;
+    }
+
+    @Override
+    public void accept(final double val) {
+        this.val = val;
+    }
+
+    @Override
+    public double getAsDouble() {
         return this.val;
     }
 

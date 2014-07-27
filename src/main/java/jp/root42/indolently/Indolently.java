@@ -20,12 +20,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -179,6 +181,78 @@ public class Indolently {
         return list;
     }
 
+    public static <V, T> Slist<T> list(final Iterable<? extends V> input, final Predicate<? super V> pred,
+        final Function<? super V, ? extends T> expr) {
+
+        final Slist<T> list = list();
+
+        for (final V in : input) {
+            if (pred.test(in)) {
+                list.add(expr.apply(in));
+            }
+        }
+
+        return list;
+    }
+
+    public static <T> Supplier<? extends T> def(final Supplier<? extends T> f) {
+        return f;
+    }
+
+    public static <T> Supplier<? extends T> supplierOf(final Supplier<? extends T> f) {
+        return f;
+    }
+
+    public static <T> Consumer<? super T> def(final Consumer<? super T> f) {
+        return f;
+    }
+
+    public static <T> Consumer<? super T> consumerOf(final Consumer<? super T> f) {
+        return f;
+    }
+
+    public static <T, U> BiConsumer<? super T, ? super U> def(final BiConsumer<? super T, ? super U> f) {
+        return f;
+    }
+
+    public static <T, U> BiConsumer<? super T, ? super U> biConsumerOf(final BiConsumer<? super T, ? super U> f) {
+        return f;
+    }
+
+    public static <T, R> Function<? super T, ? extends R> def(final Function<? super T, ? extends R> f) {
+        return f;
+    }
+
+    public static <T, R> Function<? super T, ? extends R> functionOf(final Function<? super T, ? extends R> f) {
+        return f;
+    }
+
+    public static <T, U, R> BiFunction<? super T, ? super U, ? extends R> def(
+        final BiFunction<? super T, ? super U, ? extends R> f) {
+        return f;
+    }
+
+    public static <T, U, R> BiFunction<? super T, ? super U, ? extends R> biFunctionOf(
+        final BiFunction<? super T, ? super U, ? extends R> f) {
+        return f;
+    }
+
+    public static <T> Predicate<? super T> def(final Predicate<? super T> f) {
+        return f;
+    }
+
+    public static <T> Predicate<? super T> predicateOf(final Predicate<? super T> f) {
+        return f;
+    }
+
+    public static <T, U> BiPredicate<? super T, ? super U> def(final BiPredicate<? super T, ? super U> f) {
+        return f;
+    }
+
+    public static <T, U> BiPredicate<? super T, ? super U> biPredicateOf(final BiPredicate<? super T, ? super U> f) {
+        return f;
+    }
+
     /**
      * create iterator which simulates <a
      * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
@@ -187,29 +261,44 @@ public class Indolently {
      *
      * <pre>
      * <code>
-     * generator(
-     *     () -> 1 * 1,
-     *     () -> 2 * 2,
-     *     () -> 3 * 3).forEach(System.out::println); // print 1, 4, 9
+     * // print timestamp every 10 seconds forever.
+     * generator(System::currentTimeMillis).forEach(
+     *     def((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
+     *         try {
+     *             Thread.sleep(10000);
+     *         } catch (final Exception e) {
+     *         }
+     *     }));
      * </code>
      * </pre>
      *
      * </p>
      *
-     * @param yields lazy evaluated yield expressions
+     * @param f value generating function
      * @return generator as {@link Iterable}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
-    @SafeVarargs
-    public static <T> Iterable<T> generator(final Supplier<? extends T>... yields) {
+    public static <T> Generator<T> generator(final Supplier<? extends T> f) {
+        return Generator.of(f);
+    }
 
-        final Iterator<Supplier<? extends T>> i = list(yields).iterator();
+    /**
+     * shortcut notation of iterator.
+     * This is shortcut notation of creating {@code Iterable<T>}.
+     *
+     * @param values lazy evaluated values which {@link Iterator#next} returns
+     * @return iterator as {@link Iterable}
+     */
+    @SafeVarargs
+    public static <T> Iter<T> iterator(final Supplier<? extends T>... values) {
+
+        final Iterator<Supplier<? extends T>> i = list(values).iterator();
 
         return iterator(i::hasNext,
-        // NOTE {@code () -> i.next().get()} raises type inference error on OracleJDK compiler
+        // avoid compilation error on OracleJDK
             () -> {
-                final T rslt = i.next().get();
-                return rslt;
+                final T val = i.next().get();
+                return val;
             });
     }
 
@@ -221,24 +310,24 @@ public class Indolently {
      * @param next {@link Iterator#next} implementation
      * @return iterator as {@link Iterable}
      */
-    public static <T> Iterable<T> iterator(final Supplier<Boolean> hasNext, final Supplier<? extends T> next) {
+    public static <T> Iter<T> iterator(final Supplier<Boolean> hasNext, final Supplier<? extends T> next) {
 
-        return () -> new Iterator<T>() {
+        return iterator(null, predicateOf(x -> hasNext.get()), x -> next.get());
+    }
 
-            @Override
-            public boolean hasNext() {
-                return hasNext.get();
-            }
+    /**
+     * shortcut notation of iterator.
+     * This is shortcut notation of creating {@code Iterable<T>}.
+     *
+     * @param env iteration environment
+     * @param hasNext {@link Iterator#hasNext} implementation
+     * @param next {@link Iterator#next} implementation
+     * @return iterator as {@link Iterable}
+     */
+    public static <E, T> Iter<T> iterator(final E env, final Predicate<? super E> hasNext,
+        final Function<? super E, ? extends T> next) {
 
-            @Override
-            public T next() {
-                if (!this.hasNext()) {
-                    throw new NoSuchElementException();
-                }
-
-                return next.get();
-            }
-        };
+        return Iter.of(env, hasNext, next);
     }
 
     /**
@@ -247,7 +336,7 @@ public class Indolently {
      * @param from the value start from (inclusive).
      * @return infinite integer sequence.
      */
-    public static Iterable<Integer> sequence(final int from) {
+    public static Iter<Integer> sequence(final int from) {
         return sequence(from, 1);
     }
 
@@ -258,16 +347,15 @@ public class Indolently {
      * @param step count stepping
      * @return infinite integer sequence.
      */
-    public static Iterable<Integer> sequence(final int from, final int step) {
+    public static Iter<Integer> sequence(final int from, final int step) {
         if (step <= 0) {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        final LongRef cur = ref((long) from);
-
         return iterator( //
-            () -> cur.val <= Integer.MAX_VALUE, //
-            () -> prog1(() -> (int) cur.val, () -> cur.val += step));
+            ref((long) from), //
+            (env) -> env.val <= Integer.MAX_VALUE, //
+            (env) -> prog1(() -> (int) env.val, () -> env.val += step).get());
     }
 
     /**
@@ -278,13 +366,15 @@ public class Indolently {
      * @return first expression evaluation result
      */
     @SafeVarargs
-    public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
+    public static <T> Supplier<T> prog1(final Supplier<T> first, final Consumer<? super T>... forms) {
 
-        final T val = first.get();
+        return () -> {
+            final T val = first.get();
 
-        list(forms).each(f -> f.accept(val));
+            list(forms).each(f -> f.accept(val));
 
-        return val;
+            return val;
+        };
     }
 
     /**
@@ -294,28 +384,30 @@ public class Indolently {
      * @param forms evaluation target forms
      * @return first expression evaluation result
      */
-    public static <T> T prog1(final Supplier<? extends T> first, final Closure... forms) {
+    public static <T> Supplier<T> prog1(final Supplier<T> first, final Closure... forms) {
 
-        final T val = first.get();
+        return () -> {
+            final T val = first.get();
 
-        list(forms).each(f -> f.perform());
+            list(forms).each(f -> f.perform());
 
-        return val;
+            return val;
+        };
     }
 
     public static <C, V> When<C, V> whenNull(final V val) {
-        return when((x) -> x == null, val);
+        return when(x -> x == null, val);
     }
 
-    public static <C, V> When<C, V> when(final C pred, final V val) {
-        return when(x -> equiv(x, pred), val);
+    public static <C, V> When<C, V> whenEq(final C pred, final V val) {
+        return when(x -> equiv(x, pred), () -> val);
     }
 
-    public static <C, V> When<C, V> when(final C pred, final Supplier<? extends V> expr) {
+    public static <C, V> When<C, V> whenEq(final C pred, final Supplier<? extends V> expr) {
         return when(x -> equiv(x, pred), expr);
     }
 
-    public static <C, V> When<C, V> when(final C pred, final Function<? super C, ? extends V> expr) {
+    public static <C, V> When<C, V> whenEq(final C pred, final Function<? super C, ? extends V> expr) {
         return when(x -> equiv(x, pred), expr);
     }
 
@@ -349,59 +441,58 @@ public class Indolently {
     }
 
     /**
-     * Generate integer list.
+     * Generate integer iterator.
      * <p>
      * Examples
      * <ul>
-     * <li>{@code range(1, 3)} -&gt; {@code [1, 2, 3]}</li>
-     * <li>{@code range(3, 1)} -&gt; {@code [3, 2, 1]}</li>
-     * <li>{@code range(-3, 1)} -&gt; {@code [-3, -2, -1, 0, 1]}</li>
+     * <li>{@code range(1, 3).list()} -&gt; {@code [1, 2, 3]}</li>
+     * <li>{@code range(3, 1).list()} -&gt; {@code [3, 2, 1]}</li>
+     * <li>{@code range(-3, 1).list()} -&gt; {@code [-3, -2, -1, 0, 1]}</li>
      * </ul>
      * </p>
      *
      * @param from the value start from (inclusive).
      * @param to the value end to (inclusive).
-     * @return integer list.
+     * @return integer iterator.
      */
-    public static Slist<Integer> range(final int from, final int to) {
+    public static Iter<Integer> range(final int from, final int to) {
         return range(from, to, 1);
     }
 
     /**
-     * Generate integer list.
+     * Generate integer iterator.
      * <p>
      * Examples
      * <ul>
-     * <li>{@code range(1, 6, 2)} -&gt; {@code [1, 3, 5]}</li>
+     * <li>{@code range(1, 6, 2).list()} -&gt; {@code [1, 3, 5]}</li>
      * </ul>
      * </p>
      *
      * @param from the value start from (inclusive).
      * @param to the value end to (inclusive).
      * @param step count stepping
-     * @return integer list.
+     * @return integer iterator.
      */
-    public static Slist<Integer> range(final int from, final int to, final int step) {
+    public static Iter<Integer> range(final int from, final int to, final int step) {
         if (step <= 0) {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        final Slist<Integer> list = list();
-
-        if (from < to) {
-            for (int i = from; i <= to; i += step) {
-                list.add(i);
+        return iterator(ref(from), env -> {
+            return (from < to) ? (env.val <= to) //
+                : (to < from) ? (to <= env.val) //
+                    : (env.val == from);
+        }, env -> {
+            try {
+                return env.val;
+            } finally {
+                if (from < to) {
+                    env.val += step;
+                } else {
+                    env.val -= step;
+                }
             }
-        } else if (to < from) {
-            for (int i = from; to <= i; i -= step) {
-                list.add(i);
-            }
-        } else {
-            assert from == to;
-            list.add(from);
-        }
-
-        return list;
+        });
     }
 
     /**
@@ -627,7 +718,7 @@ public class Indolently {
 
         return match( //
             when(x -> (x instanceof List), x -> freeze((List) x)) //
-            , when(x -> (x instanceof Set), x -> freeze((Set) x)) //
+            , when(x -> (x instanceof Set), x -> freeze((Set) x))//
             , when(x -> (x instanceof Map), x -> freeze((Map) x))) //
             .defaults((Function) Function.identity());
     }

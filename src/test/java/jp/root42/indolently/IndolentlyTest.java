@@ -26,9 +26,11 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Match.When;
+import jp.root42.indolently.ref.IntRef;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -85,12 +87,49 @@ public class IndolentlyTest {
 
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one") //
-            , when(2, "two") //
+            , whenEq(2, "two") //
             ).defaults(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
         assertThat(f1.apply(3)).isEqualTo("3");
+    }
+
+    /**
+     * {@link Indolently#match(When...)}
+     *
+     * @param expected expected value
+     * @param from range from
+     * @param to range to
+     * @param step range step
+     */
+    @Parameters
+    @Test
+    public void testComplexMatchLooksLikeLisp(final List<Integer> expected, final int from, final int to, final int step) {
+
+        assertThat(list( //
+            iterator( //
+                ref(from), //
+                (env) -> match( //
+                    when((final IntRef x) -> from < to, x -> x.val <= to) //
+                    , when(x -> to < from, x -> to <= x.val) //
+                ).defaults(x -> x.val == from).apply(env), //
+                env -> match( //
+                    when((final IntRef x) -> from < to, x -> prog1( //
+                        () -> x.val, //
+                        () -> x.val += step)) //
+                ).defaults(x -> prog1(() -> x.val, () -> x.val -= step)).apply(env).get() //
+            ) //
+            )).isEqualTo(expected);
+    }
+
+    static List<Object[]> parametersForTestComplexMatchLooksLikeLisp() {
+
+        return list( //
+            oarray(list(1, 3, 5), 1, 6, 2) //
+            , oarray(list(3, 1, -1), 3, -1, 2) //
+            , oarray(list(1), 1, 1, 1) //
+        );
     }
 
     /**
@@ -113,14 +152,39 @@ public class IndolentlyTest {
     }
 
     /**
-     * [@link {@link Indolently#generator(Supplier...)}
+     * {@link Indolently#list(Iterable, Predicate, Function)}
      */
+    @Test
+    public void testListComprehension() {
+
+        assertThat(list(range(0, 100), x -> (x <= 10) && ((x % 2) == 0), x -> x)) //
+            .isEqualTo(range(0, 10, 2).list());
+    }
+
     @Test
     public void testGenerator() {
 
+        final IntRef count = ref(1);
+        final Slist<Integer> ints = list();
+
+        generator( //
+            generator(() -> (10 <= count.val) ? Generator.stop() : count.val++)) //
+            .forEach(consumerOf((final Integer x) -> ints.add(x)) //
+                .andThen(x -> {
+                }));
+
+        assertThat(ints.reduce((x, y) -> x + y).get()).isEqualTo(55);
+    }
+
+    /**
+     * [@link {@link Indolently#iterator(Supplier...)}
+     */
+    @Test
+    public void testIterator() {
+
         final int[] eval = { 0, 0, 0 };
 
-        final Iterator<Integer> g = generator( //
+        final Iterator<Integer> g = iterator( //
             () -> eval[0] = 1, //
             () -> eval[1] = 2, //
             () -> eval[2] = 3).iterator();
@@ -176,7 +240,7 @@ public class IndolentlyTest {
     @Test
     public void testSortListSet() {
 
-        final List<Integer> ints = range(1, 5);
+        final List<Integer> ints = range(1, 5).list();
         Collections.shuffle(ints);
 
         assertThat(sort(ints)) //
@@ -207,7 +271,7 @@ public class IndolentlyTest {
     @Test
     public void testMinMax() {
 
-        final List<Integer> ints = range(1, 100);
+        final List<Integer> ints = range(1, 100).list();
 
         Collections.shuffle(ints);
 
@@ -334,7 +398,7 @@ public class IndolentlyTest {
 
         final Slist<Integer> ints = list();
 
-        assertThat(range(1, 10) //
+        assertThat(range(1, 10).list() //
             .slice(-5, 0) //
             .map(i -> i * i) //
             .each(i -> ints.add(i)) //
@@ -443,8 +507,7 @@ public class IndolentlyTest {
             }
         };
 
-        assertThat( //
-            actualNestedMap).as("nested structure") //
+        assertThat(actualNestedMap).as("nested structure") //
             .isEqualTo(expectedNestedMap);
     }
 
@@ -539,7 +602,7 @@ public class IndolentlyTest {
     @Test
     public void testRange(final String desc, final List<Integer> expected, final int from, final int to, final int step) {
 
-        assertThat(range(from, to, step)).as(desc) //
+        assertThat(range(from, to, step).list()).as(desc) //
             .isEqualTo(expected);
     }
 

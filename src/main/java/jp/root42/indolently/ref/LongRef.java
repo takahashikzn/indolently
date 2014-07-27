@@ -13,13 +13,17 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.function.LongConsumer;
+import java.util.function.LongSupplier;
+
+
 /**
  * @author takahashikzn
  * @version $Id$
  */
 public class LongRef
     extends AbstractRef<Long>
-    implements Comparable<LongRef> {
+    implements Comparable<LongRef>, LongSupplier, LongConsumer {
 
     private static final long serialVersionUID = -5582550853171233363L;
 
@@ -49,6 +53,16 @@ public class LongRef
 
     @Override
     public Long get() {
+        return this.val;
+    }
+
+    @Override
+    public void accept(final long val) {
+        this.val = val;
+    }
+
+    @Override
+    public long getAsLong() {
         return this.val;
     }
 
