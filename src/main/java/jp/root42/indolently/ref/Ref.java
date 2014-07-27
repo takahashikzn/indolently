@@ -11,18 +11,41 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.ref;
 
 /**
- * Represents an arbitrary operation that doesn't accept any argument.
- *
+ * @param <T> value type
  * @author takahashikzn
  */
-@FunctionalInterface
-public interface Closure {
+public class Ref<T>
+    extends AbstractRef<T> {
+
+    /** the value. */
+    public T val;
 
     /**
-     * Perform this operation.
+     * constructor.
      */
-    void perform();
+    public Ref() {
+        this(null);
+    }
+
+    /**
+     * constructor.
+     *
+     * @param val the value.
+     */
+    public Ref(final T val) {
+        this.val = val;
+    }
+
+    @Override
+    public void accept(final T val) {
+        this.val = val;
+    }
+
+    @Override
+    public T get() {
+        return this.val;
+    }
 }

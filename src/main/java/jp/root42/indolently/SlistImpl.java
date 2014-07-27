@@ -25,7 +25,7 @@ import java.util.ListIterator;
  * Simple implementation of {@link Slist}.
  *
  * @param <T> value type
- * @author root42 Inc.
+ * @author takahashikzn
  */
 class SlistImpl<T>
     extends AbstractList<T>

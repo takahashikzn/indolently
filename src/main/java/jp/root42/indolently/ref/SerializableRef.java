@@ -11,18 +11,33 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.ref;
+
+import java.io.Serializable;
+
 
 /**
- * Represents an arbitrary operation that doesn't accept any argument.
- *
+ * @param <T> value type
  * @author takahashikzn
  */
-@FunctionalInterface
-public interface Closure {
+public class SerializableRef<T extends Serializable>
+    extends Ref<T>
+    implements Serializable {
+
+    private static final long serialVersionUID = -66684109589193786L;
 
     /**
-     * Perform this operation.
+     * constructor.
      */
-    void perform();
+    public SerializableRef() {
+    }
+
+    /**
+     * constructor.
+     *
+     * @param val the value.
+     */
+    public SerializableRef(final T val) {
+        super(val);
+    }
 }
