@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
 
 
 /**
@@ -22,7 +21,7 @@ import java.io.Serializable;
  */
 public class ByteRef
     extends AbstractRef<Byte>
-    implements Serializable {
+    implements Comparable<ByteRef> {
 
     private static final long serialVersionUID = -6479571510369831870L;
 
@@ -53,5 +52,10 @@ public class ByteRef
     @Override
     public Byte get() {
         return this.val;
+    }
+
+    @Override
+    public int compareTo(final ByteRef that) {
+        return this.get().compareTo(that.get());
     }
 }

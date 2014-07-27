@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
 
 
 /**
@@ -22,7 +21,7 @@ import java.io.Serializable;
  */
 public class BoolRef
     extends AbstractRef<Boolean>
-    implements Serializable {
+    implements Comparable<BoolRef> {
 
     private static final long serialVersionUID = 8087914133902951131L;
 
@@ -53,5 +52,10 @@ public class BoolRef
     @Override
     public Boolean get() {
         return this.val;
+    }
+
+    @Override
+    public int compareTo(final BoolRef that) {
+        return this.get().compareTo(that.get());
     }
 }

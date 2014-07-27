@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
 
 
 /**
@@ -22,7 +21,7 @@ import java.io.Serializable;
  */
 public class ShortRef
     extends AbstractRef<Short>
-    implements Serializable {
+    implements Comparable<ShortRef> {
 
     private static final long serialVersionUID = -6819998391641172785L;
 
@@ -53,5 +52,10 @@ public class ShortRef
     @Override
     public Short get() {
         return this.val;
+    }
+
+    @Override
+    public int compareTo(final ShortRef that) {
+        return this.get().compareTo(that.get());
     }
 }

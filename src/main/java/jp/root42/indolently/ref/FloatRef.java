@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
 
 
 /**
@@ -22,7 +21,7 @@ import java.io.Serializable;
  */
 public class FloatRef
     extends AbstractRef<Float>
-    implements Serializable {
+    implements Comparable<FloatRef> {
 
     private static final long serialVersionUID = -6479571510369831870L;
 
@@ -53,5 +52,10 @@ public class FloatRef
     @Override
     public Float get() {
         return this.val;
+    }
+
+    @Override
+    public int compareTo(final FloatRef that) {
+        return this.get().compareTo(that.get());
     }
 }

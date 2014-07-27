@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
 
 
 /**
@@ -22,7 +21,7 @@ import java.io.Serializable;
  */
 public class DoubleRef
     extends AbstractRef<Double>
-    implements Serializable {
+    implements Comparable<DoubleRef> {
 
     private static final long serialVersionUID = -3198217652103277386L;
 
@@ -53,5 +52,10 @@ public class DoubleRef
     @Override
     public Double get() {
         return this.val;
+    }
+
+    @Override
+    public int compareTo(final DoubleRef that) {
+        return this.get().compareTo(that.get());
     }
 }
