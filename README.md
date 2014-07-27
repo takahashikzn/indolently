@@ -85,13 +85,43 @@ range(1, 10)
     .each(System.out::println)
     .reduce(0, (i, k) -> i + k)
     .ifPresent(System.out::println); // print 330
+
+
+// Totally wasteful manner of computing sum of integer range
+int sumOfRange(final int from, final int to) {
+
+    return list(
+        iterator(
+            ref(from),
+            env -> match(
+                when((final IntRef x) -> from < to, x -> x.val <= to)
+                , when(x -> to < from, x -> to <= x.val)
+            ).defaults(x -> x.val == from).apply(env),
+            env -> match(
+                when((final IntRef x) -> from < to, x -> prog1(
+                    x::get,
+                    () -> x.val += 1))
+            ).defaults(x -> prog1(x::get, () -> x.val -= 1)).apply(env)
+        )).reduce((l, r) -> l + r).get();
+}
+
+Systme.out.println(sumOfRange(-2, 5)); // equivalent to range(-2, 5).list().reduce((l, r) -> l + r).get() => 12
 ```
 
 See JUnit testcase for more details.
 
 
+Project status
+=================
+
+Currently production use is strongly not recommended
+because the codes are almost not tested and changing very frequently.
+
+
 Translation
 =================
 
-Currently most documents would written in Japanese.
+Currently most documents would written in broken English
+bacause of this project's purpose itself.
+
 Your contribution is welcome.
