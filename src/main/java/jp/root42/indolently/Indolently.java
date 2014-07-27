@@ -44,6 +44,8 @@ import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.LongRef;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
+import jp.root42.indolently.ref.Tuple2;
+import jp.root42.indolently.ref.Tuple3;
 import jp.root42.indolently.ref.ValueReference;
 
 
@@ -274,18 +276,52 @@ public class Indolently {
      *
      * </p>
      *
+     * @param <T> value type
      * @param f value generating function
      * @return generator as {@link Iterable}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
     public static <T> Generator<T> generator(final Supplier<? extends T> f) {
-        return Generator.of(f);
+        return Generator.of(null, x -> f.get());
+    }
+
+    /**
+     * create iterator which simulates <a
+     * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
+     * <p>
+     * Example
+     *
+     * <pre>
+     * <code>
+     * // print timestamp every 10 seconds forever.
+     * generator(System::currentTimeMillis).forEach(
+     *     def((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
+     *         try {
+     *             Thread.sleep(10000);
+     *         } catch (final Exception e) {
+     *         }
+     *     }));
+     * </code>
+     * </pre>
+     *
+     * </p>
+     *
+     * @param <E> environment type
+     * @param <T> value type
+     * @param env iteration environment
+     * @param f value generating function
+     * @return generator as {@link Iterable}
+     * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
+     */
+    public static <E, T> Generator<T> generator(final E env, final Function<? super E, ? extends T> f) {
+        return Generator.of(env, f);
     }
 
     /**
      * shortcut notation of iterator.
      * This is shortcut notation of creating {@code Iterable<T>}.
      *
+     * @param <T> value type
      * @param values lazy evaluated values which {@link Iterator#next} returns
      * @return iterator as {@link Iterable}
      */
@@ -306,6 +342,7 @@ public class Indolently {
      * shortcut notation of iterator.
      * This is shortcut notation of creating {@code Iterable<T>}.
      *
+     * @param <T> value type
      * @param hasNext {@link Iterator#hasNext} implementation
      * @param next {@link Iterator#next} implementation
      * @return iterator as {@link Iterable}
@@ -319,6 +356,8 @@ public class Indolently {
      * shortcut notation of iterator.
      * This is shortcut notation of creating {@code Iterable<T>}.
      *
+     * @param <E> environment type
+     * @param <T> value type
      * @param env iteration environment
      * @param hasNext {@link Iterator#hasNext} implementation
      * @param next {@link Iterator#next} implementation
@@ -331,34 +370,6 @@ public class Indolently {
     }
 
     /**
-     * Generate infinite integer sequence.
-     *
-     * @param from the value start from (inclusive).
-     * @return infinite integer sequence.
-     */
-    public static Iter<Integer> sequence(final int from) {
-        return sequence(from, 1);
-    }
-
-    /**
-     * Generate infinite integer sequence.
-     *
-     * @param from the value start from (inclusive).
-     * @param step count stepping
-     * @return infinite integer sequence.
-     */
-    public static Iter<Integer> sequence(final int from, final int step) {
-        if (step <= 0) {
-            throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
-        }
-
-        return iterator( //
-            ref((long) from), //
-            (env) -> env.val <= Integer.MAX_VALUE, //
-            (env) -> prog1(() -> (int) env.val, () -> env.val += step).get());
-    }
-
-    /**
      * evaluate following forms then return evaluation result of first expressions.
      *
      * @param first evaluation result of this expression
@@ -366,7 +377,7 @@ public class Indolently {
      * @return first expression evaluation result
      */
     @SafeVarargs
-    public static <T> Supplier<T> prog1(final Supplier<T> first, final Consumer<? super T>... forms) {
+    public static <T> Supplier<T> prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
         return () -> {
             final T val = first.get();
@@ -384,7 +395,7 @@ public class Indolently {
      * @param forms evaluation target forms
      * @return first expression evaluation result
      */
-    public static <T> Supplier<T> prog1(final Supplier<T> first, final Closure... forms) {
+    public static <T> Supplier<T> prog1(final Supplier<? extends T> first, final Closure... forms) {
 
         return () -> {
             final T val = first.get();
@@ -441,6 +452,27 @@ public class Indolently {
     }
 
     /**
+     * Generate infinite integer sequence.
+     *
+     * @param from the value start from (inclusive).
+     * @return infinite integer sequence.
+     */
+    public static Iter<Integer> sequence(final int from) {
+        return sequence(from, 1);
+    }
+
+    /**
+     * Generate infinite integer sequence.
+     *
+     * @param from the value start from (inclusive).
+     * @param step count stepping
+     * @return infinite integer sequence.
+     */
+    public static Iter<Integer> sequence(final int from, final int step) {
+        return range(from, Integer.MAX_VALUE, step);
+    }
+
+    /**
      * Generate integer iterator.
      * <p>
      * Examples
@@ -478,21 +510,17 @@ public class Indolently {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        return iterator(ref(from), env -> {
+        return iterator(ref((long) from), env -> {
             return (from < to) ? (env.val <= to) //
                 : (to < from) ? (to <= env.val) //
                     : (env.val == from);
-        }, env -> {
-            try {
-                return env.val;
-            } finally {
-                if (from < to) {
-                    env.val += step;
-                } else {
-                    env.val -= step;
-                }
+        }, env -> prog1(() -> (int) env.val, () -> {
+            if (from < to) {
+                env.val += step;
+            } else {
+                env.val -= step;
             }
-        });
+        }).get());
     }
 
     /**
@@ -1033,6 +1061,29 @@ public class Indolently {
         final Smap<K, V> map = (Smap<K, V>) map().push(key, val);
 
         return map;
+    }
+
+    /**
+     * create two element tuple.
+     *
+     * @param fst 1st element
+     * @param snd 2nd element
+     * @return tuple
+     */
+    public static <F, S> Tuple2<F, S> tuple(final F fst, final S snd) {
+        return new Tuple2<F, S>().fst(fst).snd(snd);
+    }
+
+    /**
+     * create three element tuple.
+     *
+     * @param fst 1st element
+     * @param snd 2nd element
+     * @param trd 3rd element
+     * @return tuple
+     */
+    public static <F, S, T> Tuple3<F, S, T> tuple(final F fst, final S snd, final T trd) {
+        return new Tuple3<F, S, T>().fst(fst).snd(snd).trd(trd);
     }
 
     /**

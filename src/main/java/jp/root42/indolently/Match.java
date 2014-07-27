@@ -40,21 +40,10 @@ public interface Match<C, V>
     @SafeVarargs
     static <C, V> Match<C, V> of(final When<C, V>... cases) {
 
-        return x -> {
-
-            final Optional<When<C, V>> matched = Indolently.find(x, cases);
-
-            if (matched.isPresent()) {
-                return Optional.ofNullable(matched.get().apply(x));
-            } else {
-                return Optional.empty();
-            }
-        };
-
-        // return x -> Optional.ofNullable( //
-        // Indolently.find(x, cases) //
-        // .orElse(When.defaults(() -> null)) //
-        // .apply(x));
+        return x -> Optional.ofNullable( //
+            Indolently.find(x, cases) //
+                .orElse(When.defaults(() -> null)) //
+                .apply(x));
     }
 
     /**
