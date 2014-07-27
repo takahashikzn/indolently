@@ -28,7 +28,7 @@ public class Ref<T>
     /**
      * constructor.
      */
-    public Ref() {
+    protected Ref() {
         this(null);
     }
 
@@ -37,7 +37,7 @@ public class Ref<T>
      *
      * @param val the value.
      */
-    public Ref(final T val) {
+    protected Ref(final T val) {
         this.val = val;
     }
 

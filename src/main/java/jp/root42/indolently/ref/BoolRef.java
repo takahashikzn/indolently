@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class BoolRef
     /**
      * constructor.
      */
-    public BoolRef() {
+    protected BoolRef() {
         this(false);
     }
 
@@ -40,7 +38,7 @@ public class BoolRef
      *
      * @param val the value.
      */
-    public BoolRef(final boolean val) {
+    protected BoolRef(final boolean val) {
         this.val = val;
     }
 

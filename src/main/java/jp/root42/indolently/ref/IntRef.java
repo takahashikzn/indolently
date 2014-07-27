@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class IntRef
     /**
      * constructor.
      */
-    public IntRef() {
+    protected IntRef() {
         this(0);
     }
 
@@ -40,7 +38,7 @@ public class IntRef
      *
      * @param val the value.
      */
-    public IntRef(final int val) {
+    protected IntRef(final int val) {
         this.val = val;
     }
 
