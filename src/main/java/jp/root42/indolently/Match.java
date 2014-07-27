@@ -40,10 +40,21 @@ public interface Match<C, V>
     @SafeVarargs
     static <C, V> Match<C, V> of(final When<C, V>... cases) {
 
-        return x -> Optional.ofNullable( //
-            Indolently.find(x, cases) //
-                .orElse(When.defaults(() -> null)) //
-                .apply(x));
+        return x -> {
+
+            final Optional<When<C, V>> matched = Indolently.find(x, cases);
+
+            if (matched.isPresent()) {
+                return Optional.ofNullable(matched.get().apply(x));
+            } else {
+                return Optional.empty();
+            }
+        };
+
+        // return x -> Optional.ofNullable( //
+        // Indolently.find(x, cases) //
+        // .orElse(When.defaults(() -> null)) //
+        // .apply(x));
     }
 
     /**
@@ -85,16 +96,6 @@ public interface Match<C, V>
     /**
      * Append 'default' clause to the end of this match expression.
      *
-     * @param val default value
-     * @return 'default' attached match expression
-     */
-    default Function<C, V> defaults(final V val) {
-        return this.defaults(() -> val);
-    }
-
-    /**
-     * Append 'default' clause to the end of this match expression.
-     *
      * @param f default value supplier
      * @return 'default' attached match expression
      */
@@ -112,6 +113,7 @@ public interface Match<C, V>
      */
     default Function<C, V> defaults(final Function<? super C, ? extends V> f) {
         Objects.requireNonNull(f);
+
         return x -> this.apply(x).orElseGet(() -> f.apply(x));
     }
 
@@ -162,6 +164,14 @@ public interface Match<C, V>
                     return expr.apply(cond);
                 }
             };
+        }
+
+        default Function<C, V> other(final Supplier<? extends V> f) {
+            return this.other(x -> f.get());
+        }
+
+        default Function<C, V> other(final Function<? super C, ? extends V> f) {
+            return x -> this.test(x) ? this.apply(x) : f.apply(x);
         }
     }
 }
