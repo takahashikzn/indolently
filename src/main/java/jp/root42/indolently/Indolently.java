@@ -303,8 +303,24 @@ public class Indolently {
         return val;
     }
 
+    public static <C, V> When<C, V> when(final C pred, final V val) {
+        return when(x -> equiv(x, pred), val);
+    }
+
+    public static <C, V> When<C, V> when(final C pred, final Supplier<? extends V> expr) {
+        return when(x -> equiv(x, pred), expr);
+    }
+
+    public static <C, V> When<C, V> when(final C pred, final Function<? super C, ? extends V> expr) {
+        return when(x -> equiv(x, pred), expr);
+    }
+
+    public static <C, V> When<C, V> when(final Predicate<? super C> pred, final V val) {
+        return when(pred, () -> val);
+    }
+
     public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
-        return When.of(pred, expr);
+        return When.of(pred, x -> expr.get());
     }
 
     public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
@@ -762,6 +778,24 @@ public class Indolently {
 
     public static boolean equal(final Object l, final Object r) {
         return (l == null) ? (r == null) : (l == r) || l.equals(r);
+    }
+
+    @TypeUnsafe
+    public static <T> boolean equiv(final T l, final T r) {
+
+        if ((l instanceof Comparable) && (r instanceof Comparable)) {
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            final boolean rslt = equal((Comparable) l, (Comparable) r);
+            return rslt;
+        } else {
+            return equal(l, r);
+        }
+    }
+
+    @TypeUnsafe
+    @SafeVarargs
+    public static <T> boolean equiv(final T l, final T r, final T... rest) {
+        return list(r).pushAll(list(rest)).every(x -> equiv(l, x));
     }
 
     public static <T extends Comparable<T>> T max(final T l, final T r) {

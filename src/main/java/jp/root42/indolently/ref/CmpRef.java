@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.util.Objects;
-
 import jp.root42.indolently.Indolently;
 
 
@@ -54,8 +52,8 @@ public class CmpRef<T extends Comparable<T>>
      * @param val value to compare.
      * @return test result
      */
-    public boolean equalTo(final T val) {
-        return Objects.equals(this.get(), val);
+    public boolean equiv(final T val) {
+        return Indolently.equiv(this.get(), val);
     }
 
     /**
