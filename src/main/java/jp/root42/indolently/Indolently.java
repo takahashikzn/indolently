@@ -751,37 +751,58 @@ public class Indolently {
             .defaults((Function) Function.identity());
     }
 
+    /**
+     * test whether the argument is empty or not.
+     *
+     * @param i test target
+     * @return test result
+     */
     public static boolean empty(final Iterable<?> i) {
-
-        // use match function instead of plain instruction
-        // to test whether OracleJDK can infer this expression correctly or not.
-        return match( //
-            whenNull(true) //
-            , when((final Iterable<?> x) -> (x instanceof Collection), x -> ((Collection<?>) x).isEmpty())) //
-            .defaults(x -> !x.iterator().hasNext()).apply(i);
-
-        // if (i == null) {
-        // return true;
-        // }
-        // if (i instanceof Collection) { // for optimization
-        // return ((Collection<?>) i).isEmpty();
-        // } else {
-        // return i.iterator().hasNext();
-        // }
+        if (i == null) {
+            return true;
+        } else if (i instanceof Collection) { // for optimization
+            return ((Collection<?>) i).isEmpty();
+        } else {
+            return i.iterator().hasNext();
+        }
     }
 
+    /**
+     * test whether the argument is empty or not.
+     *
+     * @param map test target
+     * @return test result
+     */
     public static boolean empty(final Map<?, ?> map) {
         return (map == null) || map.isEmpty();
     }
 
+    /**
+     * test whether the argument is present or not.
+     *
+     * @param opt test target
+     * @return test result
+     */
     public static boolean empty(final Optional<?> opt) {
         return (opt == null) || !opt.isPresent();
     }
 
+    /**
+     * test whether the argument is empty string or not.
+     *
+     * @param cs test target
+     * @return test result
+     */
     public static boolean empty(final CharSequence cs) {
         return (cs == null) || (cs.length() == 0);
     }
 
+    /**
+     * test whether the argument is blank string or not.
+     *
+     * @param cs test target
+     * @return test result
+     */
     public static boolean blank(final CharSequence cs) {
         return empty(cs) || cs.chars().allMatch(Character::isWhitespace);
     }
