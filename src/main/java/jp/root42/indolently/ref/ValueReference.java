@@ -26,7 +26,7 @@ public interface ValueReference<T>
     extends Supplier<T>, Consumer<T> {
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -36,7 +36,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -46,7 +46,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -56,7 +56,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -66,7 +66,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -76,7 +76,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -86,7 +86,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -96,7 +96,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -106,7 +106,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
@@ -116,7 +116,7 @@ public interface ValueReference<T>
     }
 
     /**
-     * create reference of value.
+     * create a reference of value.
      *
      * @param val initial value
      * @return reference of value
