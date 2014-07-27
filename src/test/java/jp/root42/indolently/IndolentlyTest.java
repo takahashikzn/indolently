@@ -108,28 +108,33 @@ public class IndolentlyTest {
     public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to, final int step) {
 
         assertThat(list( //
-            obfuscatedVersionOfRange(from, to, step) //
+            iterator( //
+                ref(from), //
+                env -> match( //
+                    when((final IntRef x) -> from < to, x -> x.val <= to) //
+                    , when(x -> to < from, x -> to <= x.val) //
+                ).defaults(x -> x.val == from).apply(env), //
+                env -> match( //
+                    when((final IntRef x) -> from < to, x -> prog1( //
+                        x::get, //
+                        () -> x.val += step).get()) //
+                ).defaults(x -> prog1(x::get, () -> x.val -= step).get()).apply(env) //
+            ) //
             )).isEqualTo(expected);
 
         assertThat(list( //
-            obfuscatedVersionOfRange(from, to, step)).reduce((l, r) -> l + r)).isEqualTo(
-            list(expected).reduce((l, r) -> l + r));
-    }
-
-    private static Iter<Integer> obfuscatedVersionOfRange(final int from, final int to, final int step) {
-
-        return iterator( //
-            ref(from), //
-            env -> match( //
-                when((final IntRef x) -> from < to, x -> x.val <= to) //
-                , when(x -> to < from, x -> to <= x.val) //
-            ).defaults(x -> x.val == from).apply(env), //
-            env -> match( //
-                when((final IntRef x) -> from < to, x -> prog1( //
-                    x::get, //
-                    () -> x.val += step).get()) //
-            ).defaults(x -> prog1(x::get, () -> x.val -= step).get()).apply(env) //
-        );
+            iterator( //
+                ref(from), //
+                env -> match( //
+                    when((final IntRef x) -> from < to, x -> x.val <= to) //
+                    , when(x -> to < from, x -> to <= x.val) //
+                ).defaults(x -> x.val == from).apply(env), //
+                env -> match( //
+                    when((final IntRef x) -> from < to, x -> prog1( //
+                        x::get, //
+                        () -> x.val += step).get()) //
+                ).defaults(x -> prog1(x::get, () -> x.val -= step).get()).apply(env) //
+            )).reduce((l, r) -> l + r)).isEqualTo(list(expected).reduce((l, r) -> l + r));
     }
 
     static List<Object[]> parametersForTestComplicatedTypeInference() {
