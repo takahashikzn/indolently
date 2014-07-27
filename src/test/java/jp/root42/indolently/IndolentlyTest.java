@@ -117,8 +117,8 @@ public class IndolentlyTest {
                 env -> match( //
                     when((final IntRef x) -> from < to, x -> prog1( //
                         x::get, //
-                        () -> x.val += step).get()) //
-                ).defaults(x -> prog1(x::get, () -> x.val -= step).get()).apply(env) //
+                        () -> x.val += step)) //
+                ).defaults(x -> prog1(x::get, () -> x.val -= step)).apply(env) //
             ) //
             )).isEqualTo(expected);
 
@@ -132,8 +132,8 @@ public class IndolentlyTest {
                 env -> match( //
                     when((final IntRef x) -> from < to, x -> prog1( //
                         x::get, //
-                        () -> x.val += step).get()) //
-                ).defaults(x -> prog1(x::get, () -> x.val -= step).get()).apply(env) //
+                        () -> x.val += step)) //
+                ).defaults(x -> prog1(x::get, () -> x.val -= step)).apply(env) //
             )).reduce((l, r) -> l + r)).isEqualTo(list(expected).reduce((l, r) -> l + r));
     }
 
