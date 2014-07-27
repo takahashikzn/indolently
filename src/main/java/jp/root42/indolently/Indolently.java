@@ -312,7 +312,7 @@ public class Indolently {
      */
     public static <T> Iter<T> iterator(final Supplier<Boolean> hasNext, final Supplier<? extends T> next) {
 
-        return iterator(null, predicateOf(x -> hasNext.get()), x -> next.get());
+        return iterator(null, x -> hasNext.get(), x -> next.get());
     }
 
     /**
