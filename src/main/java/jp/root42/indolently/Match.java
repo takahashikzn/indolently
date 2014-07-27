@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -62,6 +63,8 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> failure(final Supplier<? extends RuntimeException> f) {
+        Objects.requireNonNull(f);
+
         return this.failure(x -> f.get());
     }
 
@@ -72,6 +75,8 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> failure(final Function<? super C, ? extends RuntimeException> f) {
+        Objects.requireNonNull(f);
+
         return this.defaults(x -> {
             throw f.apply(x);
         });
@@ -94,6 +99,8 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> defaults(final Supplier<? extends V> f) {
+        Objects.requireNonNull(f);
+
         return this.defaults(x -> f.get());
     }
 
@@ -104,6 +111,7 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> defaults(final Function<? super C, ? extends V> f) {
+        Objects.requireNonNull(f);
         return x -> this.apply(x).orElseGet(() -> f.apply(x));
     }
 
@@ -140,6 +148,8 @@ public interface Match<C, V>
         }
 
         static <C, V> When<C, V> of(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
+            Objects.requireNonNull(pred, "pred");
+            Objects.requireNonNull(expr, "expr");
 
             return new When<C, V>() {
                 @Override

@@ -303,6 +303,10 @@ public class Indolently {
         return val;
     }
 
+    public static <C, V> When<C, V> whenNull(final V val) {
+        return when((x) -> x == null, val);
+    }
+
     public static <C, V> When<C, V> when(final C pred, final V val) {
         return when(x -> equiv(x, pred), val);
     }
@@ -633,9 +637,9 @@ public class Indolently {
         // use match function instead of plain instruction
         // to test whether OracleJDK can infer this expression correctly or not.
         return match( //
-            when((final Iterable<?> x) -> x == null, x -> true) //
-            , when(x -> (x instanceof Collection), x -> ((Collection<?>) x).isEmpty())) //
-            .defaults(x -> x.iterator().hasNext()).apply(i);
+            whenNull(true) //
+            , when((final Iterable<?> x) -> (x instanceof Collection), x -> ((Collection<?>) x).isEmpty())) //
+            .defaults(x -> !x.iterator().hasNext()).apply(i);
 
         // if (i == null) {
         // return true;
