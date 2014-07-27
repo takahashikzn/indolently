@@ -13,13 +13,18 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.Objects;
+
+import jp.root42.indolently.Indolently;
+
+
 /**
  * @param <T> value type
  * @author takahashikzn
  */
 public class CmpRef<T extends Comparable<T>>
     extends Ref<T>
-    implements Comparable<T> {
+    implements Comparable<ValueReference<? extends T>> {
 
     private static final long serialVersionUID = 8031677453769730996L;
 
@@ -39,7 +44,57 @@ public class CmpRef<T extends Comparable<T>>
     }
 
     @Override
-    public int compareTo(final T that) {
-        return this.get().compareTo(that);
+    public int compareTo(final ValueReference<? extends T> that) {
+        return this.get().compareTo(that.get());
+    }
+
+    /**
+     * test if value is equivalent or not.
+     *
+     * @param val value to compare.
+     * @return test result
+     */
+    public boolean equalTo(final T val) {
+        return Objects.equals(this.get(), val);
+    }
+
+    /**
+     * compute largest value.
+     *
+     * @param that comparison target
+     * @return largest value.
+     */
+    public T max(final ValueReference<? extends T> that) {
+        return Indolently.max(this.get(), that.get());
+    }
+
+    /**
+     * compute largest value.
+     *
+     * @param val comparison target
+     * @return largest value.
+     */
+    public T max(final T val) {
+        return Indolently.max(this.get(), val);
+    }
+
+    /**
+     * compute smallest value.
+     *
+     * @param that comparison target
+     * @return smallest value.
+     */
+    public T min(final ValueReference<? extends T> that) {
+        return Indolently.min(this.get(), that.get());
+    }
+
+    /**
+     * compute smallest value.
+     *
+     * @param val comparison target
+     * @return smallest value.
+     */
+    public T min(final T val) {
+        return Indolently.min(this.get(), val);
     }
 }
