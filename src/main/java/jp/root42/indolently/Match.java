@@ -1,6 +1,16 @@
-/*
- * Copyright (C) 2014 root42 Inc. All rights reserved.
- */
+// Copyright 2014 takahashikzn
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package jp.root42.indolently;
 
 import java.util.Optional;
@@ -28,7 +38,7 @@ public interface Match<C, V>
      */
     @SafeVarargs
     static <C, V> Match<C, V> of(final When<C, Optional<V>>... cases) {
-        return (cond) -> Indolently.optional(Indolently.find(cond, cases).flatMap((x) -> x.apply(cond)).orElse(null));
+        return cond -> Indolently.optional(Indolently.find(cond, cases).flatMap(x -> x.apply(cond)).orElse(null));
     }
 
     /**
@@ -38,7 +48,7 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> failure(final Supplier<? extends RuntimeException> f) {
-        return this.failure((x) -> f.get());
+        return this.failure(x -> f.get());
     }
 
     /**
@@ -48,7 +58,7 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> failure(final Function<? super C, ? extends RuntimeException> f) {
-        return this.defaults((x) -> {
+        return this.defaults(x -> {
             throw f.apply(x);
         });
     }
@@ -60,7 +70,7 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> defaults(final Supplier<? extends V> f) {
-        return this.defaults((x) -> f.get());
+        return this.defaults(x -> f.get());
     }
 
     /**
@@ -70,7 +80,7 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> defaults(final Function<? super C, ? extends V> f) {
-        return (c) -> this.apply(c).orElseGet(() -> f.apply(c));
+        return c -> this.apply(c).orElseGet(() -> f.apply(c));
     }
 
     /**

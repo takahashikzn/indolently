@@ -61,7 +61,7 @@ public class IndolentlyTest {
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one") //
             , when(x -> x == 2, () -> "two") //
-            ).defaults((x) -> "" + x);
+            ).defaults(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
@@ -77,7 +77,7 @@ public class IndolentlyTest {
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one")//
             , when(x -> x == 2, () -> "two") //
-            ).failure((x) -> new RuntimeException("THE TEST OF " + x));
+            ).failure(x -> new RuntimeException("THE TEST OF " + x));
 
         try {
             f1.apply(42);
@@ -311,8 +311,8 @@ public class IndolentlyTest {
 
         assertThat(range(1, 10) //
             .slice(-5, 0) //
-            .map((i) -> i * i) //
-            .each((i) -> ints.add(i)) //
+            .map(i -> i * i) //
+            .each(i -> ints.add(i)) //
             .reduce(0, (i, k) -> i + k).get()) //
             .isEqualTo(330);
 

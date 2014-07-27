@@ -1,0 +1,127 @@
+// Copyright 2014 takahashikzn
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+package jp.root42.indolently.ref;
+
+import java.io.Serializable;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+
+/**
+ * @param <T> value type
+ * @author takahashikzn
+ */
+public interface ValueReference<T>
+    extends Supplier<T>, Consumer<T> {
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static BoolRef of(final boolean val) {
+        return new BoolRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static IntRef of(final int val) {
+        return new IntRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static LongRef of(final long val) {
+        return new LongRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static DoubleRef of(final double val) {
+        return new DoubleRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static FloatRef of(final float val) {
+        return new FloatRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static ShortRef of(final short val) {
+        return new ShortRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static ByteRef of(final byte val) {
+        return new ByteRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static CharRef of(final char val) {
+        return new CharRef(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static <T> Ref<T> of(final T val) {
+        return new Ref<>(val);
+    }
+
+    /**
+     * create reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static <T extends Serializable> SerializableRef<T> of(final T val) {
+        return new SerializableRef<>(val);
+    }
+}

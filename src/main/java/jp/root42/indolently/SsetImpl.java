@@ -24,7 +24,7 @@ import java.util.Set;
  * Simple implementation of {@link Sset}.
  *
  * @param <T> value type
- * @author root42 Inc.
+ * @author takahashikzn
  */
 class SsetImpl<T>
     extends AbstractSet<T>

@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,6 +33,17 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Match.When;
+import jp.root42.indolently.ref.BoolRef;
+import jp.root42.indolently.ref.ByteRef;
+import jp.root42.indolently.ref.CharRef;
+import jp.root42.indolently.ref.DoubleRef;
+import jp.root42.indolently.ref.FloatRef;
+import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.ref.LongRef;
+import jp.root42.indolently.ref.Ref;
+import jp.root42.indolently.ref.SerializableRef;
+import jp.root42.indolently.ref.ShortRef;
+import jp.root42.indolently.ref.ValueReference;
 
 
 /**
@@ -252,30 +264,30 @@ public class Indolently {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        final long[] cur = { from };
+        final LongRef cur = ref((long) from);
 
         return iterator( //
-            () -> cur[0] <= Integer.MAX_VALUE, //
-            then(() -> (int) cur[0], () -> cur[0] += step));
+            () -> cur.val <= Integer.MAX_VALUE, //
+            () -> prog1(() -> (int) cur.val, () -> cur.val += step));
     }
 
     @SafeVarargs
-    public static <T> Supplier<T> then(final Supplier<? extends T> expr, final Consumer<? super T>... after) {
+    public static <T> T prog1(final Supplier<? extends T> expr, final Consumer<? super T>... forms) {
 
-        return () -> {
-            final T rslt = expr.get();
-            list(after).each((c) -> c.accept(rslt));
-            return rslt;
-        };
+        final T rslt = expr.get();
+
+        list(forms).each(c -> c.accept(rslt));
+
+        return rslt;
     }
 
-    public static <T> Supplier<T> then(final Supplier<? extends T> expr, final Closure... after) {
+    public static <T> T prog1(final Supplier<? extends T> expr, final Closure... forms) {
 
-        return () -> {
-            final T rslt = expr.get();
-            list(after).each((c) -> c.perform());
-            return rslt;
-        };
+        final T rslt = expr.get();
+
+        list(forms).each(c -> c.perform());
+
+        return rslt;
     }
 
     public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
@@ -880,6 +892,46 @@ public class Indolently {
         final Smap<K, V> map = (Smap<K, V>) map().push(key, val);
 
         return map;
+    }
+
+    public static BoolRef ref(final boolean val) {
+        return ValueReference.of(val);
+    }
+
+    public static IntRef ref(final int val) {
+        return ValueReference.of(val);
+    }
+
+    public static LongRef ref(final long val) {
+        return ValueReference.of(val);
+    }
+
+    public static DoubleRef ref(final double val) {
+        return ValueReference.of(val);
+    }
+
+    public static FloatRef ref(final float val) {
+        return ValueReference.of(val);
+    }
+
+    public static ShortRef ref(final short val) {
+        return ValueReference.of(val);
+    }
+
+    public static ByteRef ref(final byte val) {
+        return ValueReference.of(val);
+    }
+
+    public static CharRef ref(final char val) {
+        return ValueReference.of(val);
+    }
+
+    public static <T> Ref<T> ref(final T val) {
+        return ValueReference.of(val);
+    }
+
+    public static <T extends Serializable> SerializableRef<T> ref(final T val) {
+        return ValueReference.of(val);
     }
 
     // CHECKSTYLE:OFF

@@ -25,7 +25,7 @@ import java.util.Set;
  *
  * @param <K> key type
  * @param <V> value type
- * @author root42 Inc.
+ * @author takahashikzn
  */
 class SmapImpl<K, V>
     extends AbstractMap<K, V>
