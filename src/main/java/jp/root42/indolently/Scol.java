@@ -23,6 +23,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import jp.root42.indolently.ref.IntRef;
+
+import static jp.root42.indolently.Indolently.*;
+
 
 /**
  * common method definition for {@link Sset} / {@link Slist}.
@@ -35,7 +39,7 @@ import java.util.function.Predicate;
  * @see Sset
  */
 public interface Scol<T, SELF extends Scol<T, SELF>>
-    extends Collection<T>, Freezable<SELF>, Identical<SELF> {
+    extends Collection<T>, Freezable<SELF>, Identical<SELF>, EachAware<T, SELF>, Filterable<T, SELF> {
 
     /**
      * add value then return this instance.
@@ -135,14 +139,14 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      */
     SELF tail();
 
-    /**
-     * internal iterator.
-     *
-     * @param f function
-     * @return {@code this} instance
-     */
+    @Override
     default SELF each(final Consumer<? super T> f) {
-        return this.each((idx, val) -> f.accept(val));
+
+        for (final T val : this) {
+            f.accept(val);
+        }
+
+        return this.identity();
     }
 
     /**
@@ -153,12 +157,9 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      */
     default SELF each(final BiConsumer<Integer, ? super T> f) {
 
-        int i = 0;
-        for (final T val : this) {
-            f.accept(i++, val);
-        }
+        final IntRef i = ref(0);
 
-        return this.identity();
+        return this.each(x -> f.accept(i.val++, x));
     }
 
     /**
@@ -185,21 +186,15 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
      * Filter operation: returns values which satisfying condition.
      * This operation is constructive.
      *
-     * @param f condition
-     * @return new filtered collection
-     */
-    default SELF filter(final Predicate<? super T> f) {
-        return this.filter((idx, val) -> f.test(val));
-    }
-
-    /**
-     * Filter operation: returns values which satisfying condition.
-     * This operation is constructive.
-     *
      * @param f condition. first argument is loop index.
      * @return new filtered collection
      */
-    SELF filter(BiPredicate<Integer, ? super T> f);
+    default SELF filter(final BiPredicate<Integer, ? super T> f) {
+
+        final IntRef i = ref(0);
+
+        return this.filter(x -> f.test(i.val++, x));
+    }
 
     /**
      * Reduce operation.
@@ -244,14 +239,14 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     /**
      * Map then Reduce operation.
      *
-     * @param <M> mapping target type
+     * @param <R> mapping target type
      * @param fm mapper function
      * @param fr reducer function
      * @return result value
      * @throws NoSuchElementException this collection is empty
      */
-    default <M> Optional<M> mapred(final Function<? super T, ? extends M> fm,
-        final BiFunction<? super M, ? super M, ? extends M> fr) {
+    default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
+        final BiFunction<? super R, ? super R, ? extends R> fr) {
 
         return this.tail().mapred( //
             fm.apply(this.first()), //
@@ -261,27 +256,27 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     /**
      * Map then Reduce operation.
      *
-     * @param <M> mapping target type
+     * @param <R> mapping target type
      * @param initial initial value
      * @param f function
      * @return result value
      */
-    default <M> Optional<M> mapred(final M initial, final BiFunction<? super M, ? super T, ? extends M> f) {
+    default <R> Optional<R> mapred(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
         return this.mapred(Optional.ofNullable(initial), f);
     }
 
     /**
      * Map then Reduce operation.
      *
-     * @param <M> mapping target type
+     * @param <R> mapping target type
      * @param initial initial value
      * @param f function
      * @return result value
      */
-    default <M> Optional<M> mapred(final Optional<? extends M> initial,
-        final BiFunction<? super M, ? super T, ? extends M> f) {
+    default <R> Optional<R> mapred(final Optional<? extends R> initial,
+        final BiFunction<? super R, ? super T, ? extends R> f) {
 
-        M rem = Indolently.empty(initial) ? null : initial.get();
+        R rem = Indolently.empty(initial) ? null : initial.get();
 
         for (final T val : this) {
             rem = f.apply(rem, val);

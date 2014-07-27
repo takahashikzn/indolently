@@ -183,20 +183,6 @@ public class Indolently {
         return list;
     }
 
-    public static <V, T> Slist<T> list(final Iterable<? extends V> input, final Predicate<? super V> pred,
-        final Function<? super V, ? extends T> expr) {
-
-        final Slist<T> list = list();
-
-        for (final V in : input) {
-            if (pred.test(in)) {
-                list.add(expr.apply(in));
-            }
-        }
-
-        return list;
-    }
-
     public static <T> Supplier<? extends T> def(final Supplier<? extends T> f) {
         return f;
     }
@@ -278,7 +264,7 @@ public class Indolently {
      *
      * @param <T> value type
      * @param f value generating function
-     * @return generator as {@link Iterable}
+     * @return generator as {@link Siter}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
     public static <T> Generator<T> generator(final Supplier<? extends T> f) {
@@ -310,7 +296,7 @@ public class Indolently {
      * @param <T> value type
      * @param env iteration environment
      * @param f value generating function
-     * @return generator as {@link Iterable}
+     * @return generator as {@link Siter}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
     public static <E, T> Generator<T> generator(final E env, final Function<? super E, ? extends T> f) {
@@ -323,10 +309,10 @@ public class Indolently {
      *
      * @param <T> value type
      * @param values lazy evaluated values which {@link Iterator#next} returns
-     * @return iterator as {@link Iterable}
+     * @return iterator as {@link Siter}
      */
     @SafeVarargs
-    public static <T> Iter<T> iterator(final Supplier<? extends T>... values) {
+    public static <T> Siter<T> iterator(final Supplier<? extends T>... values) {
 
         final Iterator<Supplier<? extends T>> i = list(values).iterator();
 
@@ -345,11 +331,11 @@ public class Indolently {
      * @param <T> value type
      * @param hasNext {@link Iterator#hasNext} implementation
      * @param next {@link Iterator#next} implementation
-     * @return iterator as {@link Iterable}
+     * @return iterator as {@link Siter}
      */
-    public static <T> Iter<T> iterator(final Supplier<Boolean> hasNext, final Supplier<? extends T> next) {
+    public static <T> Siter<T> iterator(final Supplier<Boolean> hasNext, final Supplier<? extends T> next) {
 
-        return iterator(null, x -> hasNext.get(), x -> next.get());
+        return iterator((Object) null, x -> hasNext.get(), x -> next.get());
     }
 
     /**
@@ -361,12 +347,12 @@ public class Indolently {
      * @param env iteration environment
      * @param hasNext {@link Iterator#hasNext} implementation
      * @param next {@link Iterator#next} implementation
-     * @return iterator as {@link Iterable}
+     * @return iterator as {@link Siter}
      */
-    public static <E, T> Iter<T> iterator(final E env, final Predicate<? super E> hasNext,
+    public static <E, T> Siter<T> iterator(final E env, final Predicate<? super E> hasNext,
         final Function<? super E, ? extends T> next) {
 
-        return Iter.of(env, hasNext, next);
+        return Siter.of(env, hasNext, next);
     }
 
     /**
@@ -453,7 +439,7 @@ public class Indolently {
      * @param from the value start from (inclusive).
      * @return infinite integer sequence.
      */
-    public static Iter<Integer> sequence(final int from) {
+    public static Siter<Integer> sequence(final int from) {
         return sequence(from, 1);
     }
 
@@ -464,7 +450,7 @@ public class Indolently {
      * @param step count stepping
      * @return infinite integer sequence.
      */
-    public static Iter<Integer> sequence(final int from, final int step) {
+    public static Siter<Integer> sequence(final int from, final int step) {
         return range(from, Integer.MAX_VALUE, step);
     }
 
@@ -483,7 +469,7 @@ public class Indolently {
      * @param to the value end to (inclusive).
      * @return integer iterator.
      */
-    public static Iter<Integer> range(final int from, final int to) {
+    public static Siter<Integer> range(final int from, final int to) {
         return range(from, to, 1);
     }
 
@@ -501,7 +487,7 @@ public class Indolently {
      * @param step count stepping
      * @return integer iterator.
      */
-    public static Iter<Integer> range(final int from, final int to, final int step) {
+    public static Siter<Integer> range(final int from, final int to, final int step) {
         if (step <= 0) {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
@@ -1062,6 +1048,34 @@ public class Indolently {
     @SafeVarargs
     public static <T> Sset<T> wrap(final Set<T> set, final T... elems) {
         return wrap(Objects.requireNonNull(set, "set")).pushAll(list(elems));
+    }
+
+    /**
+     * Wrap a iterator.
+     *
+     * @param iter iterator to wrap
+     * @return wrapped iterator
+     */
+    public static <T> Siter<T> wrap(final Iterator<? extends T> iter) {
+
+        if (iter instanceof Siter) {
+            @SuppressWarnings("unchecked")
+            final Siter<T> i = (Siter<T>) iter;
+            return i;
+        }
+
+        return new Siter<T>() {
+
+            @Override
+            public boolean hasNext() {
+                return iter.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return iter.next();
+            }
+        };
     }
 
     public static <K, V> Smap<K, V> map(final K key, final V val) {

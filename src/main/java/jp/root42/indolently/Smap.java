@@ -32,7 +32,8 @@ import java.util.function.Predicate;
  * @author takahashikzn
  */
 public interface Smap<K, V>
-    extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>> {
+    extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>>, EachAware<V, Smap<K, V>>,
+    Filterable<V, Smap<K, V>> {
 
     /**
      * Wrap a map.
@@ -154,6 +155,7 @@ public interface Smap<K, V>
      * @param f function
      * @return {@code this} instance
      */
+    @Override
     default Smap<K, V> each(final Consumer<? super V> f) {
         return this.each((key, val) -> f.accept(val));
     }
@@ -216,6 +218,7 @@ public interface Smap<K, V>
      * @param f function
      * @return new filtered map
      */
+    @Override
     default Smap<K, V> filter(final Predicate<? super V> f) {
         return this.filter((key, val) -> f.test(val));
     }
@@ -248,11 +251,11 @@ public interface Smap<K, V>
      * Map operation: map value to another type value.
      * This operation is constructive.
      *
-     * @param <M> mapping target type
+     * @param <R> mapping target type
      * @param f function
      * @return new converted map
      */
-    default <M> Smap<K, M> map(final Function<? super V, ? extends M> f) {
+    default <R> Smap<K, R> map(final Function<? super V, ? extends R> f) {
         return this.map((key, val) -> f.apply(val));
     }
 
@@ -260,13 +263,13 @@ public interface Smap<K, V>
      * Map operation: map value to another type value.
      * This operation is constructive.
      *
-     * @param <M> mapping target type
+     * @param <R> mapping target type
      * @param f function
      * @return new converted map
      */
-    default <M> Smap<K, M> map(final BiFunction<? super K, ? super V, ? extends M> f) {
+    default <R> Smap<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
 
-        final Smap<K, M> rslt = Indolently.map();
+        final Smap<K, R> rslt = Indolently.map();
 
         for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
 

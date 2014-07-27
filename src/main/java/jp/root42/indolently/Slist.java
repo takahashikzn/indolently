@@ -18,8 +18,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
+
+import jp.root42.indolently.ref.IntRef;
+
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -169,46 +173,47 @@ public interface Slist<T>
     /**
      * Map operation: map value to another type value.
      *
-     * @param <M> mapped value type
+     * @param <R> mapped value type
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <M> Slist<M> map(final Function<? super T, ? extends M> f) {
-        return this.map((idx, val) -> f.apply(val));
-    }
+    default <R> Slist<R> map(final Function<? super T, ? extends R> f) {
 
-    /**
-     * Map operation: map value to another type value.
-     *
-     * @param <M> mapped value type
-     * @param f function. first argument is loop index.
-     * @return newly constructed list which contains converted values
-     */
-    default <M> Slist<M> map(final BiFunction<Integer, ? super T, ? extends M> f) {
+        final Slist<R> rslt = Indolently.list();
 
-        final Slist<M> rslt = Indolently.list();
-
-        int i = 0;
         for (final T val : this) {
-            rslt.add(f.apply(i++, val));
+            rslt.add(f.apply(val));
         }
 
         return rslt;
     }
 
+    /**
+     * Map operation: map value to another type value.
+     *
+     * @param <R> mapped value type
+     * @param f function. first argument is loop index.
+     * @return newly constructed list which contains converted values
+     */
+    default <R> Slist<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
+
+        final IntRef i = ref(0);
+
+        return this.map(x -> f.apply(i.val++, x));
+    }
+
     @Override
-    default Slist<T> filter(final BiPredicate<Integer, ? super T> f) {
+    default Slist<T> filter(final Predicate<? super T> f) {
 
-        final Slist<T> rslt = Indolently.list();
+        final Slist<T> list = list();
 
-        int i = 0;
         for (final T val : this) {
-            if (f.test(i++, val)) {
-                rslt.add(val);
+            if (f.test(val)) {
+                list.add(val);
             }
         }
 
-        return this;
+        return list;
     }
 
     /**

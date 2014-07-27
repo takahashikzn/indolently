@@ -16,17 +16,32 @@ package jp.root42.indolently;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 
 /**
+ * Extended {@link Iterable}/{@link Iterator} class for indolent person.
+ * It's name comes from "Sugared iterator".
+ *
  * @param <T> value type
  * @author takahashikzn
  */
-public interface Iter<T>
-    extends Supplier<T>, Iterable<T>, Iterator<T> {
+public interface Siter<T>
+    extends Supplier<T>, Iterable<T>, Iterator<T>, EachAware<T, Siter<T>>, Filterable<T, Siter<T>> {
+
+    @Override
+    default T get() {
+        return this.next();
+    }
+
+    @Override
+    default Iterator<T> iterator() {
+        return this;
+    }
 
     /**
      * constructor.
@@ -36,12 +51,12 @@ public interface Iter<T>
      * @param next {@link Iterator#next()} implementation
      * @return a instance of this class.
      */
-    static <E, T> Iter<T> of(final E env, final Predicate<? super E> hasNext,
+    static <E, T> Siter<T> of(final E env, final Predicate<? super E> hasNext,
         final Function<? super E, ? extends T> next) {
 
         Objects.requireNonNull(next);
 
-        final Iterator<T> i = new Iterator<T>() {
+        return new Siter<T>() {
 
             @Override
             public boolean hasNext() {
@@ -57,29 +72,66 @@ public interface Iter<T>
                 return next.apply(env);
             }
         };
+    }
 
-        return new Iter<T>() {
+    @Override
+    default Siter<T> each(final Consumer<? super T> f) {
 
-            @Override
-            public T get() {
-                return this.next();
-            }
+        return this.map(x -> {
+            f.accept(x);
+            return x;
+        });
+    }
 
-            @Override
-            public Iterator<T> iterator() {
-                return i;
-            }
+    @Override
+    default Siter<T> filter(final Predicate<? super T> f) {
+
+        return new Siter<T>() {
+
+            private Optional<T> cur;
 
             @Override
             public boolean hasNext() {
-                return i.hasNext();
+                if (this.cur != null) {
+                    return true;
+                } else if (!Siter.this.hasNext()) {
+                    return false;
+                }
+
+                final T val = Siter.this.next();
+
+                if (f.test(val)) {
+                    this.cur = Optional.ofNullable(val);
+                    return true;
+                }
+
+                return this.hasNext();
             }
 
             @Override
             public T next() {
-                return i.next();
+                if (!this.hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
+                try {
+                    return this.cur.get();
+                } finally {
+                    this.cur = null;
+                }
             }
         };
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     *
+     * @param <R> mapped value type
+     * @param f function
+     * @return newly constructed iterator which iterates converted values
+     */
+    default <R> Siter<R> map(final Function<? super T, ? extends R> f) {
+        return of(this, x -> x.hasNext(), x -> f.apply(x.next()));
     }
 
     /**
