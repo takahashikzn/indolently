@@ -37,8 +37,12 @@ public interface Match<C, V>
      * @return match expression functor
      */
     @SafeVarargs
-    static <C, V> Match<C, V> of(final When<C, Optional<V>>... cases) {
-        return cond -> Indolently.optional(Indolently.find(cond, cases).flatMap(x -> x.apply(cond)).orElse(null));
+    static <C, V> Match<C, V> of(final When<C, V>... cases) {
+
+        return cond -> Optional.ofNullable( //
+            Indolently.find(cond, cases) //
+                .orElse(When.of(x -> true, () -> null)) //
+                .apply(cond));
     }
 
     /**
@@ -93,22 +97,21 @@ public interface Match<C, V>
     interface When<C, V>
         extends Predicate<C>, Function<C, V> {
 
-        static <C, V> When<C, Optional<V>> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
+        static <C, V> When<C, V> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
             return of(pred, x -> expr.get());
         }
 
-        static <C, V> When<C, Optional<V>> of(final Predicate<? super C> pred,
-            final Function<? super C, ? extends V> expr) {
+        static <C, V> When<C, V> of(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
 
-            return new When<C, Optional<V>>() {
+            return new When<C, V>() {
                 @Override
                 public boolean test(final C cond) {
                     return pred.test(cond);
                 }
 
                 @Override
-                public Optional<V> apply(final C cond) {
-                    return Indolently.optional(expr.apply(cond));
+                public V apply(final C cond) {
+                    return expr.apply(cond);
                 }
             };
         }

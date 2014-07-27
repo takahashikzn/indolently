@@ -303,17 +303,16 @@ public class Indolently {
         return val;
     }
 
-    public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
+    public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
         return When.of(pred, expr);
     }
 
-    public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred,
-        final Function<? super C, ? extends V> expr) {
+    public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
         return When.of(pred, expr);
     }
 
     @SafeVarargs
-    public static <C, V> Match<C, V> match(final When<C, Optional<V>>... cases) {
+    public static <C, V> Match<C, V> match(final When<C, V>... cases) {
         return Match.of(cases);
     }
 
