@@ -15,8 +15,6 @@ package jp.root42.indolently.ref;
 
 import java.util.Objects;
 
-import jp.root42.indolently.Indolently;
-
 
 /**
  * @param <T> value type
@@ -43,7 +41,7 @@ abstract class AbstractRef<T>
         @SuppressWarnings("unchecked")
         final AbstractRef<T> that = (AbstractRef<T>) o;
 
-        return Indolently.equal(this.get(), that.get());
+        return Objects.equals(this.get(), that.get());
     }
 
     @Override
