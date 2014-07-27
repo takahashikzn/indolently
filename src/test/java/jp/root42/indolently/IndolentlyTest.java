@@ -96,7 +96,7 @@ public class IndolentlyTest {
     }
 
     /**
-     * {@link Indolently#match(When...)}
+     * very complicated type inference test of {@link Indolently#match(When...)}.
      *
      * @param expected expected value
      * @param from range from
@@ -105,25 +105,34 @@ public class IndolentlyTest {
      */
     @Parameters
     @Test
-    public void testComplexMatchLooksLikeLisp(final List<Integer> expected, final int from, final int to, final int step) {
+    public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to, final int step) {
 
         assertThat(list( //
-            iterator( //
-                ref(from), //
-                (env) -> match( //
-                    when((final IntRef x) -> from < to, x -> x.val <= to) //
-                    , when(x -> to < from, x -> to <= x.val) //
-                ).defaults(x -> x.val == from).apply(env), //
-                env -> match( //
-                    when((final IntRef x) -> from < to, x -> prog1( //
-                        () -> x.val, //
-                        () -> x.val += step)) //
-                ).defaults(x -> prog1(() -> x.val, () -> x.val -= step)).apply(env).get() //
-            ) //
+            obfuscatedVersionOfRange(from, to, step) //
             )).isEqualTo(expected);
+
+        assertThat(list( //
+            obfuscatedVersionOfRange(from, to, step)).reduce((l, r) -> l + r)).isEqualTo(
+            list(expected).reduce((l, r) -> l + r));
     }
 
-    static List<Object[]> parametersForTestComplexMatchLooksLikeLisp() {
+    private static Iter<Integer> obfuscatedVersionOfRange(final int from, final int to, final int step) {
+
+        return iterator( //
+            ref(from), //
+            env -> match( //
+                when((final IntRef x) -> from < to, x -> x.val <= to) //
+                , when(x -> to < from, x -> to <= x.val) //
+            ).defaults(x -> x.val == from).apply(env), //
+            env -> match( //
+                when((final IntRef x) -> from < to, x -> prog1( //
+                    x::get, //
+                    () -> x.val += step).get()) //
+            ).defaults(x -> prog1(x::get, () -> x.val -= step).get()).apply(env) //
+        );
+    }
+
+    static List<Object[]> parametersForTestComplicatedTypeInference() {
 
         return list( //
             oarray(list(1, 3, 5), 1, 6, 2) //
@@ -161,14 +170,18 @@ public class IndolentlyTest {
             .isEqualTo(range(0, 10, 2).list());
     }
 
+    /**
+     * {@link Indolently#generator(Supplier)}
+     */
     @Test
     public void testGenerator() {
 
-        final IntRef count = ref(1);
         final Slist<Integer> ints = list();
 
+        System.out.println(list(generator(ref(1), env -> (10 <= env.val) ? Generator.stop() : env.val++)));
+
         generator( //
-            generator(() -> (10 <= count.val) ? Generator.stop() : count.val++)) //
+            generator(ref(1), env -> (10 <= env.val) ? Generator.stop() : env.val++)) //
             .forEach(consumerOf((final Integer x) -> ints.add(x)) //
                 .andThen(x -> {
                 }));

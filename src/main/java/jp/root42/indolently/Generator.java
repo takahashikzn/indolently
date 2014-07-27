@@ -16,7 +16,7 @@ package jp.root42.indolently;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.Ref;
@@ -53,15 +53,16 @@ public interface Generator<T>
     /**
      * constructor.
      *
+     * @param env iteration environment
      * @param hasNext {@link Iterator#hasNext()} implementation
      * @param next {@link Iterator#next()} implementation
      * @return a instance of this class.
      */
-    static <T> Generator<T> of(final Supplier<? extends T> next) {
+    static <E, T> Generator<T> of(final E env, final Function<? super E, ? extends T> next) {
         Objects.requireNonNull(next);
 
         final BoolRef stopped = Indolently.ref(false);
-        final Ref<T> nextVal = Indolently.ref((T) null);
+        final Ref<T> nextVal = Indolently.<T> ref(null);
 
         final Iterator<T> i = new Iterator<T>() {
 
@@ -72,7 +73,7 @@ public interface Generator<T>
                 }
 
                 try {
-                    nextVal.val = next.get();
+                    nextVal.val = next.apply(env);
                     return true;
                 } catch (final Stop | NoSuchElementException s) {
                     stopped.val = true;
