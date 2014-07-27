@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class ByteRef
     /**
      * constructor.
      */
-    public ByteRef() {
+    protected ByteRef() {
         this((byte) 0);
     }
 
@@ -40,7 +38,7 @@ public class ByteRef
      *
      * @param val the value.
      */
-    public ByteRef(final byte val) {
+    protected ByteRef(final byte val) {
         this.val = val;
     }
 

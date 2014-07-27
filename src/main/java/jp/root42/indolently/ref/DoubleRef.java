@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class DoubleRef
     /**
      * constructor.
      */
-    public DoubleRef() {
+    protected DoubleRef() {
         this(0);
     }
 
@@ -40,7 +38,7 @@ public class DoubleRef
      *
      * @param val the value.
      */
-    public DoubleRef(final double val) {
+    protected DoubleRef(final double val) {
         this.val = val;
     }
 

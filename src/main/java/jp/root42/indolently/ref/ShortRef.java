@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class ShortRef
     /**
      * constructor.
      */
-    public ShortRef() {
+    protected ShortRef() {
         this((short) 0);
     }
 
@@ -40,7 +38,7 @@ public class ShortRef
      *
      * @param val the value.
      */
-    public ShortRef(final short val) {
+    protected ShortRef(final short val) {
         this.val = val;
     }
 

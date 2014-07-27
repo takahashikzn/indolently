@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class FloatRef
     /**
      * constructor.
      */
-    public FloatRef() {
+    protected FloatRef() {
         this(0);
     }
 
@@ -40,7 +38,7 @@ public class FloatRef
      *
      * @param val the value.
      */
-    public FloatRef(final float val) {
+    protected FloatRef(final float val) {
         this.val = val;
     }
 

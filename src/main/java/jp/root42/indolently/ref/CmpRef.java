@@ -31,7 +31,7 @@ public class CmpRef<T extends Comparable<T>>
     /**
      * constructor.
      */
-    public CmpRef() {
+    protected CmpRef() {
     }
 
     /**
@@ -39,7 +39,7 @@ public class CmpRef<T extends Comparable<T>>
      *
      * @param val the value.
      */
-    public CmpRef(final T val) {
+    protected CmpRef(final T val) {
         super(val);
     }
 

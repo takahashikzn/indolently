@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class CharRef
     /**
      * constructor.
      */
-    public CharRef() {
+    protected CharRef() {
         this((char) 0);
     }
 
@@ -40,7 +38,7 @@ public class CharRef
      *
      * @param val the value.
      */
-    public CharRef(final char val) {
+    protected CharRef(final char val) {
         this.val = val;
     }
 

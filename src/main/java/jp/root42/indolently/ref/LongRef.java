@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-
-
 /**
  * @author takahashikzn
  * @version $Id$
@@ -31,7 +29,7 @@ public class LongRef
     /**
      * constructor.
      */
-    public LongRef() {
+    protected LongRef() {
         this(0);
     }
 
@@ -40,7 +38,7 @@ public class LongRef
      *
      * @param val the value.
      */
-    public LongRef(final long val) {
+    protected LongRef(final long val) {
         this.val = val;
     }
 
