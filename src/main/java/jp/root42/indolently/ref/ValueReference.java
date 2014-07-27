@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -121,7 +120,7 @@ public interface ValueReference<T>
      * @param val initial value
      * @return reference of value
      */
-    static <T extends Serializable> SerializableRef<T> of(final T val) {
-        return new SerializableRef<>(val);
+    static <T extends Comparable<T>> CmpRef<T> of(final T val) {
+        return new CmpRef<>(val);
     }
 }

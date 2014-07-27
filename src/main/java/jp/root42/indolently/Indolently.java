@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,12 +35,12 @@ import jp.root42.indolently.Match.When;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.ByteRef;
 import jp.root42.indolently.ref.CharRef;
+import jp.root42.indolently.ref.CmpRef;
 import jp.root42.indolently.ref.DoubleRef;
 import jp.root42.indolently.ref.FloatRef;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.LongRef;
 import jp.root42.indolently.ref.Ref;
-import jp.root42.indolently.ref.SerializableRef;
 import jp.root42.indolently.ref.ShortRef;
 import jp.root42.indolently.ref.ValueReference;
 
@@ -1004,7 +1003,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static <T extends Serializable> SerializableRef<T> ref(final T val) {
+    public static <T extends Comparable<T>> CmpRef<T> ref(final T val) {
         return ValueReference.of(val);
     }
 

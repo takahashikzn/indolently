@@ -20,6 +20,8 @@ package jp.root42.indolently.ref;
 public class Ref<T>
     extends AbstractRef<T> {
 
+    private static final long serialVersionUID = 2548417883489580934L;
+
     /** the value. */
     public T val;
 

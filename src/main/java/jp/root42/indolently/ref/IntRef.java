@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
 
 
 /**
@@ -22,7 +21,7 @@ import java.io.Serializable;
  */
 public class IntRef
     extends AbstractRef<Integer>
-    implements Serializable {
+    implements Comparable<IntRef> {
 
     private static final long serialVersionUID = -5827553121494604722L;
 
@@ -53,5 +52,10 @@ public class IntRef
     @Override
     public Integer get() {
         return this.val;
+    }
+
+    @Override
+    public int compareTo(final IntRef that) {
+        return this.get().compareTo(that.get());
     }
 }

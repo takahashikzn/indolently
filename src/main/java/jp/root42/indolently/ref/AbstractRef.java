@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -21,7 +22,9 @@ import java.util.Objects;
  * @author takahashikzn
  */
 abstract class AbstractRef<T>
-    implements ValueReference<T> {
+    implements Serializable, ValueReference<T> {
+
+    private static final long serialVersionUID = -1617670706001823922L;
 
     @Override
     public int hashCode() {

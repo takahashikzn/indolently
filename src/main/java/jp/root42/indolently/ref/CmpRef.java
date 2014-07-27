@@ -13,23 +13,20 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.io.Serializable;
-
-
 /**
  * @param <T> value type
  * @author takahashikzn
  */
-public class SerializableRef<T extends Serializable>
+public class CmpRef<T extends Comparable<T>>
     extends Ref<T>
-    implements Serializable {
+    implements Comparable<T> {
 
-    private static final long serialVersionUID = -66684109589193786L;
+    private static final long serialVersionUID = 8031677453769730996L;
 
     /**
      * constructor.
      */
-    public SerializableRef() {
+    public CmpRef() {
     }
 
     /**
@@ -37,7 +34,12 @@ public class SerializableRef<T extends Serializable>
      *
      * @param val the value.
      */
-    public SerializableRef(final T val) {
+    public CmpRef(final T val) {
         super(val);
+    }
+
+    @Override
+    public int compareTo(final T that) {
+        return this.get().compareTo(that);
     }
 }
