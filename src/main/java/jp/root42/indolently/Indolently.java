@@ -377,15 +377,13 @@ public class Indolently {
      * @return first expression evaluation result
      */
     @SafeVarargs
-    public static <T> Supplier<T> prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
+    public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
-        return () -> {
-            final T val = first.get();
+        final T val = first.get();
 
-            list(forms).each(f -> f.accept(val));
+        list(forms).each(f -> f.accept(val));
 
-            return val;
-        };
+        return val;
     }
 
     /**
@@ -395,15 +393,13 @@ public class Indolently {
      * @param forms evaluation target forms
      * @return first expression evaluation result
      */
-    public static <T> Supplier<T> prog1(final Supplier<? extends T> first, final Closure... forms) {
+    public static <T> T prog1(final Supplier<? extends T> first, final Closure... forms) {
 
-        return () -> {
-            final T val = first.get();
+        final T val = first.get();
 
-            list(forms).each(f -> f.perform());
+        list(forms).each(f -> f.perform());
 
-            return val;
-        };
+        return val;
     }
 
     public static <C, V> When<C, V> whenNull(final V val) {
@@ -520,7 +516,7 @@ public class Indolently {
             } else {
                 env.val -= step;
             }
-        }).get());
+        }));
     }
 
     /**
@@ -763,7 +759,7 @@ public class Indolently {
         } else if (i instanceof Collection) { // for optimization
             return ((Collection<?>) i).isEmpty();
         } else {
-            return i.iterator().hasNext();
+            return !i.iterator().hasNext();
         }
     }
 
