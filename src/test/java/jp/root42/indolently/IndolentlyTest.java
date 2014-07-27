@@ -60,7 +60,7 @@ public class IndolentlyTest {
 
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one") //
-            , when(x -> x == 2, () -> "two") //
+            , when(2, "two") //
             ).defaults(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");

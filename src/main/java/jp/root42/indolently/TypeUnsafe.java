@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * Express a operation is destructive (i.e. having side effect).
+ * Express a operation would raise {@link ClassCastException}.
  *
  * @author takahashikzn
  */
@@ -30,5 +30,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Documented
 @Inherited
-public @interface Destructive {
+public @interface TypeUnsafe {
 }

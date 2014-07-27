@@ -39,10 +39,20 @@ public interface Match<C, V>
     @SafeVarargs
     static <C, V> Match<C, V> of(final When<C, V>... cases) {
 
-        return cond -> Optional.ofNullable( //
-            Indolently.find(cond, cases) //
-                .orElse(When.of(x -> true, () -> null)) //
-                .apply(cond));
+        return x -> Optional.ofNullable( //
+            Indolently.find(x, cases) //
+                .orElse(When.defaults(() -> null)) //
+                .apply(x));
+    }
+
+    /**
+     * Append 'default throw' clause to the end of this expression.
+     *
+     * @param e exception to throw
+     * @return 'default' attached match expression
+     */
+    default Function<C, V> failure(final RuntimeException e) {
+        return this.failure(() -> e);
     }
 
     /**
@@ -70,6 +80,16 @@ public interface Match<C, V>
     /**
      * Append 'default' clause to the end of this match expression.
      *
+     * @param val default value
+     * @return 'default' attached match expression
+     */
+    default Function<C, V> defaults(final V val) {
+        return this.defaults(() -> val);
+    }
+
+    /**
+     * Append 'default' clause to the end of this match expression.
+     *
      * @param f default value supplier
      * @return 'default' attached match expression
      */
@@ -84,7 +104,7 @@ public interface Match<C, V>
      * @return 'default' attached match expression
      */
     default Function<C, V> defaults(final Function<? super C, ? extends V> f) {
-        return c -> this.apply(c).orElseGet(() -> f.apply(c));
+        return x -> this.apply(x).orElseGet(() -> f.apply(x));
     }
 
     /**
@@ -96,6 +116,24 @@ public interface Match<C, V>
      */
     interface When<C, V>
         extends Predicate<C>, Function<C, V> {
+
+        static <C, V> When<C, V> defaults(final Supplier<? extends V> expr) {
+            return defaults(x -> expr.get());
+        }
+
+        static <C, V> When<C, V> defaults(final Function<? super C, ? extends V> expr) {
+            return of(x -> true, x -> expr.apply(x));
+        }
+
+        static <C, V> When<C, V> failure(final Supplier<? extends RuntimeException> expr) {
+            return failure(x -> expr.get());
+        }
+
+        static <C, V> When<C, V> failure(final Function<? super C, ? extends RuntimeException> expr) {
+            return of(x -> true, x -> {
+                throw expr.apply(x);
+            });
+        }
 
         static <C, V> When<C, V> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
             return of(pred, x -> expr.get());
