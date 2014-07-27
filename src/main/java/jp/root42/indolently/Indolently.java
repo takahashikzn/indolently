@@ -894,42 +894,102 @@ public class Indolently {
         return map;
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static BoolRef ref(final boolean val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static IntRef ref(final int val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static LongRef ref(final long val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static DoubleRef ref(final double val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static FloatRef ref(final float val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static ShortRef ref(final short val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static ByteRef ref(final byte val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static CharRef ref(final char val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static <T> Ref<T> ref(final T val) {
         return ValueReference.of(val);
     }
 
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
     public static <T extends Serializable> SerializableRef<T> ref(final T val) {
         return ValueReference.of(val);
     }
