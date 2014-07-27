@@ -27,7 +27,7 @@ import jp.root42.indolently.ref.Ref;
  * @author takahashikzn
  */
 public interface Generator<T>
-    extends Iter<T> {
+    extends Siter<T> {
 
     /**
      * send stop signal.

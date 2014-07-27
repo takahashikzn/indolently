@@ -15,8 +15,8 @@ package jp.root42.indolently;
 
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 
 /**
@@ -68,11 +68,11 @@ public interface Sset<T>
      * Map operation.
      * Map value to another type value.
      *
-     * @param <M> mapped value type
+     * @param <R> mapped value type
      * @param f function
      * @return newly constructed set which contains converted values
      */
-    default <M> Sset<M> map(final Function<? super T, ? extends M> f) {
+    default <R> Sset<R> map(final Function<? super T, ? extends R> f) {
         return this.map((idx, val) -> f.apply(val));
     }
 
@@ -80,13 +80,13 @@ public interface Sset<T>
      * Map operation.
      * Map value to another type value.
      *
-     * @param <M> mapped value type
+     * @param <R> mapped value type
      * @param f function. first argument is loop index.
      * @return newly constructed set which contains converted values
      */
-    default <M> Sset<M> map(final BiFunction<Integer, ? super T, ? extends M> f) {
+    default <R> Sset<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
 
-        final Sset<M> rslt = Indolently.set();
+        final Sset<R> rslt = Indolently.set();
 
         int i = 0;
         for (final T val : this) {
@@ -97,13 +97,12 @@ public interface Sset<T>
     }
 
     @Override
-    default Sset<T> filter(final BiPredicate<Integer, ? super T> f) {
+    default Sset<T> filter(final Predicate<? super T> f) {
 
         final Sset<T> rslt = Indolently.set();
 
-        int i = 0;
         for (final T val : this) {
-            if (f.test(i++, val)) {
+            if (f.test(val)) {
                 rslt.add(val);
             }
         }

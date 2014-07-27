@@ -166,13 +166,16 @@ public class IndolentlyTest {
     }
 
     /**
-     * {@link Indolently#list(Iterable, Predicate, Function)}
+     * {@link Siter#filter(Predicate)} / {@link Siter#map(Function)}
      */
     @Test
     public void testListComprehension() {
 
-        assertThat(list(range(0, 100), x -> (x <= 10) && ((x % 2) == 0), x -> x)) //
-            .isEqualTo(range(0, 10, 2).list());
+        assertThat(range(0, 100) //
+            .filter(x -> (x <= 10) && ((x % 2) == 0)) //
+            .map(x -> "" + x) //
+            .list()) //
+            .isEqualTo(range(0, 10, 2).list().map(x -> "" + x));
     }
 
     /**

@@ -1,5 +1,5 @@
 #FindBugs User Preferences
-#Sun Jul 20 23:04:00 GMT+09:00 2014
+#Sun Jul 27 22:52:58 GMT+09:00 2014
 cloud_id=edu.umd.cs.findbugs.cloud.doNothingCloud
 detectorAbnormalFinallyBlockReturn=AbnormalFinallyBlockReturn|true
 detectorAbstractClassEmptyMethods=AbstractClassEmptyMethods|false
@@ -209,7 +209,7 @@ detectorSynchronizationOnSharedBuiltinConstant=SynchronizationOnSharedBuiltinCon
 detectorSynchronizeAndNullCheckField=SynchronizeAndNullCheckField|true
 detectorSynchronizeOnClassLiteralNotGetClass=SynchronizeOnClassLiteralNotGetClass|true
 detectorSynchronizingOnContentsOfFieldToProtectField=SynchronizingOnContentsOfFieldToProtectField|true
-detectorTailRecursion=TailRecursion|true
+detectorTailRecursion=TailRecursion|false
 detectorTristateBooleanPattern=TristateBooleanPattern|true
 detectorURLProblems=URLProblems|true
 detectorUnboundMethodTemplateParameter=UnboundMethodTemplateParameter|true
