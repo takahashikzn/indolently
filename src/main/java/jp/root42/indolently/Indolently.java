@@ -271,23 +271,37 @@ public class Indolently {
             () -> prog1(() -> (int) cur.val, () -> cur.val += step));
     }
 
+    /**
+     * evaluate following forms then return evaluation result of first expressions.
+     *
+     * @param first evaluation result of this expression
+     * @param forms evaluation target forms. argument is evaluation result of {@code first}.
+     * @return first expression evaluation result
+     */
     @SafeVarargs
-    public static <T> T prog1(final Supplier<? extends T> expr, final Consumer<? super T>... forms) {
+    public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
-        final T rslt = expr.get();
+        final T val = first.get();
 
-        list(forms).each(c -> c.accept(rslt));
+        list(forms).each(f -> f.accept(val));
 
-        return rslt;
+        return val;
     }
 
-    public static <T> T prog1(final Supplier<? extends T> expr, final Closure... forms) {
+    /**
+     * evaluate following forms then return first expression evaluation result.
+     *
+     * @param first evaluation result of this expression
+     * @param forms evaluation target forms
+     * @return first expression evaluation result
+     */
+    public static <T> T prog1(final Supplier<? extends T> first, final Closure... forms) {
 
-        final T rslt = expr.get();
+        final T val = first.get();
 
-        list(forms).each(c -> c.perform());
+        list(forms).each(f -> f.perform());
 
-        return rslt;
+        return val;
     }
 
     public static <C, V> When<C, Optional<V>> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
