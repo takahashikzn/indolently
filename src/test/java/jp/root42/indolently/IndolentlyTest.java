@@ -53,6 +53,31 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
+     * {@link Indolently#empty(Iterable)}
+     *
+     * @param desc description
+     * @param expected expected value
+     * @param val test value
+     */
+    @Parameters
+    @Test
+    public void testEmpty(final String desc, final boolean expected, final Iterable<?> val) {
+
+        assertThat(empty(val)).as(desc).isEqualTo(expected);
+    }
+
+    static List<Object[]> parametersForTestEmpty() {
+
+        return list( //
+            oarray("null", true, null) //
+            , oarray("empty collection", true, list()) //
+            , oarray("non empty collection", false, list(0)) //
+            , oarray("empty iterable", true, iterator(() -> false, () -> 0)) //
+            , oarray("non empty iterable", false, iterator(() -> true, () -> 1)) //
+        );
+    }
+
+    /**
      * {@link Indolently#match(When...)}
      */
     @Test
