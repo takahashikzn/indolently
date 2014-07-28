@@ -16,7 +16,7 @@ package jp.root42.indolently;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import jp.root42.indolently.Functions.FuncSpec;
+import jp.root42.indolently.Functional.FuncSpec;
 import jp.root42.indolently.function.TriFunction;
 
 import junitparams.JUnitParamsRunner;
@@ -24,23 +24,23 @@ import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static jp.root42.indolently.Functions.*;
+import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterations.*;
+import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
 
 
 /**
- * A test class for {@link Functions}.
+ * A test class for {@link Functional}.
  *
  * @author takahashikzn
  * @version $Id$
  */
 @RunWith(JUnitParamsRunner.class)
-public class FunctionsTest {
+public class FunctionalTest {
 
     /**
-     * {@link Functions#function(TriFunction)}
+     * {@link Functional#function(TriFunction)}
      */
     @Test
     public void testListComprehension() {
@@ -64,7 +64,7 @@ public class FunctionsTest {
     }
 
     /**
-     * {@link Functions#function(TriFunction)}
+     * {@link Functional#function(TriFunction)}
      */
     @Test
     public void testFunction() {

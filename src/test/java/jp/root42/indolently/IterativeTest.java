@@ -24,24 +24,24 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static jp.root42.indolently.Functions.*;
+import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterations.*;
+import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 
 /**
- * A test class for {@link Iterations}.
+ * A test class for {@link Iterative}.
  *
  * @author takahashikzn
  * @version $Id$
  */
 @RunWith(JUnitParamsRunner.class)
-public class IterationsTest {
+public class IterativeTest {
 
     /**
-     * {@link Iterations#generator(Supplier)}
+     * {@link Iterative#generator(Supplier)}
      */
     @Test
     public void testGenerator() {
@@ -60,7 +60,7 @@ public class IterationsTest {
     }
 
     /**
-     * [@link {@link Iterations#iterator(Supplier...)}
+     * [@link {@link Iterative#iterator(Supplier...)}
      */
     @Test
     public void testIterator() {
@@ -90,7 +90,7 @@ public class IterationsTest {
     }
 
     /**
-     * {@link Iterations#sequence(int)}
+     * {@link Iterative#sequence(int)}
      */
     @Test
     public void testSequence() {
@@ -132,7 +132,7 @@ public class IterationsTest {
     }
 
     /**
-     * {@link Iterations#range(int, int, int)}
+     * {@link Iterative#range(int, int, int)}
      *
      * @param desc description
      * @param expected expected value

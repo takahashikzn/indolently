@@ -34,9 +34,9 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 @SuppressWarnings("javadoc")
-public class Functions {
+public class Functional {
 
-    protected Functions() {
+    protected Functional() {
     }
 
     public static <T, R> Supplier<R> curry(final Function<? super T, ? extends R> f, final T t) {

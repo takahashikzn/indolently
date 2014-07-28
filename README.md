@@ -38,10 +38,10 @@ How to use
 =================
 
 ```java
-import static jp.root42.indolently.Expressions.*;
-import static jp.root42.indolently.Functions.*;
+import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterations.*;
+import static jp.root42.indolently.Iterative.*;
 
 
 final Map<String, Integer> shortMapDecl = map(); // equivalent to "new HashMap<>()"
@@ -123,7 +123,7 @@ int sumOfRange(final int from, final int to) {
     )).reduce((l, r) -> l + r).get();
 }
 
-// equivalent to range(-2, 5).list().reduce((l, r) -> l + r).get() => 12
+// equivalent to range(-2, 5).reduce((l, r) -> l + r).get() => 12
 Systme.out.println(sumOfRange(-2, 5));
 
 
@@ -131,7 +131,7 @@ Systme.out.println(sumOfRange(-2, 5));
 final Function<Integer, Integer> fib = function(
     (Function<Integer, Integer> self, Integer x) ->
         (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
-    , new FunctionSpec().memoize(true));
+    , new FuncSpec().memoize(true));
 
 // print list of first 42nd fibonacci numbers
 System.out.println(

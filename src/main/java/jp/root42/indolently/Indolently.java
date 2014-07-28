@@ -43,7 +43,7 @@ import jp.root42.indolently.ref.Tuple2;
 import jp.root42.indolently.ref.Tuple3;
 import jp.root42.indolently.ref.ValueReference;
 
-import static jp.root42.indolently.Expressions.*;
+import static jp.root42.indolently.Expressive.*;
 
 
 /**
