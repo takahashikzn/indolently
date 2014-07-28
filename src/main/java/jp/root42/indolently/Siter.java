@@ -132,13 +132,13 @@ public interface Siter<T>
     default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
         final BiFunction<? super R, ? super R, ? extends R> fr) {
 
-        R rem = fm.apply(next());
-
-        for (final T val : this) {
-            rem = fr.apply(rem, fm.apply(val));
+        if (!this.hasNext()) {
+            return Optional.empty();
         }
 
-        return Optional.ofNullable(rem);
+        return this.mapred( //
+            Optional.ofNullable(fm.apply(this.next())), //
+            (final R rem, final T val) -> fr.apply(rem, fm.apply(val)));
     }
 
     @Override
