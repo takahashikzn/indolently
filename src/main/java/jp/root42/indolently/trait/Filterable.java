@@ -11,24 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.trait;
+
+import java.util.function.Predicate;
+
 
 /**
- * Express this instance can be identical.
- *
- * @param <SELF> self type
+ * @param <T> -
+ * @param <SELF> -
  * @author takahashikzn
  */
-public interface Identical<SELF extends Identical<SELF>> {
+public interface Filterable<T, SELF extends Filterable<T, SELF>> {
 
     /**
-     * return this instance.
+     * Filter operation: returns values which satisfying condition.
+     * This operation is constructive.
      *
-     * @return {@code this} instance.
+     * @param f condition
+     * @return new filtered collection
      */
-    default SELF identity() {
-        @SuppressWarnings("unchecked")
-        final SELF self = (SELF) this;
-        return self;
-    }
+    SELF filter(Predicate<? super T> f);
 }

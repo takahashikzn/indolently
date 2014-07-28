@@ -17,10 +17,15 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.trait.EachAware;
+import jp.root42.indolently.trait.Filterable;
+import jp.root42.indolently.trait.Reducible;
 
 
 /**
@@ -31,7 +36,7 @@ import java.util.function.Supplier;
  * @author takahashikzn
  */
 public interface Siter<T>
-    extends Supplier<T>, Iterable<T>, Iterator<T>, EachAware<T, Siter<T>>, Filterable<T, Siter<T>> {
+    extends Supplier<T>, Iterable<T>, Iterator<T>, EachAware<T, Siter<T>>, Filterable<T, Siter<T>>, Reducible<T> {
 
     @Override
     default T get() {
@@ -121,6 +126,32 @@ public interface Siter<T>
                 }
             }
         };
+    }
+
+    @Override
+    default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
+        final BiFunction<? super R, ? super R, ? extends R> fr) {
+
+        R rem = fm.apply(next());
+
+        for (final T val : this) {
+            rem = fr.apply(rem, fm.apply(val));
+        }
+
+        return Optional.ofNullable(rem);
+    }
+
+    @Override
+    default <R> Optional<R> mapred(final Optional<? extends R> initial,
+        final BiFunction<? super R, ? super T, ? extends R> f) {
+
+        R rem = initial.isPresent() ? initial.get() : null;
+
+        for (final T val : this) {
+            rem = f.apply(rem, val);
+        }
+
+        return Optional.ofNullable(rem);
     }
 
     /**
