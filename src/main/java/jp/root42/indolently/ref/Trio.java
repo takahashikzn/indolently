@@ -15,22 +15,22 @@ package jp.root42.indolently.ref;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.BiConsumer;
 
 import static jp.root42.indolently.Indolently.*;
 
 
 /**
- * Two element tuple.
+ * Three element tuple.
  *
  * @param <F> 1st element type
  * @param <S> 2nd element type
+ * @param <T> 3rd element type
  * @author takahashikzn
  */
-public class Tuple2<F, S>
-    implements Serializable, BiConsumer<F, S> {
+public class Trio<F, S, T>
+    implements Serializable {
 
-    private static final long serialVersionUID = 4058877644750960140L;
+    private static final long serialVersionUID = 1387913510813532191L;
 
     /** first element */
     public F fst;
@@ -38,11 +38,8 @@ public class Tuple2<F, S>
     /** second element */
     public S snd;
 
-    @Override
-    public void accept(final F fst, final S snd) {
-        this.fst = fst;
-        this.snd = snd;
-    }
+    /** third element */
+    public T trd;
 
     /**
      * get 1st element
@@ -59,7 +56,7 @@ public class Tuple2<F, S>
      * @param fst 1st element
      * @return {@code this}
      */
-    public Tuple2<F, S> fst(final F fst) {
+    public Trio<F, S, T> fst(final F fst) {
         this.fst = fst;
         return this;
     }
@@ -79,9 +76,42 @@ public class Tuple2<F, S>
      * @param snd 2st element
      * @return {@code this}
      */
-    public Tuple2<F, S> snd(final S snd) {
+    public Trio<F, S, T> snd(final S snd) {
         this.snd = snd;
         return this;
+    }
+
+    /**
+     * get 3rt element
+     *
+     * @return 1st element
+     */
+    public T trd() {
+        return this.trd;
+    }
+
+    /**
+     * set 3rd element
+     *
+     * @param trd 3rd element
+     * @return {@code this}
+     */
+    public Trio<F, S, T> trd(final T trd) {
+        this.trd = trd;
+        return this;
+    }
+
+    /**
+     * expand to all combination of two element tuples.
+     *
+     * @return all combination of two element tuples
+     */
+    public Trio<Pair<F, S>, Pair<S, T>, Pair<F, T>> expand() {
+
+        return tuple( //
+            tuple(this.fst, this.snd) //
+            , tuple(this.snd, this.trd) //
+            , tuple(this.fst, this.trd));
     }
 
     /**
@@ -89,13 +119,13 @@ public class Tuple2<F, S>
      *
      * @return newly constructed reversed tuple
      */
-    public Tuple2<S, F> reverse() {
-        return tuple(this.snd, this.fst);
+    public Trio<T, S, F> reverse() {
+        return tuple(this.trd, this.snd, this.fst);
     }
 
     @Override
     public int hashCode() {
-        return this.getClass().hashCode() ^ Objects.hash(this.fst, this.snd) ^ 42;
+        return this.getClass().hashCode() ^ Objects.hash(this.fst, this.snd, this.trd) ^ 42;
     }
 
     @Override
@@ -104,17 +134,17 @@ public class Tuple2<F, S>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Tuple2)) {
+        } else if (!(o instanceof Trio)) {
             return false;
         }
 
-        final Tuple2<?, ?> that = (Tuple2<?, ?>) o;
+        final Trio<?, ?, ?> that = (Trio<?, ?, ?>) o;
 
-        return equiv(this.fst, that.fst) && equiv(this.snd, that.snd);
+        return equiv(this.fst, that.fst) && equiv(this.snd, that.snd) && equiv(this.trd, that.trd);
     }
 
     @Override
     public String toString() {
-        return String.format("(%s, %s)", this.fst, this.snd);
+        return String.format("(%s, %s, %s)", this.fst, this.snd, this.trd);
     }
 }

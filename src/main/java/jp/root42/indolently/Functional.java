@@ -26,8 +26,8 @@ import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
 import jp.root42.indolently.ref.Ref;
-import jp.root42.indolently.ref.Tuple2;
-import jp.root42.indolently.ref.Tuple3;
+import jp.root42.indolently.ref.Pair;
+import jp.root42.indolently.ref.Trio;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -72,11 +72,11 @@ public class Functional {
 
     public static <T, U, R> BiFunction<T, U, R> memoize(final BiFunction<? super T, ? super U, ? extends R> f) {
 
-        final Smap<Tuple2<T, U>, R> memo = map();
+        final Smap<Pair<T, U>, R> memo = map();
 
         return (x, y) -> {
 
-            final Tuple2<T, U> key = tuple(x, y);
+            final Pair<T, U> key = tuple(x, y);
 
             return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y))).get(key);
         };
@@ -85,11 +85,11 @@ public class Functional {
     public static <T, U, V, R> TriFunction<T, U, V, R> memoize(
         final TriFunction<? super T, ? super U, ? super V, ? extends R> f) {
 
-        final Smap<Tuple3<T, U, V>, R> memo = map();
+        final Smap<Trio<T, U, V>, R> memo = map();
 
         return (x, y, z) -> {
 
-            final Tuple3<T, U, V> key = tuple(x, y, z);
+            final Trio<T, U, V> key = tuple(x, y, z);
 
             return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y, z))).get(key);
         };
