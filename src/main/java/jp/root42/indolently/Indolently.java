@@ -39,8 +39,8 @@ import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.LongRef;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
-import jp.root42.indolently.ref.Tuple2;
-import jp.root42.indolently.ref.Tuple3;
+import jp.root42.indolently.ref.Pair;
+import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
 
 import static jp.root42.indolently.Expressive.*;
@@ -798,8 +798,8 @@ public class Indolently {
      * @param snd 2nd element
      * @return tuple
      */
-    public static <F, S> Tuple2<F, S> tuple(final F fst, final S snd) {
-        return new Tuple2<F, S>().fst(fst).snd(snd);
+    public static <F, S> Pair<F, S> tuple(final F fst, final S snd) {
+        return new Pair<F, S>().fst(fst).snd(snd);
     }
 
     /**
@@ -810,8 +810,8 @@ public class Indolently {
      * @param trd 3rd element
      * @return tuple
      */
-    public static <F, S, T> Tuple3<F, S, T> tuple(final F fst, final S snd, final T trd) {
-        return new Tuple3<F, S, T>().fst(fst).snd(snd).trd(trd);
+    public static <F, S, T> Trio<F, S, T> tuple(final F fst, final S snd, final T trd) {
+        return new Trio<F, S, T>().fst(fst).snd(snd).trd(trd);
     }
 
     /**
