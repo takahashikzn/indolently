@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * @param <SELF> -
  * @author takahashikzn
  */
-public interface EachAware<T, SELF extends EachAware<T, SELF>> {
+public interface Loopable<T, SELF extends Loopable<T, SELF>> {
 
     /**
      * internal iterator.

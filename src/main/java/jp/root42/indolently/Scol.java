@@ -24,10 +24,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import jp.root42.indolently.ref.IntRef;
-import jp.root42.indolently.trait.EachAware;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
+import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Reducible;
 
 import static jp.root42.indolently.Indolently.*;
@@ -44,7 +44,7 @@ import static jp.root42.indolently.Indolently.*;
  * @see Sset
  */
 public interface Scol<T, SELF extends Scol<T, SELF>>
-    extends Collection<T>, Freezable<SELF>, Identical<SELF>, EachAware<T, SELF>, Filterable<T, SELF>, Reducible<T> {
+    extends Collection<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>, Filterable<T, SELF>, Reducible<T> {
 
     /**
      * add value then return this instance.
