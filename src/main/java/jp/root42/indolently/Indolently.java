@@ -139,7 +139,7 @@ public class Indolently {
      * @see #list(Object...)
      */
     @SafeVarargs
-    public static <T> Slist<T> listof(final T... elems) {
+    public static <T> Slist<T> listOf(final T... elems) {
         return list(elems);
     }
 
@@ -671,7 +671,7 @@ public class Indolently {
      * @see #set(Object...)
      */
     @SafeVarargs
-    public static <T> Sset<T> setof(final T... elems) {
+    public static <T> Sset<T> setOf(final T... elems) {
         return set(elems);
     }
 
@@ -1074,6 +1074,11 @@ public class Indolently {
             @Override
             public T next() {
                 return iter.next();
+            }
+
+            @Override
+            public void remove() {
+                iter.remove();
             }
         };
     }

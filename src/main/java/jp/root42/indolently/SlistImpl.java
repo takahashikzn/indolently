@@ -43,6 +43,11 @@ class SlistImpl<T>
         this.store = store;
     }
 
+    @Override
+    public Siter<T> iterator() {
+        return Indolently.wrap(this.store.iterator());
+    }
+
     // keep original order
     @Override
     public Sset<T> set() {

@@ -16,7 +16,6 @@ package jp.root42.indolently;
 import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 
@@ -53,8 +52,8 @@ class SsetImpl<T>
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return this.store.iterator();
+    public Siter<T> iterator() {
+        return Indolently.wrap(this.store.iterator());
     }
 
     @Override

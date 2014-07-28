@@ -136,6 +136,9 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
         return this.reduce((rem, val) -> val).get();
     }
 
+    @Override
+    Siter<T> iterator();
+
     /**
      * get rest elements of this collection.
      *
