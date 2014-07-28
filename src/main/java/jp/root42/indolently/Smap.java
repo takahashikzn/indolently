@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -38,7 +39,7 @@ import jp.root42.indolently.trait.Identical;
  */
 public interface Smap<K, V>
     extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>>, EachAware<V, Smap<K, V>>,
-    Filterable<V, Smap<K, V>> {
+    Filterable<V, Smap<K, V>>, Iterable<Entry<K, V>> {
 
     /**
      * Wrap a map.
@@ -143,6 +144,11 @@ public interface Smap<K, V>
         return Indolently.list(this.values());
     }
 
+    @Override
+    default Siter<Entry<K, V>> iterator() {
+        return Indolently.wrap(this.entrySet().iterator());
+    }
+
     /**
      * construct new map which having keys you specify.
      * a key which does not exist is ignored.
@@ -239,7 +245,7 @@ public interface Smap<K, V>
 
         final Smap<K, V> rslt = Indolently.map();
 
-        for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
+        for (final Entry<K, V> e : this) {
 
             final K key = e.getKey();
             final V val = e.getValue();

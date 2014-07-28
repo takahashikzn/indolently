@@ -51,7 +51,6 @@ import static org.junit.Assert.*;
  * @author takahashikzn
  * @version $Id$
  */
-@SuppressWarnings("serial")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
 
@@ -487,18 +486,20 @@ public class IndolentlyTest {
     @Test
     public void testWrapVarArgs() {
 
-        assertThat(map()) //
+        assertThat((Map<?, ?>) map()) //
             .isEqualTo(new HashMap<>());
 
-        assertThat(map("key", "value")).as("single key/value pair") //
+        assertThat((Map<String, String>) map("key", "value")).as("single key/value pair") //
             .isEqualTo(new HashMap<Object, Object>() {
+                private static final long serialVersionUID = 2171800138194558313L;
                 {
                     this.put("key", "value");
                 }
             });
 
-        assertThat(map("int", 1, "string", "abc")).as("compound typed map") //
+        assertThat((Map<String, ?>) map("int", 1, "string", "abc")).as("compound typed map") //
             .isEqualTo(new HashMap<Object, Object>() {
+                private static final long serialVersionUID = 6192281449667726402L;
                 {
                     this.put("int", 1);
                     this.put("string", "abc");
@@ -510,9 +511,10 @@ public class IndolentlyTest {
             , "string", "abc" //
             , "level1", map( //
                 "level2", map( //
-                    "level3", list(map("level4", 42))))).freeze();
+                    "level3", listOf(map("level4", 42))))).freeze();
 
         final Map<String, Object> expectedNestedMap = new HashMap<String, Object>() {
+            private static final long serialVersionUID = 7482761660213570745L;
             {
                 final Map<String, Object> level1 = new HashMap<>();
                 final Map<String, Object> level2 = new HashMap<>();
@@ -529,7 +531,7 @@ public class IndolentlyTest {
             }
         };
 
-        assertThat(actualNestedMap).as("nested structure") //
+        assertThat((Map<?, ?>) actualNestedMap).as("nested structure") //
             .isEqualTo(expectedNestedMap);
     }
 
@@ -541,17 +543,17 @@ public class IndolentlyTest {
 
         final Smap<String, Smap<String, Slist<Sset<Integer>>>> frozen = map( //
             "level1", map( //
-                "level2", listof(set(42)))).freeze();
+                "level2", listOf(set(42)))).freeze();
 
         try {
-            frozen.put("level1.1", map("level2.1", listof(set(43))));
+            frozen.put("level1.1", map("level2.1", listOf(set(43))));
             fail();
         } catch (final UnsupportedOperationException e) {
             assert true;
         }
 
         try {
-            frozen.get("level1").put("level2.1", listof(set(43)));
+            frozen.get("level1").put("level2.1", listOf(set(43)));
             fail();
         } catch (final UnsupportedOperationException e) {
             assert true;
