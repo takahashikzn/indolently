@@ -18,17 +18,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static jp.root42.indolently.Expressions.*;
+import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
 
 
 /**
  * @author takahashikzn
  */
-public class Iterations {
+public class Iterative {
 
     /** non private for subtyping. */
-    protected Iterations() {
+    protected Iterative() {
     }
 
     /**

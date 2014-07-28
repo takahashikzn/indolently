@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressions.Match;
-import jp.root42.indolently.Expressions.Match.When;
+import jp.root42.indolently.Expressive.Match;
+import jp.root42.indolently.Expressive.Match.When;
 import jp.root42.indolently.ref.IntRef;
 
 import junitparams.JUnitParamsRunner;
@@ -27,24 +27,24 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static jp.root42.indolently.Expressions.*;
+import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterations.*;
+import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 
 /**
- * A test class for {@link Expressions}.
+ * A test class for {@link Expressive}.
  *
  * @author takahashikzn
  * @version $Id$
  */
 @RunWith(JUnitParamsRunner.class)
-public class ExpressionsTest {
+public class ExpressiveTest {
 
     /**
-     * {@link Expressions#match(When...)}
+     * {@link Expressive#match(When...)}
      */
     @Test
     public void testMatch() {
@@ -60,7 +60,7 @@ public class ExpressionsTest {
     }
 
     /**
-     * very complicated type inference test of {@link Expressions#match(When...)}.
+     * very complicated type inference test of {@link Expressive#match(When...)}.
      *
      * @param expected expected value
      * @param from range from

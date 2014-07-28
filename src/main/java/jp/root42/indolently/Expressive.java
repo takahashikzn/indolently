@@ -20,7 +20,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressions.Match.When;
+import jp.root42.indolently.Expressive.Match.When;
+import jp.root42.indolently.function.Closure;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -29,10 +30,10 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 @SuppressWarnings("javadoc")
-public class Expressions {
+public class Expressive {
 
     /** non private for subtyping. */
-    protected Expressions() {
+    protected Expressive() {
     }
 
     /**

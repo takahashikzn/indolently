@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterations.*;
+import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
