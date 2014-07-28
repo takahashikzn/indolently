@@ -47,6 +47,17 @@ public class ShortRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public ShortRef set(final short val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Short get() {
         return this.val;

@@ -51,6 +51,17 @@ public class IntRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public IntRef set(final int val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Integer get() {
         return this.val;

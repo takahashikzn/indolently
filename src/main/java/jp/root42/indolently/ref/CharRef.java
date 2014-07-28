@@ -47,6 +47,17 @@ public class CharRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public CharRef set(final char val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Character get() {
         return this.val;
