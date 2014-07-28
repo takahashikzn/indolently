@@ -19,7 +19,7 @@ package jp.root42.indolently.function;
  * @author takahashikzn
  */
 @FunctionalInterface
-public interface Closure {
+public interface Procedure {
 
     /**
      * Perform this operation.
