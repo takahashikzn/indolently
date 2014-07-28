@@ -1057,6 +1057,9 @@ public class Indolently {
      * @return wrapped iterator
      */
     public static <T> Siter<T> wrap(final Iterator<? extends T> iter) {
+        if (iter == null) {
+            return null;
+        }
 
         if (iter instanceof Siter) {
             @SuppressWarnings("unchecked")
