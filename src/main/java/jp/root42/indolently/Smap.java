@@ -23,10 +23,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import jp.root42.indolently.trait.EachAware;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
+import jp.root42.indolently.trait.Loopable;
 
 
 /**
@@ -38,7 +38,7 @@ import jp.root42.indolently.trait.Identical;
  * @author takahashikzn
  */
 public interface Smap<K, V>
-    extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>>, EachAware<V, Smap<K, V>>,
+    extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>>, Loopable<V, Smap<K, V>>,
     Filterable<V, Smap<K, V>>, Iterable<Entry<K, V>> {
 
     /**

@@ -23,8 +23,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.trait.EachAware;
 import jp.root42.indolently.trait.Filterable;
+import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Reducible;
 
 
@@ -36,7 +36,7 @@ import jp.root42.indolently.trait.Reducible;
  * @author takahashikzn
  */
 public interface Siter<T>
-    extends Supplier<T>, Iterable<T>, Iterator<T>, EachAware<T, Siter<T>>, Filterable<T, Siter<T>>, Reducible<T> {
+    extends Supplier<T>, Iterable<T>, Iterator<T>, Loopable<T, Siter<T>>, Filterable<T, Siter<T>>, Reducible<T> {
 
     @Override
     default T get() {
