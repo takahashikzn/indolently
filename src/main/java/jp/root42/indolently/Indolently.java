@@ -383,7 +383,9 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> Slist<T> sort(final List<? extends T> elems) {
-        return list(new TreeSet<>(elems));
+        final Slist<T> rslt = list(elems);
+        Collections.sort(rslt);
+        return rslt;
     }
 
     public static <K, V> Smap<K, V> freeze(final Map<? extends K, ? extends V> map) {
