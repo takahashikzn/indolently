@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match.When;
-import jp.root42.indolently.function.Closure;
+import jp.root42.indolently.function.Procedure;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -60,7 +60,7 @@ public class Expressive {
      * @param forms evaluation target forms
      * @return first expression evaluation result
      */
-    public static <T> T prog1(final Supplier<? extends T> first, final Closure... forms) {
+    public static <T> T prog1(final Supplier<? extends T> first, final Procedure... forms) {
 
         final T val = first.get();
 
