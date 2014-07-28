@@ -38,7 +38,10 @@ How to use
 =================
 
 ```java
+import static jp.root42.indolently.Expressions.*;
+import static jp.root42.indolently.Functions.*;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Iterations.*;
 
 
 final Map<String, Integer> shortMapDecl = map(); // equivalent to "new HashMap<>()"
@@ -120,7 +123,25 @@ int sumOfRange(final int from, final int to) {
     )).reduce((l, r) -> l + r).get();
 }
 
-Systme.out.println(sumOfRange(-2, 5)); // equivalent to range(-2, 5).list().reduce((l, r) -> l + r).get() => 12
+// equivalent to range(-2, 5).list().reduce((l, r) -> l + r).get() => 12
+Systme.out.println(sumOfRange(-2, 5));
+
+
+// memoized fibonacci function
+final Function<Integer, Integer> fib = function(
+    (Function<Integer, Integer> self, Integer x) ->
+        (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
+    , new FunctionSpec().memoize(true));
+
+// print list of first 42nd fibonacci numbers
+System.out.println(
+    range(0, 42)
+    .mapred(
+        list(),
+        (rem, val) -> rem.push(fib.apply(val))
+    )
+    .get()
+);
 ```
 
 See JUnit testcase for more details.
