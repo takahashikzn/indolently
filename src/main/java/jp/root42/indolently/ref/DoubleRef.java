@@ -51,6 +51,17 @@ public class DoubleRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public DoubleRef set(final double val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Double get() {
         return this.val;

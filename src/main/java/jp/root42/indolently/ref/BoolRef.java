@@ -50,6 +50,17 @@ public class BoolRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public BoolRef set(final boolean val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Boolean get() {
         return this.val;

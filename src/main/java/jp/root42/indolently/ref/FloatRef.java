@@ -47,6 +47,17 @@ public class FloatRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public FloatRef set(final float val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Float get() {
         return this.val;

@@ -47,6 +47,17 @@ public class ByteRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public ByteRef set(final byte val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Byte get() {
         return this.val;

@@ -46,6 +46,17 @@ public class Ref<T>
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public Ref<T> set(final T val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public T get() {
         return this.val;

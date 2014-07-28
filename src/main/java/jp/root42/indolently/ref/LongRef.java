@@ -51,6 +51,17 @@ public class LongRef
         this.val = val;
     }
 
+    /**
+     * set value then return this instance.
+     *
+     * @param val value
+     * @return {@code this}
+     */
+    public LongRef set(final long val) {
+        this.val = val;
+        return this;
+    }
+
     @Override
     public Long get() {
         return this.val;
