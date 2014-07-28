@@ -31,6 +31,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.Match.When;
 import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.trait.Freezable;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

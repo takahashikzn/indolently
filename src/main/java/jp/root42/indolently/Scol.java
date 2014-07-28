@@ -24,6 +24,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.trait.EachAware;
+import jp.root42.indolently.trait.Filterable;
+import jp.root42.indolently.trait.Freezable;
+import jp.root42.indolently.trait.Identical;
+import jp.root42.indolently.trait.Reducible;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -39,7 +44,7 @@ import static jp.root42.indolently.Indolently.*;
  * @see Sset
  */
 public interface Scol<T, SELF extends Scol<T, SELF>>
-    extends Collection<T>, Freezable<SELF>, Identical<SELF>, EachAware<T, SELF>, Filterable<T, SELF> {
+    extends Collection<T>, Freezable<SELF>, Identical<SELF>, EachAware<T, SELF>, Filterable<T, SELF>, Reducible<T> {
 
     /**
      * add value then return this instance.
@@ -196,55 +201,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
         return this.filter(x -> f.test(i.val++, x));
     }
 
-    /**
-     * Reduce operation.
-     *
-     * @param f function
-     * @return result value
-     * @throws NoSuchElementException this collection is empty
-     * @see #mapred(Function, BiFunction)
-     */
-    default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
-
-        // "x -> x" lambda literal occurs compilation error on OracleJDK compiler
-        return this.mapred(Function.identity(), f);
-    }
-
-    /**
-     * Reduce operation.
-     *
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     * @see #mapred(Object, BiFunction)
-     */
-    default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.mapred(initial, f);
-    }
-
-    /**
-     * Reduce operation.
-     *
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     * @see #mapred(Optional, BiFunction)
-     */
-    default Optional<T> reduce(final Optional<? extends T> initial,
-        final BiFunction<? super T, ? super T, ? extends T> f) {
-
-        return this.mapred(initial, f);
-    }
-
-    /**
-     * Map then Reduce operation.
-     *
-     * @param <R> mapping target type
-     * @param fm mapper function
-     * @param fr reducer function
-     * @return result value
-     * @throws NoSuchElementException this collection is empty
-     */
+    @Override
     default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
         final BiFunction<? super R, ? super R, ? extends R> fr) {
 
@@ -253,26 +210,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
             (rem, val) -> fr.apply(rem, fm.apply(val)));
     }
 
-    /**
-     * Map then Reduce operation.
-     *
-     * @param <R> mapping target type
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     */
-    default <R> Optional<R> mapred(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
-        return this.mapred(Optional.ofNullable(initial), f);
-    }
-
-    /**
-     * Map then Reduce operation.
-     *
-     * @param <R> mapping target type
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     */
+    @Override
     default <R> Optional<R> mapred(final Optional<? extends R> initial,
         final BiFunction<? super R, ? super T, ? extends R> f) {
 
