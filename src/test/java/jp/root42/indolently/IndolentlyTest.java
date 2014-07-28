@@ -18,19 +18,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
-import jp.root42.indolently.Match.When;
-import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.trait.Freezable;
 
 import junitparams.JUnitParamsRunner;
@@ -41,6 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Iterations.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
@@ -77,154 +71,6 @@ public class IndolentlyTest {
             , oarray("empty iterable", true, iterator(() -> false, () -> 0)) //
             , oarray("non empty iterable", false, iterator(() -> true, () -> 1)) //
         );
-    }
-
-    /**
-     * {@link Indolently#match(When...)}
-     */
-    @Test
-    public void testMatch() {
-
-        final Function<Integer, String> f1 = match( //
-            when((final Integer x) -> x == 1, () -> "one") //
-            , whenEq(2, "two") //
-            ).defaults(x -> "" + x);
-
-        assertThat(f1.apply(1)).isEqualTo("one");
-        assertThat(f1.apply(2)).isEqualTo("two");
-        assertThat(f1.apply(3)).isEqualTo("3");
-    }
-
-    /**
-     * very complicated type inference test of {@link Indolently#match(When...)}.
-     *
-     * @param expected expected value
-     * @param from range from
-     * @param to range to
-     * @param step range step
-     */
-    @Parameters
-    @Test
-    public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to, final int step) {
-
-        assertThat(list( //
-            iterator( //
-                ref(from), //
-                env -> match( //
-                    when((final IntRef x) -> from < to, x -> x.val <= to) //
-                    , when(x -> to < from, x -> to <= x.val) //
-                ).defaults(x -> x.val == from).apply(env), //
-                env -> match( //
-                    when((final IntRef x) -> from < to, x -> prog1( //
-                        x::get, //
-                        () -> x.val += step)) //
-                ).defaults(x -> prog1(x::get, () -> x.val -= step)).apply(env) //
-            ) //
-            )).isEqualTo(expected);
-
-        assertThat(list( //
-            iterator( //
-                ref(from), //
-                env -> match( //
-                    when((final IntRef x) -> from < to, x -> x.val <= to) //
-                    , when(x -> to < from, x -> to <= x.val) //
-                ).defaults(x -> x.val == from).apply(env), //
-                env -> match( //
-                    when((final IntRef x) -> from < to, x -> prog1( //
-                        x::get, //
-                        () -> x.val += step)) //
-                ).defaults(x -> prog1(x::get, () -> x.val -= step)).apply(env) //
-            )).reduce((l, r) -> l + r)).isEqualTo(list(expected).reduce((l, r) -> l + r));
-    }
-
-    static List<Object[]> parametersForTestComplicatedTypeInference() {
-
-        return list( //
-            oarray(list(1, 3, 5), 1, 6, 2) //
-            , oarray(list(3, 1, -1), 3, -1, 2) //
-            , oarray(list(1), 1, 1, 1) //
-        );
-    }
-
-    /**
-     * {@link Match#failure(Supplier)}
-     */
-    @Test
-    public void testMatchFailure() {
-
-        final Function<Integer, String> f1 = match( //
-            when((final Integer x) -> x == 1, () -> "one")//
-            , when(x -> x == 2, () -> "two") //
-            ).failure(x -> new RuntimeException("THE TEST OF " + x));
-
-        try {
-            f1.apply(42);
-            fail();
-        } catch (final RuntimeException e) {
-            assertThat(e.getMessage()).contains("THE TEST OF 42");
-        }
-    }
-
-    /**
-     * {@link Siter#filter(Predicate)} / {@link Siter#map(Function)}
-     */
-    @Test
-    public void testListComprehension() {
-
-        assertThat(range(0, 100) //
-            .filter(x -> (x <= 10) && ((x % 2) == 0)) //
-            .map(x -> "" + x) //
-            .list()) //
-            .isEqualTo(range(0, 10, 2).list().map(x -> "" + x));
-    }
-
-    /**
-     * {@link Indolently#generator(Supplier)}
-     */
-    @Test
-    public void testGenerator() {
-
-        final Slist<Integer> ints = list();
-
-        System.out.println(list(generator(ref(1), env -> (10 <= env.val) ? Generator.stop() : env.val++)));
-
-        generator( //
-            generator(ref(1), env -> (10 <= env.val) ? Generator.stop() : env.val++)) //
-            .forEach(consumerOf((final Integer x) -> ints.add(x)) //
-                .andThen(x -> {
-                }));
-
-        assertThat(ints.reduce((x, y) -> x + y).get()).isEqualTo(55);
-    }
-
-    /**
-     * [@link {@link Indolently#iterator(Supplier...)}
-     */
-    @Test
-    public void testIterator() {
-
-        final int[] eval = { 0, 0, 0 };
-
-        final Iterator<Integer> g = iterator( //
-            () -> eval[0] = 1, //
-            () -> eval[1] = 2, //
-            () -> eval[2] = 3).iterator();
-
-        assertThat(eval).isEqualTo(parray(0, 0, 0));
-
-        assertThat(g.hasNext()).isEqualTo(true);
-        assertThat(g.next()).isEqualTo(1);
-        assertThat(eval).isEqualTo(parray(1, 0, 0));
-
-        assertThat(g.hasNext()).isEqualTo(true);
-        assertThat(g.next()).isEqualTo(2);
-        assertThat(eval).isEqualTo(parray(1, 2, 0));
-
-        assertThat(g.hasNext()).isEqualTo(true);
-        assertThat(g.next()).isEqualTo(3);
-        assertThat(eval).isEqualTo(parray(1, 2, 3));
-
-        assertThat(g.hasNext()).isEqualTo(false);
     }
 
     /**
@@ -386,48 +232,6 @@ public class IndolentlyTest {
             , oarray("completely equivalent", set(), set(1, 2, 3), set(1, 2, 3)) //
             , oarray("empty", set(), set(), set()) //
         );
-    }
-
-    /**
-     * {@link Indolently#sequence(int)}
-     */
-    @Test
-    public void testSequence() {
-
-        final Iterator<Integer> i = sequence(Integer.MAX_VALUE - 1).iterator();
-
-        assertTrue(i.hasNext());
-        assertThat(i.next()).isEqualTo(Integer.MAX_VALUE - 1);
-        assertTrue(i.hasNext());
-        assertThat(i.next()).isEqualTo(Integer.MAX_VALUE);
-
-        assertFalse(i.hasNext());
-
-        try {
-            i.next();
-            fail();
-        } catch (final NoSuchElementException e) {
-            assert true;
-        }
-    }
-
-    /**
-     * internal iterators.
-     */
-    @Test
-    public void testInternalIterators() {
-
-        final Slist<Integer> ints = list();
-
-        assertThat(range(1, 10).list() //
-            .slice(-5, 0) //
-            .map(i -> i * i) //
-            .each(i -> ints.add(i)) //
-            .reduce(0, (i, k) -> i + k).get()) //
-            .isEqualTo(330);
-
-        assertThat(ints) //
-            .isEqualTo(list(36, 49, 64, 81, 100));
     }
 
     /**
@@ -611,32 +415,5 @@ public class IndolentlyTest {
             , new Object[] { "compound typed set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } } //
             , new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } } //
             , new Object[] { "empty set", new HashSet<>(), new Object[] {} });
-    }
-
-    /**
-     * {@link Indolently#range(int, int, int)}
-     *
-     * @param desc description
-     * @param expected expected value
-     * @param from from
-     * @param to to
-     * @param step step
-     */
-    @Parameters
-    @Test
-    public void testRange(final String desc, final List<Integer> expected, final int from, final int to, final int step) {
-
-        assertThat(range(from, to, step).list()).as(desc) //
-            .isEqualTo(expected);
-    }
-
-    static List<Object[]> parametersForTestRange() {
-
-        return list( //
-            oarray("1..4 (stepping 1)", list(1, 2, 3, 4), 1, 4, 1) //
-            , oarray("4..1 (stepping 2)", list(4, 2), 4, 1, 2) //
-            , oarray("-2..2 (stepping 1)", list(-2, -1, 0, 1, 2), -2, 2, 1) //
-            , oarray("0..0 (stepping 1)", list(0), 0, 0, 1) //
-        );
     }
 }
