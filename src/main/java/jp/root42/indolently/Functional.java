@@ -22,10 +22,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.Tuple2;
+import jp.root42.indolently.ref.Tuple3;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -63,30 +65,33 @@ public class Functional {
 
     public static <T, R> Function<T, R> memoize(final Function<? super T, ? extends R> f) {
 
-        final Smap<T, R> results = map();
+        final Smap<T, R> memo = map();
 
-        return x -> {
-            if (results.containsKey(x)) {
-                return results.get(x);
-            } else {
-                return results.push(x, f.apply(x)).get(x);
-            }
-        };
+        return x -> (memo.containsKey(x) ? memo : memo.push(x, f.apply(x))).get(x);
     }
 
     public static <T, U, R> BiFunction<T, U, R> memoize(final BiFunction<? super T, ? super U, ? extends R> f) {
 
-        final Smap<Tuple2<T, U>, R> results = map();
+        final Smap<Tuple2<T, U>, R> memo = map();
 
         return (x, y) -> {
 
             final Tuple2<T, U> key = tuple(x, y);
 
-            if (results.containsKey(key)) {
-                return results.get(key);
-            } else {
-                return results.push(key, f.apply(x, y)).get(key);
-            }
+            return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y))).get(key);
+        };
+    }
+
+    public static <T, U, V, R> TriFunction<T, U, V, R> memoize(
+        final TriFunction<? super T, ? super U, ? super V, ? extends R> f) {
+
+        final Smap<Tuple3<T, U, V>, R> memo = map();
+
+        return (x, y, z) -> {
+
+            final Tuple3<T, U, V> key = tuple(x, y, z);
+
+            return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y, z))).get(key);
         };
     }
 
@@ -102,6 +107,14 @@ public class Functional {
         final BiFunction<T, U, Boolean> memoized = memoize(biFunctionOf((final T x, final U y) -> f.test(x, y)));
 
         return (x, y) -> memoized.apply(x, y);
+    }
+
+    public static <T, U, V> TriPredicate<T, U, V> memoize(final TriPredicate<? super T, ? super U, ? super V> f) {
+
+        final TriFunction<T, U, V, Boolean> memoized =
+            memoize(triFunctionOf((final T x, final U y, final V z) -> f.test(x, y, z)));
+
+        return (x, y, z) -> memoized.apply(x, y, z);
     }
 
     public static class FuncSpec
@@ -209,6 +222,11 @@ public class Functional {
         return f;
     }
 
+    public static <T, U, V> TriConsumer<? super T, ? super U, ? super V> triConsumerOf(
+        final TriConsumer<? super T, ? super U, ? super V> f) {
+        return f;
+    }
+
     public static <T, R> Function<? super T, ? extends R> functionOf(final Function<? super T, ? extends R> f) {
         return f;
     }
@@ -218,11 +236,21 @@ public class Functional {
         return f;
     }
 
+    public static <T, U, V, R> TriFunction<? super T, ? super U, ? super V, ? extends R> triFunctionOf(
+        final TriFunction<? super T, ? super U, ? super V, ? extends R> f) {
+        return f;
+    }
+
     public static <T> Predicate<? super T> predicateOf(final Predicate<? super T> f) {
         return f;
     }
 
     public static <T, U> BiPredicate<? super T, ? super U> biPredicateOf(final BiPredicate<? super T, ? super U> f) {
+        return f;
+    }
+
+    public static <T, U, V> TriPredicate<? super T, ? super U, ? super V> triPredicateOf(
+        final TriPredicate<? super T, ? super U, ? super V> f) {
         return f;
     }
 }
