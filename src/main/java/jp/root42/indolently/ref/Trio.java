@@ -106,7 +106,7 @@ public class Trio<F, S, T>
      *
      * @return all combination of two element tuples
      */
-    public Trio<Pair<F, S>, Pair<S, T>, Pair<F, T>> expand() {
+    public Trio<Duo<F, S>, Duo<S, T>, Duo<F, T>> expand() {
 
         return tuple( //
             tuple(this.fst, this.snd) //

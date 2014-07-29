@@ -39,7 +39,7 @@ import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.LongRef;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
-import jp.root42.indolently.ref.Pair;
+import jp.root42.indolently.ref.Duo;
 import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
 
@@ -798,8 +798,8 @@ public class Indolently {
      * @param snd 2nd element
      * @return tuple
      */
-    public static <F, S> Pair<F, S> tuple(final F fst, final S snd) {
-        return new Pair<F, S>().fst(fst).snd(snd);
+    public static <F, S> Duo<F, S> tuple(final F fst, final S snd) {
+        return new Duo<F, S>().fst(fst).snd(snd);
     }
 
     /**
