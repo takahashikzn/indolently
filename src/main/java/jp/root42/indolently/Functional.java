@@ -26,7 +26,7 @@ import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
 import jp.root42.indolently.ref.Ref;
-import jp.root42.indolently.ref.Pair;
+import jp.root42.indolently.ref.Duo;
 import jp.root42.indolently.ref.Trio;
 
 import static jp.root42.indolently.Indolently.*;
@@ -72,11 +72,11 @@ public class Functional {
 
     public static <T, U, R> BiFunction<T, U, R> memoize(final BiFunction<? super T, ? super U, ? extends R> f) {
 
-        final Smap<Pair<T, U>, R> memo = map();
+        final Smap<Duo<T, U>, R> memo = map();
 
         return (x, y) -> {
 
-            final Pair<T, U> key = tuple(x, y);
+            final Duo<T, U> key = tuple(x, y);
 
             return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y))).get(key);
         };

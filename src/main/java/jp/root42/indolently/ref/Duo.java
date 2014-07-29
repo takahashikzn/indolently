@@ -27,7 +27,7 @@ import static jp.root42.indolently.Indolently.*;
  * @param <S> 2nd element type
  * @author takahashikzn
  */
-public class Pair<F, S>
+public class Duo<F, S>
     implements Serializable, BiConsumer<F, S> {
 
     private static final long serialVersionUID = 4058877644750960140L;
@@ -59,7 +59,7 @@ public class Pair<F, S>
      * @param fst 1st element
      * @return {@code this}
      */
-    public Pair<F, S> fst(final F fst) {
+    public Duo<F, S> fst(final F fst) {
         this.fst = fst;
         return this;
     }
@@ -79,7 +79,7 @@ public class Pair<F, S>
      * @param snd 2st element
      * @return {@code this}
      */
-    public Pair<F, S> snd(final S snd) {
+    public Duo<F, S> snd(final S snd) {
         this.snd = snd;
         return this;
     }
@@ -89,7 +89,7 @@ public class Pair<F, S>
      *
      * @return newly constructed reversed tuple
      */
-    public Pair<S, F> reverse() {
+    public Duo<S, F> reverse() {
         return tuple(this.snd, this.fst);
     }
 
@@ -104,11 +104,11 @@ public class Pair<F, S>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Pair)) {
+        } else if (!(o instanceof Duo)) {
             return false;
         }
 
-        final Pair<?, ?> that = (Pair<?, ?>) o;
+        final Duo<?, ?> that = (Duo<?, ?>) o;
 
         return equiv(this.fst, that.fst) && equiv(this.snd, that.snd);
     }
