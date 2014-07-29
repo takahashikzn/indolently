@@ -22,16 +22,15 @@ Java8. That is all.
 Dependencies
 =================
 
-There is no dependencies.
+There is no runtime dependency.
+
+To build, <a href="http://ant.apache.org/">Apache Ant</a> and <a href="http://ant.apache.org/ivy/">Apache Ivy</a> is required.
 
 
 Installation
 =================
 
-Copy the directory "jp/root42/indolently" to your source directory.
-
-
-After a time, the build file(s) for ant/maven would be available.
+After just typing <code>ant</code> on project root, you can find jar file at ./target/indolently.jar
 
 
 How to use
@@ -110,13 +109,13 @@ int sumOfRange(final int from, final int to) {
 
         env -> match(
                 when(
-                    (final IntRef x) -> from < to, 
+                    (final IntRef x) -> from < to,
                     x -> prog1(
                             x::get,
                             () -> x.val += 1))
                 ).defaults(
                     x -> prog1(
-                            x::get, 
+                            x::get,
                             () -> x.val -= 1)
             ).apply(env)
 
