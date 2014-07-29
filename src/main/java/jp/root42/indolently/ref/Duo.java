@@ -16,6 +16,8 @@ package jp.root42.indolently.ref;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -28,7 +30,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public class Duo<F, S>
-    implements Serializable, BiConsumer<F, S> {
+    implements Serializable, BiConsumer<F, S>, Supplier<Duo<F, S>>, Consumer<Duo<F, S>> {
 
     private static final long serialVersionUID = 4058877644750960140L;
 
@@ -37,6 +39,17 @@ public class Duo<F, S>
 
     /** second element */
     public S snd;
+
+    @Override
+    public void accept(final Duo<F, S> that) {
+        this.fst = that.fst;
+        this.snd = that.snd;
+    }
+
+    @Override
+    public Duo<F, S> get() {
+        return this;
+    }
 
     @Override
     public void accept(final F fst, final S snd) {

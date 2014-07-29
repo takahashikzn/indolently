@@ -15,6 +15,10 @@ package jp.root42.indolently.ref;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import jp.root42.indolently.function.TriConsumer;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -28,7 +32,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public class Trio<F, S, T>
-    implements Serializable {
+    implements Serializable, TriConsumer<F, S, T>, Supplier<Trio<F, S, T>>, Consumer<Trio<F, S, T>> {
 
     private static final long serialVersionUID = 1387913510813532191L;
 
@@ -40,6 +44,25 @@ public class Trio<F, S, T>
 
     /** third element */
     public T trd;
+
+    @Override
+    public void accept(final Trio<F, S, T> that) {
+        this.fst = that.fst;
+        this.snd = that.snd;
+        this.trd = that.trd;
+    }
+
+    @Override
+    public Trio<F, S, T> get() {
+        return this;
+    }
+
+    @Override
+    public void accept(final F fst, final S snd, final T trd) {
+        this.fst = fst;
+        this.snd = snd;
+        this.trd = trd;
+    }
 
     /**
      * get 1st element
