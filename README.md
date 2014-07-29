@@ -24,7 +24,7 @@ Dependencies
 
 There is no runtime dependency.
 
-To build, <a href="http://ant.apache.org/">Apache Ant</a> and <a href="http://ant.apache.org/ivy/">Apache Ivy</a> is required.
+To build, <a href="http://ant.apache.org/">Apache Ant</a> and <a href="http://ant.apache.org/ivy/">Apache Ivy</a> are required.
 
 
 Installation
