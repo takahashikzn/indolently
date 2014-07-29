@@ -74,6 +74,7 @@
            srcdir="src/test/java" destdir="target/test-classes">
 
       <classpath refid="lib" />
+      <classpath path="target/classes" />
       <compilerarg value="-Xlint:all" />
     </javac>
 
