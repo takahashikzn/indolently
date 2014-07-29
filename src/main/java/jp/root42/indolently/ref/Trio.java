@@ -131,10 +131,34 @@ public class Trio<F, S, T>
      */
     public Trio<Duo<F, S>, Duo<S, T>, Duo<F, T>> expand() {
 
-        return tuple( //
-            tuple(this.fst, this.snd) //
-            , tuple(this.snd, this.trd) //
-            , tuple(this.fst, this.trd));
+        return tuple(this.fstsnd(), this.sndtrd(), this.fsttrd());
+    }
+
+    /**
+     * get duo of first and second element.
+     *
+     * @return duo of first and second element
+     */
+    public Duo<F, S> fstsnd() {
+        return tuple(this.fst, this.snd);
+    }
+
+    /**
+     * get duo of second and third element.
+     *
+     * @return duo of second and third element
+     */
+    public Duo<S, T> sndtrd() {
+        return tuple(this.snd, this.trd);
+    }
+
+    /**
+     * get duo of first and third element.
+     *
+     * @return duo of first and third element
+     */
+    public Duo<F, T> fsttrd() {
+        return tuple(this.fst, this.trd);
     }
 
     /**
