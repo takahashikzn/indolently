@@ -80,7 +80,9 @@
 
   </target>
 
-  <target name="jar" depends="make" description="jar">
+  <target name="build" depends="clean, make" description="build" />
+
+  <target name="jar" depends="build" description="jar">
     <jar destfile="target/indolently.jar" duplicate="fail">
       <fileset dir="target/classes" />
     </jar>
