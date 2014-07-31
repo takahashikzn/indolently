@@ -25,8 +25,8 @@ import jp.root42.indolently.Functional;
  * @param <U> return value type
  * @author takahashikzn
  */
-public class Sbipred<T, U>
-    implements Serializable, BiPredicate<T, U>, Slambda<Sbipred<T, U>> {
+public class SBiPred<T, U>
+    implements Serializable, BiPredicate<T, U>, SLambda<SBiPred<T, U>> {
 
     private static final long serialVersionUID = 2715052895955591445L;
 
@@ -37,7 +37,7 @@ public class Sbipred<T, U>
      *
      * @param body function body
      */
-    public Sbipred(final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
+    public SBiPred(final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
         this.body = Objects.requireNonNull(body);
     }
 
@@ -52,8 +52,8 @@ public class Sbipred<T, U>
      * @param x argument to bind
      * @return curried function
      */
-    public Spred<U> curry(final T x) {
-        return new Spred<>((self, y) -> this.test(x, y));
+    public SPred<U> curry(final T x) {
+        return new SPred<>((self, y) -> this.test(x, y));
     }
 
     /**
@@ -63,7 +63,7 @@ public class Sbipred<T, U>
      * @param y 2nd argument to bind
      * @return curried function
      */
-    public SBoolSpplr curry(final T x, final U y) {
+    public SBoolSuppl curry(final T x, final U y) {
         return this.curry(x).curry(y);
     }
 
@@ -77,8 +77,8 @@ public class Sbipred<T, U>
     }
 
     @Override
-    public Sbipred<T, U> memoize() {
-        return new Sbipred<>(Functional.memoize(this.body));
+    public SBiPred<T, U> memoize() {
+        return new SBiPred<>(Functional.memoize(this.body));
     }
 
     @Override
@@ -97,11 +97,11 @@ public class Sbipred<T, U>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Sbipred)) {
+        } else if (!(o instanceof SBiPred)) {
             return false;
         }
 
-        final Sbipred<?, ?> that = (Sbipred<?, ?>) o;
+        final SBiPred<?, ?> that = (SBiPred<?, ?>) o;
         return this.body.equals(that.body);
     }
 }

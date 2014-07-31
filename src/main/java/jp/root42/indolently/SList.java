@@ -33,8 +33,8 @@ import static jp.root42.indolently.Indolently.*;
  * @param <T> value type
  * @author takahashikzn
  */
-public interface Slist<T>
-    extends Scol<T, Slist<T>>, List<T> {
+public interface SList<T>
+    extends SCol<T, SList<T>>, List<T> {
 
     /**
      * Wrap a list.
@@ -43,7 +43,7 @@ public interface Slist<T>
      * @param list list to wrap
      * @return wrapped list
      */
-    public static <T> Slist<T> of(final List<T> list) {
+    public static <T> SList<T> of(final List<T> list) {
         return Indolently.wrap(list);
     }
 
@@ -53,7 +53,7 @@ public interface Slist<T>
      * @see Indolently#freeze(List)
      */
     @Override
-    default Slist<T> freeze() {
+    default SList<T> freeze() {
         return Indolently.freeze(this);
     }
 
@@ -74,7 +74,7 @@ public interface Slist<T>
     }
 
     @Override
-    default Slist<T> tail() {
+    default SList<T> tail() {
         return (this.size() <= 1) ? Indolently.list() : Indolently.list(this.subList(1));
     }
 
@@ -85,11 +85,11 @@ public interface Slist<T>
     }
 
     /**
-     * convert this list to {@link Sset}.
+     * convert this list to {@link SSet}.
      *
      * @return a set constructed from this instance.
      */
-    default Sset<T> set() {
+    default SSet<T> set() {
         return Indolently.set(this);
     }
 
@@ -103,7 +103,7 @@ public interface Slist<T>
      * @return {@code this} instance
      */
     @Destructive
-    default Slist<T> push(final int idx, final T value) {
+    default SList<T> push(final int idx, final T value) {
         this.add(Indolently.idx(this, idx), value);
         return this;
     }
@@ -118,7 +118,7 @@ public interface Slist<T>
      * @return {@code this} instance
      */
     @Destructive
-    default Slist<T> pushAll(final int idx, final Iterable<? extends T> values) {
+    default SList<T> pushAll(final int idx, final Iterable<? extends T> values) {
 
         // optimization
         final Collection<? extends T> vals =
@@ -140,7 +140,7 @@ public interface Slist<T>
      * @return {@code this} instance
      */
     @Destructive
-    default Slist<T> push(final int idx, final Optional<? extends T> value) {
+    default SList<T> push(final int idx, final Optional<? extends T> value) {
         return Indolently.empty(value) ? this : this.push(idx, value.get());
     }
 
@@ -155,7 +155,7 @@ public interface Slist<T>
      * @return {@code this} instance
      */
     @Destructive
-    default Slist<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
+    default SList<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
         return Indolently.empty(values) ? this : this.pushAll(idx, values.get());
     }
 
@@ -166,7 +166,7 @@ public interface Slist<T>
      * @param to to index (exclusive)
      * @return detached sub list
      */
-    default Slist<T> slice(final int from, final int to) {
+    default SList<T> slice(final int from, final int to) {
         return Indolently.list(this.subList(from, to));
     }
 
@@ -177,9 +177,9 @@ public interface Slist<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> Slist<R> map(final Function<? super T, ? extends R> f) {
+    default <R> SList<R> map(final Function<? super T, ? extends R> f) {
 
-        final Slist<R> rslt = Indolently.list();
+        final SList<R> rslt = Indolently.list();
 
         for (final T val : this) {
             rslt.add(f.apply(val));
@@ -195,7 +195,7 @@ public interface Slist<T>
      * @param f function. first argument is loop index.
      * @return newly constructed list which contains converted values
      */
-    default <R> Slist<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
+    default <R> SList<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
 
         final IntRef i = ref(0);
 
@@ -203,9 +203,9 @@ public interface Slist<T>
     }
 
     @Override
-    default Slist<T> filter(final Predicate<? super T> f) {
+    default SList<T> filter(final Predicate<? super T> f) {
 
-        final Slist<T> list = list();
+        final SList<T> list = list();
 
         for (final T val : this) {
             if (f.test(val)) {
@@ -221,8 +221,8 @@ public interface Slist<T>
      *
      * @return newly constructed reversed list
      */
-    default Slist<T> reverse() {
-        final Slist<T> rslt = Indolently.list(this);
+    default SList<T> reverse() {
+        final SList<T> rslt = Indolently.list(this);
         Collections.reverse(rslt);
         return rslt;
     }

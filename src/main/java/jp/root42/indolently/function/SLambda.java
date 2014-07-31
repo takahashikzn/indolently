@@ -17,7 +17,7 @@ package jp.root42.indolently.function;
  * @param <SELF> type of this function
  * @author takahashikzn
  */
-public interface Slambda<SELF extends Slambda<SELF>> {
+public interface SLambda<SELF extends SLambda<SELF>> {
 
     /**
      * create memoized version of this function.

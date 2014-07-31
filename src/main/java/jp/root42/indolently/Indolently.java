@@ -135,7 +135,7 @@ public class Indolently {
      * @see #list(Object...)
      */
     @SafeVarargs
-    public static <T> Slist<T> listOf(final T... elems) {
+    public static <T> SList<T> listOf(final T... elems) {
         return list(elems);
     }
 
@@ -145,8 +145,8 @@ public class Indolently {
      * @param elem element of the list
      * @return new list
      */
-    public static <T> Slist<T> list(final Optional<? extends T> elem) {
-        return new SlistImpl<T>().push(elem);
+    public static <T> SList<T> list(final Optional<? extends T> elem) {
+        return new SListImpl<T>().push(elem);
     }
 
     /**
@@ -155,8 +155,8 @@ public class Indolently {
      * @param elems elements of the list
      * @return new list
      */
-    public static <T> Slist<T> list(final Iterable<? extends T> elems) {
-        return new SlistImpl<T>().pushAll(optional(elems));
+    public static <T> SList<T> list(final Iterable<? extends T> elems) {
+        return new SListImpl<T>().pushAll(optional(elems));
     }
 
     /**
@@ -166,9 +166,9 @@ public class Indolently {
      * @return new list
      */
     @SafeVarargs
-    public static <T> Slist<T> list(final T... elems) {
+    public static <T> SList<T> list(final T... elems) {
 
-        final Slist<T> list = new SlistImpl<>();
+        final SList<T> list = new SListImpl<>();
 
         if (elems != null) {
             for (final T v : elems) {
@@ -204,7 +204,7 @@ public class Indolently {
             throw new IllegalArgumentException("can't infer empty array type");
         }
 
-        final Slist<? extends T> list = list(elems);
+        final SList<? extends T> list = list(elems);
 
         // pseudo typing. actually this type wouldn't be T[].
         @SuppressWarnings("unchecked")
@@ -339,12 +339,12 @@ public class Indolently {
         return elems;
     }
 
-    public static <T> Sset<T> set(final Optional<? extends T> elem) {
-        return new SsetImpl<T>().push(elem);
+    public static <T> SSet<T> set(final Optional<? extends T> elem) {
+        return new SSetImpl<T>().push(elem);
     }
 
-    public static <T> Sset<T> set(final Iterable<? extends T> elems) {
-        return new SsetImpl<T>().pushAll(optional(elems));
+    public static <T> SSet<T> set(final Iterable<? extends T> elems) {
+        return new SSetImpl<T>().pushAll(optional(elems));
     }
 
     /**
@@ -357,14 +357,14 @@ public class Indolently {
      * @see #set(Object...)
      */
     @SafeVarargs
-    public static <T> Sset<T> setOf(final T... elems) {
+    public static <T> SSet<T> setOf(final T... elems) {
         return set(elems);
     }
 
     @SafeVarargs
-    public static <T> Sset<T> set(final T... elems) {
+    public static <T> SSet<T> set(final T... elems) {
 
-        final Sset<T> set = new SsetImpl<>();
+        final SSet<T> set = new SSetImpl<>();
 
         if (elems != null) {
             set.addAll(list(elems));
@@ -373,40 +373,40 @@ public class Indolently {
         return set;
     }
 
-    public static <K, V> Smap<K, V> sort(final Map<K, V> map) {
+    public static <K, V> SMap<K, V> sort(final Map<K, V> map) {
         return wrap(new TreeMap<>(map));
     }
 
-    public static <T extends Comparable<T>> Sset<T> sort(final Set<? extends T> elems) {
+    public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
         return wrap(new TreeSet<>(elems));
     }
 
-    public static <T extends Comparable<T>> Slist<T> sort(final List<? extends T> elems) {
-        final Slist<T> rslt = list(elems);
+    public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
+        final SList<T> rslt = list(elems);
         Collections.sort(rslt);
         return rslt;
     }
 
-    public static <K, V> Smap<K, V> freeze(final Map<? extends K, ? extends V> map) {
+    public static <K, V> SMap<K, V> freeze(final Map<? extends K, ? extends V> map) {
 
         @SuppressWarnings("unchecked")
-        final Smap<K, V> rslt = wrap(Collections.unmodifiableMap(wrap(map).map(freezer())));
+        final SMap<K, V> rslt = wrap(Collections.unmodifiableMap(wrap(map).map(freezer())));
 
         return rslt;
     }
 
-    public static <T> Sset<T> freeze(final Set<? extends T> elems) {
+    public static <T> SSet<T> freeze(final Set<? extends T> elems) {
 
         @SuppressWarnings("unchecked")
-        final Sset<T> rslt = wrap(Collections.unmodifiableSet(wrap(elems).map(freezer())));
+        final SSet<T> rslt = wrap(Collections.unmodifiableSet(wrap(elems).map(freezer())));
 
         return rslt;
     }
 
-    public static <T> Slist<T> freeze(final List<? extends T> elems) {
+    public static <T> SList<T> freeze(final List<? extends T> elems) {
 
         @SuppressWarnings("unchecked")
-        final Slist<T> rslt = wrap(Collections.unmodifiableList(wrap(elems).map(freezer())));
+        final SList<T> rslt = wrap(Collections.unmodifiableList(wrap(elems).map(freezer())));
 
         return rslt;
     }
@@ -658,12 +658,12 @@ public class Indolently {
         return raw;
     }
 
-    public static <K, V> Smap<K, V> map(final Map<? extends K, ? extends V> map) {
-        return new SmapImpl<K, V>().pushAll(optional(map));
+    public static <K, V> SMap<K, V> map(final Map<? extends K, ? extends V> map) {
+        return new SMapImpl<K, V>().pushAll(optional(map));
     }
 
-    public static <K, V> Smap<K, V> map() {
-        return new SmapImpl<>();
+    public static <K, V> SMap<K, V> map() {
+        return new SMapImpl<>();
     }
 
     /**
@@ -672,10 +672,10 @@ public class Indolently {
      * @param map map to wrap
      * @return wrapped map
      */
-    public static <K, V> Smap<K, V> wrap(final Map<K, V> map) {
+    public static <K, V> SMap<K, V> wrap(final Map<K, V> map) {
         return (map == null) ? null //
-            : (map instanceof Smap) ? (Smap<K, V>) map //
-                : new SmapImpl<>(map);
+            : (map instanceof SMap) ? (SMap<K, V>) map //
+                : new SMapImpl<>(map);
     }
 
     /**
@@ -684,10 +684,10 @@ public class Indolently {
      * @param list list to wrap
      * @return wrapped list
      */
-    public static <T> Slist<T> wrap(final List<T> list) {
+    public static <T> SList<T> wrap(final List<T> list) {
         return (list == null) ? null //
-            : (list instanceof Slist) ? (Slist<T>) list //
-                : new SlistImpl<>(list);
+            : (list instanceof SList) ? (SList<T>) list //
+                : new SListImpl<>(list);
     }
 
     /**
@@ -696,10 +696,10 @@ public class Indolently {
      * @param set set to wrap
      * @return wrapped set
      */
-    public static <T> Sset<T> wrap(final Set<T> set) {
+    public static <T> SSet<T> wrap(final Set<T> set) {
         return (set == null) ? null //
-            : (set instanceof Sset) ? (Sset<T>) set //
-                : new SsetImpl<>(set);
+            : (set instanceof SSet) ? (SSet<T>) set //
+                : new SSetImpl<>(set);
     }
 
     /**
@@ -710,7 +710,7 @@ public class Indolently {
      * @param val value to put
      * @return wrapped map
      */
-    public static <K, V> Smap<K, V> wrap(final Map<K, V> map, final K key, final V val) {
+    public static <K, V> SMap<K, V> wrap(final Map<K, V> map, final K key, final V val) {
         return wrap(Objects.requireNonNull(map, "map")).push(key, val);
     }
 
@@ -722,7 +722,7 @@ public class Indolently {
      * @return wrapped list
      */
     @SafeVarargs
-    public static <T> Slist<T> wrap(final List<T> list, final T... elems) {
+    public static <T> SList<T> wrap(final List<T> list, final T... elems) {
         return wrap(Objects.requireNonNull(list, "list")).pushAll(list(elems));
     }
 
@@ -734,7 +734,7 @@ public class Indolently {
      * @return wrapped set
      */
     @SafeVarargs
-    public static <T> Sset<T> wrap(final Set<T> set, final T... elems) {
+    public static <T> SSet<T> wrap(final Set<T> set, final T... elems) {
         return wrap(Objects.requireNonNull(set, "set")).pushAll(list(elems));
     }
 
@@ -744,18 +744,18 @@ public class Indolently {
      * @param iter iterator to wrap
      * @return wrapped iterator
      */
-    public static <T> Siter<T> wrap(final Iterator<? extends T> iter) {
+    public static <T> SIter<T> wrap(final Iterator<? extends T> iter) {
         if (iter == null) {
             return null;
         }
 
-        if (iter instanceof Siter) {
+        if (iter instanceof SIter) {
             @SuppressWarnings("unchecked")
-            final Siter<T> i = (Siter<T>) iter;
+            final SIter<T> i = (SIter<T>) iter;
             return i;
         }
 
-        return new Siter<T>() {
+        return new SIter<T>() {
 
             @Override
             public boolean hasNext() {
@@ -774,18 +774,18 @@ public class Indolently {
         };
     }
 
-    public static <K, V> Smap<K, V> map(final K key, final V val) {
+    public static <K, V> SMap<K, V> map(final K key, final V val) {
 
         @SuppressWarnings("unchecked")
-        final Smap<K, V> map = (Smap<K, V>) map().push(key, val);
+        final SMap<K, V> map = (SMap<K, V>) map().push(key, val);
 
         return map;
     }
 
-    public static <K, V> Smap<K, V> map(final K key, final Optional<? extends V> val) {
+    public static <K, V> SMap<K, V> map(final K key, final Optional<? extends V> val) {
 
         @SuppressWarnings("unchecked")
-        final Smap<K, V> map = (Smap<K, V>) map().push(key, val);
+        final SMap<K, V> map = (SMap<K, V>) map().push(key, val);
 
         return map;
     }
@@ -915,43 +915,43 @@ public class Indolently {
 
     // CHECKSTYLE:OFF
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1) {
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1) {
 
         return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2) {
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2) {
 
         return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3) {
 
         return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4) {
 
         return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5) {
 
         return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
             .push(k5, v5);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6) {
 
         return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
             .push(k5, v5).push(k6, v6);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7) {
 
@@ -959,7 +959,7 @@ public class Indolently {
             .push(k5, v5).push(k6, v6).push(k7, v7);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8) {
 
@@ -967,7 +967,7 @@ public class Indolently {
             .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9) {
 
@@ -975,7 +975,7 @@ public class Indolently {
             .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10) {
 
@@ -983,7 +983,7 @@ public class Indolently {
             .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11) {
 
@@ -991,7 +991,7 @@ public class Indolently {
             .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12) {
@@ -1001,7 +1001,7 @@ public class Indolently {
             .push(k12, v12);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13) {
@@ -1011,7 +1011,7 @@ public class Indolently {
             .push(k12, v12).push(k13, v13);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14) {
@@ -1021,7 +1021,7 @@ public class Indolently {
             .push(k12, v12).push(k13, v13).push(k14, v14);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15) {
@@ -1031,7 +1031,7 @@ public class Indolently {
             .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1042,7 +1042,7 @@ public class Indolently {
             .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1053,7 +1053,7 @@ public class Indolently {
             .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1064,7 +1064,7 @@ public class Indolently {
             .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1076,7 +1076,7 @@ public class Indolently {
             .push(k19, v19);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1089,7 +1089,7 @@ public class Indolently {
             .push(k19, v19).push(k20, v20);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1102,7 +1102,7 @@ public class Indolently {
             .push(k19, v19).push(k20, v20).push(k21, v21);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1115,7 +1115,7 @@ public class Indolently {
             .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1128,7 +1128,7 @@ public class Indolently {
             .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1142,7 +1142,7 @@ public class Indolently {
             .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1156,7 +1156,7 @@ public class Indolently {
             .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1171,7 +1171,7 @@ public class Indolently {
             .push(k26, v26);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1186,7 +1186,7 @@ public class Indolently {
             .push(k26, v26).push(k27, v27);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1202,7 +1202,7 @@ public class Indolently {
             .push(k26, v26).push(k27, v27).push(k28, v28);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1218,7 +1218,7 @@ public class Indolently {
             .push(k26, v26).push(k27, v27).push(k28, v28).push(k29, v29);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
@@ -1234,7 +1234,7 @@ public class Indolently {
             .push(k26, v26).push(k27, v27).push(k28, v28).push(k29, v29).push(k30, v30);
     }
 
-    public static <K, V> Smap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
+    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,

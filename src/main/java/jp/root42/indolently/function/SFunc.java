@@ -26,8 +26,8 @@ import jp.root42.indolently.Functional;
  * @param <R> return value type
  * @author takahashikzn
  */
-public class Sfunc<T, R>
-    implements Serializable, Function<T, R>, Slambda<Sfunc<T, R>> {
+public class SFunc<T, R>
+    implements Serializable, Function<T, R>, SLambda<SFunc<T, R>> {
 
     private static final long serialVersionUID = -8241959687855651918L;
 
@@ -38,7 +38,7 @@ public class Sfunc<T, R>
      *
      * @param body function body
      */
-    public Sfunc(final BiFunction<? super Function<T, R>, ? super T, ? extends R> body) {
+    public SFunc(final BiFunction<? super Function<T, R>, ? super T, ? extends R> body) {
         this.body = Objects.requireNonNull(body);
     }
 
@@ -53,8 +53,8 @@ public class Sfunc<T, R>
      * @param x argument to bind
      * @return curried function
      */
-    public Sspplr<R> curry(final T x) {
-        return new Sspplr<>(self -> this.apply(x));
+    public SSuppl<R> curry(final T x) {
+        return new SSuppl<>(self -> this.apply(x));
     }
 
     /**
@@ -67,8 +67,8 @@ public class Sfunc<T, R>
     }
 
     @Override
-    public Sfunc<T, R> memoize() {
-        return new Sfunc<>(Functional.memoize(this.body));
+    public SFunc<T, R> memoize() {
+        return new SFunc<>(Functional.memoize(this.body));
     }
 
     @Override
@@ -87,11 +87,11 @@ public class Sfunc<T, R>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Sfunc)) {
+        } else if (!(o instanceof SFunc)) {
             return false;
         }
 
-        final Sfunc<?, ?> that = (Sfunc<?, ?>) o;
+        final SFunc<?, ?> that = (SFunc<?, ?>) o;
         return this.body.equals(that.body);
     }
 }

@@ -22,36 +22,36 @@ import java.util.ListIterator;
 
 
 /**
- * Simple implementation of {@link Slist}.
+ * Simple implementation of {@link SList}.
  *
  * @param <T> value type
  * @author takahashikzn
  */
-class SlistImpl<T>
+class SListImpl<T>
     extends AbstractList<T>
-    implements Slist<T>, Serializable {
+    implements SList<T>, Serializable {
 
     private static final long serialVersionUID = 8705188807596442213L;
 
     private final List<T> store;
 
-    public SlistImpl() {
+    public SListImpl() {
         this(new ArrayList<>());
     }
 
-    public SlistImpl(final List<T> store) {
+    public SListImpl(final List<T> store) {
         this.store = store;
     }
 
     @Override
-    public Siter<T> iterator() {
+    public SIter<T> iterator() {
         return Indolently.wrap(this.store.iterator());
     }
 
     // keep original order
     @Override
-    public Sset<T> set() {
-        return new SsetImpl<>(new LinkedHashSet<>(this));
+    public SSet<T> set() {
+        return new SSetImpl<>(new LinkedHashSet<>(this));
     }
 
     @Override
