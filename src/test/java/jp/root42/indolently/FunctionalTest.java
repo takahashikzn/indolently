@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.ref.Trio;
 
 import junitparams.JUnitParamsRunner;
 
@@ -63,7 +64,7 @@ public class FunctionalTest {
     }
 
     /**
-     * {@link Functional#function(Consumer, TriFunction)}
+     * fibonacci function.
      */
     @Test
     public void testFunction() {
@@ -90,5 +91,48 @@ public class FunctionalTest {
                         fibonacciNums);
                     assertThat(initCount.val).isEqualTo(1);
                 }).last()).isEqualTo(10);
+    }
+
+    /**
+     * Tarai function.
+     *
+     * <pre>
+     * def tarai( x, y, z)
+     *   if y < x
+     *     tarai(
+     *          tarai(x-1, y, z),
+     *          tarai(y-1, z, x),
+     *          tarai(z-1, x, y)
+     *        )
+     *   else
+     *     y          # not z!
+     *   end
+     * end
+     * </pre>
+     *
+     * @see <a href="http://en.wikipedia.org/wiki/Tak_(function)">tarai function</a>
+     */
+    @Test
+    public void testFunction2() {
+
+        final Function<Trio<Integer, Integer, Integer>, Integer> tarai =
+            function((final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {}, (self, v) -> {
+
+                final int x = v.fst;
+                final int y = v.snd;
+                final int z = v.trd;
+
+                if (y < x) {
+                    return self.apply( //
+                        tuple( //
+                            self.apply(tuple(x - 1, y, z)), //
+                            self.apply(tuple(y - 1, z, x)), //
+                            self.apply(tuple(z - 1, x, y))));
+                } else {
+                    return y;
+                }
+            }).memoize();
+
+        assertThat(tarai.apply(tuple(20, 6, 0))).isEqualTo(20);
     }
 }
