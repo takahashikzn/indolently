@@ -146,6 +146,28 @@ System.out.println(
     )
     .get()
 );
+
+
+// memoized Tarai function: http://en.wikipedia.org/wiki/Tak_(function)
+final Function<Trio<Integer, Integer, Integer>, Integer> tarai =
+    function((final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {}, (self, v) -> {
+
+        final int x = v.fst;
+        final int y = v.snd;
+        final int z = v.trd;
+
+        if (y < x) {
+            return self.apply( //
+                tuple( //
+                    self.apply(tuple(x - 1, y, z)), //
+                    self.apply(tuple(y - 1, z, x)), //
+                    self.apply(tuple(z - 1, x, y))));
+        } else {
+            return y;
+        }
+    }).memoize();
+
+System.out.println(tarai(tuple(20, 6, 0))); // prints '20' in few millisecs.
 ```
 
 See JUnit testcase for more details.
