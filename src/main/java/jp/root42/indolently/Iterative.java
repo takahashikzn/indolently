@@ -73,7 +73,7 @@ public class Iterative {
     }
 
     /**
-     * create iterator which simulates <a
+     * Create iterator which simulates <a
      * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
      * <p>
      * Example
@@ -82,10 +82,11 @@ public class Iterative {
      * <code>
      * // print timestamp every 10 seconds forever.
      * generator(System::currentTimeMillis).forEach(
-     *     def((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
+     *     consumerOf((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
      *         try {
      *             Thread.sleep(10000);
-     *         } catch (final Exception e) {
+     *         } catch (final InterruptedException e) {
+     *             Generator.breaks(); // stop generator gently
      *         }
      *     }));
      * </code>
@@ -103,7 +104,7 @@ public class Iterative {
     }
 
     /**
-     * create iterator which simulates <a
+     * Create iterator which simulates <a
      * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
      * <p>
      * Example
@@ -111,13 +112,24 @@ public class Iterative {
      * <pre>
      * <code>
      * // print timestamp every 10 seconds forever.
-     * generator(System::currentTimeMillis).forEach(
-     *     def((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
+     * generator(
+     *     list(),
+     *     env -> {
+     *         final long now = System.currentTimeMillis();
+     *         env.push(now);
+     *         return now;
+     *     })
+     *     .forEach(consumerOf((final Long x) -> {
+     *         System.out.println(Instant.ofEpochMilli(x));
+     *     })
+     *     .andThen(x -> {
      *         try {
      *             Thread.sleep(10000);
-     *         } catch (final Exception e) {
+     *         } catch (final InterruptedException e) {
+     *             Generator.breaks(); // stop generator gently
      *         }
-     *     }));
+     *     }
+     * ));
      * </code>
      * </pre>
      *
