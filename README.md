@@ -2,8 +2,7 @@
   @author takahashikzn
 -->
 
-What this is
-=================
+# What this is
 
 A Java syntax sugar library for indolent person.
 
@@ -13,32 +12,28 @@ Intend to provide semi-literal syntax like list/set/map.
 This is also my study of English/GitHub/Java8-Lambda.
 
 
-Requirement
-=================
+# Requirement
 
 Java8. That is all.
 
 
-Dependencies
-=================
+# Dependencies
 
 There is no runtime dependency.
 
 To build, <a href="http://ant.apache.org/">Apache Ant</a> and <a href="http://ant.apache.org/ivy/">Apache Ivy</a> are required.
 
 
-Installation
-=================
+# Installation
 
 Just type <code>ant [RET]</code> at project root.
 
 A moment later, you will find a jar file at ./target/indolently.jar
 
 
-How to use
-=================
+# How to use
 
-import required functions using static import.
+### import required functions using static import.
 
 ```java
 import static jp.root42.indolently.Expressive.*;
@@ -48,8 +43,8 @@ import static jp.root42.indolently.Iterative.*;
 ```
 
 
-List/Set/Map construction
-----------------
+### List/Set/Map construction
+
 ```java
 final Map<String, Integer> shortMapDecl = map(); // equivalent to "new HashMap<>()"
 final List<Integer> shortListDecl = list();      // equivalent to "new ArrayList<>()"
@@ -89,8 +84,8 @@ final Map<String, Object> boring = Collections.unmodifiableMap(new HashMap<Strin
 ```
 
 
-Operation Chain
-----------------
+### Operation Chain
+
 ```java
 // operation chaining without the "unfriendly" java.util.Stream
 range(1, 10)
@@ -103,8 +98,8 @@ range(1, 10)
 ```
 
 
-Match expression
-----------------
+### Match expression
+
 ```java
 // Totally wasteful manner of computing sum of integer range
 int sumOfRange(final int from, final int to) {
@@ -143,9 +138,9 @@ Systme.out.println(sumOfRange(-2, 5));
 ```
 
 
-Function expression beyond java8's lambda syntax
-----------------
+### Function expression beyond java8's lambda syntax
 
+```java
 // memoized fibonacci function
 final Function<Integer, Integer> fib = function(
 
@@ -192,15 +187,13 @@ int tarai20 = function(
 See JUnit testcase for more details.
 
 
-Notice
-=================
+# Notice
 
 Currently production use is strongly not recommended
 because the codes are almost not tested and incompatibly changed very frequently.
 
 
-Translation
-=================
+# Translation
 
 Currently most documents would written in broken English
 bacause of this project's purpose itself.
