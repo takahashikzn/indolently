@@ -44,7 +44,7 @@ public class IterativeTest {
      * {@link Iterative#generator(Supplier)}
      */
     @Test
-    public void testGenerator1() {
+    public void testGenerator() {
 
         final Generator<Integer> g = generator(ref(0), env -> (2 < env.val) ? Generator.breaks() : env.val++);
 
@@ -68,16 +68,30 @@ public class IterativeTest {
      * {@link Iterative#generator(Supplier)}
      */
     @Test
-    public void testGenerator2() {
+    public void testGeneratorHandleBreak() {
 
         final SList<Integer> ints = list();
 
-        generator( //
-            generator(ref(1), env -> (10 < env.val) ? Generator.breaks() : env.val++)) //
+        generator(//
+            ref(1), //
+            env -> (10 < env.val) ? Generator.breaks() : env.val++) //
             .forEach(consumerOf((final Integer x) -> ints.add(x)) //
                 .andThen(x -> {}));
 
         assertThat(ints.reduce((x, y) -> x + y).get()).isEqualTo(55);
+    }
+
+    /**
+     * {@link Iterative#generator(Supplier)}
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void testGeneratorHandleNoSuchException() {
+
+        generator( //
+            generator( //
+                ref(1), //
+                env -> (10 < env.val) ? Generator.breaks() : env.val++)) //
+            .forEach(consumerOf((final Integer x) -> {}));
     }
 
     /**

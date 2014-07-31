@@ -42,7 +42,7 @@ public interface Generator<T>
      * @author takahashikzn
      */
     final class Break
-        extends RuntimeException {
+        extends NoSuchElementException {
 
         private static final long serialVersionUID = -7710521845711826670L;
 
@@ -77,7 +77,7 @@ public interface Generator<T>
                 try {
                     this.cur = optional(next.apply(env));
                     return true;
-                } catch (final Break | NoSuchElementException s) {
+                } catch (final Break s) {
                     this.stopped = true;
                     return false;
                 }
