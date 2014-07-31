@@ -146,11 +146,11 @@ System.out.println(
 See JUnit testcase for more details.
 
 
-Project status
+Notice
 =================
 
 Currently production use is strongly not recommended
-because the codes are almost not tested and changing very frequently.
+because the codes are almost not tested and incompatibly changed very frequently.
 
 
 Translation
