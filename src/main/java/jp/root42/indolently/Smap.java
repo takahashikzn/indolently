@@ -23,10 +23,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
 import jp.root42.indolently.trait.Loopable;
+import jp.root42.indolently.trait.Matchable;
 
 
 /**
@@ -39,7 +41,7 @@ import jp.root42.indolently.trait.Loopable;
  */
 public interface Smap<K, V>
     extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>>, Loopable<V, Smap<K, V>>,
-    Filterable<V, Smap<K, V>>, Iterable<Entry<K, V>> {
+    Filterable<V, Smap<K, V>>, EdgeAwareIterable<Entry<K, V>>, Matchable<V> {
 
     /**
      * Wrap a map.
@@ -182,24 +184,9 @@ public interface Smap<K, V>
         return this;
     }
 
-    /**
-     * Test whether at least one value satisfy condition.
-     *
-     * @param f condition
-     * @return test result
-     */
+    @Override
     default boolean some(final Predicate<? super V> f) {
         return this.some((key, val) -> f.test(val));
-    }
-
-    /**
-     * Test whether all values satisfy condition.
-     *
-     * @param f condition
-     * @return test result
-     */
-    default boolean every(final Predicate<? super V> f) {
-        return this.every((key, val) -> f.test(val));
     }
 
     /**

@@ -26,7 +26,7 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class Sspplr<T>
-    implements Serializable, Supplier<T>, Sfunctor<Sspplr<T>> {
+    implements Serializable, Supplier<T>, Slambda<Sspplr<T>> {
 
     private static final long serialVersionUID = 6611508603865244405L;
 

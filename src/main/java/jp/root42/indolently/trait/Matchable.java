@@ -11,27 +11,32 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently.function;
+package jp.root42.indolently.trait;
+
+import java.util.function.Predicate;
+
 
 /**
- * @param <SELF> type of this function
+ * @param <T> -
  * @author takahashikzn
  */
-public interface Sfunctor<SELF extends Sfunctor<SELF>> {
+public interface Matchable<T> {
 
     /**
-     * create memoized version of this function.
+     * Test whether at least one value satisfy condition.
      *
-     * @return memoized version of this function
+     * @param f condition
+     * @return test result
      */
-    SELF memoize();
+    boolean some(Predicate<? super T> f);
 
     /**
-     * create synchronized version of this function.
+     * Test whether all values satisfy condition.
      *
-     * @return synchronized version of this function
+     * @param f condition
+     * @return test result
      */
-    default SELF synchronize() {
-        throw new UnsupportedOperationException("not implemented yet");
+    default boolean every(final Predicate<? super T> f) {
+        return !this.some(f.negate());
     }
 }

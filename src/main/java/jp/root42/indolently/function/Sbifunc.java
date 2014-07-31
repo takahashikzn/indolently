@@ -27,7 +27,7 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class Sbifunc<T, U, R>
-    implements Serializable, BiFunction<T, U, R>, Sfunctor<Sbifunc<T, U, R>> {
+    implements Serializable, BiFunction<T, U, R>, Slambda<Sbifunc<T, U, R>> {
 
     private static final long serialVersionUID = 5099015871546179565L;
 

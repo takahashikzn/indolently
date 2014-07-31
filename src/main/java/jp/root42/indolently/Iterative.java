@@ -262,9 +262,13 @@ public class Iterative {
         }
 
         return iterator(ref(from), env -> {
-            return (from < to) ? (env.val <= to) //
-                : (to < from) ? (to <= env.val) //
-                    : (env.val == from);
+            if (from < to) {
+                return (env.val <= to);
+            } else if (to < from) {
+                return (to <= env.val);
+            } else {
+                return (env.val == from);
+            }
         }, env -> prog1(() -> env.val, () -> {
             if (from < to) {
                 env.val += step;

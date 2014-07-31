@@ -17,15 +17,18 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.function.SBoolSpplr;
 import jp.root42.indolently.function.Sbifunc;
 import jp.root42.indolently.function.Sbipred;
 import jp.root42.indolently.function.Sfunc;
 import jp.root42.indolently.function.Spred;
+import jp.root42.indolently.function.Sspplr;
 import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
@@ -55,6 +58,18 @@ public class Functional {
     public static <T, U, V, R> BiFunction<U, V, R> curry(
         final TriFunction<? super T, ? super U, ? super V, ? extends R> f, final T t) {
         return (u, v) -> f.apply(t, u, v);
+    }
+
+    public static <T> BooleanSupplier curry(final Predicate<? super T> f, final T t) {
+        return () -> f.test(t);
+    }
+
+    public static <T, U> Predicate<U> curry(final BiPredicate<? super T, ? super U> f, final T t) {
+        return x -> f.test(t, x);
+    }
+
+    public static <T, U, V> BiPredicate<U, V> curry(final TriPredicate<? super T, ? super U, ? super V> f, final T t) {
+        return (u, v) -> f.test(t, u, v);
     }
 
     public static <T> Supplier<T> memoize(final Supplier<? extends T> f) {
@@ -102,7 +117,7 @@ public class Functional {
 
         final Function<T, Boolean> memoized = memoize(functionOf((final T x) -> f.test(x)));
 
-        return x -> memoized.apply(x);
+        return memoized::apply;
     }
 
     public static <T, U> BiPredicate<T, U> memoize(final BiPredicate<? super T, ? super U> f) {
@@ -118,6 +133,36 @@ public class Functional {
             memoize(triFunctionOf((final T x, final U y, final V z) -> f.test(x, y, z)));
 
         return (x, y, z) -> memoized.apply(x, y, z);
+    }
+
+    public static SBoolSpplr function(final Consumer<? super BooleanSupplier> init,
+        final Predicate<? super BooleanSupplier> body) {
+
+        Objects.requireNonNull(init, "init");
+        Objects.requireNonNull(body, "body");
+
+        final BoolRef initialized = ref(false);
+
+        return new SBoolSpplr(self -> {
+            initialized.negateIf(false, () -> init.accept(self));
+
+            return body.test(self);
+        });
+    }
+
+    public static <T> Sspplr<T> function(final Consumer<? super Supplier<T>> init,
+        final Function<? super Supplier<? extends T>, ? extends T> body) {
+
+        Objects.requireNonNull(init, "init");
+        Objects.requireNonNull(body, "body");
+
+        final BoolRef initialized = ref(false);
+
+        return new Sspplr<>(self -> {
+            initialized.negateIf(false, () -> init.accept(self));
+
+            return body.apply(self);
+        });
     }
 
     public static <T, R> Sfunc<T, R> function(final Consumer<? super Function<T, R>> init,
