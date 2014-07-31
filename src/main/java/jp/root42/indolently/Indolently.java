@@ -34,12 +34,12 @@ import jp.root42.indolently.ref.ByteRef;
 import jp.root42.indolently.ref.CharRef;
 import jp.root42.indolently.ref.CmpRef;
 import jp.root42.indolently.ref.DoubleRef;
+import jp.root42.indolently.ref.Duo;
 import jp.root42.indolently.ref.FloatRef;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.LongRef;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
-import jp.root42.indolently.ref.Duo;
 import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
 
