@@ -158,7 +158,7 @@ public interface Siter<T>
     default <R> Optional<R> mapred(final Optional<? extends R> initial,
         final BiFunction<? super R, ? super T, ? extends R> f) {
 
-        R rem = initial.isPresent() ? initial.get() : null;
+        R rem = initial.orElse(null);
 
         for (final T val : this) {
             rem = f.apply(rem, val);
