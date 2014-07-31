@@ -38,13 +38,19 @@ A moment later, you will find a jar file at ./target/indolently.jar
 How to use
 =================
 
+import required functions using static import.
+
 ```java
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
+```
 
 
+List/Set/Map construction
+----------------
+```java
 final Map<String, Integer> shortMapDecl = map(); // equivalent to "new HashMap<>()"
 final List<Integer> shortListDecl = list();      // equivalent to "new ArrayList<>()"
 final Set<String> shortSetDecl = set();          // equivalent to "new HashSet<>()"
@@ -80,8 +86,12 @@ final Map<String, Object> boring = Collections.unmodifiableMap(new HashMap<Strin
         level4.put("level4", 42);
     }
 });
+```
 
 
+Operation Chain
+----------------
+```java
 // operation chaining without the "unfriendly" java.util.Stream
 range(1, 10)
     .list()
@@ -90,8 +100,12 @@ range(1, 10)
     .each(System.out::println)
     .reduce(0, (i, k) -> i + k)
     .ifPresent(System.out::println); // print 330
+```
 
 
+Match expression
+----------------
+```java
 // Totally wasteful manner of computing sum of integer range
 int sumOfRange(final int from, final int to) {
 
@@ -126,7 +140,11 @@ int sumOfRange(final int from, final int to) {
 
 // equivalent to range(-2, 5).reduce((l, r) -> l + r).get() => 12
 Systme.out.println(sumOfRange(-2, 5));
+```
 
+
+Function expression beyond java8's lambda syntax
+----------------
 
 // memoized fibonacci function
 final Function<Integer, Integer> fib = function(
