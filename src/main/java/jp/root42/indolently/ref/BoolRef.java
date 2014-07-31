@@ -27,7 +27,7 @@ public class BoolRef
     private static final long serialVersionUID = 8087914133902951131L;
 
     /** the value. */
-    public boolean val;
+    public volatile boolean val;
 
     /**
      * constructor.

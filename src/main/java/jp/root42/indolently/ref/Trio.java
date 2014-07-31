@@ -38,13 +38,13 @@ public class Trio<F, S, T>
     private static final long serialVersionUID = 1387913510813532191L;
 
     /** first element */
-    public F fst;
+    public volatile F fst;
 
     /** second element */
-    public S snd;
+    public volatile S snd;
 
     /** third element */
-    public T trd;
+    public volatile T trd;
 
     @Destructive
     @Override
