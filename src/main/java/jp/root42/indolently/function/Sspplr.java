@@ -15,45 +15,35 @@ package jp.root42.indolently.function;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.Functional;
 
 
 /**
- * @param <T> argument type
+ * @param <T> return value type
  * @author takahashikzn
  */
-public class Spred<T>
-    implements Serializable, Predicate<T>, Sfunctor<Spred<T>> {
+public class Sspplr<T>
+    implements Serializable, Supplier<T>, Sfunctor<Sspplr<T>> {
 
-    private static final long serialVersionUID = 9028625532191422275L;
+    private static final long serialVersionUID = 6611508603865244405L;
 
-    private final BiPredicate<? super Predicate<T>, ? super T> body;
+    private final Function<? super Supplier<T>, ? extends T> body;
 
     /**
      * constructor
      *
      * @param body function body
      */
-    public Spred(final BiPredicate<? super Predicate<T>, ? super T> body) {
+    public Sspplr(final Function<? super Supplier<T>, ? extends T> body) {
         this.body = Objects.requireNonNull(body);
     }
 
     @Override
-    public boolean test(final T x) {
-        return this.body.test(this, x);
-    }
-
-    /**
-     * currying this function.
-     *
-     * @param x argument to bind
-     * @return curried function
-     */
-    public SBoolSpplr curry(final T x) {
-        return new SBoolSpplr(self -> this.test(x));
+    public T get() {
+        return this.body.apply(this);
     }
 
     /**
@@ -61,13 +51,13 @@ public class Spred<T>
      *
      * @return function body
      */
-    public BiPredicate<? super Predicate<T>, ? super T> body() {
+    public Function<? super Supplier<T>, ? extends T> body() {
         return this.body;
     }
 
     @Override
-    public Spred<T> memoize() {
-        return new Spred<>(Functional.memoize(this.body));
+    public Sspplr<T> memoize() {
+        return new Sspplr<>(Functional.memoize(this.body));
     }
 
     @Override
@@ -86,11 +76,11 @@ public class Spred<T>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Spred)) {
+        } else if (!(o instanceof Sspplr)) {
             return false;
         }
 
-        final Spred<?> that = (Spred<?>) o;
+        final Sspplr<?> that = (Sspplr<?>) o;
         return this.body.equals(that.body);
     }
 }

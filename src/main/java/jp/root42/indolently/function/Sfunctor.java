@@ -25,4 +25,13 @@ public interface Sfunctor<SELF extends Sfunctor<SELF>> {
      * @return memoized version of this function
      */
     SELF memoize();
+
+    /**
+     * create synchronized version of this function.
+     *
+     * @return synchronized version of this function
+     */
+    default SELF synchronize() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
 }

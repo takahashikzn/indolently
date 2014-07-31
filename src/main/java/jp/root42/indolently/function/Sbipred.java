@@ -47,6 +47,27 @@ public class Sbipred<T, U>
     }
 
     /**
+     * currying this function.
+     *
+     * @param x argument to bind
+     * @return curried function
+     */
+    public Spred<U> curry(final T x) {
+        return new Spred<>((self, y) -> this.test(x, y));
+    }
+
+    /**
+     * currying this function.
+     *
+     * @param x 1st argument to bind
+     * @param y 2nd argument to bind
+     * @return curried function
+     */
+    public SBoolSpplr curry(final T x, final U y) {
+        return this.curry(x).curry(y);
+    }
+
+    /**
      * return function body.
      *
      * @return function body
@@ -63,5 +84,24 @@ public class Sbipred<T, U>
     @Override
     public String toString() {
         return this.body.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.body.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null) {
+            return false;
+        } else if (this == o) {
+            return true;
+        } else if (!(o instanceof Sbipred)) {
+            return false;
+        }
+
+        final Sbipred<?, ?> that = (Sbipred<?, ?>) o;
+        return this.body.equals(that.body);
     }
 }
