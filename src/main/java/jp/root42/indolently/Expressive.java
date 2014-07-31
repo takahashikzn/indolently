@@ -36,34 +36,57 @@ public class Expressive {
     /** non private for subtyping. */
     protected Expressive() {}
 
-    /**
-     * Inline if-else operator.
-     * this is equivalent to {@code cond ? ifTrue.get() : ifFalse.get()}
-     *
-     * @param cond condition
-     * @param ifTrue result value if condition is {@code true}
-     * @param ifFalse result value if condition is {@code false}
-     * @return evaluation result
-     */
-    public static <V> V ifelse(final boolean cond, final Supplier<? extends V> ifTrue,
-        final Supplier<? extends V> ifFalse) {
+    public static class InCase<T>
+        implements Supplier<Optional<T>> {
 
-        return cond ? ifTrue.get() : ifFalse.get();
+        private final BooleanSupplier cond;
+
+        private final Supplier<? extends T> suppl;
+
+        protected InCase(final BooleanSupplier cond, final Supplier<? extends T> expr) {
+            this.cond = cond;
+            this.suppl = expr;
+        }
+
+        @Override
+        public Optional<T> get() {
+            return this.cond.getAsBoolean() ? optional(this.suppl.get()) : Optional.empty();
+        }
+
+        public T other(final Supplier<? extends T> other) {
+            return this.cond.getAsBoolean() ? this.suppl.get() : other.get();
+        }
+
+        public T other(final T other) {
+            return this.cond.getAsBoolean() ? this.suppl.get() : other;
+        }
     }
 
     /**
-     * Inline if-else operator.
-     * this is equivalent to {@code cond.getAsBoolean() ? ifTrue.get() : ifFalse.get()}
+     * Lazy evaluated inline if-else operator.
      *
-     * @param cond condition. {@code null} is evaluated as {@code false}
-     * @param ifTrue result value if condition is {@code true}
-     * @param ifFalse result value if condition is {@code false}
+     * @param <T> value type
+     * @param cond condition
+     * @param expr result value if condition is {@code true}
      * @return evaluation result
      */
-    public static <V> V ifelse(final BooleanSupplier cond, final Supplier<? extends V> ifTrue,
-        final Supplier<? extends V> ifFalse) {
+    public static <T> InCase<T> incase(final boolean cond, final Supplier<? extends T> expr) {
+        return incase(() -> cond, expr);
+    }
 
-        return ifelse((cond != null) && cond.getAsBoolean(), ifTrue, ifFalse);
+    /**
+     * Lazy evaluated inline if-else operator.
+     *
+     * @param <T> value type
+     * @param cond condition. {@code null} is evaluated as {@code false}
+     * @param expr result value if condition is {@code true}
+     * @return evaluation result
+     */
+    public static <T> InCase<T> incase(final BooleanSupplier cond, final Supplier<? extends T> expr) {
+        Objects.requireNonNull(cond);
+        Objects.requireNonNull(expr);
+
+        return new InCase<>(cond, expr);
     }
 
     /**
