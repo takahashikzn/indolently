@@ -19,6 +19,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.Destructive;
+
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -40,10 +42,35 @@ public class Duo<F, S>
     /** second element */
     public S snd;
 
+    @Destructive
     @Override
     public void accept(final Duo<F, S> that) {
         this.fst = that.fst;
         this.snd = that.snd;
+    }
+
+    /**
+     * set elements then return {@code this} instance.
+     *
+     * @param that the element supplier
+     * @return {@code this} instance
+     */
+    @Destructive
+    public Duo<F, S> set(final Duo<? extends F, ? extends S> that) {
+        return (that == null) ? this.set(null, null) : this.set(that.fst, that.snd);
+    }
+
+    /**
+     * set elements then return {@code this} instance.
+     *
+     * @param fst first element
+     * @param snd second element
+     * @return {@code this} instance
+     */
+    @Destructive
+    public Duo<F, S> set(final F fst, final S snd) {
+        this.accept(fst, snd);
+        return this;
     }
 
     @Override
@@ -51,6 +78,7 @@ public class Duo<F, S>
         return this;
     }
 
+    @Destructive
     @Override
     public void accept(final F fst, final S snd) {
         this.fst = fst;
@@ -72,6 +100,7 @@ public class Duo<F, S>
      * @param fst 1st element
      * @return {@code this}
      */
+    @Destructive
     public Duo<F, S> fst(final F fst) {
         this.fst = fst;
         return this;
@@ -92,6 +121,7 @@ public class Duo<F, S>
      * @param snd 2st element
      * @return {@code this}
      */
+    @Destructive
     public Duo<F, S> snd(final S snd) {
         this.snd = snd;
         return this;
