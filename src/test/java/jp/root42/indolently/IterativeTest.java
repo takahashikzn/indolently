@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Functional.*;
+import static jp.root42.indolently.Generator.*;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
@@ -46,7 +47,7 @@ public class IterativeTest {
     @Test
     public void testGenerator() {
 
-        final Generator<Integer> g = generator(ref(0), env -> (2 < env.val) ? Generator.breaks() : env.val++);
+        final Generator<Integer> g = generator(ref(0), env -> (2 < env.val) ? breaks() : env.val++);
 
         assertThat(g.hasNext()).isTrue();
         assertThat(g.next()).isEqualTo(0);
@@ -74,7 +75,7 @@ public class IterativeTest {
 
         generator(//
             ref(1), //
-            env -> (10 < env.val) ? Generator.breaks() : env.val++) //
+            env -> (10 < env.val) ? breaks() : env.val++) //
             .forEach(consumerOf((final Integer x) -> ints.add(x)) //
                 .andThen(x -> {}));
 
@@ -90,7 +91,7 @@ public class IterativeTest {
         generator( //
             generator( //
                 ref(1), //
-                env -> (10 < env.val) ? Generator.breaks() : env.val++)) //
+                env -> (10 < env.val) ? breaks() : env.val++)) //
             .forEach(consumerOf((final Integer x) -> {}));
     }
 
