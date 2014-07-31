@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -34,6 +35,34 @@ public class Expressive {
 
     /** non private for subtyping. */
     protected Expressive() {}
+
+    /**
+     * Inline if-else operator.
+     * this is equivalent to {@code cond ? ifTrue.get() : ifFalse.get()}
+     *
+     * @param cond condition
+     * @param ifTrue result value if condition is {@code true}
+     * @param ifFalse result value if condition is {@code false}
+     * @return evaluation result
+     */
+    public static <V> V ifelse(final boolean cond, final Supplier<? extends V> ifTrue,
+        final Supplier<? extends V> ifFalse) {
+        return cond ? ifTrue.get() : ifFalse.get();
+    }
+
+    /**
+     * Inline if-else operator.
+     * this is equivalent to {@code cond.getAsBoolean() ? ifTrue.get() : ifFalse.get()}
+     *
+     * @param cond condition
+     * @param ifTrue result value if condition is {@code true}
+     * @param ifFalse result value if condition is {@code false}
+     * @return evaluation result
+     */
+    public static <V> V ifelse(final BooleanSupplier cond, final Supplier<? extends V> ifTrue,
+        final Supplier<? extends V> ifFalse) {
+        return ifelse(cond.getAsBoolean(), ifTrue, ifFalse);
+    }
 
     /**
      * evaluate following forms then return evaluation result of first expressions.

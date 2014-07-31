@@ -26,6 +26,7 @@ import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
@@ -123,15 +124,14 @@ public class FunctionalTest {
                 final int y = v.snd;
                 final int z = v.trd;
 
-                if (y < x) {
-                    return self.apply( //
+                return ifelse( //
+                    () -> (y < x), //
+                    () -> self.apply( //
                         tuple( //
                             self.apply(tuple(x - 1, y, z)), //
                             self.apply(tuple(y - 1, z, x)), //
-                            self.apply(tuple(z - 1, x, y))));
-                } else {
-                    return y;
-                }
+                            self.apply(tuple(z - 1, x, y)))), //
+                    () -> y);
             }).memoize();
 
         assertThat(tarai.apply(tuple(20, 6, 0))).isEqualTo(20);
