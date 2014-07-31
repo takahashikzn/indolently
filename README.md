@@ -30,7 +30,9 @@ To build, <a href="http://ant.apache.org/">Apache Ant</a> and <a href="http://an
 Installation
 =================
 
-After just typing <code>ant</code> on project root, you can find jar file at ./target/indolently.jar
+Just type <code>ant [RET]</code> at project root.
+
+A moment later, you will find a jar file at ./target/indolently.jar
 
 
 How to use
