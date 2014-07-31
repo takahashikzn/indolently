@@ -25,8 +25,8 @@ import jp.root42.indolently.Functional;
  * @param <T> return value type
  * @author takahashikzn
  */
-public class Sspplr<T>
-    implements Serializable, Supplier<T>, Slambda<Sspplr<T>> {
+public class SSuppl<T>
+    implements Serializable, Supplier<T>, SLambda<SSuppl<T>> {
 
     private static final long serialVersionUID = 6611508603865244405L;
 
@@ -37,7 +37,7 @@ public class Sspplr<T>
      *
      * @param body function body
      */
-    public Sspplr(final Function<? super Supplier<T>, ? extends T> body) {
+    public SSuppl(final Function<? super Supplier<T>, ? extends T> body) {
         this.body = Objects.requireNonNull(body);
     }
 
@@ -56,8 +56,8 @@ public class Sspplr<T>
     }
 
     @Override
-    public Sspplr<T> memoize() {
-        return new Sspplr<>(Functional.memoize(this.body));
+    public SSuppl<T> memoize() {
+        return new SSuppl<>(Functional.memoize(this.body));
     }
 
     @Override
@@ -76,11 +76,11 @@ public class Sspplr<T>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Sspplr)) {
+        } else if (!(o instanceof SSuppl)) {
             return false;
         }
 
-        final Sspplr<?> that = (Sspplr<?>) o;
+        final SSuppl<?> that = (SSuppl<?>) o;
         return this.body.equals(that.body);
     }
 }

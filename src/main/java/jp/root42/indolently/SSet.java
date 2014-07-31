@@ -26,8 +26,8 @@ import java.util.function.Predicate;
  * @param <T> value type
  * @author takahashikzn
  */
-public interface Sset<T>
-    extends Scol<T, Sset<T>>, Set<T> {
+public interface SSet<T>
+    extends SCol<T, SSet<T>>, Set<T> {
 
     /**
      * Wrap a set.
@@ -36,7 +36,7 @@ public interface Sset<T>
      * @param set set to wrap
      * @return wrapped set
      */
-    public static <T> Sset<T> of(final Set<T> set) {
+    public static <T> SSet<T> of(final Set<T> set) {
         return Indolently.wrap(set);
     }
 
@@ -46,21 +46,21 @@ public interface Sset<T>
      * @see Indolently#freeze(Set)
      */
     @Override
-    default Sset<T> freeze() {
+    default SSet<T> freeze() {
         return Indolently.freeze(this);
     }
 
     @Override
-    default Sset<T> tail() {
+    default SSet<T> tail() {
         return Indolently.set(this.list().tail());
     }
 
     /**
-     * convert this set to {@link Slist}.
+     * convert this set to {@link SList}.
      *
      * @return a list newly constructed from this instance.
      */
-    default Slist<T> list() {
+    default SList<T> list() {
         return Indolently.list(this);
     }
 
@@ -72,7 +72,7 @@ public interface Sset<T>
      * @param f function
      * @return newly constructed set which contains converted values
      */
-    default <R> Sset<R> map(final Function<? super T, ? extends R> f) {
+    default <R> SSet<R> map(final Function<? super T, ? extends R> f) {
         return this.map((idx, val) -> f.apply(val));
     }
 
@@ -84,9 +84,9 @@ public interface Sset<T>
      * @param f function. first argument is loop index.
      * @return newly constructed set which contains converted values
      */
-    default <R> Sset<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
+    default <R> SSet<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
 
-        final Sset<R> rslt = Indolently.set();
+        final SSet<R> rslt = Indolently.set();
 
         int i = 0;
         for (final T val : this) {
@@ -97,9 +97,9 @@ public interface Sset<T>
     }
 
     @Override
-    default Sset<T> filter(final Predicate<? super T> f) {
+    default SSet<T> filter(final Predicate<? super T> f) {
 
-        final Sset<T> rslt = Indolently.set();
+        final SSet<T> rslt = Indolently.set();
 
         for (final T val : this) {
             if (f.test(val)) {
@@ -116,7 +116,7 @@ public interface Sset<T>
      * @param values
      * @return newly constructed set as a computed union
      */
-    default Sset<T> union(final Iterable<? extends T> values) {
+    default SSet<T> union(final Iterable<? extends T> values) {
         return Indolently.set(this).pushAll(values);
     }
 
@@ -126,7 +126,7 @@ public interface Sset<T>
      * @param values
      * @return newly constructed set as a computed intersection.
      */
-    default Sset<T> intersect(final Iterable<? extends T> values) {
+    default SSet<T> intersect(final Iterable<? extends T> values) {
         return this.union(values).delete(this.diff(values));
     }
 
@@ -136,9 +136,9 @@ public interface Sset<T>
      * @param values
      * @return newly constructed set as a computed difference.
      */
-    default Sset<T> diff(final Iterable<? extends T> values) {
+    default SSet<T> diff(final Iterable<? extends T> values) {
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        final Sset<T> rslt = Indolently.set(this).delete(values).union(Indolently.set(values).delete((Set) this));
+        final SSet<T> rslt = Indolently.set(this).delete(values).union(Indolently.set(values).delete((Set) this));
         return rslt;
     }
 }

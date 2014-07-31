@@ -24,8 +24,8 @@ import jp.root42.indolently.Functional;
 /**
  * @author takahashikzn
  */
-public class SBoolSpplr
-    implements Serializable, BooleanSupplier, Slambda<SBoolSpplr> {
+public class SBoolSuppl
+    implements Serializable, BooleanSupplier, SLambda<SBoolSuppl> {
 
     private static final long serialVersionUID = 6611508603865244405L;
 
@@ -36,7 +36,7 @@ public class SBoolSpplr
      *
      * @param body function body
      */
-    public SBoolSpplr(final Predicate<? super BooleanSupplier> body) {
+    public SBoolSuppl(final Predicate<? super BooleanSupplier> body) {
         this.body = Objects.requireNonNull(body);
     }
 
@@ -55,8 +55,8 @@ public class SBoolSpplr
     }
 
     @Override
-    public SBoolSpplr memoize() {
-        return new SBoolSpplr(Functional.memoize(this.body));
+    public SBoolSuppl memoize() {
+        return new SBoolSuppl(Functional.memoize(this.body));
     }
 
     @Override
@@ -75,11 +75,11 @@ public class SBoolSpplr
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof SBoolSpplr)) {
+        } else if (!(o instanceof SBoolSuppl)) {
             return false;
         }
 
-        final SBoolSpplr that = (SBoolSpplr) o;
+        final SBoolSuppl that = (SBoolSuppl) o;
         return this.body.equals(that.body);
     }
 }

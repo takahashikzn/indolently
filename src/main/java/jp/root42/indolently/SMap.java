@@ -39,9 +39,9 @@ import jp.root42.indolently.trait.Matchable;
  * @param <V> value type
  * @author takahashikzn
  */
-public interface Smap<K, V>
-    extends Map<K, V>, Freezable<Smap<K, V>>, Identical<Smap<K, V>>, Loopable<V, Smap<K, V>>,
-    Filterable<V, Smap<K, V>>, EdgeAwareIterable<Entry<K, V>>, Matchable<V> {
+public interface SMap<K, V>
+    extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>,
+    Filterable<V, SMap<K, V>>, EdgeAwareIterable<Entry<K, V>>, Matchable<V> {
 
     /**
      * Wrap a map.
@@ -50,7 +50,7 @@ public interface Smap<K, V>
      * @param map map to wrap
      * @return wrapped map
      */
-    public static <K, V> Smap<K, V> of(final Map<K, V> map) {
+    public static <K, V> SMap<K, V> of(final Map<K, V> map) {
         return Indolently.wrap(map);
     }
 
@@ -60,7 +60,7 @@ public interface Smap<K, V>
      * @see Indolently#freeze(Map)
      */
     @Override
-    default Smap<K, V> freeze() {
+    default SMap<K, V> freeze() {
         return Indolently.freeze(this);
     }
 
@@ -72,7 +72,7 @@ public interface Smap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default Smap<K, V> push(final K key, final V value) {
+    default SMap<K, V> push(final K key, final V value) {
         this.put(key, value);
         return this;
     }
@@ -84,7 +84,7 @@ public interface Smap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default Smap<K, V> pushAll(final Map<? extends K, ? extends V> map) {
+    default SMap<K, V> pushAll(final Map<? extends K, ? extends V> map) {
         this.putAll(map);
         return this;
     }
@@ -98,7 +98,7 @@ public interface Smap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default Smap<K, V> push(final K key, final Optional<? extends V> value) {
+    default SMap<K, V> push(final K key, final Optional<? extends V> value) {
         return Indolently.empty(value) ? this : this.push(key, value.get());
     }
 
@@ -110,7 +110,7 @@ public interface Smap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default Smap<K, V> pushAll(final Optional<? extends Map<? extends K, ? extends V>> map) {
+    default SMap<K, V> pushAll(final Optional<? extends Map<? extends K, ? extends V>> map) {
         return Indolently.empty(map) ? this : this.pushAll(map.get());
     }
 
@@ -121,7 +121,7 @@ public interface Smap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default Smap<K, V> delete(final Iterable<? extends K> keys) {
+    default SMap<K, V> delete(final Iterable<? extends K> keys) {
         this.keySet().removeAll(Indolently.set(keys));
         return this;
     }
@@ -132,7 +132,7 @@ public interface Smap<K, V>
      *
      * @return keys
      */
-    default Sset<K> keys() {
+    default SSet<K> keys() {
         return Indolently.set(this.keySet());
     }
 
@@ -142,12 +142,12 @@ public interface Smap<K, V>
      *
      * @return values
      */
-    default Slist<V> vals() {
+    default SList<V> vals() {
         return Indolently.list(this.values());
     }
 
     @Override
-    default Siter<Entry<K, V>> iterator() {
+    default SIter<Entry<K, V>> iterator() {
         return Indolently.wrap(this.entrySet().iterator());
     }
 
@@ -158,7 +158,7 @@ public interface Smap<K, V>
      * @param keys keys to extract
      * @return extracted new map
      */
-    default Smap<K, V> slice(final Iterable<? extends K> keys) {
+    default SMap<K, V> slice(final Iterable<? extends K> keys) {
         return Indolently.map(this).delete(this.keys().delete(keys));
     }
 
@@ -169,7 +169,7 @@ public interface Smap<K, V>
      * @return {@code this} instance
      */
     @Override
-    default Smap<K, V> each(final Consumer<? super V> f) {
+    default SMap<K, V> each(final Consumer<? super V> f) {
         return this.each((key, val) -> f.accept(val));
     }
 
@@ -179,7 +179,7 @@ public interface Smap<K, V>
      * @param f function
      * @return {@code this} instance
      */
-    default Smap<K, V> each(final BiConsumer<? super K, ? super V> f) {
+    default SMap<K, V> each(final BiConsumer<? super K, ? super V> f) {
         this.forEach(f);
         return this;
     }
@@ -217,7 +217,7 @@ public interface Smap<K, V>
      * @return new filtered map
      */
     @Override
-    default Smap<K, V> filter(final Predicate<? super V> f) {
+    default SMap<K, V> filter(final Predicate<? super V> f) {
         return this.filter((key, val) -> f.test(val));
     }
 
@@ -228,9 +228,9 @@ public interface Smap<K, V>
      * @param f condition
      * @return new filtered map
      */
-    default Smap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
+    default SMap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
 
-        final Smap<K, V> rslt = Indolently.map();
+        final SMap<K, V> rslt = Indolently.map();
 
         for (final Entry<K, V> e : this) {
 
@@ -253,7 +253,7 @@ public interface Smap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> Smap<K, R> map(final Function<? super V, ? extends R> f) {
+    default <R> SMap<K, R> map(final Function<? super V, ? extends R> f) {
         return this.map((key, val) -> f.apply(val));
     }
 
@@ -265,9 +265,9 @@ public interface Smap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> Smap<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
+    default <R> SMap<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
 
-        final Smap<K, R> rslt = Indolently.map();
+        final SMap<K, R> rslt = Indolently.map();
 
         for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
 

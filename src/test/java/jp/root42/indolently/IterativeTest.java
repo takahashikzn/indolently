@@ -70,7 +70,7 @@ public class IterativeTest {
     @Test
     public void testGenerator2() {
 
-        final Slist<Integer> ints = list();
+        final SList<Integer> ints = list();
 
         generator( //
             generator(ref(1), env -> (10 < env.val) ? Generator.breaks() : env.val++)) //
@@ -139,7 +139,7 @@ public class IterativeTest {
     @Test
     public void testInternalIterators() {
 
-        final Slist<Integer> ints = list();
+        final SList<Integer> ints = list();
 
         assertThat(range(1, 10).list() //
             .slice(-5, 0) //

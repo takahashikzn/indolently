@@ -14,43 +14,46 @@
 package jp.root42.indolently;
 
 import java.io.Serializable;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.AbstractSet;
+import java.util.HashSet;
 import java.util.Set;
 
 
 /**
- * Simple implementation of {@link Smap}.
+ * Simple implementation of {@link SSet}.
  *
- * @param <K> key type
- * @param <V> value type
+ * @param <T> value type
  * @author takahashikzn
  */
-class SmapImpl<K, V>
-    extends AbstractMap<K, V>
-    implements Smap<K, V>, Serializable {
+class SSetImpl<T>
+    extends AbstractSet<T>
+    implements SSet<T>, Serializable {
 
     private static final long serialVersionUID = 8705188807596442213L;
 
-    private Map<K, V> store;
+    private final Set<T> store;
 
-    public SmapImpl() {
-        this(new HashMap<>());
+    public SSetImpl() {
+        this(new HashSet<>());
     }
 
-    public SmapImpl(final Map<K, V> store) {
+    public SSetImpl(final Set<T> store) {
         this.store = store;
     }
 
     @Override
-    public V put(final K key, final V value) {
-        return this.store.put(key, value);
+    public boolean add(final T element) {
+        return this.store.add(element);
     }
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
-        return this.store.entrySet();
+    public int size() {
+        return this.store.size();
+    }
+
+    @Override
+    public SIter<T> iterator() {
+        return Indolently.wrap(this.store.iterator());
     }
 
     @Override

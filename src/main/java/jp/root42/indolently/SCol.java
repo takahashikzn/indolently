@@ -35,16 +35,16 @@ import static jp.root42.indolently.Indolently.*;
 
 
 /**
- * common method definition for {@link Sset} / {@link Slist}.
+ * common method definition for {@link SSet} / {@link SList}.
  * It's name comes from "Sugared collection".
  *
  * @param <T> value type
  * @param <SELF> self type
  * @author takahashikzn
- * @see Slist
- * @see Sset
+ * @see SList
+ * @see SSet
  */
-public interface Scol<T, SELF extends Scol<T, SELF>>
+public interface SCol<T, SELF extends SCol<T, SELF>>
     extends Collection<T>, EdgeAwareIterable<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>,
     Filterable<T, SELF>, Reducible<T>, Matchable<T> {
 
@@ -119,7 +119,7 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
     }
 
     @Override
-    Siter<T> iterator();
+    SIter<T> iterator();
 
     /**
      * get rest elements of this collection.

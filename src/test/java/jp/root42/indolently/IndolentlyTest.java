@@ -122,7 +122,7 @@ public class IndolentlyTest {
     @Test
     public void testSortMap() {
 
-        final Smap<Integer, Integer> map = wrap(new LinkedHashMap<>(), 1, 1).push(3, 3).push(2, 2);
+        final SMap<Integer, Integer> map = wrap(new LinkedHashMap<>(), 1, 1).push(3, 3).push(2, 2);
 
         assertThat(list(map.keySet())) //
             .isEqualTo(list(1, 3, 2));
@@ -147,7 +147,7 @@ public class IndolentlyTest {
     }
 
     /**
-     * {@link Sset#union(Iterable)}
+     * {@link SSet#union(Iterable)}
      *
      * @param desc description
      * @param expected expected value
@@ -176,7 +176,7 @@ public class IndolentlyTest {
     }
 
     /**
-     * {@link Sset#intersect(Iterable)}
+     * {@link SSet#intersect(Iterable)}
      *
      * @param desc description
      * @param expected expected value
@@ -206,7 +206,7 @@ public class IndolentlyTest {
     }
 
     /**
-     * {@link Sset#diff(Iterable)}
+     * {@link SSet#diff(Iterable)}
      *
      * @param desc description
      * @param expected expected value
@@ -269,7 +269,7 @@ public class IndolentlyTest {
     @Test
     public void testObjectArray() {
 
-        final Slist<Object[]> actual = list( //
+        final SList<Object[]> actual = list( //
             oarray("int list", list(1, 2, 3), oarray(1, 2, 3)) //
             , oarray("compound typed list", list(1, "a"), oarray(1, "a")) //
             , oarray("null args", list(), null) //
@@ -310,7 +310,7 @@ public class IndolentlyTest {
                 }
             });
 
-        final Smap<String, Object> actualNestedMap = map( //
+        final SMap<String, Object> actualNestedMap = map( //
             "int", 1 //
             , "string", "abc" //
             , "level1", map( //
@@ -345,7 +345,7 @@ public class IndolentlyTest {
     @Test
     public void testFreeze() {
 
-        final Smap<String, Smap<String, Slist<Sset<Integer>>>> frozen = map( //
+        final SMap<String, SMap<String, SList<SSet<Integer>>>> frozen = map( //
             "level1", map( //
                 "level2", listOf(set(42)))).freeze();
 
@@ -378,8 +378,8 @@ public class IndolentlyTest {
     @Test
     public void testCircularFreeze() {
 
-        final Slist<Object> list0 = list(0);
-        final Slist<Object> list1 = list(1);
+        final SList<Object> list0 = list(0);
+        final SList<Object> list1 = list(1);
 
         list0.add(list1);
         list1.add(list0);

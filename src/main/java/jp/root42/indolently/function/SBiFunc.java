@@ -15,35 +15,36 @@ package jp.root42.indolently.function;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import java.util.function.BiFunction;
 
 import jp.root42.indolently.Functional;
 
 
 /**
- * @param <T> argument type
+ * @param <T> first argument type
+ * @param <U> second argument type
+ * @param <R> return value type
  * @author takahashikzn
  */
-public class Spred<T>
-    implements Serializable, Predicate<T>, Slambda<Spred<T>> {
+public class SBiFunc<T, U, R>
+    implements Serializable, BiFunction<T, U, R>, SLambda<SBiFunc<T, U, R>> {
 
-    private static final long serialVersionUID = 9028625532191422275L;
+    private static final long serialVersionUID = 5099015871546179565L;
 
-    private final BiPredicate<? super Predicate<T>, ? super T> body;
+    private final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body;
 
     /**
      * constructor
      *
      * @param body function body
      */
-    public Spred(final BiPredicate<? super Predicate<T>, ? super T> body) {
+    public SBiFunc(final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body) {
         this.body = Objects.requireNonNull(body);
     }
 
     @Override
-    public boolean test(final T x) {
-        return this.body.test(this, x);
+    public R apply(final T x, final U y) {
+        return this.body.apply(this, x, y);
     }
 
     /**
@@ -52,8 +53,19 @@ public class Spred<T>
      * @param x argument to bind
      * @return curried function
      */
-    public SBoolSpplr curry(final T x) {
-        return new SBoolSpplr(self -> this.test(x));
+    public SFunc<U, R> curry(final T x) {
+        return new SFunc<>((self, y) -> this.apply(x, y));
+    }
+
+    /**
+     * currying this function.
+     *
+     * @param x 1st argument to bind
+     * @param y 2nd argument to bind
+     * @return curried function
+     */
+    public SSuppl<R> curry(final T x, final U y) {
+        return this.curry(x).curry(y);
     }
 
     /**
@@ -61,13 +73,13 @@ public class Spred<T>
      *
      * @return function body
      */
-    public BiPredicate<? super Predicate<T>, ? super T> body() {
+    public TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body() {
         return this.body;
     }
 
     @Override
-    public Spred<T> memoize() {
-        return new Spred<>(Functional.memoize(this.body));
+    public SBiFunc<T, U, R> memoize() {
+        return new SBiFunc<>(Functional.memoize(this.body));
     }
 
     @Override
@@ -86,11 +98,11 @@ public class Spred<T>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Spred)) {
+        } else if (!(o instanceof SBiFunc)) {
             return false;
         }
 
-        final Spred<?> that = (Spred<?>) o;
+        final SBiFunc<?, ?, ?> that = (SBiFunc<?, ?, ?>) o;
         return this.body.equals(that.body);
     }
 }

@@ -37,8 +37,8 @@ import jp.root42.indolently.trait.Reducible;
  * @param <T> value type
  * @author takahashikzn
  */
-public interface Siter<T>
-    extends Supplier<T>, Iterator<T>, EdgeAwareIterable<T>, Loopable<T, Siter<T>>, Filterable<T, Siter<T>>,
+public interface SIter<T>
+    extends Supplier<T>, Iterator<T>, EdgeAwareIterable<T>, Loopable<T, SIter<T>>, Filterable<T, SIter<T>>,
     Reducible<T>, Matchable<T> {
 
     @Override
@@ -71,12 +71,12 @@ public interface Siter<T>
      * @param next {@link Iterator#next()} implementation
      * @return a instance of this class.
      */
-    static <E, T> Siter<T> of(final E env, final Predicate<? super E> hasNext,
+    static <E, T> SIter<T> of(final E env, final Predicate<? super E> hasNext,
         final Function<? super E, ? extends T> next) {
 
         Objects.requireNonNull(next);
 
-        return new Siter<T>() {
+        return new SIter<T>() {
 
             @Override
             public boolean hasNext() {
@@ -95,7 +95,7 @@ public interface Siter<T>
     }
 
     @Override
-    default Siter<T> each(final Consumer<? super T> f) {
+    default SIter<T> each(final Consumer<? super T> f) {
 
         return this.map(x -> {
             f.accept(x);
@@ -104,9 +104,9 @@ public interface Siter<T>
     }
 
     @Override
-    default Siter<T> filter(final Predicate<? super T> f) {
+    default SIter<T> filter(final Predicate<? super T> f) {
 
-        return new Siter<T>() {
+        return new SIter<T>() {
 
             private Optional<T> cur;
 
@@ -114,11 +114,11 @@ public interface Siter<T>
             public boolean hasNext() {
                 if (this.cur != null) {
                     return true;
-                } else if (!Siter.this.hasNext()) {
+                } else if (!SIter.this.hasNext()) {
                     return false;
                 }
 
-                final T val = Siter.this.next();
+                final T val = SIter.this.next();
 
                 if (f.test(val)) {
                     this.cur = Optional.ofNullable(val);
@@ -174,7 +174,7 @@ public interface Siter<T>
      * @param f function
      * @return newly constructed iterator which iterates converted values
      */
-    default <R> Siter<R> map(final Function<? super T, ? extends R> f) {
+    default <R> SIter<R> map(final Function<? super T, ? extends R> f) {
         return of(this, x -> x.hasNext(), x -> f.apply(x.next()));
     }
 
@@ -183,7 +183,7 @@ public interface Siter<T>
      *
      * @return a list
      */
-    default Slist<T> list() {
+    default SList<T> list() {
         return Indolently.list(this);
     }
 }

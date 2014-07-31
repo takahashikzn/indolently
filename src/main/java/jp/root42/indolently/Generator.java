@@ -27,7 +27,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public interface Generator<T>
-    extends Siter<T> {
+    extends SIter<T> {
 
     /**
      * Notify this generator reaches the end of generation.

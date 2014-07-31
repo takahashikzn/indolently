@@ -23,12 +23,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.function.SBoolSpplr;
-import jp.root42.indolently.function.Sbifunc;
-import jp.root42.indolently.function.Sbipred;
-import jp.root42.indolently.function.Sfunc;
-import jp.root42.indolently.function.Spred;
-import jp.root42.indolently.function.Sspplr;
+import jp.root42.indolently.function.SBoolSuppl;
+import jp.root42.indolently.function.SBiFunc;
+import jp.root42.indolently.function.SBiPred;
+import jp.root42.indolently.function.SFunc;
+import jp.root42.indolently.function.SPred;
+import jp.root42.indolently.function.SSuppl;
 import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
@@ -83,14 +83,14 @@ public class Functional {
 
     public static <T, R> Function<T, R> memoize(final Function<? super T, ? extends R> f) {
 
-        final Smap<T, R> memo = map();
+        final SMap<T, R> memo = map();
 
         return x -> (memo.containsKey(x) ? memo : memo.push(x, f.apply(x))).get(x);
     }
 
     public static <T, U, R> BiFunction<T, U, R> memoize(final BiFunction<? super T, ? super U, ? extends R> f) {
 
-        final Smap<Duo<T, U>, R> memo = map();
+        final SMap<Duo<T, U>, R> memo = map();
 
         return (x, y) -> {
 
@@ -103,7 +103,7 @@ public class Functional {
     public static <T, U, V, R> TriFunction<T, U, V, R> memoize(
         final TriFunction<? super T, ? super U, ? super V, ? extends R> f) {
 
-        final Smap<Trio<T, U, V>, R> memo = map();
+        final SMap<Trio<T, U, V>, R> memo = map();
 
         return (x, y, z) -> {
 
@@ -135,7 +135,7 @@ public class Functional {
         return (x, y, z) -> memoized.apply(x, y, z);
     }
 
-    public static SBoolSpplr function(final Consumer<? super BooleanSupplier> init,
+    public static SBoolSuppl function(final Consumer<? super BooleanSupplier> init,
         final Predicate<? super BooleanSupplier> body) {
 
         Objects.requireNonNull(init, "init");
@@ -143,14 +143,14 @@ public class Functional {
 
         final BoolRef initialized = ref(false);
 
-        return new SBoolSpplr(self -> {
+        return new SBoolSuppl(self -> {
             initialized.negateIf(false, () -> init.accept(self));
 
             return body.test(self);
         });
     }
 
-    public static <T> Sspplr<T> function(final Consumer<? super Supplier<T>> init,
+    public static <T> SSuppl<T> function(final Consumer<? super Supplier<T>> init,
         final Function<? super Supplier<? extends T>, ? extends T> body) {
 
         Objects.requireNonNull(init, "init");
@@ -158,14 +158,14 @@ public class Functional {
 
         final BoolRef initialized = ref(false);
 
-        return new Sspplr<>(self -> {
+        return new SSuppl<>(self -> {
             initialized.negateIf(false, () -> init.accept(self));
 
             return body.apply(self);
         });
     }
 
-    public static <T, R> Sfunc<T, R> function(final Consumer<? super Function<T, R>> init,
+    public static <T, R> SFunc<T, R> function(final Consumer<? super Function<T, R>> init,
         final BiFunction<? super Function<? super T, ? extends R>, ? super T, ? extends R> body) {
 
         Objects.requireNonNull(init, "init");
@@ -173,14 +173,14 @@ public class Functional {
 
         final BoolRef initialized = ref(false);
 
-        return new Sfunc<>((self, x) -> {
+        return new SFunc<>((self, x) -> {
             initialized.negateIf(false, () -> init.accept(self));
 
             return body.apply(self, x);
         });
     }
 
-    public static <T, U, R> Sbifunc<T, U, R> function(final Consumer<? super BiFunction<T, U, R>> init,
+    public static <T, U, R> SBiFunc<T, U, R> function(final Consumer<? super BiFunction<T, U, R>> init,
         final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> body) {
 
         Objects.requireNonNull(init, "init");
@@ -188,14 +188,14 @@ public class Functional {
 
         final BoolRef initialized = ref(false);
 
-        return new Sbifunc<>((self, x, y) -> {
+        return new SBiFunc<>((self, x, y) -> {
             initialized.negateIf(false, () -> init.accept(self));
 
             return body.apply(self, x, y);
         });
     }
 
-    public static <T> Spred<T> function(final Consumer<? super Predicate<T>> init,
+    public static <T> SPred<T> function(final Consumer<? super Predicate<T>> init,
         final BiPredicate<? super Predicate<T>, ? super T> body) {
 
         Objects.requireNonNull(init, "init");
@@ -203,14 +203,14 @@ public class Functional {
 
         final BoolRef initialized = ref(false);
 
-        return new Spred<>((self, x) -> {
+        return new SPred<>((self, x) -> {
             initialized.negateIf(false, () -> init.accept(self));
 
             return body.test(self, x);
         });
     }
 
-    public static <T, U> Sbipred<T, U> function(final Consumer<? super BiPredicate<T, U>> init,
+    public static <T, U> SBiPred<T, U> function(final Consumer<? super BiPredicate<T, U>> init,
         final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
 
         Objects.requireNonNull(init, "init");
@@ -218,7 +218,7 @@ public class Functional {
 
         final BoolRef initialized = ref(false);
 
-        return new Sbipred<>((self, x, y) -> {
+        return new SBiPred<>((self, x, y) -> {
             initialized.negateIf(false, () -> init.accept(self));
 
             return body.test(self, x, y);
