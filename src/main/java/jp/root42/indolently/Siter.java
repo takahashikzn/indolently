@@ -49,6 +49,23 @@ public interface Siter<T>
     }
 
     /**
+     * get last element of this iterator.
+     *
+     * @return last element
+     * @throws NoSuchElementException if this iterator is empty
+     */
+    default T last() {
+
+        T rslt = null;
+
+        for (final T t : this) {
+            rslt = t;
+        }
+
+        return rslt;
+    }
+
+    /**
      * constructor.
      *
      * @param env iteration environment

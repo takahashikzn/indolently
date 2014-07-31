@@ -129,8 +129,8 @@ Systme.out.println(sumOfRange(-2, 5));
 // memoized fibonacci function
 final Function<Integer, Integer> fib = function(
 
-    // function declaration section: The compiler requires this to do type inference
-    (Function<Integer, Integer> self) -> {},
+    // function declaration/initialization section: The compiler requires this to do type inference
+    (Function<Integer, Integer> self) -> { System.out.println("initialized!"); },
 
     // function body section
     (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2),
