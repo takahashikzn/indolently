@@ -29,8 +29,7 @@ public class CmpRef<T extends Comparable<T>>
     /**
      * constructor.
      */
-    protected CmpRef() {
-    }
+    protected CmpRef() {}
 
     /**
      * constructor.
