@@ -150,7 +150,7 @@ System.out.println(
 );
 
 
-// memoized Tarai function: http://en.wikipedia.org/wiki/Tak_(function)
+// memoized Tarai function: http://en.wikipedia.org/wiki/Tak_%28function%29
 int tarai20 = function(
     (Function<Trio<Integer, Integer, Integer>, Integer> self) -> {},
     (self, v) -> {
