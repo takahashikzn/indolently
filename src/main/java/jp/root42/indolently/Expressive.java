@@ -58,7 +58,9 @@ public class Expressive {
      * @param other result value if condition is {@code false}
      * @return evaluation result
      */
-    public static <T> T ifelse(final BooleanSupplier cond, final Supplier<T> then, final Supplier<? extends T> other) {
+    public static <T> T ifelse(final BooleanSupplier cond, final Supplier<? extends T> then,
+        final Supplier<? extends T> other) {
+
         return (cond != null) && cond.getAsBoolean() ? then.get() : other.get();
     }
 
