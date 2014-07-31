@@ -36,42 +36,17 @@ public class Expressive {
     /** non private for subtyping. */
     protected Expressive() {}
 
-    public static class InCase<T>
-        implements Supplier<Optional<T>> {
-
-        private final BooleanSupplier cond;
-
-        private final Supplier<? extends T> suppl;
-
-        protected InCase(final BooleanSupplier cond, final Supplier<? extends T> expr) {
-            this.cond = cond;
-            this.suppl = expr;
-        }
-
-        @Override
-        public Optional<T> get() {
-            return this.cond.getAsBoolean() ? optional(this.suppl.get()) : Optional.empty();
-        }
-
-        public T other(final Supplier<? extends T> other) {
-            return this.cond.getAsBoolean() ? this.suppl.get() : other.get();
-        }
-
-        public T other(final T other) {
-            return this.cond.getAsBoolean() ? this.suppl.get() : other;
-        }
-    }
-
     /**
      * Lazy evaluated inline if-else operator.
      *
      * @param <T> value type
      * @param cond condition
-     * @param expr result value if condition is {@code true}
+     * @param then result value if condition is {@code true}
+     * @param other result value if condition is {@code false}
      * @return evaluation result
      */
-    public static <T> InCase<T> incase(final boolean cond, final Supplier<? extends T> expr) {
-        return incase(() -> cond, expr);
+    public static <T> T ifelse(final boolean cond, final Supplier<? extends T> then, final Supplier<? extends T> other) {
+        return cond ? then.get() : other.get();
     }
 
     /**
@@ -79,14 +54,12 @@ public class Expressive {
      *
      * @param <T> value type
      * @param cond condition. {@code null} is evaluated as {@code false}
-     * @param expr result value if condition is {@code true}
+     * @param then result value if condition is {@code true}
+     * @param other result value if condition is {@code false}
      * @return evaluation result
      */
-    public static <T> InCase<T> incase(final BooleanSupplier cond, final Supplier<? extends T> expr) {
-        Objects.requireNonNull(cond);
-        Objects.requireNonNull(expr);
-
-        return new InCase<>(cond, expr);
+    public static <T> T ifelse(final BooleanSupplier cond, final Supplier<T> then, final Supplier<? extends T> other) {
+        return (cond != null) && cond.getAsBoolean() ? then.get() : other.get();
     }
 
     /**

@@ -124,14 +124,14 @@ public class FunctionalTest {
                 final int y = v.snd;
                 final int z = v.trd;
 
-                return incase( //
+                return ifelse( //
                     () -> (y < x), //
                     () -> self.apply( //
                         tuple( //
                             self.apply(tuple(x - 1, y, z)), //
                             self.apply(tuple(y - 1, z, x)), //
-                            self.apply(tuple(z - 1, x, y))))) //
-                    .other(() -> y);
+                            self.apply(tuple(z - 1, x, y)))), //
+                    () -> y);
             }).memoize();
 
         assertThat(tarai.apply(tuple(20, 6, 0))).isEqualTo(20);
