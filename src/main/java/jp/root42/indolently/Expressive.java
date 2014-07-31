@@ -133,8 +133,8 @@ public class Expressive {
          * @param e exception to throw
          * @return 'default' attached match expression
          */
-        default Function<C, V> failure(final RuntimeException e) {
-            return this.failure(() -> e);
+        default Function<C, V> raise(final RuntimeException e) {
+            return this.raise(() -> e);
         }
 
         /**
@@ -143,10 +143,10 @@ public class Expressive {
          * @param f exception supplier to throw
          * @return 'default' attached match expression
          */
-        default Function<C, V> failure(final Supplier<? extends RuntimeException> f) {
+        default Function<C, V> raise(final Supplier<? extends RuntimeException> f) {
             Objects.requireNonNull(f);
 
-            return this.failure(x -> f.get());
+            return this.raise(x -> f.get());
         }
 
         /**
@@ -155,7 +155,7 @@ public class Expressive {
          * @param f exception supplier to throw
          * @return 'default' attached match expression
          */
-        default Function<C, V> failure(final Function<? super C, ? extends RuntimeException> f) {
+        default Function<C, V> raise(final Function<? super C, ? extends RuntimeException> f) {
             Objects.requireNonNull(f);
 
             return this.defaults(x -> {
@@ -205,11 +205,11 @@ public class Expressive {
                 return of(x -> true, x -> expr.apply(x));
             }
 
-            static <C, V> When<C, V> failure(final Supplier<? extends RuntimeException> expr) {
-                return failure(x -> expr.get());
+            static <C, V> When<C, V> raise(final Supplier<? extends RuntimeException> expr) {
+                return raise(x -> expr.get());
             }
 
-            static <C, V> When<C, V> failure(final Function<? super C, ? extends RuntimeException> expr) {
+            static <C, V> When<C, V> raise(final Function<? super C, ? extends RuntimeException> expr) {
                 return of(x -> true, x -> {
                     throw expr.apply(x);
                 });
