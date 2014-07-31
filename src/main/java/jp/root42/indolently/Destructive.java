@@ -30,5 +30,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Documented
 @Inherited
-public @interface Destructive {
-}
+public @interface Destructive {}

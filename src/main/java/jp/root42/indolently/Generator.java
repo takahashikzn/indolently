@@ -46,8 +46,7 @@ public interface Generator<T>
 
         private static final long serialVersionUID = -7710521845711826670L;
 
-        private Stop() {
-        }
+        private Stop() {}
     }
 
     /**

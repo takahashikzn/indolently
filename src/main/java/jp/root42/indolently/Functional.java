@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.io.Serializable;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -26,7 +25,6 @@ import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
 import jp.root42.indolently.ref.Duo;
-import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.Trio;
 
 import static jp.root42.indolently.Indolently.*;
@@ -38,8 +36,7 @@ import static jp.root42.indolently.Indolently.*;
 @SuppressWarnings("javadoc")
 public class Functional {
 
-    protected Functional() {
-    }
+    protected Functional() {}
 
     public static <T, R> Supplier<R> curry(final Function<? super T, ? extends R> f, final T t) {
         return () -> f.apply(t);
@@ -117,97 +114,109 @@ public class Functional {
         return (x, y, z) -> memoized.apply(x, y, z);
     }
 
-    public static class FuncSpec
-        implements Serializable {
+    public interface Sfunctional<SELF extends Sfunctional<SELF>> {
 
-        private static final long serialVersionUID = 8640673561464941017L;
+        SELF memoize();
+    }
 
-        public boolean memoize;
+    public static class Sfunc<T, R>
+        implements Function<T, R>, Sfunctional<Sfunc<T, R>> {
 
-        public FuncSpec memoize(final boolean memoize) {
-            this.memoize = memoize;
-            return this;
+        private final BiFunction<? super Function<T, R>, ? super T, ? extends R> f;
+
+        public Sfunc(final BiFunction<? super Function<T, R>, ? super T, ? extends R> f) {
+            this.f = f;
+        }
+
+        @Override
+        public R apply(final T x) {
+            return this.f.apply(this, x);
+        }
+
+        @Override
+        public Sfunc<T, R> memoize() {
+            return new Sfunc<>(Functional.memoize(this.f));
         }
     }
 
-    public static <T> Supplier<T> function(final Function<? super Supplier<T>, ? extends T> f) {
-        return function(f, new FuncSpec());
+    public static class Sbifunc<T, U, R>
+        implements BiFunction<T, U, R>, Sfunctional<Sbifunc<T, U, R>> {
+
+        private final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> f;
+
+        public Sbifunc(final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> f) {
+            this.f = f;
+        }
+
+        @Override
+        public R apply(final T x, final U y) {
+            return this.f.apply(this, x, y);
+        }
+
+        @Override
+        public Sbifunc<T, U, R> memoize() {
+            return new Sbifunc<>(Functional.memoize(this.f));
+        }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <T> Supplier<T> function(final Function<? super Supplier<T>, ? extends T> f, final FuncSpec spec) {
+    public static class Spred<T>
+        implements Predicate<T>, Sfunctional<Spred<T>> {
 
-        final Function func = f;
-        final Ref<Supplier> self = ref((Supplier) null);
+        private final BiPredicate<? super Predicate<T>, ? super T> f;
 
-        final Supplier g = () -> func.apply(self.val);
+        public Spred(final BiPredicate<? super Predicate<T>, ? super T> f) {
+            this.f = f;
+        }
 
-        return self.val = (spec.memoize ? memoize(g) : g);
+        @Override
+        public boolean test(final T x) {
+            return this.f.test(this, x);
+        }
+
+        @Override
+        public Spred<T> memoize() {
+            return new Spred<>(Functional.memoize(this.f));
+        }
     }
 
-    public static <T, R> Function<T, R> function(final BiFunction<? super Function<T, R>, ? super T, ? extends R> f) {
-        return function(f, new FuncSpec());
+    public static class Sbipred<T, U>
+        implements BiPredicate<T, U>, Sfunctional<Sbipred<T, U>> {
+
+        private final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> f;
+
+        public Sbipred(final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> f) {
+            this.f = f;
+        }
+
+        @Override
+        public boolean test(final T x, final U y) {
+            return this.f.test(this, x, y);
+        }
+
+        @Override
+        public Sbipred<T, U> memoize() {
+            return new Sbipred<>(Functional.memoize(this.f));
+        }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <T, R> Function<T, R> function(final BiFunction<? super Function<T, R>, ? super T, ? extends R> f,
-        final FuncSpec spec) {
-
-        final BiFunction func = f;
-        final Ref<Function> self = ref((Function) null);
-
-        final Function g = x -> func.apply(self.val, x);
-
-        return self.val = (spec.memoize ? memoize(g) : g);
+    public static <T, R> Sfunc<T, R> function(final Consumer<? super Function<T, R>> decl,
+        final BiFunction<? super Function<? super T, ? extends R>, ? super T, ? extends R> f) {
+        return new Sfunc<>(f);
     }
 
-    public static <T, U, R> BiFunction<T, U, R> function(
-        final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> f) {
-        return function(f, new FuncSpec());
+    public static <T, U, R> BiFunction<T, U, R> function(final Consumer<? super BiFunction<T, U, R>> decl,
+        final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> f) {
+        return new Sbifunc<>(f);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <T, U, R> BiFunction<T, U, R> function(
-        final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> f, final FuncSpec spec) {
-
-        final TriFunction func = f;
-        final Ref<BiFunction> self = ref((BiFunction) null);
-
-        final BiFunction g = (x, y) -> func.apply(self.val, x, y);
-
-        return self.val = spec.memoize ? memoize(g) : g;
+    public static <T> Predicate<T> function(final Consumer<? super Predicate<T>> decl,
+        final BiPredicate<? super Predicate<T>, ? super T> f) {
+        return new Spred<>(f);
     }
 
-    public static <T> Predicate<T> function(final BiPredicate<? super Predicate<T>, ? super T> f) {
-        return function(f, new FuncSpec());
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <T> Predicate<T> function(final BiPredicate<? super Predicate<T>, ? super T> f, final FuncSpec spec) {
-
-        final BiPredicate func = f;
-        final Ref<Predicate> self = ref((Predicate) null);
-
-        final Predicate g = x -> func.test(self.val, x);
-
-        return self.val = spec.memoize ? memoize(g) : g;
-    }
-
-    public static <T, U> BiPredicate<T, U> function(
+    public static <T, U> BiPredicate<T, U> function(final Consumer<? super BiPredicate<T, U>> decl,
         final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> f) {
-        return function(f, new FuncSpec());
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static <T, U> BiPredicate<T, U> function(
-        final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> f, final FuncSpec spec) {
-
-        final TriPredicate func = f;
-        final Ref<BiPredicate> self = ref((BiPredicate) null);
-
-        final BiPredicate g = (x, y) -> func.test(self.val, x, y);
-
-        return self.val = spec.memoize ? memoize(g) : g;
+        return new Sbipred<>(f);
     }
 
     public static <T> Supplier<? extends T> supplierOf(final Supplier<? extends T> f) {

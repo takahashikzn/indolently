@@ -128,9 +128,14 @@ Systme.out.println(sumOfRange(-2, 5));
 
 // memoized fibonacci function
 final Function<Integer, Integer> fib = function(
-    (Function<Integer, Integer> self, Integer x) ->
-        (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
-    , new FuncSpec().memoize(true));
+
+    // function declaration section: The compiler requires this to do type inference
+    (Function<Integer, Integer> self) -> {},
+
+    // function body section
+    (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2),
+
+).memoize();
 
 // print list of first 42nd fibonacci numbers
 System.out.println(

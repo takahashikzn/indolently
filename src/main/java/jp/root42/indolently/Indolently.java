@@ -55,8 +55,7 @@ import static jp.root42.indolently.Expressive.*;
 public class Indolently {
 
     /** non private for subtyping. */
-    protected Indolently() {
-    }
+    protected Indolently() {}
 
     static int idx(final List<?> list, final int idx) {
         return 0 <= idx ? idx : list.size() + idx;

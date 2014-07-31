@@ -14,9 +14,9 @@
 package jp.root42.indolently;
 
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-import jp.root42.indolently.Functional.FuncSpec;
 import jp.root42.indolently.function.TriFunction;
 
 import junitparams.JUnitParamsRunner;
@@ -40,38 +40,36 @@ import static org.assertj.core.api.Assertions.*;
 public class FunctionalTest {
 
     /**
-     * {@link Functional#function(TriFunction)}
+     * {@link Functional#function(Consumer, TriFunction)}
      */
     @Test
     public void testListComprehension() {
 
         assertThat(
             range(2, 10)
-                .filter(
-                    z -> function(
-                        (final BiFunction<Integer, Integer, Boolean> self, final Integer x, final Integer y) -> {
-                            if (y <= 1) {
-                                return true;
-                            } else if ((x % y) == 0) {
-                                return false;
-                            } else {
-                                return self.apply(x, y - 1);
-                            }
-                        }).apply(z, z - 1)) //
+                .filter(z -> function((final BiFunction<Integer, Integer, Boolean> self) -> {}, (self, x, y) -> {
+                    if (y <= 1) {
+                        return true;
+                    } else if ((x % y) == 0) {
+                        return false;
+                    } else {
+                        return self.apply(x, y - 1);
+                    }
+                }).apply(z, z - 1)) //
                 .map(x -> "" + x) //
                 .list()) //
             .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
     }
 
     /**
-     * {@link Functional#function(TriFunction)}
+     * {@link Functional#function(Consumer, TriFunction)}
      */
     @Test
     public void testFunction() {
 
         final Function<Integer, Integer> fib = function( //
-            (final Function<Integer, Integer> self, final Integer x) -> //
-            (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2), new FuncSpec().memoize(true));
+            (final Function<Integer, Integer> self) -> {}, (self, x) -> //
+            (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
 
         final Slist<Integer> fibonacciNums =
             list(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946,

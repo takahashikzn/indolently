@@ -33,8 +33,7 @@ import static jp.root42.indolently.Indolently.*;
 public class Expressive {
 
     /** non private for subtyping. */
-    protected Expressive() {
-    }
+    protected Expressive() {}
 
     /**
      * evaluate following forms then return evaluation result of first expressions.

@@ -28,8 +28,7 @@ import static jp.root42.indolently.Indolently.*;
 public class Iterative {
 
     /** non private for subtyping. */
-    protected Iterative() {
-    }
+    protected Iterative() {}
 
     /**
      * Generate infinite integer sequence.
