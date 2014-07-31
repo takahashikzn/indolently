@@ -202,7 +202,7 @@ public class Expressive {
             }
 
             static <C, V> When<C, V> defaults(final Function<? super C, ? extends V> expr) {
-                return of(x -> true, expr::apply);
+                return of(x -> true, x -> expr.apply(x));
             }
 
             static <C, V> When<C, V> failure(final Supplier<? extends RuntimeException> expr) {
