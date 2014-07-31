@@ -28,7 +28,7 @@ public class DoubleRef
     private static final long serialVersionUID = -3198217652103277386L;
 
     /** the value. */
-    public double val;
+    public volatile double val;
 
     /**
      * constructor.

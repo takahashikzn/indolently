@@ -24,7 +24,7 @@ public class ShortRef
     private static final long serialVersionUID = -6819998391641172785L;
 
     /** the value. */
-    public short val;
+    public volatile short val;
 
     /**
      * constructor.

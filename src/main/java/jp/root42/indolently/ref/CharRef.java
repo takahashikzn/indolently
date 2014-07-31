@@ -24,7 +24,7 @@ public class CharRef
     private static final long serialVersionUID = 6739224434382670429L;
 
     /** the value. */
-    public char val;
+    public volatile char val;
 
     /**
      * constructor.
