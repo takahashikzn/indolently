@@ -47,6 +47,7 @@ public class Expressive {
      */
     public static <V> V ifelse(final boolean cond, final Supplier<? extends V> ifTrue,
         final Supplier<? extends V> ifFalse) {
+
         return cond ? ifTrue.get() : ifFalse.get();
     }
 
@@ -54,14 +55,15 @@ public class Expressive {
      * Inline if-else operator.
      * this is equivalent to {@code cond.getAsBoolean() ? ifTrue.get() : ifFalse.get()}
      *
-     * @param cond condition
+     * @param cond condition. {@code null} is evaluated as {@code false}
      * @param ifTrue result value if condition is {@code true}
      * @param ifFalse result value if condition is {@code false}
      * @return evaluation result
      */
     public static <V> V ifelse(final BooleanSupplier cond, final Supplier<? extends V> ifTrue,
         final Supplier<? extends V> ifFalse) {
-        return ifelse(cond.getAsBoolean(), ifTrue, ifFalse);
+
+        return ifelse((cond != null) && cond.getAsBoolean(), ifTrue, ifFalse);
     }
 
     /**
