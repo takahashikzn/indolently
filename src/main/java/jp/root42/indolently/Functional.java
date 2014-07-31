@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -21,9 +22,14 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.function.Sbifunc;
+import jp.root42.indolently.function.Sbipred;
+import jp.root42.indolently.function.Sfunc;
+import jp.root42.indolently.function.Spred;
 import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
+import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.Duo;
 import jp.root42.indolently.ref.Trio;
 
@@ -114,109 +120,76 @@ public class Functional {
         return (x, y, z) -> memoized.apply(x, y, z);
     }
 
-    public interface Sfunctional<SELF extends Sfunctional<SELF>> {
+    public static <T, R> Sfunc<T, R> function(final Consumer<? super Function<T, R>> init,
+        final BiFunction<? super Function<? super T, ? extends R>, ? super T, ? extends R> body) {
 
-        SELF memoize();
+        Objects.requireNonNull(init, "init");
+        Objects.requireNonNull(body, "body");
+
+        final BoolRef initialized = ref(false);
+
+        return new Sfunc<>((self, x) -> {
+            if (!initialized.val) {
+                initialized.val = true;
+                init.accept(self);
+            }
+
+            return body.apply(self, x);
+        });
     }
 
-    public static class Sfunc<T, R>
-        implements Function<T, R>, Sfunctional<Sfunc<T, R>> {
+    public static <T, U, R> Sbifunc<T, U, R> function(final Consumer<? super BiFunction<T, U, R>> init,
+        final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> body) {
 
-        private final BiFunction<? super Function<T, R>, ? super T, ? extends R> f;
+        Objects.requireNonNull(init, "init");
+        Objects.requireNonNull(body, "body");
 
-        public Sfunc(final BiFunction<? super Function<T, R>, ? super T, ? extends R> f) {
-            this.f = f;
-        }
+        final BoolRef initialized = ref(false);
 
-        @Override
-        public R apply(final T x) {
-            return this.f.apply(this, x);
-        }
+        return new Sbifunc<>((self, x, y) -> {
+            if (!initialized.val) {
+                initialized.val = true;
+                init.accept(self);
+            }
 
-        @Override
-        public Sfunc<T, R> memoize() {
-            return new Sfunc<>(Functional.memoize(this.f));
-        }
+            return body.apply(self, x, y);
+        });
     }
 
-    public static class Sbifunc<T, U, R>
-        implements BiFunction<T, U, R>, Sfunctional<Sbifunc<T, U, R>> {
+    public static <T> Spred<T> function(final Consumer<? super Predicate<T>> init,
+        final BiPredicate<? super Predicate<T>, ? super T> body) {
 
-        private final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> f;
+        Objects.requireNonNull(init, "init");
+        Objects.requireNonNull(body, "body");
 
-        public Sbifunc(final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> f) {
-            this.f = f;
-        }
+        final BoolRef initialized = ref(false);
 
-        @Override
-        public R apply(final T x, final U y) {
-            return this.f.apply(this, x, y);
-        }
+        return new Spred<>((self, x) -> {
+            if (!initialized.val) {
+                initialized.val = true;
+                init.accept(self);
+            }
 
-        @Override
-        public Sbifunc<T, U, R> memoize() {
-            return new Sbifunc<>(Functional.memoize(this.f));
-        }
+            return body.test(self, x);
+        });
     }
 
-    public static class Spred<T>
-        implements Predicate<T>, Sfunctional<Spred<T>> {
+    public static <T, U> Sbipred<T, U> function(final Consumer<? super BiPredicate<T, U>> init,
+        final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
 
-        private final BiPredicate<? super Predicate<T>, ? super T> f;
+        Objects.requireNonNull(init, "init");
+        Objects.requireNonNull(body, "body");
 
-        public Spred(final BiPredicate<? super Predicate<T>, ? super T> f) {
-            this.f = f;
-        }
+        final BoolRef initialized = ref(false);
 
-        @Override
-        public boolean test(final T x) {
-            return this.f.test(this, x);
-        }
+        return new Sbipred<>((self, x, y) -> {
+            if (!initialized.val) {
+                initialized.val = true;
+                init.accept(self);
+            }
 
-        @Override
-        public Spred<T> memoize() {
-            return new Spred<>(Functional.memoize(this.f));
-        }
-    }
-
-    public static class Sbipred<T, U>
-        implements BiPredicate<T, U>, Sfunctional<Sbipred<T, U>> {
-
-        private final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> f;
-
-        public Sbipred(final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> f) {
-            this.f = f;
-        }
-
-        @Override
-        public boolean test(final T x, final U y) {
-            return this.f.test(this, x, y);
-        }
-
-        @Override
-        public Sbipred<T, U> memoize() {
-            return new Sbipred<>(Functional.memoize(this.f));
-        }
-    }
-
-    public static <T, R> Sfunc<T, R> function(final Consumer<? super Function<T, R>> decl,
-        final BiFunction<? super Function<? super T, ? extends R>, ? super T, ? extends R> f) {
-        return new Sfunc<>(f);
-    }
-
-    public static <T, U, R> BiFunction<T, U, R> function(final Consumer<? super BiFunction<T, U, R>> decl,
-        final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> f) {
-        return new Sbifunc<>(f);
-    }
-
-    public static <T> Predicate<T> function(final Consumer<? super Predicate<T>> decl,
-        final BiPredicate<? super Predicate<T>, ? super T> f) {
-        return new Spred<>(f);
-    }
-
-    public static <T, U> BiPredicate<T, U> function(final Consumer<? super BiPredicate<T, U>> decl,
-        final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> f) {
-        return new Sbipred<>(f);
+            return body.test(self, x, y);
+        });
     }
 
     public static <T> Supplier<? extends T> supplierOf(final Supplier<? extends T> f) {

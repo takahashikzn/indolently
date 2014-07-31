@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import jp.root42.indolently.function.TriFunction;
+import jp.root42.indolently.ref.IntRef;
 
 import junitparams.JUnitParamsRunner;
 
@@ -67,8 +68,12 @@ public class FunctionalTest {
     @Test
     public void testFunction() {
 
+        final IntRef initCount = ref(0);
+
         final Function<Integer, Integer> fib = function( //
-            (final Function<Integer, Integer> self) -> {}, (self, x) -> //
+            (final Function<Integer, Integer> self) -> {
+                initCount.val++;
+            }, (self, x) -> //
             (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
 
         final Slist<Integer> fibonacciNums =
@@ -76,6 +81,14 @@ public class FunctionalTest {
                 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887,
                 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296).freeze();
 
-        assertThat(range(0, 42).mapred(list(), (rem, val) -> rem.push(fib.apply(val))).get()).isEqualTo(fibonacciNums);
+        assertThat(initCount.val).isEqualTo(0);
+
+        assertThat(
+            range(1, 10).each(
+                x -> {
+                    assertThat(range(0, 42).mapred(list(), (rem, val) -> rem.push(fib.apply(val))).get()).isEqualTo(
+                        fibonacciNums);
+                    assertThat(initCount.val).isEqualTo(1);
+                }).last()).isEqualTo(10);
     }
 }
