@@ -129,10 +129,7 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new Sfunc<>((self, x) -> {
-            if (!initialized.val) {
-                initialized.val = true;
-                init.accept(self);
-            }
+            initialized.negateIf(false, () -> init.accept(self));
 
             return body.apply(self, x);
         });
@@ -147,10 +144,7 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new Sbifunc<>((self, x, y) -> {
-            if (!initialized.val) {
-                initialized.val = true;
-                init.accept(self);
-            }
+            initialized.negateIf(false, () -> init.accept(self));
 
             return body.apply(self, x, y);
         });
@@ -165,10 +159,7 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new Spred<>((self, x) -> {
-            if (!initialized.val) {
-                initialized.val = true;
-                init.accept(self);
-            }
+            initialized.negateIf(false, () -> init.accept(self));
 
             return body.test(self, x);
         });
@@ -183,10 +174,7 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new Sbipred<>((self, x, y) -> {
-            if (!initialized.val) {
-                initialized.val = true;
-                init.accept(self);
-            }
+            initialized.negateIf(false, () -> init.accept(self));
 
             return body.test(self, x, y);
         });
