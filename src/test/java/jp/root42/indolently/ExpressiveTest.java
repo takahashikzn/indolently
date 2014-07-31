@@ -75,8 +75,8 @@ public class ExpressiveTest {
             iterator( //
                 ref(from), //
                 env -> match( //
-                    when((final IntRef x) -> from < to, x -> x.val <= to) //
-                    , when(x -> to < from, x -> to <= x.val) //
+                    when((final IntRef x) -> from < to, x -> x.val <= to), //
+                    when(x -> to < from, x -> to <= x.val) //
                 ).defaults(x -> x.val == from).apply(env), //
                 env -> match( //
                     when((final IntRef x) -> from < to, x -> prog1( //
@@ -90,14 +90,22 @@ public class ExpressiveTest {
             iterator( //
                 ref(from), //
                 env -> match( //
-                    when((final IntRef x) -> from < to, x -> x.val <= to) //
-                    , when(x -> to < from, x -> to <= x.val) //
+                    when( //
+                        (final IntRef x) -> from < to, //
+                        x -> x.val <= to), //
+                    when( //
+                        x -> to < from, //
+                        x -> to <= x.val) //
                 ).defaults(x -> x.val == from).apply(env), //
-                env -> match( //
-                    when((final IntRef x) -> from < to, x -> prog1( //
+                env -> when( //
+                    (final IntRef x) -> from < to, //
+                    x -> prog1( //
                         x::get, //
                         () -> x.val += step)) //
-                ).defaults(x -> prog1(x::get, () -> x.val -= step)).apply(env) //
+                    .other( //
+                        x -> prog1( //
+                            x::get, //
+                            () -> x.val -= step)).apply(env) //
             )).reduce((l, r) -> l + r)).isEqualTo(list(expected).reduce((l, r) -> l + r));
     }
 
