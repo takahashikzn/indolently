@@ -25,8 +25,8 @@ import java.util.function.Supplier;
 import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
-import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.Duo;
+import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.Trio;
 
 import static jp.root42.indolently.Indolently.*;
