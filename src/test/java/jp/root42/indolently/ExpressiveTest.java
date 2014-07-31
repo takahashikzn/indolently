@@ -111,7 +111,7 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Match#failure(Supplier)}
+     * {@link Match#raise(Supplier)}
      */
     @Test
     public void testMatchFailure() {
@@ -119,7 +119,7 @@ public class ExpressiveTest {
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one")//
             , when(x -> x == 2, () -> "two") //
-            ).failure(x -> new RuntimeException("THE TEST OF " + x));
+            ).raise(x -> new RuntimeException("THE TEST OF " + x));
 
         try {
             f1.apply(42);
