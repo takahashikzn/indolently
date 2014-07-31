@@ -23,8 +23,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Loopable;
+import jp.root42.indolently.trait.Matchable;
 import jp.root42.indolently.trait.Reducible;
 
 
@@ -36,7 +38,8 @@ import jp.root42.indolently.trait.Reducible;
  * @author takahashikzn
  */
 public interface Siter<T>
-    extends Supplier<T>, Iterable<T>, Iterator<T>, Loopable<T, Siter<T>>, Filterable<T, Siter<T>>, Reducible<T> {
+    extends Supplier<T>, Iterator<T>, EdgeAwareIterable<T>, Loopable<T, Siter<T>>, Filterable<T, Siter<T>>,
+    Reducible<T>, Matchable<T> {
 
     @Override
     default T get() {
@@ -48,21 +51,16 @@ public interface Siter<T>
         return this;
     }
 
-    /**
-     * get last element of this iterator.
-     *
-     * @return last element
-     * @throws NoSuchElementException if this iterator is empty
-     */
-    default T last() {
+    @Override
+    default boolean some(final Predicate<? super T> f) {
 
-        T rslt = null;
-
-        for (final T t : this) {
-            rslt = t;
+        for (final T val : this) {
+            if (f.test(val)) {
+                return true;
+            }
         }
 
-        return rslt;
+        return false;
     }
 
     /**
@@ -136,11 +134,9 @@ public interface Siter<T>
                     throw new NoSuchElementException();
                 }
 
-                try {
-                    return this.cur.get();
-                } finally {
-                    this.cur = null;
-                }
+                final T val = this.cur.get();
+                this.cur = null;
+                return val;
             }
         };
     }

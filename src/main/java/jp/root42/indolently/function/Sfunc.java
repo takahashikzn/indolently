@@ -27,7 +27,7 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class Sfunc<T, R>
-    implements Serializable, Function<T, R>, Sfunctor<Sfunc<T, R>> {
+    implements Serializable, Function<T, R>, Slambda<Sfunc<T, R>> {
 
     private static final long serialVersionUID = -8241959687855651918L;
 

@@ -26,7 +26,7 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class Sbipred<T, U>
-    implements Serializable, BiPredicate<T, U>, Sfunctor<Sbipred<T, U>> {
+    implements Serializable, BiPredicate<T, U>, Slambda<Sbipred<T, U>> {
 
     private static final long serialVersionUID = 2715052895955591445L;
 

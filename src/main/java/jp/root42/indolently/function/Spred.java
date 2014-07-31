@@ -26,7 +26,7 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class Spred<T>
-    implements Serializable, Predicate<T>, Sfunctor<Spred<T>> {
+    implements Serializable, Predicate<T>, Slambda<Spred<T>> {
 
     private static final long serialVersionUID = 9028625532191422275L;
 

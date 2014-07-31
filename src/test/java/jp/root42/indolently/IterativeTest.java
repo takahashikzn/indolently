@@ -44,17 +44,38 @@ public class IterativeTest {
      * {@link Iterative#generator(Supplier)}
      */
     @Test
-    public void testGenerator() {
+    public void testGenerator1() {
+
+        final Generator<Integer> g = generator(ref(0), env -> (2 < env.val) ? Generator.breaks() : env.val++);
+
+        assertThat(g.hasNext()).isTrue();
+        assertThat(g.next()).isEqualTo(0);
+        assertThat(g.hasNext()).isTrue();
+        assertThat(g.next()).isEqualTo(1);
+        assertThat(g.hasNext()).isTrue();
+        assertThat(g.next()).isEqualTo(2);
+        assertThat(g.hasNext()).isFalse();
+
+        try {
+            g.next();
+            fail();
+        } catch (final NoSuchElementException e) {
+            assert true;
+        }
+    }
+
+    /**
+     * {@link Iterative#generator(Supplier)}
+     */
+    @Test
+    public void testGenerator2() {
 
         final Slist<Integer> ints = list();
 
-        System.out.println(list(generator(ref(1), env -> (10 <= env.val) ? Generator.stop() : env.val++)));
-
         generator( //
-            generator(ref(1), env -> (10 <= env.val) ? Generator.stop() : env.val++)) //
+            generator(ref(1), env -> (10 < env.val) ? Generator.breaks() : env.val++)) //
             .forEach(consumerOf((final Integer x) -> ints.add(x)) //
-                .andThen(x -> {
-                }));
+                .andThen(x -> {}));
 
         assertThat(ints.reduce((x, y) -> x + y).get()).isEqualTo(55);
     }

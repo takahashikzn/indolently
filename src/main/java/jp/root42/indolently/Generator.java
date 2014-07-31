@@ -16,10 +16,10 @@ package jp.root42.indolently;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
-import jp.root42.indolently.ref.BoolRef;
-import jp.root42.indolently.ref.Ref;
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -30,23 +30,23 @@ public interface Generator<T>
     extends Siter<T> {
 
     /**
-     * send stop signal.
+     * Notify this generator reaches the end of generation.
      *
      * @return actually never return any value.
      */
-    static <T> T stop() {
-        throw new Stop();
+    static <T> T breaks() {
+        throw new Break();
     }
 
     /**
      * @author takahashikzn
      */
-    final class Stop
+    final class Break
         extends RuntimeException {
 
         private static final long serialVersionUID = -7710521845711826670L;
 
-        private Stop() {}
+        private Break() {}
     }
 
     /**
@@ -60,33 +60,38 @@ public interface Generator<T>
     static <E, T> Generator<T> of(final E env, final Function<? super E, ? extends T> next) {
         Objects.requireNonNull(next);
 
-        final BoolRef stopped = Indolently.ref(false);
-        final Ref<T> nextVal = Indolently.<T> ref(null);
-
         final Iterator<T> i = new Iterator<T>() {
+
+            private boolean stopped;
+
+            private Optional<T> cur;
 
             @Override
             public boolean hasNext() {
-                if (stopped.val) {
+                if (this.stopped) {
                     return false;
+                } else if (this.cur != null) {
+                    return true;
                 }
 
                 try {
-                    nextVal.val = next.apply(env);
+                    this.cur = optional(next.apply(env));
                     return true;
-                } catch (final Stop | NoSuchElementException s) {
-                    stopped.val = true;
+                } catch (final Break | NoSuchElementException s) {
+                    this.stopped = true;
                     return false;
                 }
             }
 
             @Override
             public T next() {
-                if (!hasNext()) {
+                if (!this.hasNext()) {
                     throw new NoSuchElementException();
                 }
 
-                return nextVal.val;
+                final T val = this.cur.get();
+                this.cur = null;
+                return val;
             }
         };
 

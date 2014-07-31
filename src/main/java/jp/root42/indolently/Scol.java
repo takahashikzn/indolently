@@ -14,7 +14,6 @@
 package jp.root42.indolently;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -24,10 +23,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
 import jp.root42.indolently.trait.Loopable;
+import jp.root42.indolently.trait.Matchable;
 import jp.root42.indolently.trait.Reducible;
 
 import static jp.root42.indolently.Indolently.*;
@@ -44,7 +45,8 @@ import static jp.root42.indolently.Indolently.*;
  * @see Sset
  */
 public interface Scol<T, SELF extends Scol<T, SELF>>
-    extends Collection<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>, Filterable<T, SELF>, Reducible<T> {
+    extends Collection<T>, EdgeAwareIterable<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>,
+    Filterable<T, SELF>, Reducible<T>, Matchable<T> {
 
     /**
      * add value then return this instance.
@@ -116,26 +118,6 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
         return this.identity();
     }
 
-    /**
-     * get first element.
-     *
-     * @return first element
-     * @throws NoSuchElementException if empty
-     */
-    default T first() {
-        return this.iterator().next();
-    }
-
-    /**
-     * get last element.
-     *
-     * @return first element
-     * @throws NoSuchElementException if empty
-     */
-    default T last() {
-        return this.reduce((rem, val) -> val).get();
-    }
-
     @Override
     Siter<T> iterator();
 
@@ -170,24 +152,9 @@ public interface Scol<T, SELF extends Scol<T, SELF>>
         return this.each(x -> f.accept(i.val++, x));
     }
 
-    /**
-     * Test whether at least one value satisfy condition.
-     *
-     * @param f condition
-     * @return test result
-     */
+    @Override
     default boolean some(final Predicate<? super T> f) {
         return !this.filter(f).isEmpty();
-    }
-
-    /**
-     * Test whether all values satisfy condition.
-     *
-     * @param f condition
-     * @return test result
-     */
-    default boolean every(final Predicate<? super T> f) {
-        return this.filter(f).size() == this.size();
     }
 
     /**

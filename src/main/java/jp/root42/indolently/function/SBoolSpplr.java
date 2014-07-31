@@ -25,7 +25,7 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class SBoolSpplr
-    implements Serializable, BooleanSupplier, Sfunctor<SBoolSpplr> {
+    implements Serializable, BooleanSupplier, Slambda<SBoolSpplr> {
 
     private static final long serialVersionUID = 6611508603865244405L;
 
