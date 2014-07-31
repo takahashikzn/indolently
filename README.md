@@ -31,7 +31,7 @@ A moment later, you will find a jar file at ./target/indolently.jar
 
 # How to use
 
-### import required functions using static import.
+### Preparation for use
 
 ```java
 import static jp.root42.indolently.Expressive.*;
@@ -63,22 +63,24 @@ final Map<String, Object> simple = map(
 
 
 // a boring instruction for building 'simple' instance equivalence
-final Map<String, Object> boring = Collections.unmodifiableMap(new HashMap<String, Object>() {
-    {
-        final Map<String, Object> level1 = new HashMap<>();
-        final Map<String, Object> level2 = new HashMap<>();
-        final List<Map<String, Object>> level3 = new ArrayList<>();
-        final Map<String, Object> level4 = new HashMap<>();
+final Map<String, Object> boring = Collections.unmodifiableMap(
+    new HashMap<String, Object>() {
+        {
+            final Map<String, Object> level1 = new HashMap<>();
+            final Map<String, Object> level2 = new HashMap<>();
+            final List<Map<String, Object>> level3 = new ArrayList<>();
+            final Map<String, Object> level4 = new HashMap<>();
 
-        this.put("int", 1);
-        this.put("string", "abc");
-        this.put("level1", level1);
-        level1.put("level2", Collections.unmodifiableMap(level2));
-        level2.put("level3", Collections.unmodifiableList(level3));
-        level3.add(Collections.unmodifiableMap(level4));
-        level4.put("level4", 42);
+            this.put("int", 1);
+            this.put("string", "abc");
+            this.put("level1", level1);
+            level1.put("level2", Collections.unmodifiableMap(level2));
+            level2.put("level3", Collections.unmodifiableList(level3));
+            level3.add(Collections.unmodifiableMap(level4));
+            level4.put("level4", 42);
+        }
     }
-});
+);
 ```
 
 
@@ -142,7 +144,8 @@ Systme.out.println(sumOfRange(-2, 5));
 // memoized fibonacci function
 final Function<Integer, Integer> fib = function(
 
-    // function declaration/initialization section: The compiler requires this to do type inference
+    // Function declaration/initialization section.
+    // The compiler requires this to do type inference.
     (Function<Integer, Integer> self) -> { System.out.println("initialized!"); },
 
     // function body section
@@ -161,7 +164,8 @@ System.out.println(
 );
 
 
-// memoized Tarai function: [Tarai Function (Wikipedia)](http://en.wikipedia.org/wiki/Tak_%28function%29)
+// Memoized version of The tarai function
+// (see http://en.wikipedia.org/wiki/Tak_%28function%29)
 int tarai20 = function(
     (Function<Trio<Integer, Integer, Integer>, Integer> self) -> {},
     (self, v) -> {
