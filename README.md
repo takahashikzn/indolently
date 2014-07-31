@@ -1,6 +1,4 @@
-<!--
-  @author takahashikzn
--->
+<!-- @author takahashikzn -->
 
 # What this is
 
@@ -21,7 +19,7 @@ Java8. That is all.
 
 There is no runtime dependency.
 
-To build, <a href="http://ant.apache.org/">Apache Ant</a> and <a href="http://ant.apache.org/ivy/">Apache Ivy</a> are required.
+To build, [Apache Ant](http://ant.apache.org/) and [Apache Ivy](http://ant.apache.org/ivy/) are required.
 
 
 # Installation
@@ -163,7 +161,7 @@ System.out.println(
 );
 
 
-// memoized Tarai function: http://en.wikipedia.org/wiki/Tak_%28function%29
+// memoized Tarai function: [Tarai Function (Wikipedia)](http://en.wikipedia.org/wiki/Tak_%28function%29)
 int tarai20 = function(
     (Function<Trio<Integer, Integer, Integer>, Integer> self) -> {},
     (self, v) -> {
