@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.function;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -26,7 +27,9 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class Sbifunc<T, U, R>
-    implements BiFunction<T, U, R>, Sfunctor<Sbifunc<T, U, R>> {
+    implements Serializable, BiFunction<T, U, R>, Sfunctor<Sbifunc<T, U, R>> {
+
+    private static final long serialVersionUID = 5099015871546179565L;
 
     private final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body;
 

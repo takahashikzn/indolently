@@ -14,6 +14,9 @@
 package jp.root42.indolently.ref;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
+
+import jp.root42.indolently.function.Procedure;
 
 
 /**
@@ -74,5 +77,49 @@ public class BoolRef
     @Override
     public int compareTo(final BoolRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    /**
+     * execute the procedure then negate the value if and only if the condition satisfied.
+     *
+     * @param cond condition
+     * @param f a procedure
+     */
+    public void negateIf(final boolean cond, final Procedure f) {
+        this.negateIf(x -> x == cond, f);
+    }
+
+    /**
+     * execute the procedure then negate the value if and only if the condition satisfied.
+     *
+     * @param cond condition
+     * @param f a procedure
+     */
+    public void negateIf(final Predicate<Boolean> cond, final Procedure f) {
+        this.ifThen(cond, () -> this.val = !this.val);
+    }
+
+    /**
+     * execute the procedure if and only if the condition satisfied.
+     *
+     * @param cond condition
+     * @param f a procedure
+     */
+    public void ifThen(final boolean cond, final Procedure f) {
+        this.ifThen(x -> x == cond, f);
+    }
+
+    /**
+     * execute the procedure if and only if the condition satisfied.
+     *
+     * @param cond condition
+     * @param f a procedure
+     */
+    public void ifThen(final Predicate<Boolean> cond, final Procedure f) {
+        synchronized (this) {
+            if (cond.test(this.val)) {
+                f.perform();
+            }
+        }
     }
 }

@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.function;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiPredicate;
 
@@ -25,7 +26,9 @@ import jp.root42.indolently.Functional;
  * @author takahashikzn
  */
 public class Sbipred<T, U>
-    implements BiPredicate<T, U>, Sfunctor<Sbipred<T, U>> {
+    implements Serializable, BiPredicate<T, U>, Sfunctor<Sbipred<T, U>> {
+
+    private static final long serialVersionUID = 2715052895955591445L;
 
     private final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body;
 
