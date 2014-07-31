@@ -48,6 +48,27 @@ public class Sbifunc<T, U, R>
     }
 
     /**
+     * currying this function.
+     *
+     * @param x argument to bind
+     * @return curried function
+     */
+    public Sfunc<U, R> curry(final T x) {
+        return new Sfunc<>((self, y) -> this.apply(x, y));
+    }
+
+    /**
+     * currying this function.
+     *
+     * @param x 1st argument to bind
+     * @param y 2nd argument to bind
+     * @return curried function
+     */
+    public Sspplr<R> curry(final T x, final U y) {
+        return this.curry(x).curry(y);
+    }
+
+    /**
      * return function body.
      *
      * @return function body
@@ -64,5 +85,24 @@ public class Sbifunc<T, U, R>
     @Override
     public String toString() {
         return this.body.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.body.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null) {
+            return false;
+        } else if (this == o) {
+            return true;
+        } else if (!(o instanceof Sbifunc)) {
+            return false;
+        }
+
+        final Sbifunc<?, ?, ?> that = (Sbifunc<?, ?, ?>) o;
+        return this.body.equals(that.body);
     }
 }

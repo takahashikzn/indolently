@@ -96,7 +96,10 @@ public class BoolRef
      * @param f a procedure
      */
     public void negateIf(final Predicate<Boolean> cond, final Procedure f) {
-        this.ifThen(cond, () -> this.val = !this.val);
+        this.ifThen(cond, () -> {
+            this.val = !this.val;
+            f.perform();
+        });
     }
 
     /**

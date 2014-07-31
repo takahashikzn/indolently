@@ -48,6 +48,16 @@ public class Sfunc<T, R>
     }
 
     /**
+     * currying this function.
+     *
+     * @param x argument to bind
+     * @return curried function
+     */
+    public Sspplr<R> curry(final T x) {
+        return new Sspplr<>(self -> this.apply(x));
+    }
+
+    /**
      * return function body.
      *
      * @return function body
@@ -64,5 +74,24 @@ public class Sfunc<T, R>
     @Override
     public String toString() {
         return this.body.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.body.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null) {
+            return false;
+        } else if (this == o) {
+            return true;
+        } else if (!(o instanceof Sfunc)) {
+            return false;
+        }
+
+        final Sfunc<?, ?> that = (Sfunc<?, ?>) o;
+        return this.body.equals(that.body);
     }
 }

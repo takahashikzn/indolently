@@ -15,45 +15,34 @@ package jp.root42.indolently.function;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
 import jp.root42.indolently.Functional;
 
 
 /**
- * @param <T> argument type
  * @author takahashikzn
  */
-public class Spred<T>
-    implements Serializable, Predicate<T>, Sfunctor<Spred<T>> {
+public class SBoolSpplr
+    implements Serializable, BooleanSupplier, Sfunctor<SBoolSpplr> {
 
-    private static final long serialVersionUID = 9028625532191422275L;
+    private static final long serialVersionUID = 6611508603865244405L;
 
-    private final BiPredicate<? super Predicate<T>, ? super T> body;
+    private final Predicate<? super BooleanSupplier> body;
 
     /**
      * constructor
      *
      * @param body function body
      */
-    public Spred(final BiPredicate<? super Predicate<T>, ? super T> body) {
+    public SBoolSpplr(final Predicate<? super BooleanSupplier> body) {
         this.body = Objects.requireNonNull(body);
     }
 
     @Override
-    public boolean test(final T x) {
-        return this.body.test(this, x);
-    }
-
-    /**
-     * currying this function.
-     *
-     * @param x argument to bind
-     * @return curried function
-     */
-    public SBoolSpplr curry(final T x) {
-        return new SBoolSpplr(self -> this.test(x));
+    public boolean getAsBoolean() {
+        return this.body.test(this);
     }
 
     /**
@@ -61,13 +50,13 @@ public class Spred<T>
      *
      * @return function body
      */
-    public BiPredicate<? super Predicate<T>, ? super T> body() {
+    public Predicate<? super BooleanSupplier> body() {
         return this.body;
     }
 
     @Override
-    public Spred<T> memoize() {
-        return new Spred<>(Functional.memoize(this.body));
+    public SBoolSpplr memoize() {
+        return new SBoolSpplr(Functional.memoize(this.body));
     }
 
     @Override
@@ -86,11 +75,11 @@ public class Spred<T>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Spred)) {
+        } else if (!(o instanceof SBoolSpplr)) {
             return false;
         }
 
-        final Spred<?> that = (Spred<?>) o;
+        final SBoolSpplr that = (SBoolSpplr) o;
         return this.body.equals(that.body);
     }
 }
