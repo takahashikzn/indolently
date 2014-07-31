@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.Destructive;
 import jp.root42.indolently.function.TriConsumer;
 
 import static jp.root42.indolently.Indolently.*;
@@ -45,6 +46,7 @@ public class Trio<F, S, T>
     /** third element */
     public T trd;
 
+    @Destructive
     @Override
     public void accept(final Trio<F, S, T> that) {
         this.fst = that.fst;
@@ -52,11 +54,37 @@ public class Trio<F, S, T>
         this.trd = that.trd;
     }
 
+    /**
+     * set elements then return {@code this} instance.
+     *
+     * @param that the element supplier
+     * @return {@code this} instance
+     */
+    @Destructive
+    public Trio<F, S, T> set(final Trio<? extends F, ? extends S, ? extends T> that) {
+        return (that == null) ? this.set(null, null, null) : this.set(that.fst, that.snd, that.trd);
+    }
+
+    /**
+     * set elements then return {@code this} instance.
+     *
+     * @param fst first element
+     * @param snd second element
+     * @param trd third element
+     * @return {@code this} instance
+     */
+    @Destructive
+    public Trio<F, S, T> set(final F fst, final S snd, final T trd) {
+        this.accept(fst, snd, trd);
+        return this;
+    }
+
     @Override
     public Trio<F, S, T> get() {
         return this;
     }
 
+    @Destructive
     @Override
     public void accept(final F fst, final S snd, final T trd) {
         this.fst = fst;
@@ -79,6 +107,7 @@ public class Trio<F, S, T>
      * @param fst 1st element
      * @return {@code this}
      */
+    @Destructive
     public Trio<F, S, T> fst(final F fst) {
         this.fst = fst;
         return this;
@@ -99,6 +128,7 @@ public class Trio<F, S, T>
      * @param snd 2st element
      * @return {@code this}
      */
+    @Destructive
     public Trio<F, S, T> snd(final S snd) {
         this.snd = snd;
         return this;
@@ -119,6 +149,7 @@ public class Trio<F, S, T>
      * @param trd 3rd element
      * @return {@code this}
      */
+    @Destructive
     public Trio<F, S, T> trd(final T trd) {
         this.trd = trd;
         return this;
@@ -130,7 +161,6 @@ public class Trio<F, S, T>
      * @return all combination of two element tuples
      */
     public Trio<Duo<F, S>, Duo<S, T>, Duo<F, T>> expand() {
-
         return tuple(this.fstsnd(), this.sndtrd(), this.fsttrd());
     }
 
