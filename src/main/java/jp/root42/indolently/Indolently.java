@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.ByteRef;
@@ -772,6 +773,18 @@ public class Indolently {
                 iter.remove();
             }
         };
+    }
+
+    /**
+     * Wrap a stream.
+     *
+     * @param stream stream to wrap
+     * @return wrapped stream
+     */
+    public static <T> SStream<T> wrap(final Stream<T> stream) {
+        return (stream == null) ? null //
+            : (stream instanceof SStream) ? (SStream<T>) stream //
+                : new SStreamImpl<>(stream);
     }
 
     public static <K, V> SMap<K, V> map(final K key, final V val) {

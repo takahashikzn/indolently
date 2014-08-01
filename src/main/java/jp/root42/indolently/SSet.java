@@ -141,4 +141,9 @@ public interface SSet<T>
         final SSet<T> rslt = Indolently.set(this).delete(values).union(Indolently.set(values).delete((Set) this));
         return rslt;
     }
+
+    @SuppressWarnings("javadoc")
+    default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+        return Indolently.list(this.iterator().flatten(f));
+    }
 }

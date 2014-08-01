@@ -13,21 +13,23 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
-import jp.root42.indolently.trait.Reducible;
+import jp.root42.indolently.trait.ReducibleIterable;
 
 
 /**
@@ -39,7 +41,7 @@ import jp.root42.indolently.trait.Reducible;
  */
 public interface SIter<T>
     extends Supplier<T>, Iterator<T>, EdgeAwareIterable<T>, Loopable<T, SIter<T>>, Filterable<T, SIter<T>>,
-    Reducible<T>, Matchable<T> {
+    ReducibleIterable<T>, Matchable<T> {
 
     @Override
     default T get() {
@@ -141,32 +143,6 @@ public interface SIter<T>
         };
     }
 
-    @Override
-    default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
-        final BiFunction<? super R, ? super R, ? extends R> fr) {
-
-        if (!this.hasNext()) {
-            return Optional.empty();
-        }
-
-        return this.mapred( //
-            Optional.ofNullable(fm.apply(this.next())), //
-            (final R rem, final T val) -> fr.apply(rem, fm.apply(val)));
-    }
-
-    @Override
-    default <R> Optional<R> mapred(final Optional<? extends R> initial,
-        final BiFunction<? super R, ? super T, ? extends R> f) {
-
-        R rem = initial.orElse(null);
-
-        for (final T val : this) {
-            rem = f.apply(rem, val);
-        }
-
-        return Optional.ofNullable(rem);
-    }
-
     /**
      * Map operation: map value to another type value.
      *
@@ -185,5 +161,62 @@ public interface SIter<T>
      */
     default SList<T> list() {
         return Indolently.list(this);
+    }
+
+    /**
+     * create a {@link Stream} view of this iterator.
+     *
+     * @return {@link Stream} view of this iterator
+     * @see Collection#stream()
+     */
+    default SStream<T> stream() {
+        return Indolently.wrap(StreamSupport.stream(this.spliterator(), false));
+    }
+
+    /**
+     * create a parallelized {@link Stream} view of this iterator.
+     *
+     * @return parallelized {@link Stream} view of this iterator
+     * @see Collection#parallelStream()
+     */
+    default SStream<T> parallelStream() {
+        return Indolently.wrap(StreamSupport.stream(this.spliterator(), true));
+    }
+
+    @SuppressWarnings("javadoc")
+    default <R> SIter<R> aggregate(final Function<? super Iterable<? extends T>, ? extends Iterable<? extends R>> f) {
+        return Indolently.wrap(f.apply(this).iterator());
+    }
+
+    @SuppressWarnings("javadoc")
+    default <R> SIter<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+        Objects.requireNonNull(f);
+
+        return new SIter<R>() {
+
+            private Iterator<? extends R> cur = Iterative.iterator();
+
+            @Override
+            public boolean hasNext() {
+                if (!SIter.this.hasNext()) {
+                    return false;
+                }
+
+                if (!this.cur.hasNext()) {
+                    this.cur = f.apply(SIter.this.next()).iterator();
+                }
+
+                return this.cur.hasNext();
+            }
+
+            @Override
+            public R next() {
+                if (!this.hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
+                return this.cur.next();
+            }
+        };
     }
 }

@@ -192,4 +192,14 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
         return Optional.ofNullable(rem);
     }
+
+    @Override
+    default SStream<T> stream() {
+        return Indolently.wrap(Collection.super.stream());
+    }
+
+    @Override
+    default SStream<T> parallelStream() {
+        return Indolently.wrap(Collection.super.parallelStream());
+    }
 }

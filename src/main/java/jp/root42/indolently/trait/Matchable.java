@@ -39,4 +39,14 @@ public interface Matchable<T> {
     default boolean every(final Predicate<? super T> f) {
         return !this.some(f.negate());
     }
+
+    /**
+     * Test whether all values don't satisfy condition.
+     * 
+     * @param f condition
+     * @return test result
+     */
+    default boolean none(final Predicate<? super T> f) {
+        return this.every(f.negate());
+    }
 }
