@@ -226,4 +226,9 @@ public interface SList<T>
         Collections.reverse(rslt);
         return rslt;
     }
+
+    @SuppressWarnings("javadoc")
+    default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+        return Indolently.list(this.iterator().flatten(f));
+    }
 }

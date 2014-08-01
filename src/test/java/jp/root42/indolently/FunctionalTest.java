@@ -17,6 +17,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import jp.root42.indolently.function.SFunc;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.Trio;
@@ -135,5 +136,29 @@ public class FunctionalTest {
             }).memoize();
 
         assertThat(tarai.apply(tuple(20, 6, 0))).isEqualTo(20);
+    }
+
+    /**
+     */
+    @Test
+    public void testFunction3() {
+
+        final SFunc<Trio<Integer, Integer, Integer>, Integer> tarai = func(self -> {}, (self, v) -> {
+
+            final int x = v.fst;
+            final int y = v.snd;
+            final int z = v.trd;
+
+            return ifelse( //
+                () -> (y < x), //
+                () -> self.apply( //
+                    tuple( //
+                        self.apply(tuple(x - 1, y, z)), //
+                        self.apply(tuple(y - 1, z, x)), //
+                        self.apply(tuple(z - 1, x, y)))), //
+                () -> y);
+        });
+
+        assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }
 }
