@@ -141,33 +141,15 @@ Systme.out.println(sumOfRange(-2, 5));
 ### Function expression beyond java8's lambda syntax
 
 ```java
-// memoized fibonacci function
-final Function<Integer, Integer> fib = function(
-
-    // Function declaration/initialization section.
-    // The compiler requires this to do type inference.
-    (Function<Integer, Integer> self) -> { System.out.println("initialized!"); },
-
-    // function body section
-    (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2),
-
-).memoize();
-
-// print list of first 42nd fibonacci numbers
-System.out.println(
-    range(0, 42)
-    .mapred(
-        list(),
-        (rem, val) -> rem.push(fib.apply(val))
-    )
-    .get()
-);
-
-
 // Memoized version of The tarai function
 // (see http://en.wikipedia.org/wiki/Tak_%28function%29)
 int tarai20 = function(
+
+    // Function declaration/initialization section.
+    // Inline function expression requires extra type information this to do type inference.
     (Function<Trio<Integer, Integer, Integer>, Integer> self) -> {},
+
+    // function body section
     (self, v) -> {
 
     final int x = v.fst;
@@ -184,6 +166,25 @@ int tarai20 = function(
         return y;
     }
 }).memoize().apply(tuple(20, 6, 0));
+
+
+// fibonacci function
+final Function<Integer, Integer> fib = function(
+    // In this case, extra type information not required
+    self -> { System.out.println("initialized!"); },
+
+    (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
+);
+
+// print list of first 42nd fibonacci numbers
+System.out.println(
+    range(0, 42)
+    .mapred(
+        list(),
+        (rem, val) -> rem.push(fib.memoize().apply(val))
+    )
+    .get()
+);
 ```
 
 See JUnit testcase for more details.
