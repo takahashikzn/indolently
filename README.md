@@ -155,20 +155,21 @@ int tarai20 = function(
     // function body section
     (self, v) -> {
 
-    final int x = v.fst;
-    final int y = v.snd;
-    final int z = v.trd;
+        final int x = v.fst;
+        final int y = v.snd;
+        final int z = v.trd;
 
-    if (y < x) {
-        return self.apply(
-            tuple(
-                self.apply(tuple(x - 1, y, z)),
-                self.apply(tuple(y - 1, z, x)),
-                self.apply(tuple(z - 1, x, y))));
-    } else {
-        return y;
+        if (y < x) {
+            return self.apply(
+                tuple(
+                    self.apply(tuple(x - 1, y, z)),
+                    self.apply(tuple(y - 1, z, x)),
+                    self.apply(tuple(z - 1, x, y))));
+        } else {
+            return y;
+        }
     }
-}).memoize().apply(tuple(20, 6, 0));
+).memoize().apply(tuple(20, 6, 0));
 
 
 // fibonacci function
@@ -178,12 +179,14 @@ final Function<Integer, Integer> fib = function(
     (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
 );
 
+final Function<Integer, Integer> memoFib = fib.memoize();
+
 // print list of first 42nd fibonacci numbers
 System.out.println(
     range(0, 42)
     .mapred(
         list(),
-        (rem, val) -> rem.push(fib.memoize().apply(val))
+        (rem, val) -> rem.push(memoFib.apply(val))
     )
     .get()
 );
