@@ -146,6 +146,16 @@ public interface SMap<K, V>
         return Indolently.list(this.values());
     }
 
+    /**
+     * An alias of {@link Map#entrySet()} then newly constructed (detached) entries view.
+     * Equivalent to {@code Indolently.set(map.entrySet())}.
+     *
+     * @return entries
+     */
+    default SSet<Entry<K, V>> entries() {
+        return Indolently.set(this.entrySet());
+    }
+
     @Override
     default SIter<Entry<K, V>> iterator() {
         return Indolently.wrap(this.entrySet().iterator());
