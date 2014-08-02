@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -90,7 +91,7 @@ public interface SList<T>
      * @return a set constructed from this instance.
      */
     default SSet<T> set() {
-        return Indolently.set(this);
+        return Indolently.wrap(new LinkedHashSet<>(this));
     }
 
     /**
