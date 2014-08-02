@@ -173,7 +173,8 @@ int tarai20 = function(
 
 
 // fibonacci function
-final Function<Integer, Integer> fib = function(
+// NOTE: 'func' is an alias of 'function' but not overloaded one
+final Function<Integer, Integer> fib = func(
     // In this case, extra type information not required
     self -> {},
     (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
