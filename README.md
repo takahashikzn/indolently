@@ -87,7 +87,7 @@ final Map<String, Object> boring = Collections.unmodifiableMap(
 ### Operation Chain
 
 ```java
-// operation chaining without the "unfriendly" java.util.Stream
+// operation chaining on list with enhanced stream methods
 range(1, 10)
     .list()
     .slice(-5, 0) // negative index is acceptable - take last five elements
