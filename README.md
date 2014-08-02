@@ -146,8 +146,11 @@ Systme.out.println(sumOfRange(-2, 5));
 int tarai20 = function(
 
     // Function declaration/initialization section.
-    // Inline function expression requires extra type information this to do type inference.
-    (Function<Trio<Integer, Integer, Integer>, Integer> self) -> {},
+    // Inline function expression requires extra type information
+    // to do type inference.
+    (Function<Trio<Integer, Integer, Integer>, Integer> self) -> {
+        System.out.println("initialized!");
+    },
 
     // function body section
     (self, v) -> {
@@ -171,8 +174,7 @@ int tarai20 = function(
 // fibonacci function
 final Function<Integer, Integer> fib = function(
     // In this case, extra type information not required
-    self -> { System.out.println("initialized!"); },
-
+    self -> {},
     (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
 );
 
