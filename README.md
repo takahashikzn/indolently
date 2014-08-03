@@ -198,6 +198,8 @@ See JUnit testcase for more details.
 
 # Notice
 
+This projct is in experimental stage.
+
 Currently production use is strongly not recommended
 because the codes are almost not tested and incompatibly changed very frequently.
 
