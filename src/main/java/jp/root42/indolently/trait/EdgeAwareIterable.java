@@ -14,6 +14,8 @@
 package jp.root42.indolently.trait;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 
 /**
@@ -34,17 +36,50 @@ public interface EdgeAwareIterable<T>
     }
 
     /**
+     * get first element which satisfy the condition.
+     *
+     * @param f condition
+     * @return first element
+     */
+    default Optional<T> first(final Predicate<? super T> f) {
+
+        for (final T val : this) {
+            if (f.test(val)) {
+                return Optional.ofNullable(val);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
      * get last element of this iterator.
      *
      * @return last element
      * @throws NoSuchElementException if this iterator is empty
      */
     default T last() {
+        if (!this.iterator().hasNext()) {
+            throw new NoSuchElementException();
+        }
 
-        T rslt = null;
+        return this.last(x -> true).get();
+    }
+
+    /**
+     * get last element which satisfy the condition.
+     *
+     * @param f condition
+     * @return first element
+     */
+    default Optional<T> last(final Predicate<? super T> f) {
+
+        Optional<T> rslt = Optional.empty();
 
         for (final T val : this) {
-            rslt = val;
+            if (f.test(val)) {
+                rslt = Optional.ofNullable(val);
+            }
         }
 
         return rslt;
