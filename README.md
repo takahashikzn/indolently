@@ -19,14 +19,14 @@ Java8. That is all.
 
 There is no runtime dependency.
 
-To build, [Apache Ant](http://ant.apache.org/) and [Apache Ivy](http://ant.apache.org/ivy/) are required.
+[Apache Ant](http://ant.apache.org/) and [Apache Ivy](http://ant.apache.org/ivy/) are required to build.
 
 
 # Installation
 
 Just type <code>ant [RET]</code> at project root.
 
-A moment later, you will find a jar file at ./target/indolently.jar
+A moment later, you will find a jar file in ./target directory.
 
 
 # How to use
@@ -201,7 +201,7 @@ See JUnit testcase for more details.
 This projct is in experimental stage.
 
 Currently production use is strongly not recommended
-because the codes are almost not tested and incompatibly changed very frequently.
+because the codes are largely not tested and incompatibly changed very frequently.
 
 
 # Translation
