@@ -200,6 +200,15 @@ public class Trio<F, S, T>
         return tuple(this.trd, this.snd, this.fst);
     }
 
+    /**
+     * rotate this tuple.
+     *
+     * @return rotated tuple
+     */
+    public Trio<T, F, S> rotate() {
+        return tuple(this.trd, this.fst, this.snd);
+    }
+
     @Override
     public int hashCode() {
         return this.getClass().hashCode() ^ Objects.hash(this.fst, this.snd, this.trd) ^ 42;
