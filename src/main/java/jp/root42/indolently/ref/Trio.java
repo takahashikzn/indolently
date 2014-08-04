@@ -192,6 +192,42 @@ public class Trio<F, S, T>
     }
 
     /**
+     * set first and second element the return {@code this} instance.
+     *
+     * @param duo first and second element
+     * @return {@code this} instance
+     */
+    public Trio<F, S, T> fstsnd(final Duo<F, S> duo) {
+        this.fst = duo.fst;
+        this.snd = duo.snd;
+        return this;
+    }
+
+    /**
+     * set second and third element the return {@code this} instance.
+     *
+     * @param duo second and third element
+     * @return {@code this} instance
+     */
+    public Trio<F, S, T> sndtrd(final Duo<S, T> duo) {
+        this.snd = duo.fst;
+        this.trd = duo.snd;
+        return this;
+    }
+
+    /**
+     * set first and third element the return {@code this} instance.
+     *
+     * @param duo first and third element
+     * @return {@code this} instance
+     */
+    public Trio<F, S, T> fsttrd(final Duo<F, T> duo) {
+        this.fst = duo.fst;
+        this.trd = duo.snd;
+        return this;
+    }
+
+    /**
      * create order reversed tuple.
      *
      * @return newly constructed reversed tuple
