@@ -197,6 +197,7 @@ public class Trio<F, S, T>
      * @param duo first and second element
      * @return {@code this} instance
      */
+    @Destructive
     public Trio<F, S, T> fstsnd(final Duo<F, S> duo) {
         this.fst = duo.fst;
         this.snd = duo.snd;
@@ -209,6 +210,7 @@ public class Trio<F, S, T>
      * @param duo second and third element
      * @return {@code this} instance
      */
+    @Destructive
     public Trio<F, S, T> sndtrd(final Duo<S, T> duo) {
         this.snd = duo.fst;
         this.trd = duo.snd;
@@ -221,6 +223,7 @@ public class Trio<F, S, T>
      * @param duo first and third element
      * @return {@code this} instance
      */
+    @Destructive
     public Trio<F, S, T> fsttrd(final Duo<F, T> duo) {
         this.fst = duo.fst;
         this.trd = duo.snd;
