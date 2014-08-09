@@ -239,7 +239,7 @@ public class Expressive {
             }
 
             static <C, V> When<C, V> raise(final Function<? super C, ? extends RuntimeException> expr) {
-                return of(x -> true, x -> {
+                return of(x -> true, (final C x) -> {
                     throw expr.apply(x);
                 });
             }
