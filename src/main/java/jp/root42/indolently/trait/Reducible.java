@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import jp.root42.indolently.Indolently;
+
 
 /**
  * @param <T> -
@@ -45,10 +47,10 @@ public interface Reducible<T> {
      * @param initial initial value
      * @param f function
      * @return result value
-     * @see #mapred(Object, BiFunction)
+     * @see #mapfold(Optional, BiFunction)
      */
     default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.mapred(initial, f);
+        return this.mapfold(Indolently.optional(initial), f);
     }
 
     /**
@@ -57,12 +59,12 @@ public interface Reducible<T> {
      * @param initial initial value
      * @param f function
      * @return result value
-     * @see #mapred(Optional, BiFunction)
+     * @see #mapfold(Optional, BiFunction)
      */
     default Optional<T> reduce(final Optional<? extends T> initial,
         final BiFunction<? super T, ? super T, ? extends T> f) {
 
-        return this.mapred(initial, f);
+        return this.mapfold(initial, f);
     }
 
     /**
@@ -77,24 +79,24 @@ public interface Reducible<T> {
     <R> Optional<R> mapred(Function<? super T, ? extends R> fm, BiFunction<? super R, ? super R, ? extends R> fr);
 
     /**
-     * Map then Reduce operation.
+     * Map then Reduce operation with initial value.
      *
      * @param <R> mapping target type
      * @param initial initial value
      * @param f function
      * @return result value
      */
-    default <R> Optional<R> mapred(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
-        return this.mapred(Optional.ofNullable(initial), f);
+    default <R> Optional<R> mapfold(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
+        return this.mapfold(Optional.ofNullable(initial), f);
     }
 
     /**
-     * Map then Reduce operation.
+     * Map then Reduce operation with initial value.
      *
      * @param <R> mapping target type
      * @param initial initial value
      * @param f function
      * @return result value
      */
-    <R> Optional<R> mapred(Optional<? extends R> initial, final BiFunction<? super R, ? super T, ? extends R> f);
+    <R> Optional<R> mapfold(Optional<? extends R> initial, final BiFunction<? super R, ? super T, ? extends R> f);
 }

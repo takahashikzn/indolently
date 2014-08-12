@@ -36,13 +36,13 @@ public interface ReducibleIterable<T>
             return Optional.empty();
         }
 
-        return this.mapred( //
+        return this.mapfold( //
             Optional.ofNullable(fm.apply(i.next())), //
             (final R rem, final T val) -> fr.apply(rem, fm.apply(val)));
     }
 
     @Override
-    default <R> Optional<R> mapred(final Optional<? extends R> initial,
+    default <R> Optional<R> mapfold(final Optional<? extends R> initial,
         final BiFunction<? super R, ? super T, ? extends R> f) {
 
         R rem = initial.orElse(null);

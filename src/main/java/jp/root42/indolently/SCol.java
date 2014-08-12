@@ -175,13 +175,13 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
         final BiFunction<? super R, ? super R, ? extends R> fr) {
 
-        return this.tail().mapred( //
+        return this.tail().mapfold( //
             fm.apply(this.first()), //
             (rem, val) -> fr.apply(rem, fm.apply(val)));
     }
 
     @Override
-    default <R> Optional<R> mapred(final Optional<? extends R> initial,
+    default <R> Optional<R> mapfold(final Optional<? extends R> initial,
         final BiFunction<? super R, ? super T, ? extends R> f) {
 
         R rem = Indolently.empty(initial) ? null : initial.get();
