@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.util.Iterator;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -180,9 +181,9 @@ public class Iterative {
      * @param next {@link Iterator#next} implementation
      * @return iterator as {@link SIter}
      */
-    public static <T> SIter<T> iterator(final Supplier<Boolean> hasNext, final Supplier<? extends T> next) {
+    public static <T> SIter<T> iterator(final BooleanSupplier hasNext, final Supplier<? extends T> next) {
 
-        return iterator((Object) null, x -> hasNext.get(), x -> next.get());
+        return iterator((Object) null, x -> hasNext.getAsBoolean(), x -> next.get());
     }
 
     /**

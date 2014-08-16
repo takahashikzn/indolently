@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -43,10 +44,10 @@ public interface SMatcher
 
         final Ref<Boolean> found = ref(null);
 
-        final Supplier<Boolean> hasNext = () -> optional(found.val).orElse(found.val = this.find());
+        final BooleanSupplier hasNext = () -> optional(found.val).orElse(found.val = this.find());
 
         final Supplier<String> next = () -> ifelse( //
-            hasNext.get(), //
+            hasNext.getAsBoolean(), //
             () -> prog1( //
                 () -> this.group(), //
                 () -> found.val = null), //
