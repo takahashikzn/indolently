@@ -30,7 +30,6 @@ import static jp.root42.indolently.Indolently.*;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 public class Expressive {
 
     /** non private for subtyping. */
@@ -39,6 +38,7 @@ public class Expressive {
     /**
      * Block expression.
      *
+     * @param <T> value type
      * @param f expression body
      * @return the value of body expression
      */
@@ -116,34 +116,42 @@ public class Expressive {
         return val;
     }
 
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> whenNull(final V val) {
         return when(x -> x == null, val);
     }
 
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> whenEq(final C pred, final V val) {
         return when(x -> equiv(x, pred), () -> val);
     }
 
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> whenEq(final C pred, final Supplier<? extends V> expr) {
         return when(x -> equiv(x, pred), expr);
     }
 
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> whenEq(final C pred, final Function<? super C, ? extends V> expr) {
         return when(x -> equiv(x, pred), expr);
     }
 
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> when(final Predicate<? super C> pred, final V val) {
         return when(pred, () -> val);
     }
 
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
         return When.of(pred, x -> expr.get());
     }
 
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
         return When.of(pred, expr);
     }
 
+    @SuppressWarnings("javadoc")
     @SafeVarargs
     public static <C, V> Match<C, V> match(final When<C, V>... cases) {
         return Match.of(cases);
