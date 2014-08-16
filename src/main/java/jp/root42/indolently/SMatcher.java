@@ -13,10 +13,18 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
+
+import jp.root42.indolently.ref.Ref;
+
+import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -26,7 +34,41 @@ import java.util.regex.Matcher;
  * @author takahashikzn
  */
 public interface SMatcher
-    extends MatcherDelegate {
+    extends MatcherDelegate, Iterable<String> {
+
+    @Override
+    default SIter<String> iterator() {
+
+        final Ref<Boolean> found = ref(null);
+
+        final Supplier<Boolean> hasNext = () -> optional(found.val).orElse(found.val = this.find());
+
+        final Supplier<String> next = () -> ifelse( //
+            hasNext.get(), //
+            () -> prog1(() -> this.group(), //
+                () -> found.val = null), () -> {
+                throw new NoSuchElementException();
+            });
+
+        return Iterative.iterator(hasNext, next);
+    }
+
+    /**
+     * Consume each matched token then return {@code this} instance which {@link Matcher#reset() reset} was called after
+     * iteration finished.
+     *
+     * @param f consumer
+     * @return {@code this} instance which is reset
+     * @see Matcher#reset()
+     */
+    default SMatcher each(final BiConsumer<? super SMatcher, String> f) {
+
+        this.iterator().each(x -> f.accept(this, x));
+
+        this.reset();
+
+        return this;
+    }
 
     /**
      * replace matched character sequence.
@@ -48,7 +90,7 @@ public interface SMatcher
      * @return replaced string
      * @see #replaceAll(String)
      */
-    default String replace(final BiFunction<SMatcher, String, String> f) {
+    default String replace(final BiFunction<? super SMatcher, String, String> f) {
         Objects.requireNonNull(f);
 
         final StringBuffer sb = new StringBuffer();
