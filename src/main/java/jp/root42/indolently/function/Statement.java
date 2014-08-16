@@ -19,7 +19,7 @@ package jp.root42.indolently.function;
  * @author takahashikzn
  */
 @FunctionalInterface
-public interface Procedure {
+public interface Statement {
 
     /**
      * Perform this operation.

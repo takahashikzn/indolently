@@ -16,7 +16,7 @@ package jp.root42.indolently.ref;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
-import jp.root42.indolently.function.Procedure;
+import jp.root42.indolently.function.Statement;
 
 
 /**
@@ -85,7 +85,7 @@ public class BoolRef
      * @param cond condition
      * @param f a procedure
      */
-    public void negateIf(final boolean cond, final Procedure f) {
+    public void negateIf(final boolean cond, final Statement f) {
         this.negateIf(x -> x == cond, f);
     }
 
@@ -95,7 +95,7 @@ public class BoolRef
      * @param cond condition
      * @param f a procedure
      */
-    public void negateIf(final Predicate<Boolean> cond, final Procedure f) {
+    public void negateIf(final Predicate<Boolean> cond, final Statement f) {
         this.ifThen(cond, () -> {
             this.val = !this.val;
             f.perform();
@@ -108,7 +108,7 @@ public class BoolRef
      * @param cond condition
      * @param f a procedure
      */
-    public void ifThen(final boolean cond, final Procedure f) {
+    public void ifThen(final boolean cond, final Statement f) {
         this.ifThen(x -> x == cond, f);
     }
 
@@ -118,7 +118,7 @@ public class BoolRef
      * @param cond condition
      * @param f a procedure
      */
-    public void ifThen(final Predicate<Boolean> cond, final Procedure f) {
+    public void ifThen(final Predicate<Boolean> cond, final Statement f) {
         synchronized (this) {
             if (cond.test(this.val)) {
                 f.perform();

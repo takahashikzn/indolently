@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match;
 import jp.root42.indolently.Expressive.Match.When;
-import jp.root42.indolently.function.Procedure;
+import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.IntRef;
 
@@ -46,7 +46,7 @@ import static org.junit.Assert.*;
 public class ExpressiveTest {
 
     /**
-     * {@link Expressive#block(Supplier)} / {@link Expressive#block(Procedure)}
+     * {@link Expressive#block(Supplier)} / {@link Expressive#block(Statement)}
      */
     @Test
     public void testBlock() {
