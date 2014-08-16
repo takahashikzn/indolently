@@ -28,21 +28,21 @@ public class Regexive {
      * create matcher instance.
      *
      * @param pattern pattern string
-     * @param target target string
+     * @param text target string
      * @return enhanced Matcher instance
      */
-    public static SMatcher regex(final String pattern, final String target) {
-        return regex(Pattern.compile(pattern), target);
+    public static SMatcher regex(final String pattern, final String text) {
+        return regex(Pattern.compile(pattern), text);
     }
 
     /**
      * create matcher instance.
      *
      * @param pattern pattern object
-     * @param target target string
+     * @param text target string
      * @return enhanced Matcher instance
      */
-    public static SMatcher regex(final Pattern pattern, final String target) {
-        return new SMatcherImpl(pattern.matcher(target));
+    public static SMatcher regex(final Pattern pattern, final String text) {
+        return new SMatcherImpl(pattern.matcher(text), text);
     }
 }
