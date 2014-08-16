@@ -65,6 +65,7 @@ public class Indolently {
     /**
      * An alias of {@link #optionalEmpty(CharSequence)}.
      *
+     * @param <T> type of value
      * @param value string value
      * @return Optional representation of string
      */
@@ -76,6 +77,7 @@ public class Indolently {
      * {@link Optional} representation of string.
      * Equivalent to {@code empty(str) ? Optional.empty() : Optional.of(str)}.
      *
+     * @param <T> type of value
      * @param value string value
      * @return Optional representation of string
      * @see #empty(CharSequence)
@@ -87,6 +89,7 @@ public class Indolently {
     /**
      * An alias of {@link #optionalBlank(CharSequence)}.
      *
+     * @param <T> type of value
      * @param value string value
      * @return Optional representation of string
      */
@@ -98,6 +101,7 @@ public class Indolently {
      * {@link Optional} representation of string.
      * Equivalent to {@code blank(str) ? Optional.empty() : Optional.of(str)}.
      *
+     * @param <T> type of value
      * @param value string value
      * @return Optional representation of string
      * @see #blank(CharSequence)
@@ -107,8 +111,9 @@ public class Indolently {
     }
 
     /**
-     * An alias of {@link #optional(T)}.
+     * An alias of {@link #optional(Object)}.
      *
+     * @param <T> type of value
      * @param value the value
      * @return Optional representation of value
      */
@@ -117,8 +122,9 @@ public class Indolently {
     }
 
     /**
-     * An alias of {@link Optional#ofNullable(T)}.
+     * An alias of {@link Optional#ofNullable(Object)}.
      *
+     * @param <T> type of value
      * @param value the value
      * @return Optional representation of value
      */
@@ -131,6 +137,7 @@ public class Indolently {
      * If compiler fail to do type inference on {@link #list(Object...)}, for example such a
      * {@code List<List<Integer>> nested = list(list(42))}, you can use this method instead of.
      *
+     * @param <T> type of value
      * @param elems elements of list
      * @return new list
      * @see #list(Object...)
@@ -143,6 +150,7 @@ public class Indolently {
     /**
      * construct new list which contains specified elements.
      *
+     * @param <T> type of value
      * @param elem element of the list
      * @return new list
      */
@@ -153,6 +161,7 @@ public class Indolently {
     /**
      * construct new list which contains specified elements.
      *
+     * @param <T> type of value
      * @param elems elements of the list
      * @return new list
      */
@@ -163,6 +172,7 @@ public class Indolently {
     /**
      * construct new list which contains specified elements.
      *
+     * @param <T> type of value
      * @param elems elements of the list
      * @return new list
      */
@@ -196,6 +206,7 @@ public class Indolently {
      * Convert {@link Iterable} to typed array.
      * The array type is same as first element type.
      *
+     * @param <T> type of value
      * @param elems elements
      * @return typed array
      * @throws IllegalArgumentException iterable don't contain any element.
@@ -218,8 +229,9 @@ public class Indolently {
      * Convert arguments to typed array.
      * The array type is same as first element type.
      *
-     * @param elems first element
-     * @param elems rest elements
+     * @param <T> type of value
+     * @param first first element
+     * @param rest rest elements
      * @return typed array
      * @throws IllegalArgumentException first element is null..
      */
@@ -239,8 +251,10 @@ public class Indolently {
     /**
      * Convert arguments to typed array.
      *
+     * @param <T> type of array
+     * @param <V> type of value
      * @param type array type
-     * @param elems first element
+     * @param first first element
      * @param elems rest elements
      * @return typed array
      */
