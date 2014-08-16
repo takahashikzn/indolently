@@ -72,6 +72,7 @@ public class Iterative {
         return range(from, Long.MAX_VALUE, step);
     }
 
+    // @formatter:off
     /**
      * Create iterator which simulates <a
      * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
@@ -82,13 +83,13 @@ public class Iterative {
      * <code>
      * // print timestamp every 10 seconds forever.
      * generator(System::currentTimeMillis).forEach(
-     *     consumerOf((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
+     *     consumerOf((final Long x) -&gt; System.out.println(Instant.ofEpochMilli(x))).andThen(x -&gt; {
      *         try {
      *             Thread.sleep(10000);
      *         } catch (final InterruptedException e) {
      *             Generator.breaks(); // stop generator gently
-     *         }
-     *     }));
+     *     }
+     * }   ));
      * </code>
      * </pre>
      *
@@ -99,10 +100,12 @@ public class Iterative {
      * @return generator as {@link SIter}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
+    // @formatter:on
     public static <T> Generator<T> generator(final Supplier<? extends T> f) {
         return Generator.of(null, x -> f.get());
     }
 
+    // @formatter:off
     /**
      * Create iterator which simulates <a
      * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
@@ -114,15 +117,15 @@ public class Iterative {
      * // print timestamp every 10 seconds forever.
      * generator(
      *     list(),
-     *     env -> {
+     *     env -&gt; {
      *         final long now = System.currentTimeMillis();
      *         env.push(now);
      *         return now;
      *     })
-     *     .forEach(consumerOf((final Long x) -> {
+     *     .forEach(consumerOf((final Long x) -&gt; {
      *         System.out.println(Instant.ofEpochMilli(x));
      *     })
-     *     .andThen(x -> {
+     *     .andThen(x -&gt; {
      *         try {
      *             Thread.sleep(10000);
      *         } catch (final InterruptedException e) {
@@ -142,6 +145,7 @@ public class Iterative {
      * @return generator as {@link SIter}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
+    // @formatter:on
     public static <E, T> Generator<T> generator(final E env, final Function<? super E, ? extends T> f) {
         return Generator.of(env, f);
     }
