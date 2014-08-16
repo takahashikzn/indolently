@@ -25,12 +25,15 @@ class SMatcherImpl
     extends MatcherDelegateImpl
     implements SMatcher {
 
-    /**
-     * constructor.
-     *
-     * @param matcher matcher
-     */
-    public SMatcherImpl(final Matcher matcher) {
+    private final String text;
+
+    public SMatcherImpl(final Matcher matcher, final String text) {
         super(matcher);
+        this.text = text;
+    }
+
+    @Override
+    public String text() {
+        return this.text;
     }
 }

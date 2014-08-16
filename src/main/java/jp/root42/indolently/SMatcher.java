@@ -64,6 +64,23 @@ public interface SMatcher
     }
 
     /**
+     * Return original matching target text.
+     *
+     * @return target text
+     */
+    String text();
+
+    /**
+     * Return matching target text if this matcher matches whole text otherwise return alternative text.
+     *
+     * @param altText the alternative text
+     * @return matching target text or alternative text
+     */
+    default String orElse(final String altText) {
+        return this.matches() ? this.text() : altText;
+    }
+
+    /**
      * Consume each matched token then return {@code this} instance which {@link Matcher#reset() reset} was called after
      * iteration finished.
      *
