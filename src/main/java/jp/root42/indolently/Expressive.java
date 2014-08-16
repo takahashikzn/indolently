@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match.When;
-import jp.root42.indolently.function.Procedure;
+import jp.root42.indolently.function.Statement;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -36,11 +36,22 @@ public class Expressive {
     /** non private for subtyping. */
     protected Expressive() {}
 
+    /**
+     * Block expression.
+     *
+     * @param f expression body
+     * @return the value of body expression
+     */
     public static <T> T block(final Supplier<? extends T> f) {
         return f.get();
     }
 
-    public static void block(final Procedure f) {
+    /**
+     * Block statement.
+     *
+     * @param f expression body
+     */
+    public static void block(final Statement f) {
         f.perform();
     }
 
@@ -96,7 +107,7 @@ public class Expressive {
      * @param forms evaluation target forms
      * @return first expression evaluation result
      */
-    public static <T> T prog1(final Supplier<? extends T> first, final Procedure... forms) {
+    public static <T> T prog1(final Supplier<? extends T> first, final Statement... forms) {
 
         final T val = first.get();
 
