@@ -19,6 +19,8 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match;
 import jp.root42.indolently.Expressive.Match.When;
+import jp.root42.indolently.function.Procedure;
+import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.IntRef;
 
 import junitparams.JUnitParamsRunner;
@@ -42,6 +44,27 @@ import static org.junit.Assert.*;
  */
 @RunWith(JUnitParamsRunner.class)
 public class ExpressiveTest {
+
+    /**
+     * {@link Expressive#block(Supplier)} / {@link Expressive#block(Procedure)}
+     */
+    @Test
+    public void testBlock() {
+
+        assertThat(block(() -> {
+            SList<Integer> l = list(1, 2, 3);
+            l = l.map(x -> x * x);
+            return l;
+        })).isEqualTo(list(1, 2, 3).map(x -> x * x));
+
+        final BoolRef called = ref(false);
+
+        block(() -> {
+            called.val = true;
+        });
+
+        assertTrue(called.val);
+    }
 
     /**
      * {@link Expressive#match(When...)}

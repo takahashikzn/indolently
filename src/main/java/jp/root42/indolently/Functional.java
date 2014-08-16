@@ -23,7 +23,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.function.Procedure;
 import jp.root42.indolently.function.SBiFunc;
 import jp.root42.indolently.function.SBiPred;
 import jp.root42.indolently.function.SBoolSuppl;
@@ -47,14 +46,6 @@ import static jp.root42.indolently.Indolently.*;
 public class Functional {
 
     protected Functional() {}
-
-    public static <T> T block(final Supplier<? extends T> f) {
-        return f.get();
-    }
-
-    public static void block(final Procedure f) {
-        f.perform();
-    }
 
     public static <T, R> Supplier<R> curry(final Function<? super T, ? extends R> f, final T t) {
         return () -> f.apply(t);

@@ -36,6 +36,14 @@ public class Expressive {
     /** non private for subtyping. */
     protected Expressive() {}
 
+    public static <T> T block(final Supplier<? extends T> f) {
+        return f.get();
+    }
+
+    public static void block(final Procedure f) {
+        f.perform();
+    }
+
     /**
      * Lazy evaluated inline if-else operator.
      *
