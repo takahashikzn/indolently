@@ -68,44 +68,12 @@ public interface SMatcher
     Matcher reset(final CharSequence input);
 
     /**
-     * delegate for {@link Matcher#start()}
-     *
-     * @return -
-     */
-    @Override
-    int start();
-
-    /**
-     * delegate for {@link Matcher#start(int)}
-     *
-     * @return -
-     */
-    @Override
-    int start(final int group);
-
-    /**
      * delegate for {@link Matcher#start(String)}
      *
      * @param name -
      * @return -
      */
     int start(final String name);
-
-    /**
-     * delegate for {@link Matcher#end()}
-     *
-     * @return -
-     */
-    @Override
-    int end();
-
-    /**
-     * delegate for {@link Matcher#end(int)}
-     *
-     * @return -
-     */
-    @Override
-    int end(final int group);
 
     /**
      * delegate for {@link Matcher#end(String)}
@@ -116,36 +84,12 @@ public interface SMatcher
     int end(final String name);
 
     /**
-     * delegate for {@link Matcher#group()}
-     *
-     * @return -
-     */
-    @Override
-    String group();
-
-    /**
-     * delegate for {@link Matcher#group(int)}
-     *
-     * @return -
-     */
-    @Override
-    String group(final int group);
-
-    /**
      * delegate for {@link Matcher#group(String)}
      *
      * @param name -
      * @return -
      */
     String group(final String name);
-
-    /**
-     * delegate for {@link Matcher#groupCount()}
-     *
-     * @return -
-     */
-    @Override
-    int groupCount();
 
     /**
      * delegate for {@link Matcher#matches()}
