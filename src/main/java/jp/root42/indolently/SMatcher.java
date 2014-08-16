@@ -47,8 +47,10 @@ public interface SMatcher
 
         final Supplier<String> next = () -> ifelse( //
             hasNext.get(), //
-            () -> prog1(() -> this.group(), //
-                () -> found.val = null), () -> {
+            () -> prog1( //
+                () -> this.group(), //
+                () -> found.val = null), //
+            () -> {
                 throw new NoSuchElementException();
             });
 
