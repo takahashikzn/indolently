@@ -122,6 +122,11 @@ public class Expressive {
     }
 
     @SuppressWarnings("javadoc")
+    public static <C, V> When<C, V> whenNonNull(final Function<? super C, ? extends V> expr) {
+        return when(x -> x != null, expr);
+    }
+
+    @SuppressWarnings("javadoc")
     public static <C, V> When<C, V> whenEq(final C pred, final V val) {
         return when(x -> equiv(x, pred), () -> val);
     }
@@ -290,6 +295,10 @@ public class Expressive {
                         return expr.apply(cond);
                     }
                 };
+            }
+
+            default Function<C, V> other(final V value) {
+                return this.other(x -> value);
             }
 
             default Function<C, V> other(final Supplier<? extends V> f) {
