@@ -107,7 +107,7 @@ public interface SSet<T>
             }
         }
 
-        return this;
+        return rslt;
     }
 
     /**
