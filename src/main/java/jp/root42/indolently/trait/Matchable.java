@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 public interface Matchable<T> {
 
     /**
-     * Test whether at least one value satisfy condition.
+     * Test whether is there any value which satisfies condition.
      *
      * @param f condition
      * @return test result
@@ -42,7 +42,7 @@ public interface Matchable<T> {
 
     /**
      * Test whether all values don't satisfy condition.
-     * 
+     *
      * @param f condition
      * @return test result
      */
