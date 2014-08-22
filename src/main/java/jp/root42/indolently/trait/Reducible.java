@@ -18,8 +18,6 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import jp.root42.indolently.Indolently;
-
 
 /**
  * @param <T> -
@@ -49,8 +47,8 @@ public interface Reducible<T> {
      * @return result value
      * @see #mapfold(Optional, BiFunction)
      */
-    default Optional<T> reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.mapfold(Indolently.optional(initial), f);
+    default T reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
+        return this.mapfold(Optional.of(initial), f).get();
     }
 
     /**
@@ -86,8 +84,8 @@ public interface Reducible<T> {
      * @param f function
      * @return result value
      */
-    default <R> Optional<R> mapfold(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
-        return this.mapfold(Optional.ofNullable(initial), f);
+    default <R> R mapfold(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
+        return this.mapfold(Optional.of(initial), f).get();
     }
 
     /**

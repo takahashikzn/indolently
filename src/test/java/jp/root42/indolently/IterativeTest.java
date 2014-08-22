@@ -160,7 +160,7 @@ public class IterativeTest {
             .slice(-5, 0) //
             .map(i -> i * i) //
             .each(i -> ints.add(i)) //
-            .reduce(0, (i, k) -> i + k).get()) //
+            .reduce(0, (i, k) -> i + k)) //
             .isEqualTo(330);
 
         assertThat(ints) //
