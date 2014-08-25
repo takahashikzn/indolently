@@ -30,7 +30,7 @@ public interface Reducible<T> {
      *
      * @param f function
      * @return result value
-     * @throws NoSuchElementException this collection is empty
+     * @throws NoSuchElementException if this collection is empty
      * @see #mapred(Function, BiFunction)
      */
     default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
@@ -45,6 +45,7 @@ public interface Reducible<T> {
      * @param initial initial value
      * @param f function
      * @return result value
+     * @throws NoSuchElementException if the result not present
      * @see #mapfold(Optional, BiFunction)
      */
     default T reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
@@ -72,7 +73,7 @@ public interface Reducible<T> {
      * @param fm mapper function
      * @param fr reducer function
      * @return result value
-     * @throws NoSuchElementException this collection is empty
+     * @throws NoSuchElementException if this collection is empty
      */
     <R> Optional<R> mapred(Function<? super T, ? extends R> fm, BiFunction<? super R, ? super R, ? extends R> fr);
 
@@ -83,6 +84,7 @@ public interface Reducible<T> {
      * @param initial initial value
      * @param f function
      * @return result value
+     * @throws NoSuchElementException if the result not present
      */
     default <R> R mapfold(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
         return this.mapfold(Optional.of(initial), f).get();
