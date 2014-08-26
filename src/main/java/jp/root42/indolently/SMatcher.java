@@ -13,14 +13,11 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 
 import jp.root42.indolently.ref.Ref;
@@ -44,18 +41,12 @@ public interface SMatcher
 
         final Ref<Boolean> found = ref(null);
 
-        final BooleanSupplier hasNext = () -> optional(found.val).orElse(found.val = this.find());
-
-        final Supplier<String> next = () -> ifelse( //
-            hasNext.getAsBoolean(), //
+        return Iterative.iterator( //
+            () -> optional(found.val) //
+                .orElseGet(() -> found.val = this.find()), //
             () -> prog1( //
                 () -> this.group(), //
-                () -> found.val = null), //
-            () -> {
-                throw new NoSuchElementException();
-            });
-
-        return Iterative.iterator(hasNext, next);
+                () -> found.val = null));
     }
 
     @Override
