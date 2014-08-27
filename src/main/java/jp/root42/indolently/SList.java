@@ -35,7 +35,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public interface SList<T>
-    extends SCol<T, SList<T>>, List<T> {
+    extends List<T>, SCol<T, SList<T>> {
 
     /**
      * Wrap a list.

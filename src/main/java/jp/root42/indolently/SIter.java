@@ -40,7 +40,7 @@ import jp.root42.indolently.trait.ReducibleIterable;
  * @author takahashikzn
  */
 public interface SIter<T>
-    extends Supplier<T>, Iterator<T>, EdgeAwareIterable<T>, Loopable<T, SIter<T>>, Filterable<T, SIter<T>>,
+    extends Iterator<T>, Supplier<T>, EdgeAwareIterable<T>, Loopable<T, SIter<T>>, Filterable<T, SIter<T>>,
     ReducibleIterable<T>, Matchable<T> {
 
     @Override
