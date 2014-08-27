@@ -27,7 +27,7 @@ import java.util.function.Predicate;
  * @author takahashikzn
  */
 public interface SSet<T>
-    extends SCol<T, SSet<T>>, Set<T> {
+    extends Set<T>, SCol<T, SSet<T>> {
 
     /**
      * Wrap a set.
