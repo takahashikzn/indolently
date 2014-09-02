@@ -210,13 +210,15 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     /**
      * Convert this collection to map.
      *
+     * @param <K> key type
+     * @param <V> value type
      * @param fkey a function which convert element to map key
      * @param fval a function which convert element to map value
      * @return map instance.
      */
-    default <K, V> SMap<K, V> map(final Function<? super T, ? extends K> fkey,
+    default <K, V> SMap<K, V> mapmap(final Function<? super T, ? extends K> fkey,
         final Function<? super T, ? extends V> fval) {
 
-        return this.mapfold(Indolently.map(), (map, val) -> map.push(fkey.apply(val), fval.apply(val)));
+        return this.mapfold(Indolently.map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
     }
 }
