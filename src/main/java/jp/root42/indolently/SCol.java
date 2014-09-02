@@ -206,4 +206,17 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default SStream<T> parallelStream() {
         return Indolently.wrap(Collection.super.parallelStream());
     }
+
+    /**
+     * Convert this collection to map.
+     *
+     * @param fkey a function which convert element to map key
+     * @param fval a function which convert element to map value
+     * @return map instance.
+     */
+    default <K, V> SMap<K, V> map(final Function<? super T, ? extends K> fkey,
+        final Function<? super T, ? extends V> fval) {
+
+        return this.mapfold(Indolently.map(), (map, val) -> map.push(fkey.apply(val), fval.apply(val)));
+    }
 }
