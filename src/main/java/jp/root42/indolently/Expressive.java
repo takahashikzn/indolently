@@ -87,11 +87,27 @@ public class Expressive {
      * evaluate following forms then return evaluation result of first expressions.
      *
      * @param first evaluation result of this expression
+     * @param form evaluation target form. argument is evaluation result of {@code first}.
+     * @return first expression evaluation result
+     */
+    public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T> form) {
+        return prog1Internal(first, form);
+    }
+
+    /**
+     * evaluate following forms then return evaluation result of first expressions.
+     *
+     * @param first evaluation result of this expression
      * @param forms evaluation target forms. argument is evaluation result of {@code first}.
      * @return first expression evaluation result
      */
     @SafeVarargs
     public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
+        return prog1Internal(first, forms);
+    }
+
+    @SafeVarargs
+    private static <T> T prog1Internal(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
         final T val = first.get();
 
