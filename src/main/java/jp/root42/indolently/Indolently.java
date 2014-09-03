@@ -529,6 +529,32 @@ public class Indolently {
     }
 
     /**
+     * Test that the lower is less than upper.
+     * i.e. this method tests {@code lower < upper}.
+     *
+     * @param <T> value type
+     * @param lower lower value
+     * @param upper upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean lt(final T lower, final T upper) {
+        return (lower.compareTo(upper) < 0);
+    }
+
+    /**
+     * Test that the lower is less equal than upper.
+     * i.e. this method tests {@code lower <= upper}.
+     *
+     * @param <T> value type
+     * @param lower lower value
+     * @param upper upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean le(final T lower, final T upper) {
+        return (lower.compareTo(upper) <= 0);
+    }
+
+    /**
      * Test that the value is gerater than lower and less than upper.
      * i.e. this method tests {@code lower < val < upper}.
      *
