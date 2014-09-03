@@ -565,7 +565,7 @@ public class Indolently {
      * @return test result
      */
     public static <T extends Comparable<T>> boolean gtlt(final T lower, final T val, final T upper) {
-        return (lower.compareTo(val) < 0) && (val.compareTo(upper) < 0);
+        return lt(lower, val) && lt(val, upper);
     }
 
     /**
@@ -592,7 +592,7 @@ public class Indolently {
      * @return test result
      */
     public static <T extends Comparable<T>> boolean gelt(final T lower, final T val, final T upper) {
-        return (lower.compareTo(val) <= 0) && (val.compareTo(upper) < 0);
+        return le(lower, val) && lt(val, upper);
     }
 
     /**
@@ -619,7 +619,7 @@ public class Indolently {
      * @return test result
      */
     public static <T extends Comparable<T>> boolean gtle(final T lower, final T val, final T upper) {
-        return (lower.compareTo(val) < 0) && (val.compareTo(upper) <= 0);
+        return lt(lower, val) && le(val, upper);
     }
 
     /**
@@ -646,7 +646,7 @@ public class Indolently {
      * @return test result
      */
     public static <T extends Comparable<T>> boolean gele(final T lower, final T val, final T upper) {
-        return (lower.compareTo(val) <= 0) && (val.compareTo(upper) <= 0);
+        return le(lower, val) && le(val, upper);
     }
 
     /**
