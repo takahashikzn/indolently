@@ -663,6 +663,18 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link #gele(long, long, long)}.
+     *
+     * @param lower lower value
+     * @param val value
+     * @param upper upper value
+     * @return test result
+     */
+    public static boolean between(final long lower, final long val, final long upper) {
+        return gele(lower, val, upper);
+    }
+
+    /**
      * An alias of {@link #gele(Comparable, Comparable, Comparable)}.
      *
      * @param lower lower value
