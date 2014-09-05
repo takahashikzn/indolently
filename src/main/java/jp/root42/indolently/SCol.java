@@ -158,7 +158,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     }
 
     /**
-     * count element number which satisfying condition.
+     * Count elements which satisfying condition.
      *
      * @param f condition
      * @return the number of elements which satisfying condition
