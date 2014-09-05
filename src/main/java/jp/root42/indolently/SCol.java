@@ -158,6 +158,16 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     }
 
     /**
+     * count element number which satisfying condition.
+     *
+     * @param f condition
+     * @return the number of elements which satisfying condition
+     */
+    default int count(final Predicate<? super T> f) {
+        return this.filter(f).size();
+    }
+
+    /**
      * Filter operation: returns values which satisfying condition.
      * This operation is constructive.
      *
