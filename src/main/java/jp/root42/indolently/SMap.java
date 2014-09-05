@@ -220,6 +220,16 @@ public interface SMap<K, V>
     }
 
     /**
+     * count key/value pair which satisfying condition.
+     *
+     * @param f condition
+     * @return the number of key/value pairs which satisfying condition
+     */
+    default int count(final BiPredicate<? super K, ? super V> f) {
+        return this.filter(f).size();
+    }
+
+    /**
      * Filter operation: returns entries as a map which satisfying condition.
      * This operation is constructive.
      *
