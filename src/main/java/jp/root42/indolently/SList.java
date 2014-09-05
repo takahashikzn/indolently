@@ -86,7 +86,7 @@ public interface SList<T>
     }
 
     /**
-     * convert this list to {@link SSet}.
+     * convert this list to {@link SSet}. original order is reserved.
      *
      * @return a set constructed from this instance.
      */
