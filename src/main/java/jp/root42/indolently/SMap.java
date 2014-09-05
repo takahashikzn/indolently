@@ -220,7 +220,7 @@ public interface SMap<K, V>
     }
 
     /**
-     * count key/value pair which satisfying condition.
+     * Count key/value pairs which satisfying condition.
      *
      * @param f condition
      * @return the number of key/value pairs which satisfying condition
