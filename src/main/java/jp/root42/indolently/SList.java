@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.IntRef;
 
@@ -231,5 +232,30 @@ public interface SList<T>
     @SuppressWarnings("javadoc")
     default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         return Indolently.list(this.iterator().flatten(f));
+    }
+
+    /**
+     * Return this instance if not empty, otherwise return {@code other}.
+     *
+     * @param other alternative value
+     * @return this instance or other
+     */
+    default SList<T> orElse(final List<? extends T> other) {
+        return this.orElseGet(() -> other);
+    }
+
+    /**
+     * Return this instance if not empty, otherwise return the invocation result of {@code other}.
+     *
+     * @param other alternative value supplier
+     * @return this instance or other
+     */
+    default SList<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
+
+        if (this.isEmpty()) {
+            return Indolently.list(other.get());
+        } else {
+            return this;
+        }
     }
 }

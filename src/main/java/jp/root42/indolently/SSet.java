@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 
 /**
@@ -145,5 +146,30 @@ public interface SSet<T>
     @SuppressWarnings("javadoc")
     default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         return Indolently.list(this.iterator().flatten(f));
+    }
+
+    /**
+     * Return this instance if not empty, otherwise return {@code other}.
+     *
+     * @param other alternative value
+     * @return this instance or other
+     */
+    default SSet<T> orElse(final Set<? extends T> other) {
+        return this.orElseGet(() -> other);
+    }
+
+    /**
+     * Return this instance if not empty, otherwise return the invocation result of {@code other}.
+     *
+     * @param other alternative value supplier
+     * @return this instance or other
+     */
+    default SSet<T> orElseGet(final Supplier<? extends Set<? extends T>> other) {
+
+        if (this.isEmpty()) {
+            return Indolently.set(other.get());
+        } else {
+            return this;
+        }
     }
 }
