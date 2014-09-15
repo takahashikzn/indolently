@@ -84,6 +84,23 @@ public class Expressive {
     }
 
     /**
+     * Lazy evaluated inline if-else operator.
+     *
+     * @param <C> context type
+     * @param <V> return value type
+     * @param context context value
+     * @param cond context test function
+     * @param then context conversion function used if the condition is {@code true}
+     * @param other context conversion function used if the condition is {@code false}
+     * @return evaluation result
+     */
+    public static <C, V> V ifelse(final C context, final Predicate<? super C> cond,
+        final Function<? super C, ? extends V> then, final Function<? super C, ? extends V> other) {
+
+        return cond.test(context) ? then.apply(context) : other.apply(context);
+    }
+
+    /**
      * evaluate following forms then return evaluation result of first expressions.
      *
      * @param first evaluation result of this expression
