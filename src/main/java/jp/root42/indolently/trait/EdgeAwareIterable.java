@@ -39,10 +39,10 @@ public interface EdgeAwareIterable<T>
     }
 
     /**
-     * get first element or return alternative value.
+     * get first element if exists, otherwise return alternative value.
      *
      * @param other alternative value.
-     * @return first element
+     * @return first element or alternative value
      * @throws NoSuchElementException if empty
      */
     default T first(final Supplier<? extends T> other) {
