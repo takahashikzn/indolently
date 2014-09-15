@@ -16,6 +16,9 @@ package jp.root42.indolently.trait;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import jp.root42.indolently.Expressive;
 
 
 /**
@@ -33,6 +36,17 @@ public interface EdgeAwareIterable<T>
      */
     default T first() {
         return this.iterator().next();
+    }
+
+    /**
+     * get first element or return alternative value.
+     *
+     * @param other alternative value.
+     * @return first element
+     * @throws NoSuchElementException if empty
+     */
+    default T first(final Supplier<? extends T> other) {
+        return Expressive.ifelse(this.iterator(), i -> i.hasNext(), i -> i.next(), i -> other.get());
     }
 
     /**
