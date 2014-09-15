@@ -26,6 +26,29 @@ import java.util.function.Function;
 public interface Reducible<T> {
 
     /**
+     * Map then Reduce operation with initial value.
+     *
+     * @param <R> mapping target type
+     * @param initial initial value
+     * @param f function
+     * @return result value
+     * @throws NoSuchElementException if the result not present
+     */
+    default <R> R reduce(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
+        return this.reduce(Optional.of(initial), f).get();
+    }
+
+    /**
+     * Map then Reduce operation with initial value.
+     *
+     * @param <R> mapping target type
+     * @param initial initial value
+     * @param f function
+     * @return result value
+     */
+    <R> Optional<R> reduce(Optional<? extends R> initial, BiFunction<? super R, ? super T, ? extends R> f);
+
+    /**
      * Reduce operation.
      *
      * @param f function
@@ -40,33 +63,6 @@ public interface Reducible<T> {
     }
 
     /**
-     * Reduce operation.
-     *
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     * @throws NoSuchElementException if the result not present
-     * @see #mapfold(Optional, BiFunction)
-     */
-    default T reduce(final T initial, final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.mapfold(Optional.of(initial), f).get();
-    }
-
-    /**
-     * Reduce operation.
-     *
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     * @see #mapfold(Optional, BiFunction)
-     */
-    default Optional<T> reduce(final Optional<? extends T> initial,
-        final BiFunction<? super T, ? super T, ? extends T> f) {
-
-        return this.mapfold(initial, f);
-    }
-
-    /**
      * Map then Reduce operation.
      *
      * @param <R> mapping target type
@@ -76,27 +72,4 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      */
     <R> Optional<R> mapred(Function<? super T, ? extends R> fm, BiFunction<? super R, ? super R, ? extends R> fr);
-
-    /**
-     * Map then Reduce operation with initial value.
-     *
-     * @param <R> mapping target type
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     * @throws NoSuchElementException if the result not present
-     */
-    default <R> R mapfold(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
-        return this.mapfold(Optional.of(initial), f).get();
-    }
-
-    /**
-     * Map then Reduce operation with initial value.
-     *
-     * @param <R> mapping target type
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     */
-    <R> Optional<R> mapfold(Optional<? extends R> initial, final BiFunction<? super R, ? super T, ? extends R> f);
 }
