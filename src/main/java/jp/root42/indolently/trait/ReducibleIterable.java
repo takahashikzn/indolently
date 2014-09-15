@@ -30,19 +30,23 @@ public interface ReducibleIterable<T>
     default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
         final BiFunction<? super R, ? super R, ? extends R> fr) {
 
-        final Iterator<T> i = iterator();
+        final Iterator<T> i = this.iterator();
 
         if (!i.hasNext()) {
             return Optional.empty();
         }
 
-        return this.mapfold( //
-            Optional.ofNullable(fm.apply(i.next())), //
-            (final R rem, final T val) -> fr.apply(rem, fm.apply(val)));
+        R rem = fm.apply(i.next());
+
+        while (i.hasNext()) {
+            rem = fr.apply(rem, fm.apply(i.next()));
+        }
+
+        return Optional.ofNullable(rem);
     }
 
     @Override
-    default <R> Optional<R> mapfold(final Optional<? extends R> initial,
+    default <R> Optional<R> reduce(final Optional<? extends R> initial,
         final BiFunction<? super R, ? super T, ? extends R> f) {
 
         R rem = initial.orElse(null);

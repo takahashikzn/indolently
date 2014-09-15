@@ -16,7 +16,6 @@ package jp.root42.indolently;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -29,7 +28,7 @@ import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
 import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
-import jp.root42.indolently.trait.Reducible;
+import jp.root42.indolently.trait.ReducibleIterable;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -45,8 +44,8 @@ import static jp.root42.indolently.Indolently.*;
  * @see SSet
  */
 public interface SCol<T, SELF extends SCol<T, SELF>>
-    extends Collection<T>, EdgeAwareIterable<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>,
-    Filterable<T, SELF>, Reducible<T>, Matchable<T> {
+    extends Collection<T>, EdgeAwareIterable<T>, ReducibleIterable<T>, Freezable<SELF>, Identical<SELF>,
+    Loopable<T, SELF>, Filterable<T, SELF>, Matchable<T> {
 
     /**
      * add value then return this instance.
@@ -182,32 +181,6 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     }
 
     @Override
-    default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
-        final BiFunction<? super R, ? super R, ? extends R> fr) {
-
-        R rem = fm.apply(this.first());
-
-        for (final T val : this.tail()) {
-            rem = fr.apply(rem, fm.apply(val));
-        }
-
-        return Indolently.optional(rem);
-    }
-
-    @Override
-    default <R> Optional<R> mapfold(final Optional<? extends R> initial,
-        final BiFunction<? super R, ? super T, ? extends R> f) {
-
-        R rem = Indolently.empty(initial) ? null : initial.get();
-
-        for (final T val : this) {
-            rem = f.apply(rem, val);
-        }
-
-        return Indolently.optional(rem);
-    }
-
-    @Override
     default SStream<T> stream() {
         return Indolently.wrap(Collection.super.stream());
     }
@@ -229,6 +202,6 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default <K, V> SMap<K, V> mapmap(final Function<? super T, ? extends K> fkey,
         final Function<? super T, ? extends V> fval) {
 
-        return this.mapfold(Indolently.map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
+        return this.reduce(Indolently.map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
     }
 }

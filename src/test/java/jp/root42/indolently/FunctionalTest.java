@@ -88,7 +88,7 @@ public class FunctionalTest {
         assertThat(initCount.val).isEqualTo(0);
 
         assertThat(range(1, 10).each(x -> {
-            assertThat(range(0, 42).mapfold(list(), (rem, val) -> rem.push(fib.apply(val)))).isEqualTo(fibonacciNums);
+            assertThat(range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val)))).isEqualTo(fibonacciNums);
             assertThat(initCount.val).isEqualTo(1);
         }).last()).isEqualTo(10);
     }
