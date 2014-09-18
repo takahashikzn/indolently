@@ -56,6 +56,25 @@ public class Expressive {
     }
 
     /**
+     * if-else statement alternative.
+     *
+     * @param <T> context type
+     * @param context context value
+     * @param cond context test function
+     * @param then context conversion function used if the condition is {@code true}
+     * @param other context conversion function used if the condition is {@code false}
+     */
+    public static <T> void block(final T context, final Predicate<? super T> cond, final Consumer<? super T> then,
+        final Consumer<? super T> other) {
+
+        if (cond.test(context)) {
+            then.accept(context);
+        } else {
+            other.accept(context);
+        }
+    }
+
+    /**
      * Lazy evaluated inline if-else operator.
      *
      * @param <T> value type
@@ -98,41 +117,6 @@ public class Expressive {
         final Function<? super C, ? extends V> then, final Function<? super C, ? extends V> other) {
 
         return cond.test(context) ? then.apply(context) : other.apply(context);
-    }
-
-    /**
-     * if-else statement.
-     *
-     * @param cond condition
-     * @param then result value if condition is {@code true}
-     * @param other result value if condition is {@code false}
-     */
-    public static void ifThenElse(final BooleanSupplier cond, final Statement then, final Statement other) {
-
-        if (cond.getAsBoolean()) {
-            then.perform();
-        } else {
-            other.perform();
-        }
-    }
-
-    /**
-     * if-else statement.
-     *
-     * @param <T> context type
-     * @param context context value
-     * @param cond context test function
-     * @param then context conversion function used if the condition is {@code true}
-     * @param other context conversion function used if the condition is {@code false}
-     */
-    public static <T> void ifThenElse(final T context, final Predicate<? super T> cond, final Consumer<? super T> then,
-        final Consumer<? super T> other) {
-
-        if (cond.test(context)) {
-            then.accept(context);
-        } else {
-            other.accept(context);
-        }
     }
 
     /**
