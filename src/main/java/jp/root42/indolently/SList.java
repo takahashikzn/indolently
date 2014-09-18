@@ -36,7 +36,12 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public interface SList<T>
-    extends List<T>, SCol<T, SList<T>> {
+    extends List<T>, SCol<T, SList<T>>, Cloneable {
+
+    @SuppressWarnings("javadoc")
+    default SList<T> clone() {
+        return Indolently.list(this);
+    }
 
     /**
      * Wrap a list.

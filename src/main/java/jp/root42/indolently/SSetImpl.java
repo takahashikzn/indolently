@@ -42,6 +42,11 @@ class SSetImpl<T>
     }
 
     @Override
+    public SSet<T> clone() {
+        return SSet.super.clone();
+    }
+
+    @Override
     public boolean add(final T element) {
         return this.store.add(element);
     }

@@ -44,6 +44,11 @@ class SListImpl<T>
     }
 
     @Override
+    public SList<T> clone() {
+        return SList.super.clone();
+    }
+
+    @Override
     public SIter<T> iterator() {
         return Indolently.wrap(this.store.iterator());
     }
