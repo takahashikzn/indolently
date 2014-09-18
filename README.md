@@ -84,6 +84,28 @@ final Map<String, Object> boring = Collections.unmodifiableMap(
 ```
 
 
+### Conditional statement without local variable declaration
+
+```java
+// This local variable declaration is required if doing like a below
+final int i = new Random().nextInt();
+if (i % 2 == 0) {
+    System.out.println(i + " is even number");
+} else {
+    System.out.println(i + " is odd number");
+}
+
+
+// declaration not required
+block(
+    new Random().nextInt(),
+    x -> x % 2 == 0,
+    x -> System.out.println(i + " is even number"),
+    x -> System.out.println(i + " is odd number")
+);
+```
+
+
 ### Operation Chain
 
 ```java
