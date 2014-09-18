@@ -44,6 +44,11 @@ class SMapImpl<K, V>
     }
 
     @Override
+    public SMap<K, V> clone() {
+        return SMap.super.clone();
+    }
+
+    @Override
     public V put(final K key, final V value) {
         return this.store.put(key, value);
     }

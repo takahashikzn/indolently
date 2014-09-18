@@ -28,7 +28,12 @@ import java.util.function.Supplier;
  * @author takahashikzn
  */
 public interface SSet<T>
-    extends Set<T>, SCol<T, SSet<T>> {
+    extends Set<T>, SCol<T, SSet<T>>, Cloneable {
+
+    @SuppressWarnings("javadoc")
+    default SSet<T> clone() {
+        return Indolently.set(this);
+    }
 
     /**
      * Wrap a set.

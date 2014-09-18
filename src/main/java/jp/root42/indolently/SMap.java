@@ -41,7 +41,12 @@ import jp.root42.indolently.trait.Matchable;
  */
 public interface SMap<K, V>
     extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>,
-    Filterable<V, SMap<K, V>>, EdgeAwareIterable<Entry<K, V>>, Matchable<V> {
+    Filterable<V, SMap<K, V>>, EdgeAwareIterable<Entry<K, V>>, Matchable<V>, Cloneable {
+
+    @SuppressWarnings("javadoc")
+    default SMap<K, V> clone() {
+        return Indolently.map(this);
+    }
 
     /**
      * Wrap a map.
@@ -169,7 +174,7 @@ public interface SMap<K, V>
      * @return extracted new map
      */
     default SMap<K, V> slice(final Iterable<? extends K> keys) {
-        return Indolently.map(this).delete(this.keys().delete(keys));
+        return this.delete(this.keys().delete(keys));
     }
 
     /**
