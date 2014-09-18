@@ -30,7 +30,13 @@ import java.util.function.Supplier;
 public interface SSet<T>
     extends Set<T>, SCol<T, SSet<T>>, Cloneable {
 
-    @SuppressWarnings("javadoc")
+    /**
+     * Clone this instance.
+     *
+     * @return clone of this instance
+     * @see Object#clone()
+     * @see Cloneable
+     */
     default SSet<T> clone() {
         return Indolently.set(this);
     }

@@ -43,7 +43,13 @@ public interface SMap<K, V>
     extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>,
     Filterable<V, SMap<K, V>>, EdgeAwareIterable<Entry<K, V>>, Matchable<V>, Cloneable {
 
-    @SuppressWarnings("javadoc")
+    /**
+     * Clone this instance.
+     *
+     * @return clone of this instance
+     * @see Object#clone()
+     * @see Cloneable
+     */
     default SMap<K, V> clone() {
         return Indolently.map(this);
     }
