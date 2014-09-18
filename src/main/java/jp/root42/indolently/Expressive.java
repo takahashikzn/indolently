@@ -72,7 +72,7 @@ public class Expressive {
      * Lazy evaluated inline if-else operator.
      *
      * @param <T> value type
-     * @param cond condition. {@code null} is evaluated as {@code false}
+     * @param cond condition
      * @param then result value if condition is {@code true}
      * @param other result value if condition is {@code false}
      * @return evaluation result
@@ -80,7 +80,7 @@ public class Expressive {
     public static <T> T ifelse(final BooleanSupplier cond, final Supplier<? extends T> then,
         final Supplier<? extends T> other) {
 
-        return (cond != null) && cond.getAsBoolean() ? then.get() : other.get();
+        return cond.getAsBoolean() ? then.get() : other.get();
     }
 
     /**
@@ -103,13 +103,13 @@ public class Expressive {
     /**
      * if-else statement.
      *
-     * @param cond condition. {@code null} is evaluated as {@code false}
+     * @param cond condition
      * @param then result value if condition is {@code true}
      * @param other result value if condition is {@code false}
      */
     public static void ifThenElse(final BooleanSupplier cond, final Statement then, final Statement other) {
 
-        if ((cond != null) && cond.getAsBoolean()) {
+        if (cond.getAsBoolean()) {
             then.perform();
         } else {
             other.perform();
@@ -128,7 +128,7 @@ public class Expressive {
     public static <T> void ifThenElse(final T context, final Predicate<? super T> cond, final Consumer<? super T> then,
         final Consumer<? super T> other) {
 
-        if ((cond != null) && cond.test(context)) {
+        if (cond.test(context)) {
             then.accept(context);
         } else {
             other.accept(context);
