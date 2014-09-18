@@ -776,6 +776,72 @@ public class Indolently {
     }
 
     /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     */
+    @Deprecated
+    public static <T> SList<T> wrap(final SList<T> x) {
+        return x;
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     */
+    @Deprecated
+    public static <T> SSet<T> wrap(final SSet<T> x) {
+        return x;
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     */
+    @Deprecated
+    public static <K, V> SMap<K, V> wrap(final SMap<K, V> x) {
+        return x;
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     */
+    @Deprecated
+    public static <T> SList<T> list(final SList<T> x) {
+        return x;
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     */
+    @Deprecated
+    public static <T> SSet<T> set(final SSet<T> x) {
+        return x;
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     */
+    @Deprecated
+    public static <K, V> SMap<K, V> map(final SMap<K, V> x) {
+        return x;
+    }
+
+    /**
      * Wrap a map.
      *
      * @param map map to wrap
