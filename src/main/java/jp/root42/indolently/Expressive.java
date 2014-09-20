@@ -46,7 +46,7 @@ public class Expressive {
     }
 
     /**
-     * Block statement.
+     * Block expression.
      *
      * @param value the value
      * @param f expression body
