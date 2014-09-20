@@ -36,13 +36,34 @@ public class Expressive {
     protected Expressive() {}
 
     /**
+     * Block statement.
+     *
+     * @param value the value
+     * @param f expression body
+     */
+    public static <T> void let(final T value, final Consumer<? super T> f) {
+        f.accept(value);
+    }
+
+    /**
+     * Block statement.
+     *
+     * @param value the value
+     * @param f expression body
+     * @return the value function returned
+     */
+    public static <T, R> R let(final T value, final Function<? super T, ? extends R> f) {
+        return f.apply(value);
+    }
+
+    /**
      * Block expression.
      *
      * @param <T> value type
      * @param f expression body
      * @return the value of body expression
      */
-    public static <T> T block(final Supplier<? extends T> f) {
+    public static <T> T let(final Supplier<? extends T> f) {
         return f.get();
     }
 
@@ -51,7 +72,7 @@ public class Expressive {
      *
      * @param f expression body
      */
-    public static void block(final Statement f) {
+    public static void let(final Statement f) {
         f.perform();
     }
 
@@ -64,7 +85,7 @@ public class Expressive {
      * @param then context conversion function used if the condition is {@code true}
      * @param other context conversion function used if the condition is {@code false}
      */
-    public static <T> void block(final T context, final Predicate<? super T> cond, final Consumer<? super T> then,
+    public static <T> void let(final T context, final Predicate<? super T> cond, final Consumer<? super T> then,
         final Consumer<? super T> other) {
 
         if (cond.test(context)) {
