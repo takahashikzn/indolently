@@ -968,6 +968,26 @@ public class Indolently {
     }
 
     /**
+     * Convert tuple to list.
+     *
+     * @param tuple two element tuple
+     * @return list of tuple elements
+     */
+    public static <T> SList<T> list(final Duo<? extends T, ? extends T> tuple) {
+        return list(tuple.fst, tuple.snd);
+    }
+
+    /**
+     * Convert tuple to list.
+     *
+     * @param tuple three element tuple
+     * @return list of tuple elements
+     */
+    public static <T> SList<T> list(final Trio<? extends T, ? extends T, ? extends T> tuple) {
+        return list(tuple.fst, tuple.snd, tuple.trd);
+    }
+
+    /**
      * create a reference of value.
      *
      * @param val initial value
