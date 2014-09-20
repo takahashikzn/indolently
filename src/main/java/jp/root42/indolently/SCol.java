@@ -35,7 +35,7 @@ import static jp.root42.indolently.Indolently.*;
 
 /**
  * common method definition for {@link SSet} / {@link SList}.
- * It's name comes from "Sugared collection".
+ * The name is came from "Sugared Collection".
  *
  * @param <T> value type
  * @param <SELF> self type

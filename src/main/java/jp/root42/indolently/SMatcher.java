@@ -29,7 +29,7 @@ import static jp.root42.indolently.Indolently.*;
 
 /**
  * Extended {@link Matcher} class for indolent person.
- * It's name comes from "Sugared Matcher".
+ * The name is came from "Sugared Matcher".
  *
  * @author takahashikzn
  */

@@ -28,7 +28,7 @@ import jp.root42.indolently.trait.ReducibleIterable;
 
 /**
  * Extended {@link Stream} class for indolent person.
- * It's name comes from "Sugared iterator".
+ * The name is came from "Sugared Stream".
  *
  * @param <T> value type
  * @author takahashikzn

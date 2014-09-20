@@ -30,7 +30,7 @@ import static jp.root42.indolently.Indolently.*;
 
 /**
  * Extended {@link List} class for indolent person.
- * It's name comes from "Sugared list".
+ * The name is came from "Sugared List".
  *
  * @param <T> value type
  * @author takahashikzn
