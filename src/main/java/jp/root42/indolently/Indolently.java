@@ -62,6 +62,14 @@ public class Indolently {
         return 0 <= idx ? idx : list.size() + idx;
     }
 
+    public static <T> T fatal() {
+        throw new AssertionError();
+    }
+
+    public static <T> T fatal(final Object msg) {
+        throw new AssertionError(msg);
+    }
+
     /**
      * An alias of {@link #optionalEmpty(Map)}.
      *
