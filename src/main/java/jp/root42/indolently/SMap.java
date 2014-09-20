@@ -33,7 +33,7 @@ import jp.root42.indolently.trait.Matchable;
 
 /**
  * Extended Map class for indolent person.
- * It's name comes from "Sugared map".
+ * The name is came from "Sugared Map".
  *
  * @param <K> key type
  * @param <V> value type

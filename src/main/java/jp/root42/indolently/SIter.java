@@ -34,7 +34,7 @@ import jp.root42.indolently.trait.ReducibleIterable;
 
 /**
  * Extended {@link Iterable}/{@link Iterator} class for indolent person.
- * It's name comes from "Sugared iterator".
+ * The name is came from "Sugared iterator".
  *
  * @param <T> value type
  * @author takahashikzn

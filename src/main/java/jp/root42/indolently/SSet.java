@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 /**
  * Extended {@link Set} class for indolent person.
- * It's name comes from "Sugared set".
+ * The name is came from "Sugared Set".
  *
  * @param <T> value type
  * @author takahashikzn
