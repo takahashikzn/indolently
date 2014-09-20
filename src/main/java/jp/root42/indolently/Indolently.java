@@ -63,6 +63,54 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link #optionalEmpty(Map)}.
+     *
+     * @param <T> type of value
+     * @param value collection value
+     * @return Optional representation of collection
+     */
+    public static <T extends Map<?, ?>> Optional<T> nonEmpty(final T value) {
+        return optionalEmpty(value);
+    }
+
+    /**
+     * {@link Optional} representation of collection.
+     * Equivalent to {@code empty(col) ? Optional.empty() : Optional.of(col)}.
+     *
+     * @param <T> type of value
+     * @param value collection value
+     * @return Optional representation of collection
+     * @see #empty(Map)
+     */
+    public static <T extends Map<?, ?>> Optional<T> optionalEmpty(final T value) {
+        return empty(value) ? Optional.empty() : Optional.of(value);
+    }
+
+    /**
+     * An alias of {@link #optionalEmpty(Iterable)}.
+     *
+     * @param <T> type of value
+     * @param value collection value
+     * @return Optional representation of collection
+     */
+    public static <T extends Iterable<?>> Optional<T> nonEmpty(final T value) {
+        return optionalEmpty(value);
+    }
+
+    /**
+     * {@link Optional} representation of collection.
+     * Equivalent to {@code empty(col) ? Optional.empty() : Optional.of(col)}.
+     *
+     * @param <T> type of value
+     * @param value collection value
+     * @return Optional representation of collection
+     * @see #empty(Iterable)
+     */
+    public static <T extends Iterable<?>> Optional<T> optionalEmpty(final T value) {
+        return empty(value) ? Optional.empty() : Optional.of(value);
+    }
+
+    /**
      * An alias of {@link #optionalEmpty(CharSequence)}.
      *
      * @param <T> type of value
