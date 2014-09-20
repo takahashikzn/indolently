@@ -222,7 +222,7 @@ public class Indolently {
         @SuppressWarnings("unchecked")
         final T[] pseudoTyped = (T[]) list.tail().toArray();
 
-        return array(list.first(), pseudoTyped);
+        return array(list.head(), pseudoTyped);
     }
 
     /**

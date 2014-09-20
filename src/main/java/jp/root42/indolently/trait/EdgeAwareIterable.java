@@ -34,7 +34,7 @@ public interface EdgeAwareIterable<T>
      * @return first element
      * @throws NoSuchElementException if empty
      */
-    default T first() {
+    default T head() {
         return this.iterator().next();
     }
 
@@ -45,7 +45,7 @@ public interface EdgeAwareIterable<T>
      * @return first element or alternative value
      * @throws NoSuchElementException if empty
      */
-    default T first(final Supplier<? extends T> other) {
+    default T head(final Supplier<? extends T> other) {
         return Expressive.ifelse(this.iterator(), i -> i.hasNext(), i -> i.next(), i -> other.get());
     }
 
@@ -55,7 +55,7 @@ public interface EdgeAwareIterable<T>
      * @param f condition
      * @return first element
      */
-    default Optional<T> first(final Predicate<? super T> f) {
+    default Optional<T> head(final Predicate<? super T> f) {
 
         for (final T val : this) {
             if (f.test(val)) {

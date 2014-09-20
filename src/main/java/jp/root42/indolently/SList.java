@@ -72,7 +72,7 @@ public interface SList<T>
 
     // for optimization
     @Override
-    default T first() {
+    default T head() {
         return this.get(0);
     }
 
