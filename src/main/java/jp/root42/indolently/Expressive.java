@@ -55,8 +55,10 @@ public class Expressive {
      *
      * @param stmt expression body
      */
-    public static void let(final Statement stmt) {
-        stmt.perform();
+    public static void let(final Statement... stmt) {
+        for (final Statement f : stmt) {
+            f.perform();
+        }
     }
 
     /**
@@ -65,8 +67,11 @@ public class Expressive {
      * @param value the value
      * @param stmt expression body
      */
-    public static <T> void let(final T value, final Consumer<? super T> stmt) {
-        stmt.accept(value);
+    @SafeVarargs
+    public static <T> void let(final T value, final Consumer<? super T>... stmt) {
+        for (final Consumer<? super T> f : stmt) {
+            f.accept(value);
+        }
     }
 
     /**

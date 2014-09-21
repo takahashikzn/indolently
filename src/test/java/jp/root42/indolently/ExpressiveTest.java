@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -58,18 +59,46 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive#let(Statement)}
+     * {@link Expressive#let(Statement...)}
      */
     @Test
     public void testLet() {
 
         final BoolRef called = ref(false);
 
-        let(() -> {
-            called.val = true;
-        });
+        let(() -> called.val = true);
 
         assertTrue(called.val);
+    }
+
+    /**
+     * {@link Expressive#let(Statement...)}
+     */
+    @Test
+    public void testLet2() {
+
+        final IntRef called = ref(0);
+
+        let( //
+        () -> called.val++ //
+        , () -> called.val++);
+
+        assertEquals(2, called.val);
+    }
+
+    /**
+     * {@link Expressive#let(Object, Consumer...)}
+     */
+    @Test
+    public void testLet3() {
+
+        final IntRef called = ref(0);
+
+        let(called //
+            , x -> x.val++ //
+            , x -> x.val++);
+
+        assertEquals(2, called.val);
     }
 
     /**
