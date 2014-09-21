@@ -27,6 +27,7 @@ import jp.root42.indolently.ref.IntRef;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -49,18 +50,15 @@ public class ExpressiveTest {
     /**
      * {@link Expressive#raise(Throwable)}
      */
-    @Test
+    @Test(expected = RaiseTest.class)
     public void testRaise() {
 
-        final RuntimeException e1 = new RuntimeException();
+        Assert.fail(eval(() -> raise(new RaiseTest())));
+    }
 
-        try {
-            final int i = eval(() -> raise(e1));
-
-            list(i); // for avoiding unused local variable warn
-        } catch (final Exception e2) {
-            assertThat(e2).isSameAs(e1);
-        }
+    private static final class RaiseTest
+        extends RuntimeException {
+        private static final long serialVersionUID = 1L;
     }
 
     /**
