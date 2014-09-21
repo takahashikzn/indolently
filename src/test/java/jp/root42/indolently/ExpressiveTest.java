@@ -46,25 +46,31 @@ import static org.junit.Assert.*;
 public class ExpressiveTest {
 
     /**
-         * {@link Expressive#let(Supplier)} / {@link Expressive#let(Statement)}
-         */
-        @Test
-        public void testLet() {
-    
-            assertThat(let(() -> {
-                SList<Integer> l = list(1, 2, 3);
-                l = l.map(x -> x * x);
-                return l;
-            })).isEqualTo(list(1, 2, 3).map(x -> x * x));
-    
-            final BoolRef called = ref(false);
-    
-            let(() -> {
-                called.val = true;
-            });
-    
-            assertTrue(called.val);
-        }
+     * {@link Expressive#eval(Supplier)}
+     */
+    @Test
+    public void testEval() {
+
+        assertThat(eval( //
+            list(1, 2, 3), //
+            l -> l.map(x -> x * x))) //
+            .isEqualTo(list(1, 2, 3).map(x -> x * x));
+    }
+
+    /**
+     * {@link Expressive#let(Statement)}
+     */
+    @Test
+    public void testLet() {
+
+        final BoolRef called = ref(false);
+
+        let(() -> {
+            called.val = true;
+        });
+
+        assertTrue(called.val);
+    }
 
     /**
      * {@link Expressive#match(When...)}
