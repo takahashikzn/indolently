@@ -52,14 +52,16 @@ public class ExpressiveTest {
     @Test
     public void testEval() {
 
-        assertThat(eval( //
-            list(1, 2, 3), //
-            l -> l.map(x -> x * x))) //
-            .isEqualTo(list(1, 2, 3).map(x -> x * x));
+        assertEquals( //
+            list(1, 2, 3).map(x -> x * x), //
+            eval( //
+                list(1, 2, 3), //
+                l -> l.map(x -> x * x)) //
+        );
     }
 
     /**
-     * {@link Expressive#let(Statement...)}
+     * {@link Expressive#let(Statement)}
      */
     @Test
     public void testLet() {
@@ -72,33 +74,16 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive#let(Statement...)}
+     * {@link Expressive#let(Object, Consumer)}
      */
     @Test
     public void testLet2() {
 
-        final IntRef called = ref(0);
+        final BoolRef called = ref(false);
 
-        let( //
-        () -> called.val++ //
-        , () -> called.val++);
+        let(called, x -> x.val = true);
 
-        assertEquals(2, called.val);
-    }
-
-    /**
-     * {@link Expressive#let(Object, Consumer...)}
-     */
-    @Test
-    public void testLet3() {
-
-        final IntRef called = ref(0);
-
-        let(called //
-            , x -> x.val++ //
-            , x -> x.val++);
-
-        assertEquals(2, called.val);
+        assertTrue(called.val);
     }
 
     /**
