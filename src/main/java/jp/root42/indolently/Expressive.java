@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -23,6 +24,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match.When;
 import jp.root42.indolently.function.Statement;
+import jp.root42.indolently.function.TriFunction;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -36,44 +38,35 @@ public class Expressive {
     protected Expressive() {}
 
     /**
-     * Block statement.
+     * Throw exception in expression manner.
      *
-     * @param value the value
-     * @param f expression body
+     * @param <T> pseudo expression type
+     * @param <E> exception type
+     * @param e exception
+     * @return actually return nothing
+     * @throws E exception
      */
-    public static <T> void let(final T value, final Consumer<? super T> f) {
-        f.accept(value);
-    }
-
-    /**
-     * Block expression.
-     *
-     * @param value the value
-     * @param f expression body
-     * @return the value function returned
-     */
-    public static <T, R> R let(final T value, final Function<? super T, ? extends R> f) {
-        return f.apply(value);
-    }
-
-    /**
-     * Block expression.
-     *
-     * @param <T> value type
-     * @param f expression body
-     * @return the value of body expression
-     */
-    public static <T> T let(final Supplier<? extends T> f) {
-        return f.get();
+    public static <T, E extends Exception> T raise(final E e) throws E {
+        throw e;
     }
 
     /**
      * Block statement.
      *
-     * @param f expression body
+     * @param stmt expression body
      */
-    public static void let(final Statement f) {
-        f.perform();
+    public static void let(final Statement stmt) {
+        stmt.perform();
+    }
+
+    /**
+     * Block statement.
+     *
+     * @param value the value
+     * @param stmt expression body
+     */
+    public static <T> void let(final T value, final Consumer<? super T> stmt) {
+        stmt.accept(value);
     }
 
     /**
@@ -93,6 +86,65 @@ public class Expressive {
         } else {
             other.accept(context);
         }
+    }
+
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <R> expression type
+     * @param expr expression body
+     * @return the value of body expression
+     */
+    public static <R> R eval(final Supplier<? extends R> expr) {
+        return expr.get();
+    }
+
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <T> value type
+     * @param <R> expression type
+     * @param val the value
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T, R> R eval(final T val, final Function<? super T, ? extends R> expr) {
+        return expr.apply(val);
+    }
+
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <T1> first value type
+     * @param <T2> second value type
+     * @param <R> expression type
+     * @param val1 first value
+     * @param val2 second value
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T1, T2, R> R eval(final T1 val1, final T2 val2,
+        final BiFunction<? super T1, ? super T2, ? extends R> expr) {
+
+        return expr.apply(val1, val2);
+    }
+
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <T1> first value type
+     * @param <T2> second value type
+     * @param <T3> third value type
+     * @param val1 first value
+     * @param val2 second value
+     * @param val3 third value
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T1, T2, T3, R> R eval(final T1 val1, final T2 val2, final T3 val3,
+        final TriFunction<? super T1, ? super T2, ? super T3, ? extends R> expr) {
+
+        return expr.apply(val1, val2, val3);
     }
 
     /**
