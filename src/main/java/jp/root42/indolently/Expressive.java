@@ -41,11 +41,10 @@ public class Expressive {
      * Throw exception in expression manner.
      *
      * @param <T> pseudo expression type
-     * @param <E> exception type
      * @param e exception
      * @return actually return nothing
      */
-    public static <T, E extends Throwable> T raise(final E e) {
+    public static <T> T raise(final Throwable e) {
 
         if (e instanceof RuntimeException) {
             throw (RuntimeException) e;
