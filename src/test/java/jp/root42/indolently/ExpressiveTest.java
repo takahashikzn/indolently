@@ -55,7 +55,9 @@ public class ExpressiveTest {
         final RuntimeException e1 = new RuntimeException();
 
         try {
-            eval(() -> raise(e1));
+            final int i = eval(() -> raise(e1));
+
+            list(i); // for avoiding unused local variable warn
         } catch (final Exception e2) {
             assertThat(e2).isSameAs(e1);
         }
