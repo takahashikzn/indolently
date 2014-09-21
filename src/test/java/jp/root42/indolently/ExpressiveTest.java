@@ -47,6 +47,21 @@ import static org.junit.Assert.*;
 public class ExpressiveTest {
 
     /**
+     * {@link Expressive#raise(Throwable)}
+     */
+    @Test
+    public void testRaise() {
+
+        final RuntimeException e1 = new RuntimeException();
+
+        try {
+            eval(() -> raise(e1));
+        } catch (final Exception e2) {
+            assertThat(e2).isSameAs(e1);
+        }
+    }
+
+    /**
      * {@link Expressive#eval(Supplier)}
      */
     @Test
