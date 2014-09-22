@@ -50,13 +50,13 @@ public class ExpressiveTest {
     /**
      * {@link Expressive#raise(Throwable)}
      */
-    @Test(expected = RaiseTest.class)
+    @Test(expected = RaiseTestException.class)
     public void testRaise() {
 
-        Assert.fail(eval(() -> raise(new RaiseTest())));
+        Assert.fail(eval(() -> raise(new RaiseTestException())));
     }
 
-    private static final class RaiseTest
+    private static final class RaiseTestException
         extends RuntimeException {
         private static final long serialVersionUID = 1L;
     }
