@@ -85,6 +85,26 @@ public class IterativeTest {
     /**
      * {@link Iterative#generator(Supplier)}
      */
+    @Test
+    public void testGeneratorHandleBreak2() {
+
+        final SList<Integer> ints = list(1, 2, 3, 4, 5);
+
+        assertThat(generator(ref(0), //
+            pos -> tuple( //
+                ints.get(pos.val), //
+                ints.optional(++pos.val) //
+                    .orElseGet(() -> Generator.breaks()))).list()) //
+            .isEqualTo(list( //
+                tuple(1, 2) //
+                , tuple(2, 3) //
+                , tuple(3, 4) //
+                , tuple(4, 5)));
+    }
+
+    /**
+     * {@link Iterative#generator(Supplier)}
+     */
     @Test(expected = NoSuchElementException.class)
     public void testGeneratorHandleNoSuchException() {
 
