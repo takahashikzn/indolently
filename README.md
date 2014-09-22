@@ -99,7 +99,7 @@ if (i % 2 == 0) {
 // declaration not required
 let(
     new Random().nextInt(),
-    i -> x % 2 == 0,
+    i -> i % 2 == 0,
     i -> System.out.println(i + " is even number"),
     i -> System.out.println(i + " is odd number")
 );
