@@ -77,6 +77,20 @@ public interface SList<T>
     }
 
     /**
+     * Return element at the position if exists.
+     * This method never throws {@link IndexOutOfBoundsException}.
+     *
+     * @param index index of the element
+     * @return the element if exists
+     */
+    default Optional<T> optional(final int index) {
+
+        final int i = Indolently.idx(this, index);
+
+        return (i < this.size()) ? Optional.ofNullable(this.get(i)) : Optional.empty();
+    }
+
+    /**
      * Equivalent to {@code list.subList(idx, list.size())}.
      *
      * @param from from index. negative index also acceptable.
