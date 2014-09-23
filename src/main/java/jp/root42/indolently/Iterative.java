@@ -14,10 +14,13 @@
 package jp.root42.indolently;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.ref.LongRef;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
@@ -278,7 +281,7 @@ public class Iterative {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        return iterator(ref(from), env -> {
+        final Predicate<LongRef> pred = env -> {
             if (from < to) {
                 return (env.val <= to);
             } else if (to < from) {
@@ -286,12 +289,21 @@ public class Iterative {
             } else {
                 return (env.val == from);
             }
-        }, env -> prog1(() -> env.val, () -> {
-            if (from < to) {
-                env.val += step;
-            } else {
-                env.val -= step;
-            }
-        }));
+        };
+
+        return iterator( //
+            ref(from), pred, //
+            env -> ifelse( //
+                pred.test(env), //
+                () -> prog1( //
+                    () -> env.val, //
+                    () -> {
+                        if (from < to) {
+                            env.val += step;
+                        } else {
+                            env.val -= step;
+                        }
+                    }), //
+                () -> raise(new NoSuchElementException())));
     }
 }
