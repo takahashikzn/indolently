@@ -43,7 +43,6 @@ public interface EdgeAwareIterable<T>
      *
      * @param other alternative value.
      * @return first element or alternative value
-     * @throws NoSuchElementException if empty
      */
     default T head(final Supplier<? extends T> other) {
         return Expressive.ifelse(this.iterator(), i -> i.hasNext(), i -> i.next(), i -> other.get());
