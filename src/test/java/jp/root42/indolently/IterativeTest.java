@@ -143,6 +143,13 @@ public class IterativeTest {
         assertThat(eval).isEqualTo(parray(1, 2, 3));
 
         assertThat(g.hasNext()).isEqualTo(false);
+
+        try {
+            g.next();
+            fail();
+        } catch (final NoSuchElementException e) {
+            assert true;
+        }
     }
 
     /**
