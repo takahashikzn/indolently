@@ -49,6 +49,16 @@ public interface Generator<T>
         private Break() {}
     }
 
+    @Override
+    default T get() {
+        return this.next();
+    }
+
+    @Override
+    default Iterator<T> iterator() {
+        return this;
+    }
+
     /**
      * constructor.
      *
@@ -96,16 +106,6 @@ public interface Generator<T>
         };
 
         return new Generator<T>() {
-
-            @Override
-            public T get() {
-                return this.next();
-            }
-
-            @Override
-            public Iterator<T> iterator() {
-                return i;
-            }
 
             @Override
             public boolean hasNext() {
