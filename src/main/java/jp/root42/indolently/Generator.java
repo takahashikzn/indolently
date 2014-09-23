@@ -70,7 +70,7 @@ public interface Generator<T>
     static <E, T> Generator<T> of(final E env, final Function<? super E, ? extends T> next) {
         Objects.requireNonNull(next);
 
-        final Iterator<T> i = new Iterator<T>() {
+        return new Generator<T>() {
 
             private boolean stopped;
 
@@ -102,19 +102,6 @@ public interface Generator<T>
                 final T val = this.cur.get();
                 this.cur = null;
                 return val;
-            }
-        };
-
-        return new Generator<T>() {
-
-            @Override
-            public boolean hasNext() {
-                return i.hasNext();
-            }
-
-            @Override
-            public T next() {
-                return i.next();
             }
         };
     }
