@@ -51,7 +51,7 @@ public interface SMap<K, V>
      * @see Cloneable
      */
     default SMap<K, V> clone() {
-        return Indolently.map(this);
+        return new SMapImpl<>(this);
     }
 
     /**
