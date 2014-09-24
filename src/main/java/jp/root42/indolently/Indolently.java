@@ -836,6 +836,7 @@ public class Indolently {
      *
      * @param x any wrapped one
      * @return argument itself
+     * @deprecated this is meaningless method call.
      */
     @Deprecated
     public static <T> SList<T> wrap(final SList<T> x) {
@@ -847,6 +848,7 @@ public class Indolently {
      *
      * @param x any wrapped one
      * @return argument itself
+     * @deprecated this is meaningless method call.
      */
     @Deprecated
     public static <T> SSet<T> wrap(final SSet<T> x) {
@@ -858,10 +860,47 @@ public class Indolently {
      *
      * @param x any wrapped one
      * @return argument itself
+     * @deprecated this is meaningless method call.
      */
     @Deprecated
     public static <K, V> SMap<K, V> wrap(final SMap<K, V> x) {
         return x;
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return clone of the argument
+     * @deprecated Use {@link SList#clone()} instead of to get more intentional.
+     */
+    @Deprecated
+    public static <T> SList<T> list(final SList<T> x) {
+        return x.clone();
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return clone of the argument
+     * @deprecated Use {@link SSet#clone()} instead of to get more intentional.
+     */
+    @Deprecated
+    public static <T> SSet<T> set(final SSet<T> x) {
+        return x.clone();
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return clone of the argument
+     * @deprecated Use {@link SMap#clone()} instead of to get more intentional.
+     */
+    @Deprecated
+    public static <K, V> SMap<K, V> map(final SMap<K, V> x) {
+        return x.clone();
     }
 
     /**
