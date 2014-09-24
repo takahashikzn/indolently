@@ -46,7 +46,7 @@ public interface SList<T>
      * @see Cloneable
      */
     default SList<T> clone() {
-        return Indolently.list(this);
+        return Indolently.list((Iterable<T>) this);
     }
 
     /**
@@ -249,7 +249,7 @@ public interface SList<T>
      * @return newly constructed reversed list
      */
     default SList<T> reverse() {
-        final SList<T> rslt = Indolently.list(this);
+        final SList<T> rslt = this.clone();
         Collections.reverse(rslt);
         return rslt;
     }

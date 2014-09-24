@@ -38,7 +38,7 @@ public interface SSet<T>
      * @see Cloneable
      */
     default SSet<T> clone() {
-        return Indolently.set(this);
+        return Indolently.set((Iterable<T>) this);
     }
 
     /**
@@ -129,7 +129,7 @@ public interface SSet<T>
      * @return newly constructed set as a computed union
      */
     default SSet<T> union(final Iterable<? extends T> values) {
-        return Indolently.set(this).pushAll(values);
+        return this.clone().pushAll(values);
     }
 
     /**
@@ -150,7 +150,7 @@ public interface SSet<T>
      */
     default SSet<T> diff(final Iterable<? extends T> values) {
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        final SSet<T> rslt = Indolently.set(this).delete(values).union(Indolently.set(values).delete((Set) this));
+        final SSet<T> rslt = this.clone().delete(values).union(Indolently.set(values).delete((Set) this));
         return rslt;
     }
 
