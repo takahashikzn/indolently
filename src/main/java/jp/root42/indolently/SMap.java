@@ -138,7 +138,8 @@ public interface SMap<K, V>
     }
 
     /**
-     * An alias of {@link Map#keySet()} then newly constructed (detached) key view.
+     * An alias of {@link Map#keySet()} but newly constructed, detached one.
+     * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.set(map.keySet())}.
      *
      * @return keys
@@ -148,7 +149,8 @@ public interface SMap<K, V>
     }
 
     /**
-     * An alias of {@link Map#values()} then newly constructed (detached) value view.
+     * An alias of {@link Map#values()} but newly constructed, detached one.
+     * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.list(map.values())}.
      *
      * @return values
@@ -158,7 +160,8 @@ public interface SMap<K, V>
     }
 
     /**
-     * An alias of {@link Map#entrySet()} then newly constructed (detached) entries view.
+     * An alias of {@link Map#entrySet()} but newly constructed, detached one.
+     * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.set(map.entrySet())}.
      *
      * @return entries
