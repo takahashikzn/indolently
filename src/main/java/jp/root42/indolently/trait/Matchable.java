@@ -41,7 +41,7 @@ public interface Matchable<T> {
     }
 
     /**
-     * Test whether all values don't satisfy condition.
+     * Test whether no value satisfy condition.
      *
      * @param f condition
      * @return test result
