@@ -313,4 +313,14 @@ public interface SMap<K, V>
 
         return rslt;
     }
+
+    /**
+     * Just an alias of {@link #containsKey(Object)}
+     *
+     * @param key key of map
+     * @return the result of {@link #containsKey(Object)}
+     */
+    default boolean has(final K key) {
+        return this.containsKey(key);
+    }
 }

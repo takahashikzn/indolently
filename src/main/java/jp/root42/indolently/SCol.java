@@ -204,4 +204,24 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
         return this.reduce(Indolently.map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
     }
+
+    /**
+     * Just an alias of {@link #contains(Object)}
+     *
+     * @param val value
+     * @return the result of {@link #contains(Object)}
+     */
+    default boolean has(final T val) {
+        return this.contains(val);
+    }
+
+    /**
+     * Just an alias of {@link #containsAll(Collection)}
+     *
+     * @param vals values
+     * @return the result of {@link #containsAll(Collection)}
+     */
+    default boolean hasAll(final Collection<? extends T> vals) {
+        return this.containsAll(vals);
+    }
 }
