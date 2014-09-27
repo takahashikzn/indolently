@@ -48,7 +48,7 @@ import static jp.root42.indolently.Expressive.*;
 
 
 /**
- * The Java syntax sugar collection for indolent person (like you).
+ * The Java Syntactic sugar collection for indolent person (like you).
  *
  * @author takahashikzn
  */
