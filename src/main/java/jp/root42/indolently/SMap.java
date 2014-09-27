@@ -323,4 +323,14 @@ public interface SMap<K, V>
     default boolean has(final K key) {
         return this.containsKey(key);
     }
+
+    /**
+     * Return value as optional representation..
+     *
+     * @param key key of the value
+     * @return optional representation of the value
+     */
+    default Optional<V> opt(final K key) {
+        return Indolently.optional(this.get(key));
+    }
 }

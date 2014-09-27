@@ -93,7 +93,7 @@ public class IterativeTest {
         assertThat(generator(ref(0), //
             pos -> tuple( //
                 ints.get(pos.val), //
-                ints.optional(++pos.val) //
+                ints.opt(++pos.val) //
                     .orElseGet(() -> Generator.breaks()))).list()) //
             .isEqualTo(list( //
                 tuple(1, 2) //
