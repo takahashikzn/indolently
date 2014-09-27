@@ -325,7 +325,7 @@ public interface SMap<K, V>
     }
 
     /**
-     * Return value as optional representation..
+     * Return value as optional representation.
      *
      * @param key key of the value
      * @return optional representation of the value
