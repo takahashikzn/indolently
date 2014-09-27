@@ -22,7 +22,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressive.Match.When;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriFunction;
 
@@ -292,6 +291,75 @@ public class Expressive {
         return Match.of(cases);
     }
 
+    @SuppressWarnings("javadoc")
+    @SafeVarargs
+    public static <C> BoolMatch<C> test(final When<C, Boolean>... cases) {
+        return BoolMatch.of(cases);
+    }
+
+    /**
+     * A 'case' clause of 'match' expression.
+     *
+     * @param <C> testing value type
+     * @param <V> expression body value type
+     * @author takahashikzn
+     */
+    @SuppressWarnings("javadoc")
+    public interface When<C, V>
+        extends Predicate<C>, Function<C, V> {
+
+        static <C, V> When<C, V> defaults(final Supplier<? extends V> expr) {
+            return defaults(x -> expr.get());
+        }
+
+        static <C, V> When<C, V> defaults(final Function<? super C, ? extends V> expr) {
+            return of(x -> true, x -> expr.apply(x));
+        }
+
+        static <C, V> When<C, V> raise(final Supplier<? extends RuntimeException> expr) {
+            return raise(x -> expr.get());
+        }
+
+        static <C, V> When<C, V> raise(final Function<? super C, ? extends RuntimeException> expr) {
+            return of(x -> true, (final C x) -> {
+                throw expr.apply(x);
+            });
+        }
+
+        static <C, V> When<C, V> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
+            return of(pred, x -> expr.get());
+        }
+
+        static <C, V> When<C, V> of(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
+            Objects.requireNonNull(pred, "pred");
+            Objects.requireNonNull(expr, "expr");
+
+            return new When<C, V>() {
+                @Override
+                public boolean test(final C cond) {
+                    return pred.test(cond);
+                }
+
+                @Override
+                public V apply(final C cond) {
+                    return expr.apply(cond);
+                }
+            };
+        }
+
+        default Function<C, V> other(final V value) {
+            return this.other(x -> value);
+        }
+
+        default Function<C, V> other(final Supplier<? extends V> f) {
+            return this.other(x -> f.get());
+        }
+
+        default Function<C, V> other(final Function<? super C, ? extends V> f) {
+            return x -> this.test(x) ? this.apply(x) : f.apply(x);
+        }
+    }
+
     /**
      * The 'match' expression.
      *
@@ -312,10 +380,15 @@ public class Expressive {
         @SafeVarargs
         static <C, V> Match<C, V> of(final When<C, V>... cases) {
 
-            return x -> Optional.ofNullable( //
-                Indolently.find(x, cases) //
-                    .orElse(When.defaults(() -> null)) //
-                    .apply(x));
+            return x -> optional(eval(() -> {
+                for (final When<C, V> c : cases) {
+                    if (c.test(x)) {
+                        return c.apply(x);
+                    }
+                }
+
+                return null;
+            }));
         }
 
         /**
@@ -377,67 +450,106 @@ public class Expressive {
 
             return x -> this.apply(x).orElseGet(() -> f.apply(x));
         }
+    }
+
+    /**
+     * The 'match' expression.
+     *
+     * @param <C> testing value type
+     * @author takahashikzn
+     */
+    @FunctionalInterface
+    public interface BoolMatch<C>
+        extends Predicate<C> {
 
         /**
-         * A 'case' clause of 'match' expression.
+         * Create match expression functor.
          *
-         * @param <C> testing value type
-         * @param <V> expression body value type
-         * @author takahashikzn
+         * @param cases case clauses
+         * @return match expression functor
          */
-        interface When<C, V>
-            extends Predicate<C>, Function<C, V> {
+        @SafeVarargs
+        static <C> BoolMatch<C> of(final When<C, Boolean>... cases) {
 
-            static <C, V> When<C, V> defaults(final Supplier<? extends V> expr) {
-                return defaults(x -> expr.get());
-            }
-
-            static <C, V> When<C, V> defaults(final Function<? super C, ? extends V> expr) {
-                return of(x -> true, x -> expr.apply(x));
-            }
-
-            static <C, V> When<C, V> raise(final Supplier<? extends RuntimeException> expr) {
-                return raise(x -> expr.get());
-            }
-
-            static <C, V> When<C, V> raise(final Function<? super C, ? extends RuntimeException> expr) {
-                return of(x -> true, (final C x) -> {
-                    throw expr.apply(x);
-                });
-            }
-
-            static <C, V> When<C, V> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
-                return of(pred, x -> expr.get());
-            }
-
-            static <C, V> When<C, V> of(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
-                Objects.requireNonNull(pred, "pred");
-                Objects.requireNonNull(expr, "expr");
-
-                return new When<C, V>() {
-                    @Override
-                    public boolean test(final C cond) {
-                        return pred.test(cond);
+            return x -> {
+                for (final When<C, Boolean> c : cases) {
+                    if (c.test(x)) {
+                        return c.apply(x);
                     }
+                }
 
-                    @Override
-                    public V apply(final C cond) {
-                        return expr.apply(cond);
-                    }
-                };
-            }
+                return false;
+            };
+        }
 
-            default Function<C, V> other(final V value) {
-                return this.other(x -> value);
-            }
+        /**
+         * Append 'default throw' clause to the end of this expression.
+         *
+         * @param e exception to throw
+         * @return 'default' attached match expression
+         */
+        default Predicate<C> raise(final RuntimeException e) {
+            return this.raise(() -> e);
+        }
 
-            default Function<C, V> other(final Supplier<? extends V> f) {
-                return this.other(x -> f.get());
-            }
+        /**
+         * Append 'default throw' clause to the end of this expression.
+         *
+         * @param f exception supplier to throw
+         * @return 'default' attached match expression
+         */
+        default Predicate<C> raise(final Supplier<? extends RuntimeException> f) {
+            Objects.requireNonNull(f);
 
-            default Function<C, V> other(final Function<? super C, ? extends V> f) {
-                return x -> this.test(x) ? this.apply(x) : f.apply(x);
-            }
+            return this.raise(x -> f.get());
+        }
+
+        /**
+         * Append 'default throw' clause to the end of this expression.
+         *
+         * @param f exception supplier to throw
+         * @return 'default' attached match expression
+         */
+        default Predicate<C> raise(final Function<? super C, ? extends RuntimeException> f) {
+            Objects.requireNonNull(f);
+
+            return x -> {
+                if (this.test(x)) {
+                    return true;
+                } else {
+                    throw f.apply(x);
+                }
+            };
+        }
+
+        /**
+         * Append 'default' clause to the end of this match expression.
+         *
+         * @param f default value supplier
+         * @return 'default' attached match expression
+         */
+        default Predicate<C> defaults(final BooleanSupplier f) {
+            Objects.requireNonNull(f);
+
+            return this.defaults(x -> f.getAsBoolean());
+        }
+
+        /**
+         * Append 'default' clause to the end of this match expression.
+         *
+         * @param f default value supplier
+         * @return 'default' attached match expression
+         */
+        default Predicate<C> defaults(final Predicate<? super C> f) {
+            Objects.requireNonNull(f);
+
+            return x -> {
+                if (this.test(x)) {
+                    return true;
+                } else {
+                    return f.test(x);
+                }
+            };
         }
     }
 }
