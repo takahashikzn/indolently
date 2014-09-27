@@ -83,11 +83,11 @@ public interface SList<T>
      * @param index index of the element
      * @return the element if exists
      */
-    default Optional<T> optional(final int index) {
+    default Optional<T> opt(final int index) {
 
         final int i = Indolently.idx(this, index);
 
-        return (i < this.size()) ? Optional.ofNullable(this.get(i)) : Optional.empty();
+        return (i < this.size()) ? Indolently.optional(this.get(i)) : Optional.empty();
     }
 
     /**
