@@ -2,9 +2,9 @@
 
 # What this is
 
-A Java syntacitc sugar library for indolent person.
+A Java syntactic sugar library for indolent person.
 
-This library was started to provide semi-literal syntacitc like list/set/map.
+This library was started to provide semi-literal syntactic expression like list/set/map.
 Now there are miscellaneous syntactic sugars like let/eval and more.
 
 This is also my study of English/GitHub/Java8-Lambda.
