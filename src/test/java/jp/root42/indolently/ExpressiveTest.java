@@ -19,7 +19,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match;
-import jp.root42.indolently.Expressive.Match.When;
+import jp.root42.indolently.Expressive.When;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.IntRef;
@@ -135,12 +135,12 @@ public class ExpressiveTest {
                 env -> match( //
                     when((final IntRef x) -> from < to, x -> x.val <= to), //
                     when(x -> to < from, x -> to <= x.val) //
-                ).defaults(x -> x.val == from).apply(env), //
-                env -> match( //
+                ).defaults(x -> x.val == from).apply(env), // Expressive#test raises compilation error with OracleJDK
+                match( //
                     when((final IntRef x) -> from < to, x -> prog1( //
                         x::get, //
                         () -> x.val += step)) //
-                ).defaults(x -> prog1(x::get, () -> x.val -= step)).apply(env) //
+                ).defaults(x -> prog1(x::get, () -> x.val -= step)) //
             ) //
             )).isEqualTo(expected);
 
