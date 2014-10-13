@@ -23,12 +23,14 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.SBiFunc;
 import jp.root42.indolently.function.SBiPred;
 import jp.root42.indolently.function.SBoolSuppl;
 import jp.root42.indolently.function.SFunc;
 import jp.root42.indolently.function.SPred;
 import jp.root42.indolently.function.SSuppl;
+import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriConsumer;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.function.TriPredicate;
@@ -257,6 +259,14 @@ public class Functional {
 
             return body.test(self, x, y);
         });
+    }
+
+    public static <T> Expression<T> expressionOf(final Expression<T> f) {
+        return f;
+    }
+
+    public static Statement statementOf(final Statement f) {
+        return f;
     }
 
     public static <T> Supplier<? extends T> supplierOf(final Supplier<? extends T> f) {
