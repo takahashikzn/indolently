@@ -17,38 +17,23 @@ import java.util.Objects;
 
 
 /**
- * @param <T> -
- * @param <U> -
- * @param <V> -
  * @author takahashikzn
  */
+@SuppressWarnings("javadoc")
 @FunctionalInterface
 public interface TriPredicate<T, U, V> {
 
-    @SuppressWarnings("javadoc")
     boolean test(T t, U u, V v);
 
-    /**
-     * @param other -
-     * @return -
-     */
     default TriPredicate<T, U, V> and(final TriPredicate<? super T, ? super U, ? super V> other) {
         Objects.requireNonNull(other);
         return (t, u, v) -> test(t, u, v) && other.test(t, u, v);
     }
 
-    /**
-     * @param other -
-     * @return -
-     */
     default TriPredicate<T, U, V> negate() {
         return (t, u, v) -> !test(t, u, v);
     }
 
-    /**
-     * @param other -
-     * @return -
-     */
     default TriPredicate<T, U, V> or(final TriPredicate<? super T, ? super U, ? super V> other) {
         Objects.requireNonNull(other);
         return (t, u, v) -> test(t, u, v) || other.test(t, u, v);

@@ -18,23 +18,14 @@ import java.util.function.Function;
 
 
 /**
- * @param <T> -
- * @param <U> -
- * @param <V> -
- * @param <R> -
  * @author takahashikzn
  */
 @FunctionalInterface
+@SuppressWarnings("javadoc")
 public interface TriFunction<T, U, V, R> {
 
-    @SuppressWarnings("javadoc")
     R apply(T t, U u, V v);
 
-    /**
-     * @param <W> -
-     * @param after -
-     * @return -
-     */
     default <W> TriFunction<T, U, V, W> andThen(final Function<? super R, ? extends W> after) {
         Objects.requireNonNull(after);
         return (t, u, v) -> after.apply(apply(t, u, v));
