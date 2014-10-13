@@ -98,7 +98,7 @@ public class BoolRef
     public void negateIf(final Predicate<Boolean> cond, final Statement f) {
         this.ifThen(cond, () -> {
             this.val = !this.val;
-            f.perform();
+            f.execute();
         });
     }
 
@@ -121,7 +121,7 @@ public class BoolRef
     public void ifThen(final Predicate<Boolean> cond, final Statement f) {
         synchronized (this) {
             if (cond.test(this.val)) {
-                f.perform();
+                f.execute();
             }
         }
     }

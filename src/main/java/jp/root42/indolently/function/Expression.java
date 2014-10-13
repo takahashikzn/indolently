@@ -13,30 +13,31 @@
 // limitations under the License.
 package jp.root42.indolently.function;
 
-import java.util.Objects;
+import java.util.function.Supplier;
 
 
 /**
  * Represents an arbitrary operation that doesn't accept any argument.
  *
+ * @param <T> type of this expression
  * @author takahashikzn
  */
 @FunctionalInterface
-public interface Statement {
+public interface Expression<T>
+    extends Supplier<T> {
 
     /**
-     * Perform this operation.
+     * evaluate this expression.
      *
-     * @throws Exception any exception
+     * @return evaluation result
+     * @throws Exception any exception on evaluating
      */
-    void tryExecute() throws Exception;
+    T eval() throws Exception;
 
-    /**
-     * Perform this operation.
-     */
-    default void execute() {
+    @Override
+    default T get() {
         try {
-            this.tryExecute();
+            return eval();
         } catch (final Exception e) {
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
@@ -44,21 +45,5 @@ public interface Statement {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    /**
-     * Returns composed statement which execute this statement then execute {@code after}.
-     *
-     * @param after statement which execute after this statement
-     * @return composed statement
-     */
-    default Statement andThen(final Statement after) {
-
-        Objects.requireNonNull(after);
-
-        return () -> {
-            execute();
-            after.execute();
-        };
     }
 }

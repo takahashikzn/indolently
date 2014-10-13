@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match;
 import jp.root42.indolently.Expressive.When;
+import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.IntRef;
@@ -62,7 +63,7 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive#eval(Supplier)}
+     * {@link Expressive#eval(Expression)}
      */
     @Test
     public void testEval() {
