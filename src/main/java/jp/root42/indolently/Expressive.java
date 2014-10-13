@@ -22,6 +22,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriFunction;
 
@@ -60,7 +61,18 @@ public class Expressive {
      * @param stmt expression body
      */
     public static void let(final Statement stmt) {
-        stmt.perform();
+        stmt.execute();
+    }
+
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <R> expression type
+     * @param expr expression body
+     * @return the value of body expression
+     */
+    public static <R> R eval(final Expression<? extends R> expr) {
+        return expr.get();
     }
 
     /**
@@ -90,17 +102,6 @@ public class Expressive {
         } else {
             other.accept(context);
         }
-    }
-
-    /**
-     * In-line evaluation expression.
-     *
-     * @param <R> expression type
-     * @param expr expression body
-     * @return the value of body expression
-     */
-    public static <R> R eval(final Supplier<? extends R> expr) {
-        return expr.get();
     }
 
     /**
@@ -240,7 +241,7 @@ public class Expressive {
 
         final T val = first.get();
 
-        list(forms).each(f -> f.perform());
+        list(forms).each(f -> f.execute());
 
         return val;
     }
