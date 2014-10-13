@@ -17,21 +17,14 @@ import java.util.Objects;
 
 
 /**
- * @param <T> -
- * @param <U> -
- * @param <V> -
  * @author takahashikzn
  */
+@SuppressWarnings("javadoc")
 @FunctionalInterface
 public interface TriConsumer<T, U, V> {
 
-    @SuppressWarnings("javadoc")
     void accept(T t, U u, V v);
 
-    /**
-     * @param after -
-     * @return -
-     */
     default TriConsumer<T, U, V> andThen(final TriConsumer<? super T, ? super U, ? super V> after) {
         Objects.requireNonNull(after);
 
