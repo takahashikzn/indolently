@@ -77,6 +77,25 @@ public class ExpressiveTest {
     }
 
     /**
+     * {@link Expressive#eval(Expression)}
+     */
+    @Test
+    public void testEval2() {
+
+        final Exception e = new Exception();
+
+        try {
+            eval(() -> {
+                throw e;
+            });
+
+            fail();
+        } catch (final RuntimeException err) {
+            assertThat(err.getCause()).isSameAs(e);
+        }
+    }
+
+    /**
      * {@link Expressive#let(Statement)}
      */
     @Test
@@ -90,10 +109,29 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive#let(Object, Consumer)}
+     * {@link Expressive#let(Statement)}
      */
     @Test
     public void testLet2() {
+
+        final Exception e = new Exception();
+
+        try {
+            let(() -> {
+                throw e;
+            });
+
+            fail();
+        } catch (final RuntimeException err) {
+            assertThat(err.getCause()).isSameAs(e);
+        }
+    }
+
+    /**
+     * {@link Expressive#let(Object, Consumer)}
+     */
+    @Test
+    public void testLet3() {
 
         final BoolRef called = ref(false);
 
