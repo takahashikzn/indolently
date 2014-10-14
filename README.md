@@ -114,8 +114,8 @@ range(1, 10)
     .list()
     .slice(-5, 0) // negative index is acceptable - take last five elements
     .map((i) -> i * i)
-    .each(System.out::println)
-    .reduce(0, (i, k) -> i + k)
+    .each(System.out::println) // each is not terminal operation
+    .reduce((i, k) -> i + k)
     .ifPresent(System.out::println); // print 330
 ```
 
