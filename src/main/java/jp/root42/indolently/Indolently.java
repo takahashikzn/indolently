@@ -552,6 +552,14 @@ public class Indolently {
         return (ary == null) || (ary.length == 0);
     }
 
+    public static String join(final Collection<? extends CharSequence> col) {
+        return join(col, "");
+    }
+
+    public static String join(final Collection<? extends CharSequence> col, final String sep) {
+        return list(col).reduce((x, y) -> x + sep + y).map(x -> x.toString()).orElse("");
+    }
+
     @SafeVarargs
     public static <T> T choose(final T... elems) {
 
