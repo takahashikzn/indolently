@@ -19,6 +19,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Expressive.Match;
+import jp.root42.indolently.Expressive.RaisedException;
 import jp.root42.indolently.Expressive.When;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
@@ -51,14 +52,48 @@ public class ExpressiveTest {
     /**
      * {@link Expressive#raise(Throwable)}
      */
-    @Test(expected = RaiseTestException.class)
-    public void testRaise() {
+    @Test
+    public void testRaiseException() {
 
-        Assert.fail(eval(() -> raise(new RaiseTestException())));
+        final RaiseTestException e = new RaiseTestException();
+
+        try {
+            Assert.fail(eval(() -> raise(e)));
+        } catch (final RaisedException err) {
+            assertThat(err.getCause()).isSameAs(e);
+        }
     }
 
     private static final class RaiseTestException
+        extends Exception {
+        private static final long serialVersionUID = 1L;
+    }
+
+    /**
+     * {@link Expressive#raise(Throwable)}
+     */
+    @Test(expected = RaiseTestRuntimeException.class)
+    public void testRaiseRuntimeException() {
+
+        Assert.fail(eval(() -> raise(new RaiseTestRuntimeException())));
+    }
+
+    private static final class RaiseTestRuntimeException
         extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+    }
+
+    /**
+     * {@link Expressive#raise(Throwable)}
+     */
+    @Test(expected = RaiseTestError.class)
+    public void testRaiseError() {
+
+        Assert.fail(eval(() -> raise(new RaiseTestError())));
+    }
+
+    private static final class RaiseTestError
+        extends Error {
         private static final long serialVersionUID = 1L;
     }
 
@@ -90,7 +125,7 @@ public class ExpressiveTest {
             });
 
             fail();
-        } catch (final RuntimeException err) {
+        } catch (final RaisedException err) {
             assertThat(err.getCause()).isSameAs(e);
         }
     }
@@ -122,7 +157,7 @@ public class ExpressiveTest {
             });
 
             fail();
-        } catch (final RuntimeException err) {
+        } catch (final RaisedException err) {
             assertThat(err.getCause()).isSameAs(e);
         }
     }

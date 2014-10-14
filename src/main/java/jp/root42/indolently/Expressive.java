@@ -37,6 +37,17 @@ public class Expressive {
     /** non private for subtyping. */
     protected Expressive() {}
 
+    @SuppressWarnings("javadoc")
+    public static class RaisedException
+        extends RuntimeException {
+
+        private static final long serialVersionUID = 1037309592665638717L;
+
+        public RaisedException(final Throwable e) {
+            super(e);
+        }
+    }
+
     /**
      * Throw exception in expression manner.
      *
@@ -51,7 +62,7 @@ public class Expressive {
         } else if (e instanceof Error) {
             throw (Error) e;
         } else {
-            throw new RuntimeException(e);
+            throw new RaisedException(e);
         }
     }
 

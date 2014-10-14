@@ -15,6 +15,8 @@ package jp.root42.indolently.function;
 
 import java.util.Objects;
 
+import jp.root42.indolently.Expressive;
+
 
 /**
  * Represents an arbitrary operation that doesn't accept any argument.
@@ -27,22 +29,18 @@ public interface Statement {
     /**
      * Perform this operation.
      *
-     * @throws Exception any exception
+     * @throws Exception any exception which this statement would throw
      */
-    void tryExecute() throws Exception;
+    void exec() throws Exception;
 
     /**
      * Perform this operation.
      */
     default void execute() {
         try {
-            this.tryExecute();
+            this.exec();
         } catch (final Exception e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else {
-                throw new RuntimeException(e);
-            }
+            Expressive.raise(e);
         }
     }
 
