@@ -15,6 +15,8 @@ package jp.root42.indolently.function;
 
 import java.util.function.Supplier;
 
+import jp.root42.indolently.Expressive;
+
 
 /**
  * Represents an arbitrary operation that doesn't accept any argument.
@@ -30,20 +32,16 @@ public interface Expression<T>
      * evaluate this expression.
      *
      * @return evaluation result
-     * @throws Exception any exception on evaluating
+     * @throws Exception any exception which this expression would throw
      */
     T eval() throws Exception;
 
     @Override
     default T get() {
         try {
-            return eval();
+            return this.eval();
         } catch (final Exception e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else {
-                throw new RuntimeException(e);
-            }
+            return Expressive.raise(e);
         }
     }
 }
