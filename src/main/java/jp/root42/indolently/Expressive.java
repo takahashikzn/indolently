@@ -56,8 +56,23 @@ public class Expressive {
      * @return actually return nothing
      */
     public static <T> T raise(final Throwable e) {
+        return raise(() -> e);
+    }
 
-        if (e instanceof RuntimeException) {
+    /**
+     * Throw exception in expression manner.
+     *
+     * @param <T> pseudo expression type
+     * @param f supplies exception to throw
+     * @return actually return nothing
+     */
+    public static <T> T raise(final Supplier<? extends Throwable> f) {
+
+        final Throwable e = f.get();
+
+        if (e == null) {
+            throw new NullPointerException("supplier returns null: " + f);
+        } else if (e instanceof RuntimeException) {
             throw (RuntimeException) e;
         } else if (e instanceof Error) {
             throw (Error) e;
