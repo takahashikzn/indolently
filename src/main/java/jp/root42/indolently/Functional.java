@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -38,6 +37,7 @@ import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.Duo;
 import jp.root42.indolently.ref.Trio;
 
+import static java.util.Objects.*;
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -145,8 +145,8 @@ public class Functional {
     public static SBoolSuppl function(final Consumer<? super BooleanSupplier> init,
         final Predicate<? super BooleanSupplier> body) {
 
-        Objects.requireNonNull(init, "init");
-        Objects.requireNonNull(body, "body");
+        requireNonNull(init, "init");
+        requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
@@ -165,8 +165,8 @@ public class Functional {
     public static <T> SSuppl<T> function(final Consumer<? super Supplier<T>> init,
         final Function<? super Supplier<? extends T>, ? extends T> body) {
 
-        Objects.requireNonNull(init, "init");
-        Objects.requireNonNull(body, "body");
+        requireNonNull(init, "init");
+        requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
@@ -186,8 +186,8 @@ public class Functional {
     public static <T, R> SFunc<T, R> function(final Consumer<? super Function<T, R>> init,
         final BiFunction<? super Function<? super T, ? extends R>, ? super T, ? extends R> body) {
 
-        Objects.requireNonNull(init, "init");
-        Objects.requireNonNull(body, "body");
+        requireNonNull(init, "init");
+        requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
@@ -207,8 +207,8 @@ public class Functional {
     public static <T, U, R> SBiFunc<T, U, R> function(final Consumer<? super BiFunction<T, U, R>> init,
         final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> body) {
 
-        Objects.requireNonNull(init, "init");
-        Objects.requireNonNull(body, "body");
+        requireNonNull(init, "init");
+        requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
@@ -228,8 +228,8 @@ public class Functional {
     public static <T> SPred<T> function(final Consumer<? super Predicate<T>> init,
         final BiPredicate<? super Predicate<T>, ? super T> body) {
 
-        Objects.requireNonNull(init, "init");
-        Objects.requireNonNull(body, "body");
+        requireNonNull(init, "init");
+        requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
@@ -249,8 +249,8 @@ public class Functional {
     public static <T, U> SBiPred<T, U> function(final Consumer<? super BiPredicate<T, U>> init,
         final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
 
-        Objects.requireNonNull(init, "init");
-        Objects.requireNonNull(body, "body");
+        requireNonNull(init, "init");
+        requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
