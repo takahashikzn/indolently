@@ -144,9 +144,9 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> delete(final BiFunction<? super K, ? super V, Boolean> f) {
+    default SMap<K, V> delete(final BiPredicate<? super K, ? super V> f) {
         return this.delete(this.keys().filter(x -> {
-            return f.apply(x, this.get(x));
+            return f.test(x, this.get(x));
         }));
     }
 
