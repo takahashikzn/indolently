@@ -138,6 +138,19 @@ public interface SMap<K, V>
     }
 
     /**
+     * remove keys then return this instance.
+     *
+     * @param f entry filter to remove
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SMap<K, V> delete(final BiFunction<? super K, ? super V, Boolean> f) {
+        return this.delete(this.keys().filter(x -> {
+            return f.apply(x, this.get(x));
+        }));
+    }
+
+    /**
      * An alias of {@link Map#keySet()} but newly constructed, detached one.
      * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.set(map.keySet())}.

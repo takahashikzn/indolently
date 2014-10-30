@@ -117,6 +117,30 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
         return this.identity();
     }
 
+    /**
+     * remove values then return this instance.
+     *
+     * @param f condition
+     * @return {@code this} instance
+     * @see #removeAll(Collection)
+     */
+    @Destructive
+    default SELF delete(final Predicate<? super T> f) {
+        return this.delete((i, x) -> f.test(x));
+    }
+
+    /**
+     * remove values then return this instance.
+     *
+     * @param f condition
+     * @return {@code this} instance
+     * @see #removeAll(Collection)
+     */
+    @Destructive
+    default SELF delete(final BiPredicate<Integer, ? super T> f) {
+        return this.delete(this.filter(f));
+    }
+
     @Override
     SIter<T> iterator();
 
