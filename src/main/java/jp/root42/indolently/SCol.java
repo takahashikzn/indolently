@@ -248,4 +248,12 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default boolean hasAll(final Collection<? extends T> vals) {
         return this.containsAll(vals);
     }
+
+    /**
+     * 'Group By' operation: returns grouped elements as {@link SMap} form.
+     *
+     * @param fkey convert element to grouping key
+     * @return grouped elements
+     */
+    <K> SMap<K, SELF> group(Function<? super T, ? extends K> fkey);
 }
