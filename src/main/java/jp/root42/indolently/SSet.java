@@ -187,17 +187,8 @@ public interface SSet<T>
     @Override
     default <K> SMap<K, SSet<T>> group(final Function<? super T, ? extends K> fkey) {
 
-        return this.reduce(Indolently.map(), (rslt, val) -> {
+        final SMap<K, SList<T>> grp = this.list().group(fkey);
 
-            final K key = fkey.apply(val);
-
-            if (!rslt.containsKey(key)) {
-                rslt.put(key, Indolently.set());
-            }
-
-            rslt.get(key).add(val);
-
-            return rslt;
-        });
+        return grp.map((k, v) -> Indolently.set(v));
     }
 }
