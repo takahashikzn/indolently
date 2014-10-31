@@ -183,4 +183,21 @@ public interface SSet<T>
             return this;
         }
     }
+
+    @Override
+    default <K> SMap<K, SSet<T>> group(final Function<? super T, ? extends K> fkey) {
+
+        return this.reduce(Indolently.map(), (rslt, val) -> {
+
+            final K key = fkey.apply(val);
+
+            if (!rslt.containsKey(key)) {
+                rslt.put(key, Indolently.set());
+            }
+
+            rslt.get(key).add(val);
+
+            return rslt;
+        });
+    }
 }

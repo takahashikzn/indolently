@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -282,5 +283,22 @@ public interface SList<T>
         } else {
             return this;
         }
+    }
+
+    @Override
+    default <K> SMap<K, SList<T>> group(final Function<? super T, ? extends K> fkey) {
+
+        return this.reduce(Indolently.wrap(new LinkedHashMap<>()), (rslt, val) -> {
+
+            final K key = fkey.apply(val);
+
+            if (!rslt.containsKey(key)) {
+                rslt.put(key, Indolently.list());
+            }
+
+            rslt.get(key).add(val);
+
+            return rslt;
+        });
     }
 }

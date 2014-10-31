@@ -13,6 +13,9 @@
 // limitations under the License.
 package jp.root42.indolently.trait;
 
+import java.util.function.Consumer;
+
+
 /**
  * Express this instance can be identical.
  *
@@ -29,6 +32,19 @@ public interface Identical<SELF extends Identical<SELF>> {
     default SELF identity() {
         @SuppressWarnings("unchecked")
         final SELF self = (SELF) this;
+        return self;
+    }
+
+    /**
+     * return this instance.
+     *
+     * @param f 'tap' operator
+     * @return {@code this} instance.
+     */
+    default SELF identity(final Consumer<? super SELF> f) {
+        @SuppressWarnings("unchecked")
+        final SELF self = (SELF) this;
+        f.accept(self);
         return self;
     }
 }
