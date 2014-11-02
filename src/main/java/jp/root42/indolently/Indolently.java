@@ -17,7 +17,6 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1191,81 +1190,79 @@ public class Indolently {
     }
 
     // CHECKSTYLE:OFF
-
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1273,9 +1270,8 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1283,9 +1279,9 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1293,9 +1289,9 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1303,9 +1299,9 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1314,9 +1310,9 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1325,9 +1321,9 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16, final K k17, final V v17) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1336,9 +1332,9 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1347,10 +1343,9 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1360,10 +1355,10 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1373,10 +1368,10 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20, final K k21, final V v21) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1386,10 +1381,10 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1399,10 +1394,10 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1413,10 +1408,10 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1427,10 +1422,10 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24, final K k25, final V v25) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1441,11 +1436,10 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25)
-            .push(k26, v26);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1456,11 +1450,11 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25)
-            .push(k26, v26).push(k27, v27);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
+            .push(k27, v27);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1472,11 +1466,11 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25)
-            .push(k26, v26).push(k27, v27).push(k28, v28);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
+            .push(k27, v27).push(k28, v28);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1488,11 +1482,11 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28, final K k29, final V v29) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25)
-            .push(k26, v26).push(k27, v27).push(k28, v28).push(k29, v29);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
+            .push(k27, v27).push(k28, v28).push(k29, v29);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1504,11 +1498,11 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28, final K k29, final V v29, final K k30, final V v30) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25)
-            .push(k26, v26).push(k27, v27).push(k28, v28).push(k29, v29).push(k30, v30);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
+            .push(k27, v27).push(k28, v28).push(k29, v29).push(k30, v30);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1520,11 +1514,11 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28, final K k29, final V v29, final K k30, final V v30, final K k31, final V v31) {
 
-        return wrap(new LinkedHashMap<K, V>()).push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4)
-            .push(k5, v5).push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11)
-            .push(k12, v12).push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18)
-            .push(k19, v19).push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25)
-            .push(k26, v26).push(k27, v27).push(k28, v28).push(k29, v29).push(k30, v30).push(k31, v31);
+        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
+            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
+            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
+            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
+            .push(k27, v27).push(k28, v28).push(k29, v29).push(k30, v30).push(k31, v31);
     }
     // CHECKSTYLE:ON
 }
