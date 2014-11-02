@@ -15,7 +15,6 @@ package jp.root42.indolently;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +35,7 @@ class SMapImpl<K, V>
     private Map<K, V> store;
 
     public SMapImpl() {
-        this(new HashMap<>());
+        this(ObjFactory.instance.newMap());
     }
 
     public SMapImpl(final Map<K, V> store) {

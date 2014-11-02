@@ -15,7 +15,6 @@ package jp.root42.indolently;
 
 import java.io.Serializable;
 import java.util.AbstractSet;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -34,7 +33,7 @@ class SSetImpl<T>
     private final Set<T> store;
 
     public SSetImpl() {
-        this(new HashSet<>());
+        this(ObjFactory.instance.newSet());
     }
 
     public SSetImpl(final Set<T> store) {
