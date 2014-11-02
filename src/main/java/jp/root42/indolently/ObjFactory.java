@@ -72,7 +72,7 @@ public abstract class ObjFactory {
     public abstract <V> Set<V> newSet();
 
     /**
-     * Create new listinstance.
+     * Create new list instance.
      *
      * @return new list instance
      */
