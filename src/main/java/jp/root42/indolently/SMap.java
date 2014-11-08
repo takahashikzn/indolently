@@ -14,7 +14,6 @@
 package jp.root42.indolently;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -23,12 +22,15 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import jp.root42.indolently.SMap.SEntry;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
 import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
+
+import static java.util.Objects.*;
 
 
 /**
@@ -41,7 +43,7 @@ import jp.root42.indolently.trait.Matchable;
  */
 public interface SMap<K, V>
     extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>,
-    Filterable<V, SMap<K, V>>, EdgeAwareIterable<Entry<K, V>>, Matchable<V>, Cloneable {
+    Filterable<V, SMap<K, V>>, EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
 
     /**
      * Clone this instance.
@@ -173,19 +175,80 @@ public interface SMap<K, V>
     }
 
     /**
+     * Extended {@link java.util.Map.Entry} class for indolent person.
+     * The name is came from "Sugared Entry".
+     *
+     * @param <K> key type
+     * @param <V> value type
+     * @author takahashikzn.
+     */
+    class SEntry<K, V>
+        implements Map.Entry<K, V> {
+
+        private final Entry<K, V> e;
+
+        /** key of the entry. */
+        public final K key;
+
+        /** value of the entry. */
+        public final V val;
+
+        /**
+         * Constructor.
+         *
+         * @param e entry
+         */
+        public SEntry(final Entry<K, V> e) {
+            this.e = requireNonNull(e, "entry");
+            this.key = e.getKey();
+            this.val = e.getValue();
+        }
+
+        @Override
+        public K getKey() {
+            return this.key;
+        }
+
+        @Override
+        public V getValue() {
+            return this.val;
+        }
+
+        @Override
+        public V setValue(final V value) {
+            return this.e.setValue(value);
+        }
+
+        @Override
+        public int hashCode() {
+            return this.e.hashCode();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            return this.e.equals(o);
+        }
+
+        @Override
+        public String toString() {
+            return this.e.toString();
+        }
+    }
+
+    /**
      * An alias of {@link Map#entrySet()} but newly constructed, detached one.
      * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.set(map.entrySet())}.
      *
      * @return entries
      */
-    default SSet<Entry<K, V>> entries() {
-        return Indolently.set(this.entrySet());
+    default SSet<SEntry<K, V>> entries() {
+        return Indolently.set(this.entrySet()).map(x -> new SEntry<>(x));
     }
 
     @Override
-    default SIter<Entry<K, V>> iterator() {
-        return Indolently.wrap(this.entrySet().iterator());
+    default SIter<SEntry<K, V>> iterator() {
+        return Indolently.wrap(this.entrySet().iterator()).map(x -> new SEntry<>(x));
     }
 
     /**
