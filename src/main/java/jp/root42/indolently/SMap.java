@@ -147,9 +147,7 @@ public interface SMap<K, V>
      */
     @Destructive
     default SMap<K, V> delete(final BiPredicate<? super K, ? super V> f) {
-        return this.delete(this.keys().filter(x -> {
-            return f.test(x, this.get(x));
-        }));
+        return this.delete(this.keys().filter(x -> f.test(x, this.get(x))));
     }
 
     /**
