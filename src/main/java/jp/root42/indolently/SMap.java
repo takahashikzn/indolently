@@ -340,19 +340,12 @@ public interface SMap<K, V>
      */
     default SMap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
 
-        final SMap<K, V> rslt = Indolently.map();
-
-        for (final Entry<K, V> e : this) {
-
-            final K key = e.getKey();
-            final V val = e.getValue();
-
-            if (f.test(key, val)) {
-                rslt.put(key, val);
-            }
-        }
-
-        return rslt;
+        return this //
+            .entries() //
+            .filter(e -> f.test(e.key, e.val)) //
+            .reduce( //
+                Indolently.map(), //
+                (map, e) -> map.push(e.key, e.val));
     }
 
     /**
@@ -377,17 +370,13 @@ public interface SMap<K, V>
      */
     default <R> SMap<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
 
-        final SMap<K, R> rslt = Indolently.map();
-
-        for (final Entry<K, V> e : Indolently.set(this.entrySet())) {
-
-            final K key = e.getKey();
-            final V val = e.getValue();
-
-            rslt.put(key, f.apply(key, val));
-        }
-
-        return rslt;
+        return this //
+            .entries() //
+            .reduce( //
+                Indolently.map(), //
+                (map, e) -> map.push( //
+                    e.key, //
+                    f.apply(e.key, e.val)));
     }
 
     /**
