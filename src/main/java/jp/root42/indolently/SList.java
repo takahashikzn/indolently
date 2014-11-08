@@ -213,7 +213,7 @@ public interface SList<T>
      * Map operation: map value to another type value.
      *
      * @param <R> mapped value type
-     * @param f function. first argument is loop index.
+     * @param f function. first argument is element index, second one is element value
      * @return newly constructed list which contains converted values
      */
     default <R> SList<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
