@@ -52,7 +52,7 @@ public interface EdgeAwareIterable<T>
      * get first element which satisfy the condition.
      *
      * @param f condition
-     * @return first element
+     * @return first element as optional representation
      */
     default Optional<T> head(final Predicate<? super T> f) {
 
@@ -83,7 +83,7 @@ public interface EdgeAwareIterable<T>
      * get last element which satisfy the condition.
      *
      * @param f condition
-     * @return first element
+     * @return last element as optional representation
      */
     default Optional<T> last(final Predicate<? super T> f) {
 
