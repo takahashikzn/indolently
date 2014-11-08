@@ -206,14 +206,7 @@ public interface SList<T>
      * @return newly constructed list which contains converted values
      */
     default <R> SList<R> map(final Function<? super T, ? extends R> f) {
-
-        final SList<R> rslt = Indolently.list();
-
-        for (final T val : this) {
-            rslt.add(f.apply(val));
-        }
-
-        return rslt;
+        return this.reduce(list(), (list, val) -> list.push(f.apply(val)));
     }
 
     /**
@@ -232,16 +225,7 @@ public interface SList<T>
 
     @Override
     default SList<T> filter(final Predicate<? super T> f) {
-
-        final SList<T> list = list();
-
-        for (final T val : this) {
-            if (f.test(val)) {
-                list.add(val);
-            }
-        }
-
-        return list;
+        return this.reduce(list(), (list, val) -> f.test(val) ? list.push(val) : list);
     }
 
     /**
