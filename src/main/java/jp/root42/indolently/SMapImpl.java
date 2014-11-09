@@ -27,7 +27,7 @@ import jp.root42.indolently.bridge.ObjFactory;
  * @param <V> value type
  * @author takahashikzn
  */
-class SMapImpl<K, V>
+final class SMapImpl<K, V>
     extends MapDelegate<K, V>
     implements SMap<K, V>, Serializable {
 

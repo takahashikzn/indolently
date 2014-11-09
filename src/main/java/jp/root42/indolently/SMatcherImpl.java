@@ -23,7 +23,7 @@ import jp.root42.indolently.bridge.RegexMatcherDelegate;
  *
  * @author takahashikzn
  */
-class SMatcherImpl
+final class SMatcherImpl
     extends RegexMatcherDelegate
     implements SMatcher {
 
