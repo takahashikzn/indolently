@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.bridge;
 
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -20,10 +20,10 @@ import java.util.regex.Pattern;
 
 /**
  * delegate interface of {@link Matcher}
- * 
+ *
  * @author takahashikzn
  */
-interface MatcherDelegate
+public interface RegexMatcher
     extends MatchResult {
 
     /**

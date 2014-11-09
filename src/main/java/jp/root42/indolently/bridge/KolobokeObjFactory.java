@@ -11,12 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently.factory;
+package jp.root42.indolently.bridge;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import net.openhft.koloboke.collect.map.hash.HashObjObjMaps;
 import net.openhft.koloboke.collect.set.hash.HashObjSets;
@@ -61,6 +67,26 @@ final class KolobokeObjFactory
     @Override
     public <V> Set<V> newSet() {
         return new SerializableKolobokeSet<>();
+    }
+
+    @Override
+    public <K, V> SortedMap<K, V> newSortedMap() {
+        return new TreeMap<>();
+    }
+
+    @Override
+    public <V> SortedSet<V> newSortedSet() {
+        return new TreeSet<>();
+    }
+
+    @Override
+    public <K, V> Map<K, V> newFifoMap() {
+        return new LinkedHashMap<>();
+    }
+
+    @Override
+    public <V> Set<V> newFifoSet() {
+        return new LinkedHashSet<>();
     }
 
     @Override

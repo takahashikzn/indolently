@@ -11,13 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently.factory;
+package jp.root42.indolently.bridge;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -25,160 +20,130 @@ import java.util.ListIterator;
 
 
 /**
- * Serializable wrapper of List.
- *
  * @author takahashikzn
  */
-abstract class SerializableList<T>
-    implements List<T>, Serializable {
+@SuppressWarnings("javadoc")
+public class ListDelegate<T>
+    extends ObjDelegate<List<T>>
+    implements List<T> {
 
-    private static final long serialVersionUID = -2690931773619464155L;
-
-    private List<T> list;
-
-    public SerializableList(final List<T> list) {
-        this.list = this.newList();
+    @Override
+    protected List<T> getDelegate() {
+        throw new UnsupportedOperationException("PLEASE OVERRIDE IT");
     }
-
-    protected abstract List<T> newList();
 
     @Override
     public int size() {
-        return this.list.size();
+        return this.getDelegate().size();
     }
 
     @Override
     public boolean isEmpty() {
-        return this.list.isEmpty();
+        return this.getDelegate().isEmpty();
     }
 
     @Override
     public boolean contains(final Object o) {
-        return this.list.contains(o);
+        return this.getDelegate().contains(o);
     }
 
     @Override
     public Iterator<T> iterator() {
-        return this.list.iterator();
+        return this.getDelegate().iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return this.list.toArray();
+        return this.getDelegate().toArray();
     }
 
     @Override
     public <S> S[] toArray(final S[] a) {
-        return this.list.toArray(a);
+        return this.getDelegate().toArray(a);
     }
 
     @Override
     public boolean add(final T e) {
-        return this.list.add(e);
+        return this.getDelegate().add(e);
     }
 
     @Override
     public boolean remove(final Object o) {
-        return this.list.remove(o);
+        return this.getDelegate().remove(o);
     }
 
     @Override
     public boolean containsAll(final Collection<?> c) {
-        return this.list.containsAll(c);
+        return this.getDelegate().containsAll(c);
     }
 
     @Override
     public boolean addAll(final Collection<? extends T> c) {
-        return this.list.addAll(c);
+        return this.getDelegate().addAll(c);
     }
 
     @Override
     public boolean addAll(final int index, final Collection<? extends T> c) {
-        return this.list.addAll(index, c);
+        return this.getDelegate().addAll(index, c);
     }
 
     @Override
     public boolean removeAll(final Collection<?> c) {
-        return this.list.removeAll(c);
+        return this.getDelegate().removeAll(c);
     }
 
     @Override
     public boolean retainAll(final Collection<?> c) {
-        return this.list.retainAll(c);
+        return this.getDelegate().retainAll(c);
     }
 
     @Override
     public void clear() {
-        this.list.clear();
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        return this.list.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.list.hashCode();
+        this.getDelegate().clear();
     }
 
     @Override
     public T get(final int index) {
-        return this.list.get(index);
+        return this.getDelegate().get(index);
     }
 
     @Override
     public T set(final int index, final T element) {
-        return this.list.set(index, element);
+        return this.getDelegate().set(index, element);
     }
 
     @Override
     public void add(final int index, final T element) {
-        this.list.add(index, element);
+        this.getDelegate().add(index, element);
     }
 
     @Override
     public T remove(final int index) {
-        return this.list.remove(index);
+        return this.getDelegate().remove(index);
     }
 
     @Override
     public int indexOf(final Object o) {
-        return this.list.indexOf(o);
+        return this.getDelegate().indexOf(o);
     }
 
     @Override
     public int lastIndexOf(final Object o) {
-        return this.list.lastIndexOf(o);
+        return this.getDelegate().lastIndexOf(o);
     }
 
     @Override
     public ListIterator<T> listIterator() {
-        return this.list.listIterator();
+        return this.getDelegate().listIterator();
     }
 
     @Override
     public ListIterator<T> listIterator(final int index) {
-        return this.list.listIterator(index);
+        return this.getDelegate().listIterator(index);
     }
 
     @Override
     public List<T> subList(final int fromIndex, final int toIndex) {
-        return this.list.subList(fromIndex, toIndex);
-    }
-
-    @Override
-    public String toString() {
-        return this.list.toString();
-    }
-
-    private void writeObject(final ObjectOutputStream out) throws IOException {
-        out.writeObject(new ArrayList<>(this));
-    }
-
-    @SuppressWarnings("unchecked")
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        this.list = this.newList();
-        this.list.addAll((List<T>) in.readObject());
+        return this.getDelegate().subList(fromIndex, toIndex);
     }
 }

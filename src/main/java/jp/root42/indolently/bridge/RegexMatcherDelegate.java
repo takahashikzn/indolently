@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.bridge;
 
 import java.util.Objects;
 import java.util.regex.MatchResult;
@@ -20,12 +20,13 @@ import java.util.regex.Pattern;
 
 
 /**
- * Implementation of {@MatcherDelegate}.
+ * Implementation of {@link RegexMatcher}.
  *
  * @author takahashikzn
  */
-class MatcherDelegateImpl
-    implements MatcherDelegate {
+public class RegexMatcherDelegate
+    extends ObjDelegate<Matcher>
+    implements RegexMatcher {
 
     private final Matcher matcher;
 
@@ -34,190 +35,185 @@ class MatcherDelegateImpl
      *
      * @param matcher matcher
      */
-    public MatcherDelegateImpl(final Matcher matcher) {
+    public RegexMatcherDelegate(final Matcher matcher) {
         Objects.requireNonNull(matcher, "matcher");
 
         this.matcher = matcher;
     }
 
     @Override
-    public int hashCode() {
-        return this.matcher.hashCode();
+    protected Matcher getDelegate() {
+        return this.matcher;
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(final Object o) {
+        if (this == o) {
             return true;
-        } else if (!(obj instanceof MatcherDelegateImpl)) {
+        } else if (!(o instanceof RegexMatcherDelegate)) {
             return false;
         }
 
-        return ((MatcherDelegateImpl) obj).matcher.equals(this.matcher);
-    }
-
-    @Override
-    public String toString() {
-        return this.matcher.toString();
+        return ((RegexMatcherDelegate) o).matcher.equals(this.getDelegate());
     }
 
     @Override
     public Pattern pattern() {
-        return this.matcher.pattern();
+        return this.getDelegate().pattern();
     }
 
     @Override
     public MatchResult toMatchResult() {
-        return this.matcher.toMatchResult();
+        return this.getDelegate().toMatchResult();
     }
 
     @Override
     public Matcher usePattern(final Pattern newPattern) {
-        return this.matcher.usePattern(newPattern);
+        return this.getDelegate().usePattern(newPattern);
     }
 
     @Override
     public Matcher reset() {
-        return this.matcher.reset();
+        return this.getDelegate().reset();
     }
 
     @Override
     public Matcher reset(final CharSequence input) {
-        return this.matcher.reset(input);
+        return this.getDelegate().reset(input);
     }
 
     @Override
     public int start() {
-        return this.matcher.start();
+        return this.getDelegate().start();
     }
 
     @Override
     public int start(final int group) {
-        return this.matcher.start(group);
+        return this.getDelegate().start(group);
     }
 
     @Override
     public int start(final String name) {
-        return this.matcher.start(name);
+        return this.getDelegate().start(name);
     }
 
     @Override
     public int end() {
-        return this.matcher.end();
+        return this.getDelegate().end();
     }
 
     @Override
     public int end(final int group) {
-        return this.matcher.end(group);
+        return this.getDelegate().end(group);
     }
 
     @Override
     public int end(final String name) {
-        return this.matcher.end(name);
+        return this.getDelegate().end(name);
     }
 
     @Override
     public String group() {
-        return this.matcher.group();
+        return this.getDelegate().group();
     }
 
     @Override
     public String group(final int group) {
-        return this.matcher.group(group);
+        return this.getDelegate().group(group);
     }
 
     @Override
     public String group(final String name) {
-        return this.matcher.group(name);
+        return this.getDelegate().group(name);
     }
 
     @Override
     public int groupCount() {
-        return this.matcher.groupCount();
+        return this.getDelegate().groupCount();
     }
 
     @Override
     public boolean matches() {
-        return this.matcher.matches();
+        return this.getDelegate().matches();
     }
 
     @Override
     public boolean find() {
-        return this.matcher.find();
+        return this.getDelegate().find();
     }
 
     @Override
     public boolean find(final int start) {
-        return this.matcher.find(start);
+        return this.getDelegate().find(start);
     }
 
     @Override
     public boolean lookingAt() {
-        return this.matcher.lookingAt();
+        return this.getDelegate().lookingAt();
     }
 
     @Override
     public Matcher appendReplacement(final StringBuffer sb, final String replacement) {
-        return this.matcher.appendReplacement(sb, replacement);
+        return this.getDelegate().appendReplacement(sb, replacement);
     }
 
     @Override
     public StringBuffer appendTail(final StringBuffer sb) {
-        return this.matcher.appendTail(sb);
+        return this.getDelegate().appendTail(sb);
     }
 
     @Override
     public String replaceAll(final String replacement) {
-        return this.matcher.replaceAll(replacement);
+        return this.getDelegate().replaceAll(replacement);
     }
 
     @Override
     public String replaceFirst(final String replacement) {
-        return this.matcher.replaceFirst(replacement);
+        return this.getDelegate().replaceFirst(replacement);
     }
 
     @Override
     public Matcher region(final int start, final int end) {
-        return this.matcher.region(start, end);
+        return this.getDelegate().region(start, end);
     }
 
     @Override
     public int regionStart() {
-        return this.matcher.regionStart();
+        return this.getDelegate().regionStart();
     }
 
     @Override
     public int regionEnd() {
-        return this.matcher.regionEnd();
+        return this.getDelegate().regionEnd();
     }
 
     @Override
     public boolean hasTransparentBounds() {
-        return this.matcher.hasTransparentBounds();
+        return this.getDelegate().hasTransparentBounds();
     }
 
     @Override
     public Matcher useTransparentBounds(final boolean b) {
-        return this.matcher.useTransparentBounds(b);
+        return this.getDelegate().useTransparentBounds(b);
     }
 
     @Override
     public boolean hasAnchoringBounds() {
-        return this.matcher.hasAnchoringBounds();
+        return this.getDelegate().hasAnchoringBounds();
     }
 
     @Override
     public Matcher useAnchoringBounds(final boolean b) {
-        return this.matcher.useAnchoringBounds(b);
+        return this.getDelegate().useAnchoringBounds(b);
     }
 
     @Override
     public boolean hitEnd() {
-        return this.matcher.hitEnd();
+        return this.getDelegate().hitEnd();
     }
 
     @Override
     public boolean requireEnd() {
-        return this.matcher.requireEnd();
+        return this.getDelegate().requireEnd();
     }
 }

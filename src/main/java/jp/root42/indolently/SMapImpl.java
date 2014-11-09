@@ -14,11 +14,10 @@
 package jp.root42.indolently;
 
 import java.io.Serializable;
-import java.util.AbstractMap;
 import java.util.Map;
-import java.util.Set;
 
-import jp.root42.indolently.factory.ObjFactory;
+import jp.root42.indolently.bridge.MapDelegate;
+import jp.root42.indolently.bridge.ObjFactory;
 
 
 /**
@@ -29,7 +28,7 @@ import jp.root42.indolently.factory.ObjFactory;
  * @author takahashikzn
  */
 class SMapImpl<K, V>
-    extends AbstractMap<K, V>
+    extends MapDelegate<K, V>
     implements SMap<K, V>, Serializable {
 
     private static final long serialVersionUID = 8705188807596442213L;
@@ -45,32 +44,12 @@ class SMapImpl<K, V>
     }
 
     @Override
+    protected Map<K, V> getDelegate() {
+        return this.store;
+    }
+
+    @Override
     public SMap<K, V> clone() {
         return SMap.super.clone();
-    }
-
-    @Override
-    public V put(final K key, final V value) {
-        return this.store.put(key, value);
-    }
-
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        return this.store.entrySet();
-    }
-
-    @Override
-    public String toString() {
-        return this.store.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return this.getClass().hashCode() ^ this.store.hashCode();
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        return (this == o) || this.store.equals(o);
     }
 }
