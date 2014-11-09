@@ -17,9 +17,8 @@ package jp.root42.indolently.bridge;
  * @param <T> delegation target type
  * @author takahashikzn
  */
-public abstract class ObjDelegate<T> {
+abstract class ObjDelegate<T> {
 
-    @SuppressWarnings("javadoc")
     protected abstract T getDelegate();
 
     @Override
