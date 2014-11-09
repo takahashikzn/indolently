@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import net.openhft.koloboke.collect.map.hash.HashObjObjMaps;
+import net.openhft.koloboke.collect.set.hash.HashObjSets;
+
 
 /**
  * The object factory.
@@ -31,30 +34,38 @@ public abstract class ObjFactory {
 
     static volatile ObjFactory instance = new JdkObjFactory();
 
-    // static {
-    // if (isPresent("com.gs.collections.impl.factory.Lists")) {
-    // instance = new GscObjFactory();
-    // } else if (isPresent("net.openhft.koloboke.collect.map.hash.HashObjObjMaps")) {
-    // instance = new KolobokeObjFactory();
-    // } else {
-    // instance = new JdkObjFactory();
-    // }
-    // }
-    // private static boolean isPresent(final String fqcn) {
-    // try {
-    // return Class.forName(fqcn) != null;
-    // } catch (final ClassNotFoundException e) {
-    // return false;
-    // }
-    // }
+    static {
+        if (isPresent("net.openhft.koloboke.collect.impl.hash.ObjHash")) {
+            instance = new KolobokeObjFactory();
+        } else {
+            instance = new JdkObjFactory();
+        }
+    }
+
+    private static boolean isPresent(final String fqcn) {
+        try {
+            return Class.forName(fqcn) != null;
+        } catch (final ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get default instance.
+     *
+     * @return default instance
+     */
+    public static ObjFactory getInstance() {
+        return instance;
+    }
 
     /**
      * Set default instance.
      *
-     * @param instance default instance
+     * @param ofactory default instance
      */
-    public static void setInstance(final ObjFactory instance) {
-        ObjFactory.instance = Objects.requireNonNull(instance);
+    public static void setInstance(final ObjFactory ofactory) {
+        instance = Objects.requireNonNull(ofactory);
     }
 
     /**
@@ -104,32 +115,32 @@ final class JdkObjFactory
     }
 }
 
-// /**
-// * Implementation of {@link ObjFactory} using <a href="http://openhft.net/products/koloboke-collections">Koloboke
-// * collection framework</a>.
-// *
-// * @author takahashikzn
-// */
-// final class KolobokeObjFactory
-// extends ObjFactory {
-//
-// @Override
-// public <K, V> Map<K, V> newMap() {
-// return HashObjObjMaps.newMutableMap();
-// }
-//
-// @Override
-// public <V> Set<V> newSet() {
-// return HashObjSets.newMutableSet();
-// }
-//
-// @Override
-// public <V> List<V> newList() {
-// return new ArrayList<>();
-// }
-// }
-//
-//
+
+/**
+ * Implementation of {@link ObjFactory} using <a href="http://openhft.net/products/koloboke-collections">Koloboke
+ * collection framework</a>.
+ *
+ * @author takahashikzn
+ */
+final class KolobokeObjFactory
+    extends ObjFactory {
+
+    @Override
+    public <K, V> Map<K, V> newMap() {
+        return HashObjObjMaps.newMutableMap();
+    }
+
+    @Override
+    public <V> Set<V> newSet() {
+        return HashObjSets.newMutableSet();
+    }
+
+    @Override
+    public <V> List<V> newList() {
+        return new ArrayList<>();
+    }
+}
+
 // /**
 // * Implementation of {@link ObjFactory} using <a href="https://github.com/goldmansachs/gs-collections">Goldman sachs
 // * collection framework</a>.
