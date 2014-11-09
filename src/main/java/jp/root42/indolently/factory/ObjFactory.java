@@ -11,18 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.factory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import net.openhft.koloboke.collect.map.hash.HashObjObjMaps;
-import net.openhft.koloboke.collect.set.hash.HashObjSets;
 
 
 /**
@@ -32,7 +26,7 @@ import net.openhft.koloboke.collect.set.hash.HashObjSets;
  */
 public abstract class ObjFactory {
 
-    static volatile ObjFactory instance = new JdkObjFactory();
+    private static volatile ObjFactory instance = new JdkObjFactory();
 
     static {
         if (isPresent("net.openhft.koloboke.collect.impl.hash.ObjHash")) {
@@ -89,79 +83,3 @@ public abstract class ObjFactory {
      */
     public abstract <V> List<V> newList();
 }
-
-
-/**
- * Implementation of {@link ObjFactory} using JDK collection framework.
- *
- * @author takahashikzn
- */
-final class JdkObjFactory
-    extends ObjFactory {
-
-    @Override
-    public <K, V> Map<K, V> newMap() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public <V> Set<V> newSet() {
-        return new HashSet<>();
-    }
-
-    @Override
-    public <V> List<V> newList() {
-        return new ArrayList<>();
-    }
-}
-
-
-/**
- * Implementation of {@link ObjFactory} using <a href="http://openhft.net/products/koloboke-collections">Koloboke
- * collection framework</a>.
- *
- * @author takahashikzn
- */
-final class KolobokeObjFactory
-    extends ObjFactory {
-
-    @Override
-    public <K, V> Map<K, V> newMap() {
-        return HashObjObjMaps.newMutableMap();
-    }
-
-    @Override
-    public <V> Set<V> newSet() {
-        return HashObjSets.newMutableSet();
-    }
-
-    @Override
-    public <V> List<V> newList() {
-        return new ArrayList<>();
-    }
-}
-
-// /**
-// * Implementation of {@link ObjFactory} using <a href="https://github.com/goldmansachs/gs-collections">Goldman sachs
-// * collection framework</a>.
-// *
-// * @author takahashikzn
-// */
-// final class GscObjFactory
-// extends ObjFactory {
-//
-// @Override
-// public <K, V> Map<K, V> newMap() {
-// return Maps.mutable.of();
-// }
-//
-// @Override
-// public <V> Set<V> newSet() {
-// return Sets.mutable.of();
-// }
-//
-// @Override
-// public <V> List<V> newList() {
-// return Lists.mutable.of();
-// }
-// }

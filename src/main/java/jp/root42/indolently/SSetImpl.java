@@ -17,6 +17,8 @@ import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Set;
 
+import jp.root42.indolently.factory.ObjFactory;
+
 
 /**
  * Simple implementation of {@link SSet}.
@@ -33,7 +35,7 @@ class SSetImpl<T>
     private final Set<T> store;
 
     public SSetImpl() {
-        this(ObjFactory.instance.newSet());
+        this(ObjFactory.getInstance().newSet());
     }
 
     public SSetImpl(final Set<T> store) {

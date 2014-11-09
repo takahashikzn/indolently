@@ -15,10 +15,11 @@ package jp.root42.indolently;
 
 import java.io.Serializable;
 import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
+
+import jp.root42.indolently.factory.ObjFactory;
 
 
 /**
@@ -36,7 +37,7 @@ class SListImpl<T>
     private final List<T> store;
 
     public SListImpl() {
-        this(new ArrayList<>());
+        this(ObjFactory.getInstance().newList());
     }
 
     public SListImpl(final List<T> store) {
