@@ -18,6 +18,8 @@ import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Set;
 
+import jp.root42.indolently.factory.ObjFactory;
+
 
 /**
  * Simple implementation of {@link SMap}.
@@ -35,7 +37,7 @@ class SMapImpl<K, V>
     private Map<K, V> store;
 
     public SMapImpl() {
-        this(ObjFactory.instance.newMap());
+        this(ObjFactory.getInstance().newMap());
     }
 
     public SMapImpl(final Map<K, V> store) {
