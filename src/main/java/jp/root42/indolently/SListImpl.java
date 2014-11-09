@@ -14,12 +14,11 @@
 package jp.root42.indolently;
 
 import java.io.Serializable;
-import java.util.AbstractList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 
-import jp.root42.indolently.factory.ObjFactory;
+import jp.root42.indolently.bridge.ListDelegate;
+import jp.root42.indolently.bridge.ObjFactory;
 
 
 /**
@@ -29,7 +28,7 @@ import jp.root42.indolently.factory.ObjFactory;
  * @author takahashikzn
  */
 class SListImpl<T>
-    extends AbstractList<T>
+    extends ListDelegate<T>
     implements SList<T>, Serializable {
 
     private static final long serialVersionUID = 8705188807596442213L;
@@ -45,6 +44,11 @@ class SListImpl<T>
     }
 
     @Override
+    protected List<T> getDelegate() {
+        return this.store;
+    }
+
+    @Override
     public SList<T> clone() {
         return SList.super.clone();
     }
@@ -57,7 +61,7 @@ class SListImpl<T>
     // keep original order
     @Override
     public SSet<T> set() {
-        return new SSetImpl<>(new LinkedHashSet<>(this));
+        return new SSetImpl<>(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
     }
 
     @Override
@@ -92,21 +96,6 @@ class SListImpl<T>
     @Override
     public ListIterator<T> listIterator(final int i) {
         return this.store.listIterator(Indolently.idx(this, i));
-    }
-
-    @Override
-    public int size() {
-        return this.store.size();
-    }
-
-    @Override
-    public String toString() {
-        return this.store.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return this.getClass().hashCode() ^ this.store.hashCode();
     }
 
     @Override

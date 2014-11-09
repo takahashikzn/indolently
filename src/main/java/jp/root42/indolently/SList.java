@@ -15,8 +15,6 @@ package jp.root42.indolently;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -24,6 +22,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.ref.IntRef;
 
 import static jp.root42.indolently.Indolently.*;
@@ -118,7 +117,7 @@ public interface SList<T>
      * @return a set constructed from this instance.
      */
     default SSet<T> set() {
-        return Indolently.wrap(new LinkedHashSet<>(this));
+        return Indolently.wrap(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
     }
 
     /**
@@ -272,7 +271,7 @@ public interface SList<T>
     @Override
     default <K> SMap<K, SList<T>> group(final Function<? super T, ? extends K> fkey) {
 
-        return this.reduce(Indolently.wrap(new LinkedHashMap<>()), (rslt, val) -> {
+        return this.reduce(Indolently.wrap(ObjFactory.getInstance().newFifoMap()), (rslt, val) -> {
 
             final K key = fkey.apply(val);
 

@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
+import jp.root42.indolently.bridge.RegexMatcher;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.trait.Loopable;
 
@@ -34,7 +35,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public interface SMatcher
-    extends MatcherDelegate, Iterable<String>, Loopable<String, SMatcher> {
+    extends RegexMatcher, Iterable<String>, Loopable<String, SMatcher> {
 
     @Override
     default SIter<String> iterator() {

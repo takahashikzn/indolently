@@ -22,13 +22,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.ByteRef;
 import jp.root42.indolently.ref.CharRef;
@@ -444,11 +443,11 @@ public class Indolently {
     }
 
     public static <K, V> SMap<K, V> sort(final Map<K, V> map) {
-        return wrap(new TreeMap<>(map));
+        return wrap(ObjFactory.getInstance().<K, V> newSortedMap()).pushAll(map);
     }
 
     public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
-        return wrap(new TreeSet<>(elems));
+        return wrap(ObjFactory.getInstance().<T> newSortedSet()).pushAll(elems);
     }
 
     public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {

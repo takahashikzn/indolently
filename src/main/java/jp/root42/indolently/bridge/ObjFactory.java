@@ -11,12 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently.factory;
+package jp.root42.indolently.bridge;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 
 
 /**
@@ -61,6 +63,34 @@ public abstract class ObjFactory {
     public static void setInstance(final ObjFactory ofactory) {
         instance = Objects.requireNonNull(ofactory);
     }
+
+    /**
+     * Create new map instance.
+     *
+     * @return new map instance
+     */
+    public abstract <K, V> SortedMap<K, V> newSortedMap();
+
+    /**
+     * Create new set instance.
+     *
+     * @return new set instance
+     */
+    public abstract <V> SortedSet<V> newSortedSet();
+
+    /**
+     * Create new map instance.
+     *
+     * @return new map instance
+     */
+    public abstract <K, V> Map<K, V> newFifoMap();
+
+    /**
+     * Create new set instance.
+     *
+     * @return new set instance
+     */
+    public abstract <V> Set<V> newFifoSet();
 
     /**
      * Create new map instance.

@@ -11,36 +11,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently.factory;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+package jp.root42.indolently.bridge;
 
 /**
- * Implementation of {@link ObjFactory} using JDK collection framework.
- *
+ * @param <T> delegation target type
  * @author takahashikzn
  */
-final class JdkObjFactory
-    extends ObjFactory {
+public abstract class ObjDelegate<T> {
+
+    @SuppressWarnings("javadoc")
+    protected abstract T getDelegate();
 
     @Override
-    public <K, V> Map<K, V> newMap() {
-        return new HashMap<>();
+    public boolean equals(final Object o) {
+        return (o == this) || this.getDelegate().equals(o);
     }
 
     @Override
-    public <V> Set<V> newSet() {
-        return new HashSet<>();
+    public int hashCode() {
+        return this.getDelegate().hashCode();
     }
 
     @Override
-    public <V> List<V> newList() {
-        return new ArrayList<>();
+    public String toString() {
+        return this.getDelegate().toString();
     }
 }

@@ -15,6 +15,8 @@ package jp.root42.indolently;
 
 import java.util.regex.Matcher;
 
+import jp.root42.indolently.bridge.RegexMatcherDelegate;
+
 
 /**
  * Implementation of {@link SMatcher}.
@@ -22,7 +24,7 @@ import java.util.regex.Matcher;
  * @author takahashikzn
  */
 class SMatcherImpl
-    extends MatcherDelegateImpl
+    extends RegexMatcherDelegate
     implements SMatcher {
 
     private final String text;
