@@ -26,7 +26,7 @@ import jp.root42.indolently.bridge.SetDelegate;
  * @param <T> value type
  * @author takahashikzn
  */
-class SSetImpl<T>
+final class SSetImpl<T>
     extends SetDelegate<T>
     implements SSet<T>, Serializable {
 

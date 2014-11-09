@@ -13,16 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently.bridge;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import net.openhft.koloboke.collect.map.hash.HashObjObjMaps;
 import net.openhft.koloboke.collect.set.hash.HashObjSets;
@@ -35,9 +27,9 @@ import net.openhft.koloboke.collect.set.hash.HashObjSets;
  * @author takahashikzn
  */
 final class KolobokeObjFactory
-    extends ObjFactory {
+    extends JdkObjFactory {
 
-    private static class SerializableKolobokeSet<V>
+    private static class KolobokeHashSet<V>
         extends SerializableSet<V> {
 
         private static final long serialVersionUID = -4881881384304670668L;
@@ -48,7 +40,7 @@ final class KolobokeObjFactory
         }
     }
 
-    private static class SerializableKolobokeMap<K, V>
+    private static class KolobokeHashMap<K, V>
         extends SerializableMap<K, V> {
 
         private static final long serialVersionUID = 3578828373651399016L;
@@ -61,36 +53,11 @@ final class KolobokeObjFactory
 
     @Override
     public <K, V> Map<K, V> newMap() {
-        return new SerializableKolobokeMap<>();
+        return new KolobokeHashMap<>();
     }
 
     @Override
     public <V> Set<V> newSet() {
-        return new SerializableKolobokeSet<>();
-    }
-
-    @Override
-    public <K, V> SortedMap<K, V> newSortedMap() {
-        return new TreeMap<>();
-    }
-
-    @Override
-    public <V> SortedSet<V> newSortedSet() {
-        return new TreeSet<>();
-    }
-
-    @Override
-    public <K, V> Map<K, V> newFifoMap() {
-        return new LinkedHashMap<>();
-    }
-
-    @Override
-    public <V> Set<V> newFifoSet() {
-        return new LinkedHashSet<>();
-    }
-
-    @Override
-    public <V> List<V> newList() {
-        return new ArrayList<>();
+        return new KolobokeHashSet<>();
     }
 }

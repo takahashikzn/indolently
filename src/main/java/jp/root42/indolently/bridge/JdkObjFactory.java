@@ -32,7 +32,7 @@ import java.util.TreeSet;
  *
  * @author takahashikzn
  */
-final class JdkObjFactory
+class JdkObjFactory
     extends ObjFactory {
 
     @Override
