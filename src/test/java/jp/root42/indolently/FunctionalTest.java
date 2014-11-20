@@ -38,7 +38,6 @@ import static org.assertj.core.api.Assertions.*;
  * A test class for {@link Functional}.
  *
  * @author takahashikzn
- * @version $Id$
  */
 @RunWith(JUnitParamsRunner.class)
 public class FunctionalTest {

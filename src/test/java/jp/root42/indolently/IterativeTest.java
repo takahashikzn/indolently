@@ -36,7 +36,6 @@ import static org.junit.Assert.*;
  * A test class for {@link Iterative}.
  *
  * @author takahashikzn
- * @version $Id$
  */
 @RunWith(JUnitParamsRunner.class)
 public class IterativeTest {

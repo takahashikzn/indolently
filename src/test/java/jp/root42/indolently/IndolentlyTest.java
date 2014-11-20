@@ -43,7 +43,6 @@ import static org.junit.Assert.*;
  * A test class for {@link Indolently}.
  *
  * @author takahashikzn
- * @version $Id$
  */
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
