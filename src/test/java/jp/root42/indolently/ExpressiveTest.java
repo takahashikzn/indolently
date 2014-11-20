@@ -44,7 +44,6 @@ import static org.junit.Assert.*;
  * A test class for {@link Expressive}.
  *
  * @author takahashikzn
- * @version $Id$
  */
 @RunWith(JUnitParamsRunner.class)
 public class ExpressiveTest {
