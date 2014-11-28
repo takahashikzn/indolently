@@ -87,7 +87,9 @@ public class Functional {
 
         final SMap<T, R> memo = map();
 
-        return x -> (memo.containsKey(x) ? memo : memo.push(x, f.apply(x))).get(x);
+        synchronized (memo) {
+            return x -> (memo.containsKey(x) ? memo : memo.push(x, f.apply(x))).get(x);
+        }
     }
 
     public static <T, U, R> BiFunction<T, U, R> memoize(final BiFunction<? super T, ? super U, ? extends R> f) {
@@ -98,7 +100,9 @@ public class Functional {
 
             final Duo<T, U> key = tuple(x, y);
 
-            return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y))).get(key);
+            synchronized (memo) {
+                return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y))).get(key);
+            }
         };
     }
 
@@ -111,7 +115,9 @@ public class Functional {
 
             final Trio<T, U, V> key = tuple(x, y, z);
 
-            return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y, z))).get(key);
+            synchronized (memo) {
+                return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y, z))).get(key);
+            }
         };
     }
 
@@ -151,7 +157,9 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new SBoolSuppl(self -> {
-            initialized.negateIf(false, () -> init.accept(self));
+            synchronized (initialized) {
+                initialized.negateIf(false, () -> init.accept(self));
+            }
 
             return body.test(self);
         });
@@ -171,7 +179,9 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new SSuppl<>(self -> {
-            initialized.negateIf(false, () -> init.accept(self));
+            synchronized (initialized) {
+                initialized.negateIf(false, () -> init.accept(self));
+            }
 
             return body.apply(self);
         });
@@ -192,7 +202,9 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new SFunc<>((self, x) -> {
-            initialized.negateIf(false, () -> init.accept(self));
+            synchronized (initialized) {
+                initialized.negateIf(false, () -> init.accept(self));
+            }
 
             return body.apply(self, x);
         });
@@ -213,7 +225,9 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new SBiFunc<>((self, x, y) -> {
-            initialized.negateIf(false, () -> init.accept(self));
+            synchronized (initialized) {
+                initialized.negateIf(false, () -> init.accept(self));
+            }
 
             return body.apply(self, x, y);
         });
@@ -234,7 +248,9 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new SPred<>((self, x) -> {
-            initialized.negateIf(false, () -> init.accept(self));
+            synchronized (initialized) {
+                initialized.negateIf(false, () -> init.accept(self));
+            }
 
             return body.test(self, x);
         });
@@ -255,7 +271,9 @@ public class Functional {
         final BoolRef initialized = ref(false);
 
         return new SBiPred<>((self, x, y) -> {
-            initialized.negateIf(false, () -> init.accept(self));
+            synchronized (initialized) {
+                initialized.negateIf(false, () -> init.accept(self));
+            }
 
             return body.test(self, x, y);
         });
