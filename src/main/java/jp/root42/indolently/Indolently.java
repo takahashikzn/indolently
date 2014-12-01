@@ -1179,6 +1179,15 @@ public class Indolently {
     }
 
     /**
+     * create a empty reference.
+     *
+     * @return empty reference
+     */
+    public static <T> Ref<T> ref() {
+        return ValueReference.of((T) null);
+    }
+
+    /**
      * create a reference of value.
      *
      * @param val initial value
