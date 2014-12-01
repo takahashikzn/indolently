@@ -40,7 +40,7 @@ public interface SMatcher
     @Override
     default SIter<String> iterator() {
 
-        final Ref<Boolean> found = ref(null);
+        final Ref<Boolean> found = ref();
 
         return Iterative.iterator( //
             () -> optional(found.val) //
