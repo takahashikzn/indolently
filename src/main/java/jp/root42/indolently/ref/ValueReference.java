@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Indolently;
+import jp.root42.indolently.function.Expression;
 
 
 /**
@@ -42,7 +43,7 @@ public interface ValueReference<T>
      * @param f value supplier
      * @return the value
      */
-    default T orAccept(final Supplier<? extends T> f) {
+    default T orAccept(final Expression<? extends T> f) {
 
         return this.opt().orElseGet(() -> {
             final T val = f.get();
