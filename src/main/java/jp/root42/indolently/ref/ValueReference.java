@@ -13,8 +13,11 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.Indolently;
 
 
 /**
@@ -23,6 +26,30 @@ import java.util.function.Supplier;
  */
 public interface ValueReference<T>
     extends Supplier<T>, Consumer<T> {
+
+    /**
+     * get value as optional representation.
+     *
+     * @return optional representation of the value
+     */
+    default Optional<T> opt() {
+        return Indolently.optional(this.get());
+    }
+
+    /**
+     * get value if exists, otherwise use the value from supplier as this reference's value.
+     *
+     * @param f value supplier
+     * @return the value
+     */
+    default T orAccept(final Supplier<? extends T> f) {
+
+        return this.opt().orElseGet(() -> {
+            final T val = f.get();
+            this.accept(val);
+            return val;
+        });
+    }
 
     /**
      * create a reference of value.
