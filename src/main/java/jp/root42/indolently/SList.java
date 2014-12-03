@@ -240,7 +240,7 @@ public interface SList<T>
 
     @SuppressWarnings("javadoc")
     default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return Indolently.list(this.iterator().flatten(f));
+        return this.iterator().flatten(f).reduce(list(), (x, y) -> x.push(y));
     }
 
     /**

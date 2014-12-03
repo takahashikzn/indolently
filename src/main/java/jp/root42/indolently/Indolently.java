@@ -408,6 +408,122 @@ public class Indolently {
         return elems;
     }
 
+    /**
+     * Create <code>char</code> list.
+     *
+     * @param elems
+     * @return char list
+     */
+    public static List<Character> plist(final char... elems) {
+        final List<Character> list = list();
+        for (final char c : elems) {
+            list.add(c);
+        }
+        return list;
+    }
+
+    /**
+     * Create <code>int</code> list.
+     *
+     * @param elems
+     * @return int list
+     */
+    public static List<Integer> plist(final int... elems) {
+
+        final List<Integer> list = list();
+
+        for (final int c : elems) {
+            list.add(c);
+        }
+
+        return list;
+    }
+
+    /**
+     * Create <code>long</code> list.
+     *
+     * @param elems
+     * @return long list
+     */
+    public static List<Long> plist(final long... elems) {
+
+        final List<Long> list = list();
+
+        for (final long c : elems) {
+            list.add(c);
+        }
+
+        return list;
+    }
+
+    /**
+     * Create <code>float</code> list.
+     *
+     * @param elems
+     * @return float list
+     */
+    public static List<Float> plist(final float... elems) {
+
+        final List<Float> list = list();
+
+        for (final float c : elems) {
+            list.add(c);
+        }
+
+        return list;
+    }
+
+    /**
+     * Create <code>short</code> list.
+     *
+     * @param elems
+     * @return short list
+     */
+    public static List<Short> plist(final short... elems) {
+
+        final List<Short> list = list();
+
+        for (final short c : elems) {
+            list.add(c);
+        }
+
+        return list;
+    }
+
+    /**
+     * Create <code>double</code> list.
+     *
+     * @param elems
+     * @return double list
+     */
+    public static List<Double> plist(final double... elems) {
+
+        final List<Double> list = list();
+
+        for (final double c : elems) {
+            list.add(c);
+        }
+
+        return list;
+    }
+
+    /**
+     * Create <code>boolean</code> list.
+     *
+     * @param elems
+     * @return boolean list
+     */
+    public static List<Boolean> plist(final boolean... elems) {
+
+        final List<Boolean> list = list();
+
+        for (final boolean c : elems) {
+            list.add(c);
+        }
+
+        return list;
+    }
+
     public static <T> SSet<T> set(final Optional<? extends T> elem) {
         return new SSetImpl<T>().push(elem);
     }
