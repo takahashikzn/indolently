@@ -409,118 +409,100 @@ public class Indolently {
     }
 
     /**
-     * Create <code>char</code> list.
+     * Create a list of <code>char</code>.
      *
      * @param elems
      * @return char list
      */
-    public static List<Character> plist(final char... elems) {
-        final List<Character> list = list();
-        for (final char c : elems) {
-            list.add(c);
+    public static SList<Character> plist(final char... elems) {
+        final SList<Character> list = list();
+        for (final char e : elems) {
+            list.add(e);
         }
         return list;
     }
 
     /**
-     * Create <code>int</code> list.
+     * Create a list of <code>int</code>.
      *
      * @param elems
      * @return int list
      */
-    public static List<Integer> plist(final int... elems) {
-
-        final List<Integer> list = list();
-
-        for (final int c : elems) {
-            list.add(c);
+    public static SList<Integer> plist(final int... elems) {
+        final SList<Integer> list = list();
+        for (final int e : elems) {
+            list.add(e);
         }
-
         return list;
     }
 
     /**
-     * Create <code>long</code> list.
+     * Create a list of <code>long</code>.
      *
      * @param elems
      * @return long list
      */
-    public static List<Long> plist(final long... elems) {
-
-        final List<Long> list = list();
-
-        for (final long c : elems) {
-            list.add(c);
+    public static SList<Long> plist(final long... elems) {
+        final SList<Long> list = list();
+        for (final long e : elems) {
+            list.add(e);
         }
-
         return list;
     }
 
     /**
-     * Create <code>float</code> list.
+     * Create a list of <code>float</code>.
      *
      * @param elems
      * @return float list
      */
-    public static List<Float> plist(final float... elems) {
-
-        final List<Float> list = list();
-
-        for (final float c : elems) {
-            list.add(c);
+    public static SList<Float> plist(final float... elems) {
+        final SList<Float> list = list();
+        for (final float e : elems) {
+            list.add(e);
         }
-
         return list;
     }
 
     /**
-     * Create <code>short</code> list.
+     * Create a list of <code>short</code>.
      *
      * @param elems
      * @return short list
      */
-    public static List<Short> plist(final short... elems) {
-
-        final List<Short> list = list();
-
-        for (final short c : elems) {
-            list.add(c);
+    public static SList<Short> plist(final short... elems) {
+        final SList<Short> list = list();
+        for (final short e : elems) {
+            list.add(e);
         }
-
         return list;
     }
 
     /**
-     * Create <code>double</code> list.
+     * Create a list of <code>double</code>.
      *
      * @param elems
      * @return double list
      */
-    public static List<Double> plist(final double... elems) {
-
-        final List<Double> list = list();
-
-        for (final double c : elems) {
-            list.add(c);
+    public static SList<Double> plist(final double... elems) {
+        final SList<Double> list = list();
+        for (final double e : elems) {
+            list.add(e);
         }
-
         return list;
     }
 
     /**
-     * Create <code>boolean</code> list.
+     * Create a list of <code>boolean</code>.
      *
      * @param elems
      * @return boolean list
      */
-    public static List<Boolean> plist(final boolean... elems) {
-
-        final List<Boolean> list = list();
-
-        for (final boolean c : elems) {
-            list.add(c);
+    public static SList<Boolean> plist(final boolean... elems) {
+        final SList<Boolean> list = list();
+        for (final boolean e : elems) {
+            list.add(e);
         }
-
         return list;
     }
 
