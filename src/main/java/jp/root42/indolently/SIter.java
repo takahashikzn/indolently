@@ -198,11 +198,8 @@ public interface SIter<T>
 
             @Override
             public boolean hasNext() {
-                if (!SIter.this.hasNext()) {
-                    return false;
-                }
 
-                if (!this.cur.hasNext()) {
+                if (!this.cur.hasNext() && SIter.this.hasNext()) {
                     this.cur = f.apply(SIter.this.next()).iterator();
                 }
 
@@ -211,11 +208,7 @@ public interface SIter<T>
 
             @Override
             public R next() {
-                if (!this.hasNext()) {
-                    throw new NoSuchElementException();
-                }
-
-                return this.cur.next();
+                return this.hasNext() ? this.cur.next() : Expressive.raise(() -> new NoSuchElementException());
             }
         };
     }
