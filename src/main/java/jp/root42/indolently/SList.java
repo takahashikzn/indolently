@@ -282,7 +282,7 @@ public interface SList<T>
     }
 
     @Override
-    default SList<T> order(final Comparator<? super T> comp) {
+    default SList<T> sortWith(final Comparator<? super T> comp) {
         return Indolently.sort(this, comp);
     }
 }
