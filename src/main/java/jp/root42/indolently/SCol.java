@@ -262,7 +262,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * Return newly constructed sorted collection using comparator.
      *
      * @param comp comparator
-     * @return new sorted collection
+     * @return sorted collection
      */
     SELF sortWith(final Comparator<? super T> comp);
 }

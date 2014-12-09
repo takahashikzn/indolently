@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -395,5 +396,15 @@ public interface SMap<K, V>
      */
     default Optional<V> opt(final K key) {
         return Indolently.optional(this.get(key));
+    }
+
+    /**
+     * Return newly constructed sorted map using comparator.
+     *
+     * @param comp comparator
+     * @return sorted map
+     */
+    default SMap<K, V> sortWith(final Comparator<? super K> comp) {
+        return Indolently.sort(this, comp);
     }
 }
