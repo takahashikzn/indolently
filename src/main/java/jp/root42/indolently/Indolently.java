@@ -16,6 +16,7 @@ package jp.root42.indolently;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -540,17 +541,31 @@ public class Indolently {
         return set;
     }
 
-    public static <K, V> SMap<K, V> sort(final Map<K, V> map) {
-        return wrap(ObjFactory.getInstance().<K, V> newSortedMap()).pushAll(map);
+    public static <K extends Comparable<K>, V> SMap<K, V> sort(final Map<K, V> map) {
+        return sort(map, Comparator.naturalOrder());
+    }
+
+    public static <K, V> SMap<K, V> sort(final Map<K, V> map, final Comparator<? super K> comp) {
+        return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(
+            map);
     }
 
     public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
-        return wrap(ObjFactory.getInstance().<T> newSortedSet()).pushAll(elems);
+        return sort(elems, Comparator.naturalOrder());
+    }
+
+    public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
+        return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(
+            elems);
     }
 
     public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
+        return sort(elems, Comparator.naturalOrder());
+    }
+
+    public static <T> SList<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {
         final SList<T> rslt = list(elems);
-        Collections.sort(rslt);
+        Collections.sort(rslt, Objects.requireNonNull(comp, "comparator"));
         return rslt;
     }
 

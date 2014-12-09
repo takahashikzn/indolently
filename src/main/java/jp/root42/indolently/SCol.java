@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -256,4 +257,12 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return grouped elements
      */
     <K> SMap<K, SELF> group(Function<? super T, ? extends K> fkey);
+
+    /**
+     * Return newly constructed sorted collection using comparator.
+     *
+     * @param comp comparator
+     * @return new sorted collection
+     */
+    SELF order(final Comparator<? super T> comp);
 }
