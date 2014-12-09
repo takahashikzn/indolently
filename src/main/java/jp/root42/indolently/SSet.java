@@ -194,7 +194,7 @@ public interface SSet<T>
     }
 
     @Override
-    default SSet<T> order(final Comparator<? super T> comp) {
+    default SSet<T> sortWith(final Comparator<? super T> comp) {
         return Indolently.sort(this, comp);
     }
 }
