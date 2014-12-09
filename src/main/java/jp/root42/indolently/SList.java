@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -278,5 +279,10 @@ public interface SList<T>
 
             return x;
         });
+    }
+
+    @Override
+    default SList<T> order(final Comparator<? super T> comp) {
+        return Indolently.sort(this, comp);
     }
 }
