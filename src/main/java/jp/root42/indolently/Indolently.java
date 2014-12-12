@@ -626,7 +626,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Iterable<?>... i) {
-        return list(i).every(Indolently::empty);
+        return (i == null) || (i.length == 0) || list(i).every(Indolently::empty);
     }
 
     /**
@@ -646,7 +646,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Map<?, ?>... map) {
-        return list(map).every(Indolently::empty);
+        return (map == null) || (map.length == 0) || list(map).every(Indolently::empty);
     }
 
     /**
@@ -666,7 +666,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?>... opt) {
-        return list(opt).every(Indolently::empty);
+        return (opt == null) || (opt.length == 0) || list(opt).every(Indolently::empty);
     }
 
     /**
@@ -686,7 +686,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final CharSequence... cs) {
-        return list(cs).every(Indolently::empty);
+        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::empty);
     }
 
     /**
@@ -706,7 +706,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean blank(final CharSequence... cs) {
-        return list(cs).every(Indolently::blank);
+        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::blank);
     }
 
     public static boolean empty(final Object[] ary) {
