@@ -622,11 +622,31 @@ public class Indolently {
     /**
      * test whether the argument is empty or not.
      *
+     * @param i test target
+     * @return test result
+     */
+    public static boolean empty(final Iterable<?>... i) {
+        return list(i).every(Indolently::empty);
+    }
+
+    /**
+     * test whether the argument is empty or not.
+     *
      * @param map test target
      * @return test result
      */
     public static boolean empty(final Map<?, ?> map) {
         return (map == null) || map.isEmpty();
+    }
+
+    /**
+     * test whether the argument is empty or not.
+     *
+     * @param map test target
+     * @return test result
+     */
+    public static boolean empty(final Map<?, ?>... map) {
+        return list(map).every(Indolently::empty);
     }
 
     /**
@@ -640,6 +660,16 @@ public class Indolently {
     }
 
     /**
+     * test whether the argument is present or not.
+     *
+     * @param opt test target
+     * @return test result
+     */
+    public static boolean empty(final Optional<?>... opt) {
+        return list(opt).every(Indolently::empty);
+    }
+
+    /**
      * test whether the argument is empty string or not.
      *
      * @param cs test target
@@ -650,6 +680,16 @@ public class Indolently {
     }
 
     /**
+     * test whether the argument is empty string or not.
+     *
+     * @param cs test target
+     * @return test result
+     */
+    public static boolean empty(final CharSequence... cs) {
+        return list(cs).every(Indolently::empty);
+    }
+
+    /**
      * test whether the argument is blank string or not.
      *
      * @param cs test target
@@ -657,6 +697,16 @@ public class Indolently {
      */
     public static boolean blank(final CharSequence cs) {
         return empty(cs) || cs.chars().allMatch(Character::isWhitespace);
+    }
+
+    /**
+     * test whether the argument is blank string or not.
+     *
+     * @param cs test target
+     * @return test result
+     */
+    public static boolean blank(final CharSequence... cs) {
+        return list(cs).every(Indolently::blank);
     }
 
     public static boolean empty(final Object[] ary) {
