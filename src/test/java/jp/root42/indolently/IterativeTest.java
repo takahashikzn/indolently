@@ -182,11 +182,13 @@ public class IterativeTest {
 
         final SList<Integer> ints = list();
 
-        assertThat(range(1, 10).list() //
+        final Integer actual = range(1, 10).list() //
             .slice(-5, 0) //
             .map(i -> i * i) //
             .each(i -> ints.add(i)) //
-            .reduce(0, (i, k) -> i + k)) //
+            .reduce(0, (i, k) -> i + k);
+
+        assertThat(actual) //
             .isEqualTo(330);
 
         assertThat(ints) //
