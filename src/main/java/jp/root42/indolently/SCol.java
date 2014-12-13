@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -55,8 +56,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     @Destructive
     default SELF push(final T value) {
-        this.add(value);
-        return this.identity();
+        return this.push(value, x -> true);
     }
 
     /**
@@ -67,8 +67,38 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     @Destructive
     default SELF pushAll(final Iterable<? extends T> values) {
-        for (final T val : values) {
-            this.add(val);
+        return this.pushAll(values, x -> true);
+    }
+
+    /**
+     * add value then return this instance only if condition satisfied.
+     *
+     * @param value value to add
+     * @param f condition
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SELF push(final T value, final Predicate<? super T> f) {
+        if (f.test(value)) {
+            this.add(value);
+        }
+
+        return this.identity();
+    }
+
+    /**
+     * add all values then return this instance only if condition satisfied.
+     *
+     * @param values values to add
+     * @param f condition
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SELF pushAll(final Iterable<? extends T> values, final Predicate<? super Iterable<? extends T>> f) {
+        if (f.test(values)) {
+            for (final T val : values) {
+                this.add(val);
+            }
         }
 
         return this.identity();
@@ -256,4 +286,12 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return grouped elements
      */
     <K> SMap<K, SELF> group(Function<? super T, ? extends K> fkey);
+
+    /**
+     * Return newly constructed sorted collection using comparator.
+     *
+     * @param comp comparator
+     * @return sorted collection
+     */
+    SELF sortWith(final Comparator<? super T> comp);
 }

@@ -16,6 +16,7 @@ package jp.root42.indolently;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -408,6 +409,104 @@ public class Indolently {
         return elems;
     }
 
+    /**
+     * Create a list of <code>char</code>.
+     *
+     * @param elems
+     * @return char list
+     */
+    public static SList<Character> plist(final char... elems) {
+        final SList<Character> list = list();
+        for (final char e : elems) {
+            list.add(e);
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>int</code>.
+     *
+     * @param elems
+     * @return int list
+     */
+    public static SList<Integer> plist(final int... elems) {
+        final SList<Integer> list = list();
+        for (final int e : elems) {
+            list.add(e);
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>long</code>.
+     *
+     * @param elems
+     * @return long list
+     */
+    public static SList<Long> plist(final long... elems) {
+        final SList<Long> list = list();
+        for (final long e : elems) {
+            list.add(e);
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>float</code>.
+     *
+     * @param elems
+     * @return float list
+     */
+    public static SList<Float> plist(final float... elems) {
+        final SList<Float> list = list();
+        for (final float e : elems) {
+            list.add(e);
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>short</code>.
+     *
+     * @param elems
+     * @return short list
+     */
+    public static SList<Short> plist(final short... elems) {
+        final SList<Short> list = list();
+        for (final short e : elems) {
+            list.add(e);
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>double</code>.
+     *
+     * @param elems
+     * @return double list
+     */
+    public static SList<Double> plist(final double... elems) {
+        final SList<Double> list = list();
+        for (final double e : elems) {
+            list.add(e);
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>boolean</code>.
+     *
+     * @param elems
+     * @return boolean list
+     */
+    public static SList<Boolean> plist(final boolean... elems) {
+        final SList<Boolean> list = list();
+        for (final boolean e : elems) {
+            list.add(e);
+        }
+        return list;
+    }
+
     public static <T> SSet<T> set(final Optional<? extends T> elem) {
         return new SSetImpl<T>().push(elem);
     }
@@ -442,17 +541,31 @@ public class Indolently {
         return set;
     }
 
-    public static <K, V> SMap<K, V> sort(final Map<K, V> map) {
-        return wrap(ObjFactory.getInstance().<K, V> newSortedMap()).pushAll(map);
+    public static <K extends Comparable<K>, V> SMap<K, V> sort(final Map<K, V> map) {
+        return sort(map, Comparator.naturalOrder());
+    }
+
+    public static <K, V> SMap<K, V> sort(final Map<K, V> map, final Comparator<? super K> comp) {
+        return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(
+            map);
     }
 
     public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
-        return wrap(ObjFactory.getInstance().<T> newSortedSet()).pushAll(elems);
+        return sort(elems, Comparator.naturalOrder());
+    }
+
+    public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
+        return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(
+            elems);
     }
 
     public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
+        return sort(elems, Comparator.naturalOrder());
+    }
+
+    public static <T> SList<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {
         final SList<T> rslt = list(elems);
-        Collections.sort(rslt);
+        Collections.sort(rslt, Objects.requireNonNull(comp, "comparator"));
         return rslt;
     }
 
@@ -509,11 +622,31 @@ public class Indolently {
     /**
      * test whether the argument is empty or not.
      *
+     * @param i test target
+     * @return test result
+     */
+    public static boolean empty(final Iterable<?>... i) {
+        return (i == null) || (i.length == 0) || list(i).every(Indolently::empty);
+    }
+
+    /**
+     * test whether the argument is empty or not.
+     *
      * @param map test target
      * @return test result
      */
     public static boolean empty(final Map<?, ?> map) {
         return (map == null) || map.isEmpty();
+    }
+
+    /**
+     * test whether the argument is empty or not.
+     *
+     * @param map test target
+     * @return test result
+     */
+    public static boolean empty(final Map<?, ?>... map) {
+        return (map == null) || (map.length == 0) || list(map).every(Indolently::empty);
     }
 
     /**
@@ -527,6 +660,16 @@ public class Indolently {
     }
 
     /**
+     * test whether the argument is present or not.
+     *
+     * @param opt test target
+     * @return test result
+     */
+    public static boolean empty(final Optional<?>... opt) {
+        return (opt == null) || (opt.length == 0) || list(opt).every(Indolently::empty);
+    }
+
+    /**
      * test whether the argument is empty string or not.
      *
      * @param cs test target
@@ -537,6 +680,16 @@ public class Indolently {
     }
 
     /**
+     * test whether the argument is empty string or not.
+     *
+     * @param cs test target
+     * @return test result
+     */
+    public static boolean empty(final CharSequence... cs) {
+        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::empty);
+    }
+
+    /**
      * test whether the argument is blank string or not.
      *
      * @param cs test target
@@ -544,6 +697,16 @@ public class Indolently {
      */
     public static boolean blank(final CharSequence cs) {
         return empty(cs) || cs.chars().allMatch(Character::isWhitespace);
+    }
+
+    /**
+     * test whether the argument is blank string or not.
+     *
+     * @param cs test target
+     * @return test result
+     */
+    public static boolean blank(final CharSequence... cs) {
+        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::blank);
     }
 
     public static boolean empty(final Object[] ary) {

@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.bridge;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -69,14 +70,34 @@ public abstract class ObjFactory {
      *
      * @return new map instance
      */
-    public abstract <K, V> SortedMap<K, V> newSortedMap();
+    public <K extends Comparable<K>, V> SortedMap<K, V> newSortedMap() {
+        return this.newSortedMap(Comparator.naturalOrder());
+    }
+
+    /**
+     * Create new map instance.
+     *
+     * @param comp comparator
+     * @return new map instance
+     */
+    public abstract <K, V> SortedMap<K, V> newSortedMap(Comparator<? super K> comp);
 
     /**
      * Create new set instance.
      *
      * @return new set instance
      */
-    public abstract <V> SortedSet<V> newSortedSet();
+    public <V extends Comparable<V>> SortedSet<V> newSortedSet() {
+        return this.newSortedSet(Comparator.naturalOrder());
+    }
+
+    /**
+     * Create new set instance.
+     *
+     * @param comp comparator
+     * @return new set instance
+     */
+    public abstract <V> SortedSet<V> newSortedSet(Comparator<? super V> comp);
 
     /**
      * Create new map instance.

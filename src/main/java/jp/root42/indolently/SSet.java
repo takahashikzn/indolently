@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -190,5 +191,10 @@ public interface SSet<T>
         return Expressive.eval( //
             this.list().group(fkey), //
             (final SMap<K, SList<T>> grp) -> grp.map((k, v) -> v.set()));
+    }
+
+    @Override
+    default SSet<T> sortWith(final Comparator<? super T> comp) {
+        return Indolently.sort(this, comp);
     }
 }

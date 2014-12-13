@@ -14,6 +14,7 @@
 package jp.root42.indolently.bridge;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -36,13 +37,13 @@ class JdkObjFactory
     extends ObjFactory {
 
     @Override
-    public <K, V> SortedMap<K, V> newSortedMap() {
-        return new TreeMap<>();
+    public <K, V> SortedMap<K, V> newSortedMap(final Comparator<? super K> comp) {
+        return new TreeMap<>(comp);
     }
 
     @Override
-    public <V> SortedSet<V> newSortedSet() {
-        return new TreeSet<>();
+    public <V> SortedSet<V> newSortedSet(final Comparator<? super V> comp) {
+        return new TreeSet<>(comp);
     }
 
     @Override

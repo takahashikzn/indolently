@@ -13,7 +13,9 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.junit.Test;
 
@@ -73,5 +75,33 @@ public class SListTest {
 
     static class Bean2 {
         int val;
+    }
+
+    /**
+     * Test of {@link SList#flatten(Function)}
+     */
+    @Test
+    public void flatten() {
+
+        assertThat(list("123", "abc").flatten(x -> plist(x.toCharArray()))).isEqualTo(
+            list('1', '2', '3', 'a', 'b', 'c'));
+    }
+
+    /**
+     * Test of {@link SList#orElse(List)}
+     */
+    @Test
+    public void orElse() {
+
+        assertThat(list().orElse(list(42))).isEqualTo(list(42));
+    }
+
+    /**
+     * Test of {@link SList#orElseGet(Supplier)}
+     */
+    @Test
+    public void orElseGet() {
+
+        assertThat(list().orElseGet(() -> list(42))).isEqualTo(list(42));
     }
 }

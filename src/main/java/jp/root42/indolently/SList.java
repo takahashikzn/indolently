@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -205,7 +206,7 @@ public interface SList<T>
      * @return newly constructed list which contains converted values
      */
     default <R> SList<R> map(final Function<? super T, ? extends R> f) {
-        return this.reduce(list(), (list, val) -> list.push(f.apply(val)));
+        return this.reduce(Indolently.list(), (x, y) -> x.push(f.apply(y)));
     }
 
     /**
@@ -224,7 +225,7 @@ public interface SList<T>
 
     @Override
     default SList<T> filter(final Predicate<? super T> f) {
-        return this.reduce(list(), (list, val) -> f.test(val) ? list.push(val) : list);
+        return this.reduce(Indolently.list(), (x, y) -> f.test(y) ? x.push(y) : x);
     }
 
     /**
@@ -240,7 +241,7 @@ public interface SList<T>
 
     @SuppressWarnings("javadoc")
     default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return Indolently.list(this.iterator().flatten(f));
+        return this.iterator().flatten(f).reduce(Indolently.list(), (x, y) -> x.push(y));
     }
 
     /**
@@ -260,28 +261,28 @@ public interface SList<T>
      * @return this instance or other
      */
     default SList<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
-
-        if (this.isEmpty()) {
-            return Indolently.list(other.get());
-        } else {
-            return this;
-        }
+        return Indolently.nonEmpty(this).orElseGet(() -> Indolently.list(other.get()));
     }
 
     @Override
     default <K> SMap<K, SList<T>> group(final Function<? super T, ? extends K> fkey) {
 
-        return this.reduce(Indolently.wrap(ObjFactory.getInstance().newFifoMap()), (rslt, val) -> {
+        return this.reduce(Indolently.wrap(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
 
-            final K key = fkey.apply(val);
+            final K key = fkey.apply(y);
 
-            if (!rslt.containsKey(key)) {
-                rslt.put(key, Indolently.list());
+            if (!x.containsKey(key)) {
+                x.put(key, Indolently.list());
             }
 
-            rslt.get(key).add(val);
+            x.get(key).add(y);
 
-            return rslt;
+            return x;
         });
+    }
+
+    @Override
+    default SList<T> sortWith(final Comparator<? super T> comp) {
+        return Indolently.sort(this, comp);
     }
 }
