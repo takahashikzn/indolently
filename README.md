@@ -1,6 +1,6 @@
 <!-- @author takahashikzn -->
 
-![TravisCI](http://travis-ci.org/takahashikzn/indolently.svg?branch=develop)
+[![TravisCI](http://travis-ci.org/takahashikzn/indolently.svg?branch=develop)](http://travis-ci.org/takahashikzn/indolently)
 
 # What this is
 
