@@ -18,14 +18,26 @@
 <!--
   @author takahashikzn
 -->
-<project name="indolently" default="test" basedir=".">
+<project name="indolently" default="test" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
 
   <target name="clean">
     <delete dir="target/" />
     <mkdir dir="target/" />
   </target>
 
+  <target name="prepare-ivy">
+    <property name="ivy.install.version" value="2.4.0-rc1" />
+    <property name="ivy.jar.file" value="./ivy.jar" />
+    <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
+    <path id="ivy.lib.path">
+      <fileset file="${ivy.jar.file}" />
+    </path>
+  </target>
+
   <target name="init-ivy">
+    <available classname="org.apache.ivy.ant.IvyConfigure" property="ivy.available" />
+    <antcall target="prepare-ivy" unless:true="${ivy.available}" />
+
     <taskdef name="ivy-configure" classname="org.apache.ivy.ant.IvyConfigure" />
     <taskdef name="ivy-resolve" classname="org.apache.ivy.ant.IvyResolve" />
     <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve" />
