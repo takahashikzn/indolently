@@ -25,74 +25,25 @@
     <mkdir dir="target/" />
   </target>
 
-  <target name="init-ivy">
-    <script language="javascript">
-    <![CDATA[
-      var log = function(msg) {
-          var echo = project.createTask('echo');
-          echo.message = msg;
-          echo.perform();
-      };
+  <property name="ivy.home" value="${user.home}/.ant" />
+  <property name="ivy.jar.dir" value="${ivy.home}/lib" />
+  <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+  <loadfile srcfile="build/ari.js" property="ari.js" />
+  <loadfile srcfile="build/prepare-ivy.js" property="prepare-ivy.js" />
+  <loadfile srcfile="build/setup.js" property="setup.js" />
 
-      var isAvailable = function(fqcn) {
-          try {
-              return !!Java.type(fqcn);
-          } catch(e) {
-              return false;
-          }
-      };
-
-      var $new = function(fqcn) {
-          var cls = Java.type(fqcn);
-          return new cls([].slice.call(arguments, 1));
-      };
-
-      try {
-          var ivyJar = (function() {
-              if (isAvailable('org.apache.ivy.ant.IvyConfigure')) {
-                  log('ivy available');
-                  return undefined;
-              } else {
-                  var ivyVersion = '2.4.0-rc1';
-                  var get = project.createTask('get');
-                  get.src = $new('java.net.URL',  'http://repo2.maven.org/maven2/org/apache/ivy/ivy/'+ ivyVersion +'/ivy-' + ivyVersion + '.jar');
-                  get.dest = $new('java.io.File', './ivy.jar');
-                  get.perform();
-
-                  return get.dest;
-              }
-          }());
-
-          [
-              { name: 'ivy-configure', classname: 'org.apache.ivy.ant.IvyConfigure' },
-              { name: 'ivy-resolve', classname: 'org.apache.ivy.ant.IvyResolve' },
-              { name: 'ivy-retrieve', classname: 'org.apache.ivy.ant.IvyRetrieve' }
-          ].forEach(function(x) {
-              var taskdef = project.createTask('taskdef');
-              taskdef.name = x.name;
-              taskdef.classname = x.classname;
-
-              if (ivyJar) {
-                  taskdef.classpath = ivyJar;
-              }
-
-              log('taskdef: ' + x.name + ' = ' + x.classname);
-              taskdef.perform();
-          });
-      } catch (e) {
-          log(e.message);
-      }
-    ]]>
-    </script>
-
-    <ivy-configure file="ivysettings.xml" />
+  <target name="prepare-ivy">
+    <script language="javascript"><![CDATA[
+      var ARI = eval(project.getProperty('ari.js'));
+      eval(project.getProperty('prepare-ivy.js'));
+    ]]></script>
   </target>
 
-  <target name="setup" description="setup" depends="init-ivy">
-    <ivy-resolve haltonfailure="false" />
-    <delete dir="target/lib" />
-    <mkdir dir="target/lib" />
-    <ivy-retrieve conf="*" pattern="target/lib/default/[module]-[revision].[ext]" />
+  <target name="setup">
+    <script language="javascript"><![CDATA[
+      var ARI = eval(project.getProperty('ari.js'));
+      eval(project.getProperty('setup.js'));
+    ]]></script>
   </target>
 
   <path id="lib">
