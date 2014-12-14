@@ -1,5 +1,5 @@
 (function() {
-    var loaderRef = 'ivyLoader';
+
     [ {
         name: 'ivy-configure',
         classname: 'org.apache.ivy.ant.IvyConfigure'
@@ -10,15 +10,8 @@
         name: 'ivy-retrieve',
         classname: 'org.apache.ivy.ant.IvyRetrieve'
     } ].forEach(function(x) {
-        ARI.taskdef(x.name, x.classname, (function() {
-            if (ARI.prop('ivy.jar')) {
-                return {
-                    classpath: ARI.struct('path', {
-                        location: ARI.struct('file', ARI.prop('ivy.jar.file'))
-                    })
-                };
-            }
-        }()))
+
+        ARI.taskdef(x.name, x.classname);
     });
 
     ARI.antcall('ivy-configure', {
