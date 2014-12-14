@@ -28,7 +28,7 @@
   <property name="ivy.home" value="${user.home}/.ant" />
   <property name="ivy.jar.dir" value="${ivy.home}/lib" />
   <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
-  <loadfile srcfile="build/ari.js" property="ari.js" />
+  <loadfile srcfile="build/ari/src/main/js/ari.js" property="ari.js" />
   <loadfile srcfile="build/prepare-ivy.js" property="prepare-ivy.js" />
   <loadfile srcfile="build/setup.js" property="setup.js" />
 

@@ -1,5 +1,7 @@
 <!-- @author takahashikzn -->
 
+![TravisCI](http://travis-ci.org/takahashikzn/indolently.svg?branch=develop)
+
 # What this is
 
 A Java syntactic sugar library for indolent person.
