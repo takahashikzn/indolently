@@ -15,20 +15,20 @@
     });
 
     ARI.antcall('ivy-configure', {
-        file: ARI.struct('file', 'ivysettings.xml')
+        file: 'ivysettings.xml'
     });
 
     ARI.antcall('ivy-resolve', {
-        file: ARI.struct('file', 'ivy.xml'),
+        file: 'ivy.xml',
         haltonfailure: false
     });
 
     ARI.antcall('delete', {
-        dir: ARI.struct('file', 'target/lib')
+        dir: 'target/lib'
     });
 
     ARI.antcall('mkdir', {
-        dir: ARI.struct('file', 'target/lib')
+        dir: 'target/lib'
     });
 
     ARI.antcall('ivy-retrieve', {
