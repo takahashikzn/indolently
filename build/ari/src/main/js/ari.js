@@ -1,4 +1,17 @@
+/*
+ * Copyright 2014 takahashikzn
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
 (function() {
+    "use strict";
 
     var ARI = {};
 
@@ -32,6 +45,8 @@
 
         nativeClass: (function() {
 
+            var classFacade = Java.type('java.lang.Class');
+
             var isNativeClass = function(o) {
                 return o['class'] && (o['class'].name === 'java.lang.Class');
             };
@@ -40,13 +55,13 @@
 
                 if (typeof clazz === 'string') {
 
-                    return Java.type('java.lang.Class').forName(clazz);
+                    return classFacade.forName(clazz);
                 } else if (isNativeClass(clazz)) {
 
                     return clazz;
                 } else if (clazz.getName) {
 
-                    return Java.type('java.lang.Class').forName(clazz.getName());
+                    return classFacade.forName(clazz.getName());
                 } else {
 
                     throw new Error('unrecognizable type: ' + clazz);
@@ -56,7 +71,7 @@
             return {
                 java: {
                     lang: {
-                        Class: forName('java.lang.Class'),
+                        Class: classFacade,
                         String: forName('java.lang.String'),
                         System: forName('java.lang.System'),
                         Boolean: forName('java.lang.Boolean'),
@@ -89,24 +104,24 @@
 
         toJava: function(cls, val) {
 
-            var javaType;
-            var nativeClass;
+            var typeFacade;
+            var nativeType;
 
             if (typeof cls === 'string') {
-                javaType = Java.type(cls);
-                nativeClass = this.nativeClass.of(cls);
+                typeFacade = Java.type(cls);
+                nativeType = this.nativeClass.of(cls);
             } else if (this.nativeClass.matches(cls)) {
-                javaType = Java.type(cls.name);
-                nativeClass = cls;
+                typeFacade = Java.type(cls.name);
+                nativeType = cls;
             } else {
-                javaType = cls;
-                nativeClass = this.nativeClass.of(cls.getName());
+                typeFacade = cls;
+                nativeType = this.nativeClass.of(cls.getName());
             }
 
-            if (nativeClass.isInstance(val)) {
+            if (nativeType.isInstance(val)) {
                 return val;
             } else {
-                return this.newInstance(javaType, val);
+                return this.newInstance(typeFacade, val);
             }
         },
 
@@ -207,10 +222,11 @@
     };
 
     /**
+     * @private
      * @param {!string} taskName
      * @param {!(Object|function())=} attrs
      */
-    ARI.antcallable = function(taskName, attrs) {
+    ARI._callableTask = function(taskName, attrs) {
 
         return function() {
             var task = project.createTask(taskName);
@@ -229,8 +245,8 @@
      * @param {!string} taskName
      * @param {!(Object|function())=} attrs
      */
-    ARI.antcall = function(taskName, attrs) {
-        return this.antcallable(taskName, attrs)();
+    ARI.task = function(taskName, attrs) {
+        return this._callableTask(taskName, attrs)();
     };
 
     /**
@@ -240,7 +256,7 @@
      */
     ARI.taskdef = function(name, classname, attrs) {
 
-        return this.antcall('taskdef', function() {
+        return this.task('taskdef', function() {
             javaOps.populate(this, javaOps.populate({
                 name: name,
                 classname: classname
@@ -266,7 +282,7 @@
      */
     ARI.echo = function(msg, level) {
 
-        return this.antcall('echo', {
+        return this.task('echo', {
             message: msg,
             level: level && Java.type('org.apache.tools.ant.types.LogLevel')[level.toUpperCase()]
         });
@@ -290,6 +306,10 @@
 
     ARI.neo = function(clazz) {
         return javaOps.newInstance.apply(arguments);
+    };
+
+    ARI.run = function(code) {
+        eval('function(ARI) { ' + code + ' }')(this);
     };
 
     Object.keys(ARI).forEach(function(x) {

@@ -31,23 +31,17 @@
   <loadfile srcfile="build/ari/src/main/js/ari.js" property="ari.js" />
 
   <target name="prepare-ivy">
-
     <loadfile srcfile="build/prepare-ivy.js" property="prepare-ivy.js" />
-
-    <script language="javascript"><![CDATA[
-      var ARI = eval(project.getProperty('ari.js'));
-      eval(project.getProperty('prepare-ivy.js'));
-    ]]></script>
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('prepare-ivy.js'));
+    </script>
   </target>
 
   <target name="setup">
-
     <loadfile srcfile="build/setup.js" property="setup.js" />
-
-    <script language="javascript"><![CDATA[
-      var ARI = eval(project.getProperty('ari.js'));
-      eval(project.getProperty('setup.js'));
-    ]]></script>
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('setup.js'));
+    </script>
   </target>
 
   <path id="lib">
