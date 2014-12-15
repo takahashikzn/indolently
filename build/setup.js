@@ -35,4 +35,4 @@
         conf: '*',
         pattern: 'target/lib/default/[module]-[revision].[ext]'
     });
-}())
+}());
