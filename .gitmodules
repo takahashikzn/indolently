@@ -1,3 +1,0 @@
-[submodule "build/ari"]
-	path = build/ari
-	url = git://github.com/takahashikzn/ari.js
