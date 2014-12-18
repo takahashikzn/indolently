@@ -14,36 +14,37 @@
 
 [ {
     name: 'ivy-configure',
-    classname: 'org.apache.ivy.ant.IvyConfigure'
+    classname: 'org.apache.ivy.ant.IvyConfigure',
+    then: function(name) {
+        ARI.task(name, {
+            file: 'ivysettings.xml'
+        });
+    }
 }, {
     name: 'ivy-resolve',
-    classname: 'org.apache.ivy.ant.IvyResolve'
+    classname: 'org.apache.ivy.ant.IvyResolve',
+    then: function(name) {
+        ARI.task(name, {
+            file: 'ivy.xml',
+            haltonfailure: false
+        });
+    }
 }, {
     name: 'ivy-retrieve',
-    classname: 'org.apache.ivy.ant.IvyRetrieve'
+    classname: 'org.apache.ivy.ant.IvyRetrieve',
+    then: function(name) {
+        ARI.task('delete', {
+            dir: 'target/lib',
+            quiet: true
+        }).task('mkdir', {
+            dir: 'target/lib'
+        }).task(name, {
+            conf: '*',
+            pattern: 'target/lib/default/[module]-[revision].[ext]'
+        });
+    }
 } ].forEach(function(x) {
 
     ARI.taskdef(x.name, x.classname);
-});
-
-ARI.task('ivy-configure', {
-    file: 'ivysettings.xml'
-});
-
-ARI.task('ivy-resolve', {
-    file: 'ivy.xml',
-    haltonfailure: false
-});
-
-ARI.task('delete', {
-    dir: 'target/lib'
-});
-
-ARI.task('mkdir', {
-    dir: 'target/lib'
-});
-
-ARI.task('ivy-retrieve', {
-    conf: '*',
-    pattern: 'target/lib/default/[module]-[revision].[ext]'
+    x.then(x.name);
 });
