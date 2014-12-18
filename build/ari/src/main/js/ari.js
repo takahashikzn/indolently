@@ -68,21 +68,51 @@
                 }
             };
 
+            var javaPkg = (function(java) {
+
+                java.lang = {
+                    Class: classFacade,
+                    Enum: forName('java.lang.Enum'),
+                    System: forName('java.lang.System'),
+
+                    String: forName('java.lang.String'),
+                    Boolean: forName('java.lang.Boolean'),
+                    Integer: forName('java.lang.Integer'),
+                    Long: forName('java.lang.Long'),
+                    Short: forName('java.lang.Short'),
+                    Byte: forName('java.lang.Byte'),
+                    Character: forName('java.lang.Character'),
+                    Double: forName('java.lang.Double'),
+                    Float: forName('java.lang.Float'),
+                    Void: forName('java.lang.Void')
+                };
+
+                java.lang.primitive = {
+                    int: java.lang.Integer,
+                    long: java.lang.Long,
+                    short: java.lang.Short,
+                    byte: java.lang.Byte,
+                    float: java.lang.Float,
+                    double: java.lang.Double,
+                    char: java.lang.Character,
+                    boolean: java.lang.Boolean,
+                    'void': java.lang.Void
+                };
+
+                return java;
+            }({}));
+
             return {
-                java: {
-                    lang: {
-                        Class: classFacade,
-                        String: forName('java.lang.String'),
-                        System: forName('java.lang.System'),
-                        Boolean: forName('java.lang.Boolean'),
-                        Integer: forName('java.lang.Integer'),
-                        Long: forName('java.lang.Long')
-                    }
-                },
+                matches: isNativeClass,
                 of: forName,
-                matches: isNativeClass
+                java: javaPkg
             };
         }()),
+
+        isInstance: function(cls, obj) {
+
+            return (this.nativeClass.java.lang.primitive[cls.name] || cls).isInstance(obj);
+        },
 
         newInstance: function(clazz) {
 
@@ -118,7 +148,7 @@
                 nativeType = this.nativeClass.of(cls.getName());
             }
 
-            if (nativeType.isInstance(val)) {
+            if (this.isInstance(nativeType, val)) {
                 return val;
             } else {
                 return this.newInstance(typeFacade, val);
@@ -237,7 +267,7 @@
                 javaOps.populate(task, attrs);
             }
 
-            return task.perform();
+            task.perform();
         };
     };
 
@@ -246,7 +276,8 @@
      * @param {!(Object|function())=} attrs
      */
     ARI.task = function(taskName, attrs) {
-        return this._callableTask(taskName, attrs)();
+        this._callableTask(taskName, attrs)();
+        return this;
     };
 
     /**

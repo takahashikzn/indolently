@@ -23,9 +23,7 @@ var ivyJarUrl = 'http://repo2.maven.org/maven2/org/apache/ivy/ivy/' + ivyVersion
 
 ARI.task('mkdir', {
     dir: ARI.prop('ivy.jar.dir')
-});
-
-ARI.task('get', {
+}).task('get', {
     src: ivyJarUrl,
     dest: jarFile
 });
