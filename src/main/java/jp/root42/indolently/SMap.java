@@ -186,10 +186,10 @@ public interface SMap<K, V>
 
         private final Entry<K, V> e;
 
-        /** key of the entry. */
+        /** key of this entry. */
         public final K key;
 
-        /** value of the entry. */
+        /** value of this entry. */
         public final V val;
 
         /**
@@ -252,7 +252,7 @@ public interface SMap<K, V>
 
     /**
      * construct new map which having keys you specify.
-     * a key which does not exist is ignored.
+     * any keys which does not contained by this instance are ignored.
      *
      * @param keys keys to extract
      * @return extracted new map
