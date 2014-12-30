@@ -25,6 +25,10 @@
     <mkdir dir="target/" />
   </target>
 
+  <path id="lib">
+    <fileset dir="target/lib" includes="**/*.jar" />
+  </path>
+
   <property name="ivy.home" value="${user.home}/.ant" />
   <property name="ivy.jar.dir" value="${ivy.home}/lib" />
   <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
@@ -44,24 +48,13 @@
     </script>
   </target>
 
-  <path id="lib">
-    <fileset dir="target/lib" includes="**/*.jar" />
-  </path>
-
-  <target name="javadoc" depends="make" description="javadoc">
-    <mkdir dir="target/api" />
-
-    <javadoc encoding="UTF-8" docencoding="UTF-8"
-             useexternalfile="yes"
-             source="1.8" sourcepath="src/main/java"
-             destdir="target/api" classpathref="lib"
-             windowtitle="Indolently API Document"
-             doctitle="Indolently API Document">
-      <classpath path="target/classes" />
-      <link href="http://docs.oracle.com/javase/8/docs/api/" />
-    </javadoc>
+  <target name="make" depends="setup" description="make">
+    <loadfile srcfile="build/make.js" property="make.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('make.js'));
+    </script>
   </target>
-
+  <!--
   <target name="make" depends="setup" description="make">
 
     <mkdir dir="target/classes" />
@@ -81,6 +74,21 @@
       <compilerarg value="-Xlint:all,-rawtypes,-unchecked" />
     </javac>
 
+  </target>
+  -->
+
+  <target name="javadoc" depends="make" description="javadoc">
+    <mkdir dir="target/api" />
+
+    <javadoc encoding="UTF-8" docencoding="UTF-8"
+             useexternalfile="yes"
+             source="1.8" sourcepath="src/main/java"
+             destdir="target/api" classpathref="lib"
+             windowtitle="Indolently API Document"
+             doctitle="Indolently API Document">
+      <classpath path="target/classes" />
+      <link href="http://docs.oracle.com/javase/8/docs/api/" />
+    </javadoc>
   </target>
 
   <target name="build" depends="clean, make" description="build" />

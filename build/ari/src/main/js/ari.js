@@ -27,6 +27,29 @@
         return [].slice.apply(ary);
     };
 
+    var option = function(x) {
+        return {
+            val: function() {
+                if (x != null) {
+                    return x;
+                } else {
+                    throw new Error('value is null');
+                }
+            },
+            map: function(f) {
+                return option(f(x));
+            },
+            present: function(f) {
+                if (x != null) {
+                    return f(x);
+                }
+            },
+            or: function(f) {
+                return (f instanceof Function) ? f() : f;
+            }
+        };
+    };
+
     (function() {
         if (!String.prototype.capitalize) {
             String.prototype.capitalize = function() {
@@ -37,6 +60,18 @@
         if (!String.prototype.uncapitalize) {
             String.prototype.uncapitalize = function() {
                 return this[0].toLowerCase() + this.substring(1);
+            };
+        }
+
+        if (!String.prototype.startsWith) {
+            String.prototype.startsWith = function(x) {
+                return this.indexOf(x) === 0;
+            };
+        }
+
+        if (!String.prototype.endsWith) {
+            String.prototype.endsWith = function(x) {
+                return (this.indexOf(x) + x.length) === this.length;
             };
         }
     }());
@@ -116,9 +151,16 @@
 
         newInstance: function(clazz) {
 
-            var javaType = (clazz == 'string') ? Java.type(clazz) : clazz;
+            var javaType = (typeof clazz == 'string') ? Java.type(clazz) : clazz;
 
             return new javaType(array(arguments).slice(1));
+        },
+
+        newInstanceStrict: function(clazz) {
+
+            var javaClassName = (typeof clazz == 'string') ? clazz : clazz.name;
+
+            return this.nativeClass.of(javaClassName).constructors[0].newInstance(array(arguments).slice(1));
         },
 
         propType: function(clazz, name) {
@@ -254,18 +296,68 @@
     /**
      * @private
      * @param {!string} taskName
-     * @param {!(Object|function())=} attrs
+     * @param {!Object=} attrs
+     * @param {?} parent
+     */
+    ARI._createTask = function(taskName, attrs, parentWrapper) {
+
+        var task = javaOps.newInstance(Java.type('org.apache.tools.ant.UnknownElement'), taskName);
+        task.project = project;
+        task.taskName = taskName;
+
+        // 子要素はcreateTaskの戻り値がnull
+        option(project.createTask(taskName)).present(function(x) {
+            task.taskType = x.taskType;
+        });
+
+        var wrapper = javaOps.newInstanceStrict('org.apache.tools.ant.RuntimeConfigurable', task, taskName);
+
+        if (attrs) {
+
+            Object.keys(attrs).forEach(function(x) {
+
+                var val = attrs[x];
+
+                if ((x.trim() === '') || /^\*.*/.test(x.trim())) {
+
+                    var children = val;
+
+                    Object.keys(children).forEach(function(x) {
+
+                        var childAttrs = children[x];
+
+                        if (childAttrs instanceof Array) {
+                            childAttrs.forEach(function(childVal) {
+                                ARI._createTask(x, childVal, wrapper);
+                            });
+                        } else {
+                            ARI._createTask(x, childAttrs, wrapper);
+                        }
+                    });
+                } else if (val != null) {
+                    wrapper.setAttribute(x, '' + val);
+                }
+            });
+        }
+
+        if (parentWrapper) {
+            parentWrapper.proxy.addChild(task);
+            parentWrapper.addChild(wrapper);
+        }
+
+        return task;
+    };
+
+    /**
+     * @private
+     * @param {!string} taskName
+     * @param {!Object=} attrs
      */
     ARI._callableTask = function(taskName, attrs) {
 
         return function() {
-            var task = project.createTask(taskName);
 
-            if (attrs instanceof Function) {
-                attrs.apply(task, arguments);
-            } else {
-                javaOps.populate(task, attrs);
-            }
+            var task = ARI._createTask(taskName, attrs);
 
             task.perform();
         };
@@ -273,10 +365,11 @@
 
     /**
      * @param {!string} taskName
-     * @param {!(Object|function())=} attrs
+     * @param {!Object=} attrs
+     * @param {!Object=} nests
      */
-    ARI.task = function(taskName, attrs) {
-        this._callableTask(taskName, attrs)();
+    ARI.task = function(taskName, attrs, nests) {
+        this._callableTask(taskName, attrs, nests)();
         return this;
     };
 
@@ -287,14 +380,17 @@
      */
     ARI.taskdef = function(name, classname, attrs) {
 
-        return this.task('taskdef', function() {
-            javaOps.populate(this, javaOps.populate({
-                name: name,
-                classname: classname
-            }, attrs));
+        var task = project.createTask('taskdef');
 
-            this.antlibClassLoader = Java.type('org.apache.tools.ant.Main').class.classLoader;
-        });
+        task.name = name;
+        task.classname = classname;
+        task.antlibClassLoader = Java.type('org.apache.tools.ant.Main').class.classLoader;
+
+        attrs && javaOps.populate(task, attrs);
+
+        task.perform();
+
+        return this;
     };
 
     /**
