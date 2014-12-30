@@ -54,28 +54,6 @@
       eval(project.getProperty('ari.js')).run(project.getProperty('make.js'));
     </script>
   </target>
-  <!--
-  <target name="make" depends="setup" description="make">
-
-    <mkdir dir="target/classes" />
-    <javac encoding="UTF-8" source="1.8" target="1.8" debug="true"
-           srcdir="src/main/java" destdir="target/classes">
-
-      <classpath refid="lib" />
-      <compilerarg value="-Xlint:all,-rawtypes,-unchecked" />
-    </javac>
-
-    <mkdir dir="target/test-classes" />
-    <javac encoding="UTF-8" source="1.8" target="1.8" debug="true"
-           srcdir="src/test/java" destdir="target/test-classes">
-
-      <classpath refid="lib" />
-      <classpath path="target/classes" />
-      <compilerarg value="-Xlint:all,-rawtypes,-unchecked" />
-    </javac>
-
-  </target>
-  -->
 
   <target name="javadoc" depends="make" description="javadoc">
     <mkdir dir="target/api" />

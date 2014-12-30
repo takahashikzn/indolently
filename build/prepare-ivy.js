@@ -17,7 +17,7 @@ if (ARI.classExists('org.apache.ivy.ant.IvyConfigure')) {
     return;
 }
 
-var ivyVersion = '2.4.0-rc1';
+var ivyVersion = '2.4.0';
 var jarFile = ARI.prop('ivy.jar.file');
 var ivyJarUrl = 'http://repo2.maven.org/maven2/org/apache/ivy/ivy/' + ivyVersion + '/ivy-' + ivyVersion + '.jar';
 
