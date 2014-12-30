@@ -206,15 +206,17 @@
             var isJavaObj = this.isNativeJavaObj(obj);
             var nativeClass = obj['class'];
 
-            attrs && Object.keys(attrs).forEach(function(x) {
-                if (attrs[x]) {
-                    if (isJavaObj) {
-                        obj[x] = this.toJava(javaOps.propType(nativeClass, x), attrs[x]);
-                    } else {
-                        obj[x] = attrs[x];
+            if (attrs) {
+                for ( var x in attrs) {
+                    if (attrs[x]) {
+                        if (isJavaObj) {
+                            obj[x] = this.toJava(javaOps.propType(nativeClass, x), attrs[x]);
+                        } else {
+                            obj[x] = attrs[x];
+                        }
                     }
                 }
-            }.bind(this));
+            }
 
             return obj;
         }
@@ -314,15 +316,15 @@
 
         if (attrs) {
 
-            Object.keys(attrs).forEach(function(x) {
+            for ( var key in attrs) {
 
-                var val = attrs[x];
+                var val = attrs[key];
 
-                if ((x.trim() === '') || /^\*.*/.test(x.trim())) {
+                if ((key.trim() === '') || /^\*.*/.test(key.trim())) {
 
                     var children = val;
 
-                    Object.keys(children).forEach(function(x) {
+                    for ( var x in children) {
 
                         var childAttrs = children[x];
 
@@ -333,11 +335,11 @@
                         } else {
                             ARI._createTask(x, childAttrs, wrapper);
                         }
-                    });
+                    }
                 } else if (val != null) {
-                    wrapper.setAttribute(x, '' + val);
+                    wrapper.setAttribute(key, '' + val);
                 }
-            });
+            }
         }
 
         if (parentWrapper) {

@@ -56,17 +56,10 @@
   </target>
 
   <target name="javadoc" depends="make" description="javadoc">
-    <mkdir dir="target/api" />
-
-    <javadoc encoding="UTF-8" docencoding="UTF-8"
-             useexternalfile="yes"
-             source="1.8" sourcepath="src/main/java"
-             destdir="target/api" classpathref="lib"
-             windowtitle="Indolently API Document"
-             doctitle="Indolently API Document">
-      <classpath path="target/classes" />
-      <link href="http://docs.oracle.com/javase/8/docs/api/" />
-    </javadoc>
+    <loadfile srcfile="build/javadoc.js" property="javadoc.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('javadoc.js'));
+    </script>
   </target>
 
   <target name="build" depends="clean, make" description="build" />
@@ -78,20 +71,10 @@
   </target>
 
   <target name="test" depends="jar" description="run">
-
-    <delete dir="target/test-result" />
-    <mkdir dir="target/test-result" />
-
-    <junit printsummary="yes" fork="yes" forkmode="once">
-      <classpath refid="lib" />
-      <classpath path="target/indolently.jar" />
-      <classpath path="target/test-classes" />
-
-      <batchtest todir="target/test-result">
-        <fileset dir="target/test-classes" includes="**/*Test.class" />
-        <formatter type="plain" usefile="false" />
-      </batchtest>
-    </junit>
+    <loadfile srcfile="build/test.js" property="test.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('test.js'));
+    </script>
   </target>
 
 </project>
