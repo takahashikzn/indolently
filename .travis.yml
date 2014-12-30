@@ -1,0 +1,5 @@
+language: java
+before_install: ant prepare-ivy
+install: ant setup
+jdk:
+  - oraclejdk8

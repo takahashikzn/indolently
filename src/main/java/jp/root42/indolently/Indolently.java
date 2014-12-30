@@ -1342,7 +1342,7 @@ public class Indolently {
     }
 
     /**
-     * create a empty reference.
+     * create an empty reference.
      *
      * @return empty reference
      */

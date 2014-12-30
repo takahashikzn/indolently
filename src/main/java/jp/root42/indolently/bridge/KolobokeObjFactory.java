@@ -34,6 +34,11 @@ final class KolobokeObjFactory
 
         private static final long serialVersionUID = -4881881384304670668L;
 
+        static {
+            // HashObjSets isn't thread-safe, so synchronized initialization is required.
+            HashObjSets.newMutableSet();
+        }
+
         @Override
         protected Set<V> newSet() {
             return HashObjSets.newMutableSet();
@@ -44,6 +49,11 @@ final class KolobokeObjFactory
         extends SerializableMap<K, V> {
 
         private static final long serialVersionUID = 3578828373651399016L;
+
+        static {
+            // HashObjObjMaps isn't thread-safe, so synchronized initialization is required.
+            HashObjObjMaps.newMutableMap();
+        }
 
         @Override
         protected Map<K, V> newMap() {

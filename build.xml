@@ -18,66 +18,48 @@
 <!--
   @author takahashikzn
 -->
-<project name="indolently" default="test" basedir=".">
+<project name="indolently" default="test" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
 
   <target name="clean">
     <delete dir="target/" />
     <mkdir dir="target/" />
   </target>
 
-  <target name="init-ivy">
-    <taskdef name="ivy-configure" classname="org.apache.ivy.ant.IvyConfigure" />
-    <taskdef name="ivy-resolve" classname="org.apache.ivy.ant.IvyResolve" />
-    <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve" />
-    <taskdef name="ivy-install" classname="org.apache.ivy.ant.IvyInstall" />
-
-    <ivy-configure file="ivysettings.xml" />
-  </target>
-
-  <target name="setup" description="setup" depends="init-ivy">
-    <ivy-resolve haltonfailure="false" />
-    <delete dir="target/lib" />
-    <mkdir dir="target/lib" />
-    <ivy-retrieve conf="*" pattern="target/lib/default/[module]-[revision].[ext]" />
-  </target>
-
   <path id="lib">
     <fileset dir="target/lib" includes="**/*.jar" />
   </path>
 
-  <target name="javadoc" depends="make" description="javadoc">
-    <mkdir dir="target/api" />
+  <property name="ivy.home" value="${user.home}/.ant" />
+  <property name="ivy.jar.dir" value="${ivy.home}/lib" />
+  <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+  <loadfile srcfile="build/ari/src/main/js/ari.js" property="ari.js" />
 
-    <javadoc encoding="UTF-8" docencoding="UTF-8"
-             useexternalfile="yes"
-             source="1.8" sourcepath="src/main/java"
-             destdir="target/api" classpathref="lib"
-             windowtitle="Indolently API Document"
-             doctitle="Indolently API Document">
-      <classpath path="target/classes" />
-      <link href="http://docs.oracle.com/javase/8/docs/api/" />
-    </javadoc>
+  <target name="prepare-ivy">
+    <loadfile srcfile="build/prepare-ivy.js" property="prepare-ivy.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('prepare-ivy.js'));
+    </script>
+  </target>
+
+  <target name="setup">
+    <loadfile srcfile="build/setup.js" property="setup.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('setup.js'));
+    </script>
   </target>
 
   <target name="make" depends="setup" description="make">
+    <loadfile srcfile="build/make.js" property="make.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('make.js'));
+    </script>
+  </target>
 
-    <mkdir dir="target/classes" />
-    <javac encoding="UTF-8" source="1.8" target="1.8" debug="true"
-           srcdir="src/main/java" destdir="target/classes">
-
-      <classpath refid="lib" />
-      <compilerarg value="-Xlint:all,-rawtypes,-unchecked" />
-    </javac>
-
-    <mkdir dir="target/test-classes" />
-    <javac encoding="UTF-8" source="1.8" target="1.8" debug="true"
-           srcdir="src/test/java" destdir="target/test-classes">
-
-      <classpath refid="lib" />
-      <classpath path="target/classes" />
-      <compilerarg value="-Xlint:all,-rawtypes,-unchecked" />
-    </javac>
-
+  <target name="javadoc" depends="make" description="javadoc">
+    <loadfile srcfile="build/javadoc.js" property="javadoc.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('javadoc.js'));
+    </script>
   </target>
 
   <target name="build" depends="clean, make" description="build" />
@@ -89,20 +71,10 @@
   </target>
 
   <target name="test" depends="jar" description="run">
-
-    <delete dir="target/test-result" />
-    <mkdir dir="target/test-result" />
-
-    <junit printsummary="yes" fork="yes" forkmode="once">
-      <classpath refid="lib" />
-      <classpath path="target/indolently.jar" />
-      <classpath path="target/test-classes" />
-
-      <batchtest todir="target/test-result">
-        <fileset dir="target/test-classes" includes="**/*Test.class" />
-        <formatter type="plain" usefile="false" />
-      </batchtest>
-    </junit>
+    <loadfile srcfile="build/test.js" property="test.js" />
+    <script language="javascript">
+      eval(project.getProperty('ari.js')).run(project.getProperty('test.js'));
+    </script>
   </target>
 
 </project>
