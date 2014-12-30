@@ -33,11 +33,14 @@
     name: 'ivy-retrieve',
     classname: 'org.apache.ivy.ant.IvyRetrieve',
     then: function(name) {
+
+        var libdir = 'target/lib';
+
         ARI.task('delete', {
-            dir: 'target/lib',
+            dir: libdir,
             quiet: true
         }).task('mkdir', {
-            dir: 'target/lib'
+            dir: libdir
         }).task(name, {
             conf: '*',
             pattern: 'target/lib/default/[module]-[revision].[ext]'

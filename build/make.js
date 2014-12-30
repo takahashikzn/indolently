@@ -26,9 +26,7 @@
 
     ARI.task('mkdir', {
         dir: x.destdir
-    });
-
-    ARI.task('javac', {
+    }).task('javac', {
         encoding: 'UTF-8',
         source: 1.8,
         target: 1.8,
@@ -38,7 +36,7 @@
 
         '': {
             compilerarg: {
-                value: '-Xlint:all,-rawtypes,-unchecked'
+                value: [ '-Xlint:all', '-rawtypes', '-unchecked' ].join(',')
             },
             classpath: [ {
                 refid: 'lib'
