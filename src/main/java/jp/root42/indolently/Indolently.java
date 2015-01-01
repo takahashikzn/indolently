@@ -758,12 +758,12 @@ public class Indolently {
      * i.e. this method tests {@code lower < upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean lt(final double lower, final double upper) {
-        return Double.compare(lower, upper) < 0;
+    public static boolean lt(final double l, final double u) {
+        return Double.compare(l, u) < 0;
     }
 
     /**
@@ -771,12 +771,12 @@ public class Indolently {
      * i.e. this method tests {@code lower <= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean le(final double lower, final double upper) {
-        return Double.compare(lower, upper) <= 0;
+    public static boolean le(final double l, final double u) {
+        return Double.compare(l, u) <= 0;
     }
 
     /**
@@ -784,12 +784,12 @@ public class Indolently {
      * i.e. this method tests {@code lower > upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gt(final double lower, final double upper) {
-        return Double.compare(lower, upper) > 0;
+    public static boolean gt(final double l, final double u) {
+        return Double.compare(l, u) > 0;
     }
 
     /**
@@ -797,12 +797,12 @@ public class Indolently {
      * i.e. this method tests {@code lower >= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean ge(final double lower, final double upper) {
-        return Double.compare(lower, upper) >= 0;
+    public static boolean ge(final double l, final double u) {
+        return Double.compare(l, u) >= 0;
     }
 
     /**
@@ -810,12 +810,12 @@ public class Indolently {
      * i.e. this method tests {@code lower < upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean lt(final long lower, final long upper) {
-        return lower < upper;
+    public static boolean lt(final long l, final long u) {
+        return l < u;
     }
 
     /**
@@ -823,12 +823,12 @@ public class Indolently {
      * i.e. this method tests {@code lower <= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean le(final long lower, final long upper) {
-        return lower <= upper;
+    public static boolean le(final long l, final long u) {
+        return l <= u;
     }
 
     /**
@@ -836,12 +836,12 @@ public class Indolently {
      * i.e. this method tests {@code lower > upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gt(final long lower, final long upper) {
-        return lower > upper;
+    public static boolean gt(final long l, final long u) {
+        return l > u;
     }
 
     /**
@@ -849,12 +849,12 @@ public class Indolently {
      * i.e. this method tests {@code lower >= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static boolean ge(final long lower, final long upper) {
-        return lower >= upper;
+    public static boolean ge(final long l, final long u) {
+        return l >= u;
     }
 
     /**
@@ -862,12 +862,12 @@ public class Indolently {
      * i.e. this method tests {@code lower < upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean lt(final T lower, final T upper) {
-        return lower.compareTo(upper) < 0;
+    public static <T extends Comparable<T>> boolean lt(final T l, final T u) {
+        return l.compareTo(u) < 0;
     }
 
     /**
@@ -875,12 +875,12 @@ public class Indolently {
      * i.e. this method tests {@code lower <= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean le(final T lower, final T upper) {
-        return lower.compareTo(upper) <= 0;
+    public static <T extends Comparable<T>> boolean le(final T l, final T u) {
+        return l.compareTo(u) <= 0;
     }
 
     /**
@@ -888,12 +888,12 @@ public class Indolently {
      * i.e. this method tests {@code lower > upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gt(final T lower, final T upper) {
-        return lower.compareTo(upper) > 0;
+    public static <T extends Comparable<T>> boolean gt(final T l, final T u) {
+        return l.compareTo(u) > 0;
     }
 
     /**
@@ -901,12 +901,12 @@ public class Indolently {
      * i.e. this method tests {@code lower >= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean ge(final T lower, final T upper) {
-        return lower.compareTo(upper) >= 0;
+    public static <T extends Comparable<T>> boolean ge(final T l, final T u) {
+        return l.compareTo(u) >= 0;
     }
 
     /**
@@ -914,13 +914,13 @@ public class Indolently {
      * i.e. this method tests {@code lower < val < upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gtlt(final T lower, final T val, final T upper) {
-        return lt(lower, val) && lt(val, upper);
+    public static <T extends Comparable<T>> boolean gtlt(final T l, final T m, final T u) {
+        return lt(l, m) && lt(m, u);
     }
 
     /**
@@ -928,13 +928,13 @@ public class Indolently {
      * i.e. this method tests {@code lower <= val < upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gelt(final T lower, final T val, final T upper) {
-        return le(lower, val) && lt(val, upper);
+    public static <T extends Comparable<T>> boolean gelt(final T l, final T m, final T u) {
+        return le(l, m) && lt(m, u);
     }
 
     /**
@@ -942,13 +942,13 @@ public class Indolently {
      * i.e. this method tests {@code lower < val <= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gtle(final T lower, final T val, final T upper) {
-        return lt(lower, val) && le(val, upper);
+    public static <T extends Comparable<T>> boolean gtle(final T l, final T m, final T u) {
+        return lt(l, m) && le(m, u);
     }
 
     /**
@@ -956,153 +956,153 @@ public class Indolently {
      * i.e. this method tests {@code lower <= val <= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gele(final T lower, final T val, final T upper) {
-        return le(lower, val) && le(val, upper);
+    public static <T extends Comparable<T>> boolean gele(final T l, final T m, final T u) {
+        return le(l, m) && le(m, u);
     }
 
     /**
      * Test that the value is gerater than lower and less than upper.
      * i.e. this method tests {@code lower < val < upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gtlt(final long lower, final long val, final long upper) {
-        return (lower < val) && (val < upper);
+    public static boolean gtlt(final long l, final long m, final long u) {
+        return gt(l, m) && lt(m, u);
     }
 
     /**
      * Test that the value is gerater equal lower and less than upper.
      * i.e. this method tests {@code lower <= val < upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gelt(final long lower, final long val, final long upper) {
-        return (lower <= val) && (val < upper);
+    public static boolean gelt(final long l, final long m, final long u) {
+        return ge(l, m) && lt(m, u);
     }
 
     /**
      * Test that the value is gerater than lower and less equal upper.
      * i.e. this method tests {@code lower < val <= upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gtle(final long lower, final long val, final long upper) {
-        return (lower < val) && (val <= upper);
+    public static boolean gtle(final long l, final long m, final long u) {
+        return gt(l, m) && le(m, u);
     }
 
     /**
      * Test that the value is gerater equal lower and less equal upper.
      * i.e. this method tests {@code lower <= val <= upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gele(final long lower, final long val, final long upper) {
-        return (lower <= val) && (val <= upper);
+    public static boolean gele(final long l, final long m, final long u) {
+        return ge(l, m) && le(m, u);
     }
 
     /**
      * Test that the value is gerater than lower and less than upper.
      * i.e. this method tests {@code lower < val < upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gtlt(final double lower, final double val, final double upper) {
-        return (lower < val) && (val < upper);
+    public static boolean gtlt(final double l, final double m, final double u) {
+        return gt(l, m) && lt(m, u);
     }
 
     /**
      * Test that the value is gerater equal lower and less than upper.
      * i.e. this method tests {@code lower <= val < upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gelt(final double lower, final double val, final double upper) {
-        return (lower <= val) && (val < upper);
+    public static boolean gelt(final double l, final double m, final double u) {
+        return ge(l, m) && lt(m, u);
     }
 
     /**
      * Test that the value is gerater than lower and less equal upper.
      * i.e. this method tests {@code lower < val <= upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gtle(final double lower, final double val, final double upper) {
-        return (lower < val) && (val <= upper);
+    public static boolean gtle(final double l, final double m, final double u) {
+        return gt(l, m) && le(m, u);
     }
 
     /**
      * Test that the value is gerater equal lower and less equal upper.
      * i.e. this method tests {@code lower <= val <= upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gele(final double lower, final double val, final double upper) {
-        return (lower <= val) && (val <= upper);
+    public static boolean gele(final double l, final double m, final double u) {
+        return ge(l, m) && le(m, u);
     }
 
     /**
      * An alias of {@link #gele(Comparable, Comparable, Comparable)}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean between(final T lower, final T val, final T upper) {
-        return gele(lower, val, upper);
+    public static <T extends Comparable<T>> boolean between(final T l, final T m, final T u) {
+        return gele(l, m, u);
     }
 
     /**
      * An alias of {@link #gele(long, long, long)}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean between(final long lower, final long val, final long upper) {
-        return gele(lower, val, upper);
+    public static boolean between(final long l, final long m, final long u) {
+        return gele(l, m, u);
     }
 
     /**
-     * An alias of {@link #gele(long, long, long)}.
+     * An alias of {@link #gele(double, double, double)}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean between(final double lower, final double val, final double upper) {
-        return gele(lower, val, upper);
+    public static boolean between(final double l, final double m, final double u) {
+        return gele(l, m, u);
     }
 
     @SafeVarargs
