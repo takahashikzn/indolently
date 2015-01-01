@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import jp.root42.indolently.function.TriFunction;
+
 
 /**
  * @param <T> -
@@ -35,6 +37,60 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if the result not present
      */
     default <R> R reduce(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
+        return this.reduce(initial, (x, y, z) -> f.apply(y, z));
+    }
+
+    /**
+     * Map then Reduce operation with initial value.
+     *
+     * @param <R> mapping target type
+     * @param initial initial value
+     * @param f function
+     * @return result value
+     */
+    default <R> Optional<R> reduce(final Optional<? extends R> initial,
+        final BiFunction<? super R, ? super T, ? extends R> f) {
+
+        return initial.map(x -> Optional.ofNullable(this.reduce(initial.get(), f))).orElse(Optional.empty());
+    }
+
+    /**
+     * Reduce operation.
+     *
+     * @param f function
+     * @return result value
+     * @throws NoSuchElementException if this collection is empty
+     * @see #mapred(Function, BiFunction)
+     */
+    default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
+        return this.reduce((x, y, z) -> f.apply(y, z));
+    }
+
+    /**
+     * Map then Reduce operation.
+     *
+     * @param <R> mapping target type
+     * @param fm mapper function
+     * @param fr reducer function
+     * @return result value
+     * @throws NoSuchElementException if this collection is empty
+     */
+    default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
+        final BiFunction<? super R, ? super R, ? extends R> fr) {
+
+        return this.mapred(fm, (x, y, z) -> fr.apply(y, z));
+    }
+
+    /**
+     * Map then Reduce operation with initial value.
+     *
+     * @param <R> mapping target type
+     * @param initial initial value
+     * @param f function
+     * @return result value
+     * @throws NoSuchElementException if the result not present
+     */
+    default <R> R reduce(final R initial, final TriFunction<Integer, ? super R, ? super T, ? extends R> f) {
         return this.reduce(Optional.of(initial), f).get();
     }
 
@@ -46,7 +102,7 @@ public interface Reducible<T> {
      * @param f function
      * @return result value
      */
-    <R> Optional<R> reduce(Optional<? extends R> initial, BiFunction<? super R, ? super T, ? extends R> f);
+    <R> Optional<R> reduce(Optional<? extends R> initial, TriFunction<Integer, ? super R, ? super T, ? extends R> f);
 
     /**
      * Reduce operation.
@@ -56,7 +112,7 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      * @see #mapred(Function, BiFunction)
      */
-    default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
+    default Optional<T> reduce(final TriFunction<Integer, ? super T, ? super T, ? extends T> f) {
 
         // "x -> x" lambda literal occurs compilation error on OracleJDK compiler
         return this.mapred(Function.identity(), f);
@@ -71,5 +127,6 @@ public interface Reducible<T> {
      * @return result value
      * @throws NoSuchElementException if this collection is empty
      */
-    <R> Optional<R> mapred(Function<? super T, ? extends R> fm, BiFunction<? super R, ? super R, ? extends R> fr);
+    <R> Optional<R> mapred(Function<? super T, ? extends R> fm,
+        TriFunction<Integer, ? super R, ? super R, ? extends R> fr);
 }

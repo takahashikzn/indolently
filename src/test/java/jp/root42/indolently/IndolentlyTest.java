@@ -581,6 +581,20 @@ public class IndolentlyTest {
 
         list0.freeze();
         list1.freeze();
+
+        try {
+            list0.add(new Object());
+            fail();
+        } catch (final UnsupportedOperationException e) {
+            assert true;
+        }
+
+        try {
+            list1.add(new Object());
+            fail();
+        } catch (final UnsupportedOperationException e) {
+            assert true;
+        }
     }
 
     /**

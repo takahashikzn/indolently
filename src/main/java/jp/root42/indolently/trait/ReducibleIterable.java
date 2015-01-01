@@ -15,8 +15,9 @@ package jp.root42.indolently.trait;
 
 import java.util.Iterator;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import jp.root42.indolently.function.TriFunction;
 
 
 /**
@@ -28,7 +29,7 @@ public interface ReducibleIterable<T>
 
     @Override
     default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
-        final BiFunction<? super R, ? super R, ? extends R> fr) {
+        final TriFunction<Integer, ? super R, ? super R, ? extends R> fr) {
 
         final Iterator<T> i = this.iterator();
 
@@ -38,8 +39,9 @@ public interface ReducibleIterable<T>
 
         R rem = fm.apply(i.next());
 
+        int idx = 0;
         while (i.hasNext()) {
-            rem = fr.apply(rem, fm.apply(i.next()));
+            rem = fr.apply(idx++, rem, fm.apply(i.next()));
         }
 
         return Optional.ofNullable(rem);
@@ -47,12 +49,13 @@ public interface ReducibleIterable<T>
 
     @Override
     default <R> Optional<R> reduce(final Optional<? extends R> initial,
-        final BiFunction<? super R, ? super T, ? extends R> f) {
+        final TriFunction<Integer, ? super R, ? super T, ? extends R> f) {
 
         R rem = initial.orElse(null);
 
+        int idx = 0;
         for (final T val : this) {
-            rem = f.apply(rem, val);
+            rem = f.apply(idx++, rem, val);
         }
 
         return Optional.ofNullable(rem);
