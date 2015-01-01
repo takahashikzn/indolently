@@ -1105,6 +1105,36 @@ public class Indolently {
         return gele(l, m, u);
     }
 
+    public static boolean equal(final long l, final long r, final long... rest) {
+
+        if (l != r) {
+            return false;
+        }
+
+        for (final long x : rest) {
+            if (l != x) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean equal(final double l, final double r, final double... rest) {
+
+        if (Double.compare(l, r) != 0) {
+            return false;
+        }
+
+        for (final double x : rest) {
+            if (Double.compare(l, x) != 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @SafeVarargs
     public static <T extends Comparable<T>> boolean equal(final T l, final T r, final T... rest) {
         return list(r).pushAll(list(rest)).every(x -> equal(l, x));
@@ -1141,11 +1171,11 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> T max(final T l, final T r) {
-        return (0 <= l.compareTo(r)) ? l : r;
+        return ge(l, r) ? l : r;
     }
 
     public static <T extends Comparable<T>> T min(final T l, final T r) {
-        return (l.compareTo(r) <= 0) ? l : r;
+        return le(l, r) ? l : r;
     }
 
     @SafeVarargs
