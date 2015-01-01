@@ -48,6 +48,202 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
+     * {@link Indolently#gtlt(long, long, long)}/{@link Indolently#gtlt(double, double, double)}/
+     * {@link Indolently#gtlt(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGtlt() {
+
+        assertTrue(gtlt(0, 1, 2));
+        assertFalse(gtlt(1, 1, 2));
+        assertFalse(gtlt(1, 2, 2));
+        assertFalse(gtlt(0, 0, 0));
+        assertFalse(gtlt(1, 0, 2));
+        assertFalse(gtlt(0, 2, 1));
+
+        assertTrue(gtlt(0.0, 1.0, 2.0));
+        assertFalse(gtlt(1.0, 1.0, 2.0));
+        assertFalse(gtlt(1.0, 2.0, 2.0));
+        assertFalse(gtlt(0.0, 0.0, 0.0));
+        assertFalse(gtlt(1.0, 0.0, 2.0));
+        assertFalse(gtlt(0.0, 2.0, 1.0));
+
+        assertTrue(gtlt("0", "1", "2"));
+        assertFalse(gtlt("1", "1", "2"));
+        assertFalse(gtlt("1", "2", "2"));
+        assertFalse(gtlt("0", "0", "0"));
+        assertFalse(gtlt("1", "0", "2"));
+        assertFalse(gtlt("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#gelt(long, long, long)}/{@link Indolently#gelt(double, double, double)}/
+     * {@link Indolently#gelt(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGelt() {
+
+        assertTrue(gelt(0, 1, 2));
+        assertTrue(gelt(1, 1, 2));
+        assertFalse(gelt(1, 2, 2));
+        assertFalse(gelt(0, 0, 0));
+        assertFalse(gelt(1, 0, 2));
+        assertFalse(gelt(0, 2, 1));
+
+        assertTrue(gelt(0.0, 1.0, 2.0));
+        assertTrue(gelt(1.0, 1.0, 2.0));
+        assertFalse(gelt(1.0, 2.0, 2.0));
+        assertFalse(gelt(0.0, 0.0, 0.0));
+        assertFalse(gelt(1.0, 0.0, 2.0));
+        assertFalse(gelt(0.0, 2.0, 1.0));
+
+        assertTrue(gelt("0", "1", "2"));
+        assertTrue(gelt("1", "1", "2"));
+        assertFalse(gelt("1", "2", "2"));
+        assertFalse(gelt("0", "0", "0"));
+        assertFalse(gelt("1", "0", "2"));
+        assertFalse(gelt("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#gtle(long, long, long)}/{@link Indolently#gtle(double, double, double)}/
+     * {@link Indolently#gtle(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGtle() {
+
+        assertTrue(gtle(0, 1, 2));
+        assertFalse(gtle(1, 1, 2));
+        assertTrue(gtle(1, 2, 2));
+        assertFalse(gtle(0, 0, 0));
+        assertFalse(gtle(1, 0, 2));
+        assertFalse(gtle(0, 2, 1));
+
+        assertTrue(gtle(0.0, 1.0, 2.0));
+        assertFalse(gtle(1.0, 1.0, 2.0));
+        assertTrue(gtle(1.0, 2.0, 2.0));
+        assertFalse(gtle(0.0, 0.0, 0.0));
+        assertFalse(gtle(1.0, 0.0, 2.0));
+        assertFalse(gtle(0.0, 2.0, 1.0));
+
+        assertTrue(gtle("0", "1", "2"));
+        assertFalse(gtle("1", "1", "2"));
+        assertTrue(gtle("1", "2", "2"));
+        assertFalse(gtle("0", "0", "0"));
+        assertFalse(gtle("1", "0", "2"));
+        assertFalse(gtle("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#gele(long, long, long)}/{@link Indolently#gele(double, double, double)}/
+     * {@link Indolently#gele(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGele() {
+
+        assertTrue(gele(0, 1, 2));
+        assertTrue(gele(1, 1, 2));
+        assertTrue(gele(1, 2, 2));
+        assertTrue(gele(0, 0, 0));
+        assertFalse(gele(1, 0, 2));
+        assertFalse(gele(0, 2, 1));
+
+        assertTrue(gele(0.0, 1.0, 2.0));
+        assertTrue(gele(1.0, 1.0, 2.0));
+        assertTrue(gele(1.0, 2.0, 2.0));
+        assertTrue(gele(0.0, 0.0, 0.0));
+        assertFalse(gele(1.0, 0.0, 2.0));
+        assertFalse(gele(0.0, 2.0, 1.0));
+
+        assertTrue(gele("0", "1", "2"));
+        assertTrue(gele("1", "1", "2"));
+        assertTrue(gele("1", "2", "2"));
+        assertTrue(gele("0", "0", "0"));
+        assertFalse(gele("1", "0", "2"));
+        assertFalse(gele("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#ge(long, long)}/{@link Indolently#ge(double, double)}/
+     * {@link Indolently#ge(Comparable, Comparable)}
+     */
+    @Test
+    public void testGreaterEqual() {
+
+        assertTrue(ge(2, 1));
+        assertTrue(ge(1, 1));
+        assertFalse(ge(0, 1));
+
+        assertTrue(ge(2.0, 1.0));
+        assertTrue(ge(1.0, 1.0));
+        assertFalse(ge(0.0, 1.0));
+
+        assertTrue(ge("2", "1"));
+        assertTrue(ge("1", "1"));
+        assertFalse(ge("0", "1"));
+    }
+
+    /**
+     * {@link Indolently#gt(long, long)}/{@link Indolently#gt(double, double)}/
+     * {@link Indolently#gt(Comparable, Comparable)}
+     */
+    @Test
+    public void testGreaterThan() {
+
+        assertTrue(gt(2, 1));
+        assertFalse(gt(1, 1));
+        assertFalse(gt(0, 1));
+
+        assertTrue(gt(2.0, 1.0));
+        assertFalse(gt(1.0, 1.0));
+        assertFalse(gt(0.0, 1.0));
+
+        assertTrue(gt("2", "1"));
+        assertFalse(gt("1", "1"));
+        assertFalse(gt("0", "1"));
+    }
+
+    /**
+     * {@link Indolently#le(long, long)}/{@link Indolently#le(double, double)}/
+     * {@link Indolently#le(Comparable, Comparable)}
+     */
+    @Test
+    public void testLessEqual() {
+
+        assertTrue(le(1, 2));
+        assertTrue(le(1, 1));
+        assertFalse(le(1, 0));
+
+        assertTrue(le(1.0, 2.0));
+        assertTrue(le(1.0, 1.0));
+        assertFalse(le(1.0, 0.0));
+
+        assertTrue(le("1", "2"));
+        assertTrue(le("1", "1"));
+        assertFalse(le("1", "0"));
+    }
+
+    /**
+     * {@link Indolently#lt(long, long)}/{@link Indolently#lt(double, double)}/
+     * {@link Indolently#lt(Comparable, Comparable)}
+     */
+    @Test
+    public void testLessThan() {
+
+        assertTrue(lt(1, 2));
+        assertFalse(lt(1, 1));
+        assertFalse(lt(1, 0));
+
+        assertTrue(lt(1.0, 2.0));
+        assertFalse(lt(1.0, 1.0));
+        assertFalse(lt(1.0, 0.0));
+
+        assertTrue(lt("1", "2"));
+        assertFalse(lt("1", "1"));
+        assertFalse(lt("1", "0"));
+    }
+
+    /**
      * {@link Indolently#empty(Iterable)}
      *
      * @param desc description
