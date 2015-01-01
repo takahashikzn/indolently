@@ -975,7 +975,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gtlt(final long l, final long m, final long u) {
-        return gt(l, m) && lt(m, u);
+        return lt(l, m) && lt(m, u);
     }
 
     /**
@@ -988,7 +988,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gelt(final long l, final long m, final long u) {
-        return ge(l, m) && lt(m, u);
+        return le(l, m) && lt(m, u);
     }
 
     /**
@@ -1001,7 +1001,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gtle(final long l, final long m, final long u) {
-        return gt(l, m) && le(m, u);
+        return lt(l, m) && le(m, u);
     }
 
     /**
@@ -1014,7 +1014,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gele(final long l, final long m, final long u) {
-        return ge(l, m) && le(m, u);
+        return le(l, m) && le(m, u);
     }
 
     /**
@@ -1027,7 +1027,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gtlt(final double l, final double m, final double u) {
-        return gt(l, m) && lt(m, u);
+        return lt(l, m) && lt(m, u);
     }
 
     /**
@@ -1040,7 +1040,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gelt(final double l, final double m, final double u) {
-        return ge(l, m) && lt(m, u);
+        return le(l, m) && lt(m, u);
     }
 
     /**
@@ -1053,7 +1053,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gtle(final double l, final double m, final double u) {
-        return gt(l, m) && le(m, u);
+        return lt(l, m) && le(m, u);
     }
 
     /**
@@ -1066,7 +1066,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean gele(final double l, final double m, final double u) {
-        return ge(l, m) && le(m, u);
+        return le(l, m) && le(m, u);
     }
 
     /**
