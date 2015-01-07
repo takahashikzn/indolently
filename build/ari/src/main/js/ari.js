@@ -51,6 +51,12 @@
     };
 
     (function() {
+        if (!String.prototype.contains) {
+            String.prototype.contains = function(s) {
+                return 0 <= this.indexOf(s);
+            };
+        }
+
         if (!String.prototype.capitalize) {
             String.prototype.capitalize = function() {
                 return this[0].toUpperCase() + this.substring(1);
@@ -72,6 +78,12 @@
         if (!String.prototype.endsWith) {
             String.prototype.endsWith = function(x) {
                 return (this.indexOf(x) + x.length) === this.length;
+            };
+        }
+
+        if (!Array.prototype.contains) {
+            Array.prototype.contains = function(x) {
+                return 0 <= this.indexOf(x);
             };
         }
     }());
