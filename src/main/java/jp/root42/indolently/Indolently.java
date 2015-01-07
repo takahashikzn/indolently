@@ -1152,6 +1152,42 @@ public class Indolently {
         return (l == null) ? (r == null) : (l == r) || l.equals(r);
     }
 
+    public enum ComparisonResult {
+
+        SMALL(-1), EQUAL(0), LARGE(1);
+
+        public final int sign;
+
+        private ComparisonResult(final int sign) {
+            this.sign = sign;
+        }
+
+        public int sign() {
+            return this.sign;
+        }
+
+        public int sign(final boolean asc) {
+            return asc ? this.sign : -this.sign;
+        }
+
+        public int reverse() {
+            return -this.sign;
+        }
+    }
+
+    public static <T extends Comparable<T>> ComparisonResult compare(final T l, final T r) {
+
+        final int rslt = l.compareTo(r);
+
+        if (rslt < 0) {
+            return ComparisonResult.SMALL;
+        } else if (rslt == 0) {
+            return ComparisonResult.EQUAL;
+        } else {
+            return ComparisonResult.LARGE;
+        }
+    }
+
     @TypeUnsafe
     public static <T> boolean equiv(final T l, final T r) {
 
