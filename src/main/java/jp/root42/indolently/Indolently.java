@@ -330,9 +330,20 @@ public class Indolently {
     }
 
     /**
+     * Convert arguments to typed array.
+     *
+     * @param elems elements of array
+     * @return {@link Object} array
+     */
+    @SafeVarargs
+    public static <T> T[] arrayOf(final T... elems) {
+        return elems;
+    }
+
+    /**
      * The shortcut notation of <code>new Object[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return {@link Object} array
      */
     public static Object[] oarray(final Object... elems) {
@@ -342,7 +353,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new char[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return char array
      */
     public static char[] parray(final char... elems) {
@@ -352,7 +363,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new int[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return int array
      */
     public static int[] parray(final int... elems) {
@@ -362,7 +373,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new long[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return long array
      */
     public static long[] parray(final long... elems) {
@@ -372,7 +383,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new float[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return float array
      */
     public static float[] parray(final float... elems) {
@@ -382,7 +393,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new byte[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return byte array
      */
     public static byte[] parray(final byte... elems) {
@@ -392,7 +403,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new double[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return double array
      */
     public static double[] parray(final double... elems) {
@@ -402,7 +413,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new boolean[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return boolean array
      */
     public static boolean[] parray(final boolean... elems) {
@@ -412,7 +423,7 @@ public class Indolently {
     /**
      * Create a list of <code>char</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return char list
      */
     public static SList<Character> plist(final char... elems) {
@@ -426,7 +437,7 @@ public class Indolently {
     /**
      * Create a list of <code>int</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return int list
      */
     public static SList<Integer> plist(final int... elems) {
@@ -440,7 +451,7 @@ public class Indolently {
     /**
      * Create a list of <code>long</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return long list
      */
     public static SList<Long> plist(final long... elems) {
@@ -454,7 +465,7 @@ public class Indolently {
     /**
      * Create a list of <code>float</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return float list
      */
     public static SList<Float> plist(final float... elems) {
@@ -468,7 +479,7 @@ public class Indolently {
     /**
      * Create a list of <code>short</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return short list
      */
     public static SList<Short> plist(final short... elems) {
@@ -482,7 +493,7 @@ public class Indolently {
     /**
      * Create a list of <code>double</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return double list
      */
     public static SList<Double> plist(final double... elems) {
@@ -496,7 +507,7 @@ public class Indolently {
     /**
      * Create a list of <code>boolean</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return boolean list
      */
     public static SList<Boolean> plist(final boolean... elems) {
@@ -626,7 +637,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Iterable<?>... i) {
-        return (i == null) || (i.length == 0) || list(i).every(Indolently::empty);
+        return !empty((Object[]) i) && list(i).every(Indolently::empty);
     }
 
     /**
@@ -646,7 +657,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Map<?, ?>... map) {
-        return (map == null) || (map.length == 0) || list(map).every(Indolently::empty);
+        return !empty((Object[]) map) && list(map).every(Indolently::empty);
     }
 
     /**
@@ -666,7 +677,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?>... opt) {
-        return (opt == null) || (opt.length == 0) || list(opt).every(Indolently::empty);
+        return !empty((Object[]) opt) && list(opt).every(Indolently::empty);
     }
 
     /**
@@ -686,7 +697,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final CharSequence... cs) {
-        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::empty);
+        return !empty((Object[]) cs) && list(cs).every(Indolently::empty);
     }
 
     /**
@@ -706,7 +717,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean blank(final CharSequence... cs) {
-        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::blank);
+        return !empty((Object[]) cs) && list(cs).every(Indolently::blank);
     }
 
     public static boolean empty(final Object[] ary) {

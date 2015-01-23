@@ -269,6 +269,140 @@ public class IndolentlyTest {
     }
 
     /**
+     * {@link Indolently#empty(CharSequence...)}, {@link Indolently#empty(Optional...)},
+     * {@link Indolently#empty(Iterable...)}, {@link Indolently#empty(Map...)}
+     *
+     * @param desc description
+     * @param expected expected value
+     * @param args args
+     * @param type array type
+     */
+    @Parameters
+    @Test
+    public void testEmptyVarargs(final String desc, final boolean expected, final Object[] args, final Class<?> type) {
+
+        if (type == String.class) {
+
+            assertThat(empty((CharSequence[]) args)).isEqualTo(expected);
+        } else if (type == Optional.class) {
+
+            assertThat(empty((Optional[]) args)).isEqualTo(expected);
+        } else if (type == Iterable.class) {
+
+            assertThat(empty((Iterable<?>[]) args)).isEqualTo(expected);
+        } else if (type == Map.class) {
+
+            assertThat(empty((Map<?, ?>[]) args)).isEqualTo(expected);
+        } else {
+
+            fail();
+        }
+    }
+
+    static List<?> parametersForTestEmptyVarargs() {
+
+        return list(
+            //
+            oarray("null", false, null, Iterable.class) //
+            ,
+            oarray("empty arguments", false, new List<?>[0], Iterable.class) //
+            ,
+            oarray("null argument", true, new List<?>[1], Iterable.class) //
+            ,
+            oarray("empty list", true, arrayOf(list()), Iterable.class) //
+            ,
+            oarray("empty lists", true, arrayOf(list(), list()), Iterable.class) //
+            ,
+            oarray("non empty list only", false, arrayOf(list(0)), Iterable.class) //
+            ,
+            oarray("empty and non empty lists", false, arrayOf(list(0), list()), Iterable.class) //
+            ,
+            oarray("non empty lists only", false, arrayOf(list(0), list(0)), Iterable.class) //
+
+            ,
+            oarray("null", false, null, Map.class) //
+            ,
+            oarray("empty arguments", false, new Map<?, ?>[0], Map.class) //
+            ,
+            oarray("null argument", true, new Map<?, ?>[1], Map.class) //
+            ,
+            oarray("empty map", true, arrayOf(map()), Map.class) //
+            ,
+            oarray("empty maps", true, arrayOf(map(), map()), Map.class) //
+            ,
+            oarray("non empty map only", false, arrayOf(map("a", 1)), Map.class) //
+            ,
+            oarray("empty and non empty maps", false, arrayOf(map("a", 1), map()), Map.class) //
+            ,
+            oarray("non empty maps only", false, arrayOf(map("a", 1), map("a", 1)), Map.class) //
+
+            ,
+            oarray("null", false, null, String.class) //
+            ,
+            oarray("empty arguments", false, new String[0], String.class) //
+            ,
+            oarray("null argument", true, new String[1], String.class) //
+            ,
+            oarray("empty string", true, arrayOf(""), String.class) //
+            ,
+            oarray("blank string", false, arrayOf(" "), String.class) //
+            ,
+            oarray("empty strings", true, arrayOf("", ""), String.class) //
+            ,
+            oarray("non empty string only", false, arrayOf("a"), String.class) //
+            ,
+            oarray("empty and non empty strings", false, arrayOf("a", ""), String.class) //
+            ,
+            oarray("non empty strings only", false, arrayOf("a", "b"), String.class) //
+
+            ,
+            oarray("null", false, null, Optional.class) //
+            ,
+            oarray("empty arguments", false, new Optional[0], Optional.class) //
+            ,
+            oarray("null argument", true, new Optional[1], Optional.class) //
+            ,
+            oarray("empty optional", true, arrayOf(Optional.empty()), Optional.class) //
+            ,
+            oarray("empty optionals", true, arrayOf(Optional.empty(), Optional.empty()), Optional.class) //
+            ,
+            oarray("non empty optional only", false, arrayOf(Optional.of("a")), Optional.class) //
+            ,
+            oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class) //
+            , oarray("non empty optionals only", false, arrayOf(Optional.of("a"), Optional.of("b")), Optional.class) //
+        );
+    }
+
+    /**
+     * {@link Indolently#blank(CharSequence...)}
+     *
+     * @param desc description
+     * @param expected expected value
+     * @param val test value
+     */
+    @Parameters
+    @Test
+    public void testBlank(final String desc, final boolean expected, final CharSequence[] val) {
+
+        assertThat(blank(val)).as(desc).isEqualTo(expected);
+    }
+
+    static List<Object[]> parametersForTestBlank() {
+
+        return list( //
+            oarray("null", false, null) //
+            , oarray("empty array", false, new String[0]) //
+            , oarray("empty", true, array("")) //
+            , oarray("blank", true, array("  ")) //
+            , oarray("empty and blank", true, array("", "  ")) //
+            , oarray("blank strings", true, array("  ", "  ")) //
+            , oarray("non blank and empty", false, array("a", "")) //
+            , oarray("non blank and blank", false, array("a", "")) //
+            , oarray("non blnak strings", false, array("a", "b")) //
+        );
+    }
+
+    /**
      * {@link Indolently#array(Object, Object...)} / {@link Indolently#array(Iterable)} /
      * {@link Indolently#array(Class, Object, Object...)}
      */
