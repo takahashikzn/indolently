@@ -461,9 +461,9 @@ public class IndolentlyTest {
     }
 
     /**
-     * {@link Indolently#min(Comparable, Comparable, Comparable...)} /
-     * {@link Indolently#min(Comparable, Comparable, Comparable...)}
+     * {@link Indolently#max(Iterable)} / {@link Indolently#min(Iterable)}
      */
+    @SuppressWarnings("javadoc")
     @Test
     public void testMinMax() {
 
@@ -473,6 +473,17 @@ public class IndolentlyTest {
 
         assertThat(min(ints)).isEqualTo(1);
         assertThat(max(ints)).isEqualTo(100);
+    }
+
+    /**
+     * {@link Indolently#min(Comparable, Comparable, Comparable...)} /
+     * {@link Indolently#max(Comparable, Comparable, Comparable...)}
+     */
+    @Test
+    public void testMinMaxVarargs() {
+
+        assertThat(min(1, 3, 2, 4)).isEqualTo(1);
+        assertThat(max(1, 3, 2, 4)).isEqualTo(4);
     }
 
     /**
