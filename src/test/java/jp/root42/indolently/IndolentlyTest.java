@@ -303,9 +303,9 @@ public class IndolentlyTest {
 
         return list(
             //
-            oarray("null", false, null, Iterable.class) //
+            oarray("null", true, null, Iterable.class) //
             ,
-            oarray("empty arguments", false, new List<?>[0], Iterable.class) //
+            oarray("empty arguments", true, new List<?>[0], Iterable.class) //
             ,
             oarray("null argument", true, new List<?>[1], Iterable.class) //
             ,
@@ -320,9 +320,9 @@ public class IndolentlyTest {
             oarray("non empty lists only", false, arrayOf(list(0), list(0)), Iterable.class) //
 
             ,
-            oarray("null", false, null, Map.class) //
+            oarray("null", true, null, Map.class) //
             ,
-            oarray("empty arguments", false, new Map<?, ?>[0], Map.class) //
+            oarray("empty arguments", true, new Map<?, ?>[0], Map.class) //
             ,
             oarray("null argument", true, new Map<?, ?>[1], Map.class) //
             ,
@@ -337,9 +337,9 @@ public class IndolentlyTest {
             oarray("non empty maps only", false, arrayOf(map("a", 1), map("a", 1)), Map.class) //
 
             ,
-            oarray("null", false, null, String.class) //
+            oarray("null", true, null, String.class) //
             ,
-            oarray("empty arguments", false, new String[0], String.class) //
+            oarray("empty arguments", true, new String[0], String.class) //
             ,
             oarray("null argument", true, new String[1], String.class) //
             ,
@@ -356,9 +356,9 @@ public class IndolentlyTest {
             oarray("non empty strings only", false, arrayOf("a", "b"), String.class) //
 
             ,
-            oarray("null", false, null, Optional.class) //
+            oarray("null", true, null, Optional.class) //
             ,
-            oarray("empty arguments", false, new Optional[0], Optional.class) //
+            oarray("empty arguments", true, new Optional[0], Optional.class) //
             ,
             oarray("null argument", true, new Optional[1], Optional.class) //
             ,
@@ -390,8 +390,8 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestBlank() {
 
         return list( //
-            oarray("null", false, null) //
-            , oarray("empty array", false, new String[0]) //
+            oarray("null", true, null) //
+            , oarray("empty array", true, new String[0]) //
             , oarray("empty", true, array("")) //
             , oarray("blank", true, array("  ")) //
             , oarray("empty and blank", true, array("", "  ")) //
