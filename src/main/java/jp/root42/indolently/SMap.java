@@ -213,9 +213,10 @@ public interface SMap<K, V>
             return this.val;
         }
 
+        @Deprecated
         @Override
-        public V setValue(final V value) {
-            return this.e.setValue(value);
+        public final V setValue(final V value) {
+            throw new UnsupportedOperationException();
         }
 
         @Override
