@@ -330,9 +330,20 @@ public class Indolently {
     }
 
     /**
+     * Convert arguments to typed array.
+     *
+     * @param elems elements of array
+     * @return {@link Object} array
+     */
+    @SafeVarargs
+    public static <T> T[] arrayOf(final T... elems) {
+        return elems;
+    }
+
+    /**
      * The shortcut notation of <code>new Object[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return {@link Object} array
      */
     public static Object[] oarray(final Object... elems) {
@@ -342,7 +353,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new char[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return char array
      */
     public static char[] parray(final char... elems) {
@@ -352,7 +363,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new int[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return int array
      */
     public static int[] parray(final int... elems) {
@@ -362,7 +373,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new long[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return long array
      */
     public static long[] parray(final long... elems) {
@@ -372,7 +383,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new float[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return float array
      */
     public static float[] parray(final float... elems) {
@@ -382,7 +393,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new byte[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return byte array
      */
     public static byte[] parray(final byte... elems) {
@@ -392,7 +403,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new double[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return double array
      */
     public static double[] parray(final double... elems) {
@@ -402,7 +413,7 @@ public class Indolently {
     /**
      * The shortcut notation of <code>new boolean[] { ... }</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return boolean array
      */
     public static boolean[] parray(final boolean... elems) {
@@ -412,7 +423,7 @@ public class Indolently {
     /**
      * Create a list of <code>char</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return char list
      */
     public static SList<Character> plist(final char... elems) {
@@ -426,7 +437,7 @@ public class Indolently {
     /**
      * Create a list of <code>int</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return int list
      */
     public static SList<Integer> plist(final int... elems) {
@@ -440,7 +451,7 @@ public class Indolently {
     /**
      * Create a list of <code>long</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return long list
      */
     public static SList<Long> plist(final long... elems) {
@@ -454,7 +465,7 @@ public class Indolently {
     /**
      * Create a list of <code>float</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return float list
      */
     public static SList<Float> plist(final float... elems) {
@@ -468,7 +479,7 @@ public class Indolently {
     /**
      * Create a list of <code>short</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return short list
      */
     public static SList<Short> plist(final short... elems) {
@@ -482,7 +493,7 @@ public class Indolently {
     /**
      * Create a list of <code>double</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return double list
      */
     public static SList<Double> plist(final double... elems) {
@@ -496,7 +507,7 @@ public class Indolently {
     /**
      * Create a list of <code>boolean</code>.
      *
-     * @param elems
+     * @param elems elements of array
      * @return boolean list
      */
     public static SList<Boolean> plist(final boolean... elems) {
@@ -626,7 +637,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Iterable<?>... i) {
-        return (i == null) || (i.length == 0) || list(i).every(Indolently::empty);
+        return empty((Object[]) i) || list(i).every(Indolently::empty);
     }
 
     /**
@@ -646,7 +657,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Map<?, ?>... map) {
-        return (map == null) || (map.length == 0) || list(map).every(Indolently::empty);
+        return empty((Object[]) map) || list(map).every(Indolently::empty);
     }
 
     /**
@@ -666,7 +677,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?>... opt) {
-        return (opt == null) || (opt.length == 0) || list(opt).every(Indolently::empty);
+        return empty((Object[]) opt) || list(opt).every(Indolently::empty);
     }
 
     /**
@@ -686,7 +697,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final CharSequence... cs) {
-        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::empty);
+        return empty((Object[]) cs) || list(cs).every(Indolently::empty);
     }
 
     /**
@@ -706,7 +717,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean blank(final CharSequence... cs) {
-        return (cs == null) || (cs.length == 0) || list(cs).every(Indolently::blank);
+        return empty((Object[]) cs) || list(cs).every(Indolently::blank);
     }
 
     public static boolean empty(final Object[] ary) {
@@ -758,12 +769,12 @@ public class Indolently {
      * i.e. this method tests {@code lower < upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean lt(final T lower, final T upper) {
-        return (lower.compareTo(upper) < 0);
+    public static boolean lt(final double l, final double u) {
+        return Double.compare(l, u) < 0;
     }
 
     /**
@@ -771,12 +782,142 @@ public class Indolently {
      * i.e. this method tests {@code lower <= upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param upper upper value
+     * @param l lower value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean le(final T lower, final T upper) {
-        return (lower.compareTo(upper) <= 0);
+    public static boolean le(final double l, final double u) {
+        return Double.compare(l, u) <= 0;
+    }
+
+    /**
+     * Test that the lower is greater than upper.
+     * i.e. this method tests {@code lower > upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean gt(final double l, final double u) {
+        return Double.compare(l, u) > 0;
+    }
+
+    /**
+     * Test that the lower is greater equal than upper.
+     * i.e. this method tests {@code lower >= upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean ge(final double l, final double u) {
+        return Double.compare(l, u) >= 0;
+    }
+
+    /**
+     * Test that the lower is less than upper.
+     * i.e. this method tests {@code lower < upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean lt(final long l, final long u) {
+        return l < u;
+    }
+
+    /**
+     * Test that the lower is less equal than upper.
+     * i.e. this method tests {@code lower <= upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean le(final long l, final long u) {
+        return l <= u;
+    }
+
+    /**
+     * Test that the lower is greater than upper.
+     * i.e. this method tests {@code lower > upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean gt(final long l, final long u) {
+        return l > u;
+    }
+
+    /**
+     * Test that the lower is greater equal than upper.
+     * i.e. this method tests {@code lower >= upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean ge(final long l, final long u) {
+        return l >= u;
+    }
+
+    /**
+     * Test that the lower is less than upper.
+     * i.e. this method tests {@code lower < upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean lt(final T l, final T u) {
+        return l.compareTo(u) < 0;
+    }
+
+    /**
+     * Test that the lower is less equal than upper.
+     * i.e. this method tests {@code lower <= upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean le(final T l, final T u) {
+        return l.compareTo(u) <= 0;
+    }
+
+    /**
+     * Test that the lower is greater than upper.
+     * i.e. this method tests {@code lower > upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gt(final T l, final T u) {
+        return l.compareTo(u) > 0;
+    }
+
+    /**
+     * Test that the lower is greater equal than upper.
+     * i.e. this method tests {@code lower >= upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param u upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean ge(final T l, final T u) {
+        return l.compareTo(u) >= 0;
     }
 
     /**
@@ -784,131 +925,225 @@ public class Indolently {
      * i.e. this method tests {@code lower < val < upper}.
      *
      * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gtlt(final T lower, final T val, final T upper) {
-        return lt(lower, val) && lt(val, upper);
+    public static <T extends Comparable<T>> boolean gtlt(final T l, final T m, final T u) {
+        return lt(l, m) && lt(m, u);
+    }
+
+    /**
+     * Test that the value is gerater equal lower and less than upper.
+     * i.e. this method tests {@code lower <= val < upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gelt(final T l, final T m, final T u) {
+        return le(l, m) && lt(m, u);
+    }
+
+    /**
+     * Test that the value is gerater than lower and less equal upper.
+     * i.e. this method tests {@code lower < val <= upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gtle(final T l, final T m, final T u) {
+        return lt(l, m) && le(m, u);
+    }
+
+    /**
+     * Test that the value is gerater equal lower and less equal upper.
+     * i.e. this method tests {@code lower <= val <= upper}.
+     *
+     * @param <T> value type
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static <T extends Comparable<T>> boolean gele(final T l, final T m, final T u) {
+        return le(l, m) && le(m, u);
     }
 
     /**
      * Test that the value is gerater than lower and less than upper.
      * i.e. this method tests {@code lower < val < upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gtlt(final long lower, final long val, final long upper) {
-        return (lower < val) && (val < upper);
+    public static boolean gtlt(final long l, final long m, final long u) {
+        return lt(l, m) && lt(m, u);
     }
 
     /**
      * Test that the value is gerater equal lower and less than upper.
      * i.e. this method tests {@code lower <= val < upper}.
      *
-     * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gelt(final T lower, final T val, final T upper) {
-        return le(lower, val) && lt(val, upper);
+    public static boolean gelt(final long l, final long m, final long u) {
+        return le(l, m) && lt(m, u);
+    }
+
+    /**
+     * Test that the value is gerater than lower and less equal upper.
+     * i.e. this method tests {@code lower < val <= upper}.
+     *
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean gtle(final long l, final long m, final long u) {
+        return lt(l, m) && le(m, u);
+    }
+
+    /**
+     * Test that the value is gerater equal lower and less equal upper.
+     * i.e. this method tests {@code lower <= val <= upper}.
+     *
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean gele(final long l, final long m, final long u) {
+        return le(l, m) && le(m, u);
+    }
+
+    /**
+     * Test that the value is gerater than lower and less than upper.
+     * i.e. this method tests {@code lower < val < upper}.
+     *
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean gtlt(final double l, final double m, final double u) {
+        return lt(l, m) && lt(m, u);
     }
 
     /**
      * Test that the value is gerater equal lower and less than upper.
      * i.e. this method tests {@code lower <= val < upper}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static boolean gelt(final long lower, final long val, final long upper) {
-        return (lower <= val) && (val < upper);
+    public static boolean gelt(final double l, final double m, final double u) {
+        return le(l, m) && lt(m, u);
     }
 
     /**
      * Test that the value is gerater than lower and less equal upper.
      * i.e. this method tests {@code lower < val <= upper}.
      *
-     * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gtle(final T lower, final T val, final T upper) {
-        return lt(lower, val) && le(val, upper);
-    }
-
-    /**
-     * Test that the value is gerater than lower and less equal upper.
-     * i.e. this method tests {@code lower < val <= upper}.
-     *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
-     * @return test result
-     */
-    public static boolean gtle(final long lower, final long val, final long upper) {
-        return (lower < val) && (val <= upper);
+    public static boolean gtle(final double l, final double m, final double u) {
+        return lt(l, m) && le(m, u);
     }
 
     /**
      * Test that the value is gerater equal lower and less equal upper.
      * i.e. this method tests {@code lower <= val <= upper}.
      *
-     * @param <T> value type
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gele(final T lower, final T val, final T upper) {
-        return le(lower, val) && le(val, upper);
-    }
-
-    /**
-     * Test that the value is gerater equal lower and less equal upper.
-     * i.e. this method tests {@code lower <= val <= upper}.
-     *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
-     * @return test result
-     */
-    public static boolean gele(final long lower, final long val, final long upper) {
-        return (lower <= val) && (val <= upper);
-    }
-
-    /**
-     * An alias of {@link #gele(long, long, long)}.
-     *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
-     * @return test result
-     */
-    public static boolean between(final long lower, final long val, final long upper) {
-        return gele(lower, val, upper);
+    public static boolean gele(final double l, final double m, final double u) {
+        return le(l, m) && le(m, u);
     }
 
     /**
      * An alias of {@link #gele(Comparable, Comparable, Comparable)}.
      *
-     * @param lower lower value
-     * @param val value
-     * @param upper upper value
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean between(final T lower, final T val, final T upper) {
-        return gele(lower, val, upper);
+    public static <T extends Comparable<T>> boolean between(final T l, final T m, final T u) {
+        return gele(l, m, u);
+    }
+
+    /**
+     * An alias of {@link #gele(long, long, long)}.
+     *
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean between(final long l, final long m, final long u) {
+        return gele(l, m, u);
+    }
+
+    /**
+     * An alias of {@link #gele(double, double, double)}.
+     *
+     * @param l lower value
+     * @param m middle value
+     * @param u upper value
+     * @return test result
+     */
+    public static boolean between(final double l, final double m, final double u) {
+        return gele(l, m, u);
+    }
+
+    public static boolean equal(final long l, final long r, final long... rest) {
+
+        if (l != r) {
+            return false;
+        }
+
+        for (final long x : rest) {
+            if (l != x) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean equal(final double l, final double r, final double... rest) {
+
+        if (Double.compare(l, r) != 0) {
+            return false;
+        }
+
+        for (final double x : rest) {
+            if (Double.compare(l, x) != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @SafeVarargs
@@ -926,6 +1161,42 @@ public class Indolently {
 
     public static boolean equal(final Object l, final Object r) {
         return (l == null) ? (r == null) : (l == r) || l.equals(r);
+    }
+
+    public enum ComparisonResult {
+
+        SMALL(-1), EQUAL(0), LARGE(1);
+
+        public final int sign;
+
+        private ComparisonResult(final int sign) {
+            this.sign = sign;
+        }
+
+        public int sign() {
+            return this.sign;
+        }
+
+        public int sign(final boolean asc) {
+            return asc ? this.sign : -this.sign;
+        }
+
+        public int reverse() {
+            return -this.sign;
+        }
+    }
+
+    public static <T extends Comparable<T>> ComparisonResult compare(final T l, final T r) {
+
+        final int rslt = l.compareTo(r);
+
+        if (rslt < 0) {
+            return ComparisonResult.SMALL;
+        } else if (rslt == 0) {
+            return ComparisonResult.EQUAL;
+        } else {
+            return ComparisonResult.LARGE;
+        }
     }
 
     @TypeUnsafe
@@ -947,21 +1218,21 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> T max(final T l, final T r) {
-        return (0 <= l.compareTo(r)) ? l : r;
+        return ge(l, r) ? l : r;
     }
 
     public static <T extends Comparable<T>> T min(final T l, final T r) {
-        return (l.compareTo(r) <= 0) ? l : r;
+        return le(l, r) ? l : r;
     }
 
     @SafeVarargs
     public static <T extends Comparable<T>> T max(final T first, final T second, final T... rest) {
-        return list(first, second).pushAll(list(rest)).reduce(Indolently::max).get();
+        return max(max(first, second), max(list(rest)));
     }
 
     @SafeVarargs
     public static <T extends Comparable<T>> T min(final T first, final T second, final T... rest) {
-        return list(first, second).pushAll(list(rest)).reduce(Indolently::min).get();
+        return min(min(first, second), min(list(rest)));
     }
 
     public static <T extends Comparable<T>> T max(final Iterable<? extends T> values) {
@@ -1363,77 +1634,72 @@ public class Indolently {
     // CHECKSTYLE:OFF
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1);
+        return map(k0, v0).push(k1, v1);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2);
+        return map(k0, v0, k1, v1).push(k2, v2);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3);
+        return map(k0, v0, k1, v1, k2, v2).push(k3, v3);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3).push(k4, v4);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4).push(k5, v5);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5).push(k6, v6);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6).push(k7, v7);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7).push(k8, v8);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8).push(k9, v9);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9).push(k10, v10);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10).push(k11,
+            v11);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1441,8 +1707,8 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11)
+            .push(k12, v12);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1450,9 +1716,8 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12).push(k13, v13);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1460,9 +1725,8 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13).push(k14, v14);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1470,9 +1734,8 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11,
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14).push(k15, v15);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1481,9 +1744,8 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15).push(k16, v16);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1492,9 +1754,8 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16, final K k17, final V v17) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16).push(k17, v17);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1503,9 +1764,8 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17).push(k18, v18);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1514,9 +1774,8 @@ public class Indolently {
         final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18).push(k19, v19);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1526,10 +1785,8 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19).push(k20, v20);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1539,10 +1796,8 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20, final K k21, final V v21) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20).push(k21, v21);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1552,10 +1807,9 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21).push(
+            k22, v22);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1565,10 +1819,9 @@ public class Indolently {
         final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22).push(k23, v23);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1579,10 +1832,9 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23).push(k24, v24);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1593,10 +1845,9 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24, final K k25, final V v25) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23, k24, v24).push(k25, v25);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1607,10 +1858,9 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23, k24, v24, k25, v25).push(k26, v26);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1621,11 +1871,9 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
-            .push(k27, v27);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23, k24, v24, k25, v25, k26, v26).push(k27, v27);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1637,11 +1885,9 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
-            .push(k27, v27).push(k28, v28);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23, k24, v24, k25, v25, k26, v26, k27, v27).push(k28, v28);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1653,11 +1899,9 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28, final K k29, final V v29) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
-            .push(k27, v27).push(k28, v28).push(k29, v29);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23, k24, v24, k25, v25, k26, v26, k27, v27, k28, v28).push(k29, v29);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1669,11 +1913,9 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28, final K k29, final V v29, final K k30, final V v30) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
-            .push(k27, v27).push(k28, v28).push(k29, v29).push(k30, v30);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23, k24, v24, k25, v25, k26, v26, k27, v27, k28, v28, k29, v29).push(k30, v30);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -1685,11 +1927,9 @@ public class Indolently {
         final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
         final K k28, final V v28, final K k29, final V v29, final K k30, final V v30, final K k31, final V v31) {
 
-        return Indolently.<K, V> map().push(k0, v0).push(k1, v1).push(k2, v2).push(k3, v3).push(k4, v4).push(k5, v5)
-            .push(k6, v6).push(k7, v7).push(k8, v8).push(k9, v9).push(k10, v10).push(k11, v11).push(k12, v12)
-            .push(k13, v13).push(k14, v14).push(k15, v15).push(k16, v16).push(k17, v17).push(k18, v18).push(k19, v19)
-            .push(k20, v20).push(k21, v21).push(k22, v22).push(k23, v23).push(k24, v24).push(k25, v25).push(k26, v26)
-            .push(k27, v27).push(k28, v28).push(k29, v29).push(k30, v30).push(k31, v31);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
+            v22, k23, v23, k24, v24, k25, v25, k26, v26, k27, v27, k28, v28, k29, v29, k30, v30).push(k31, v31);
     }
     // CHECKSTYLE:ON
 }

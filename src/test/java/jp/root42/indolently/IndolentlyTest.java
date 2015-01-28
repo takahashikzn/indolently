@@ -48,6 +48,202 @@ import static org.junit.Assert.*;
 public class IndolentlyTest {
 
     /**
+     * {@link Indolently#gtlt(long, long, long)}/{@link Indolently#gtlt(double, double, double)}/
+     * {@link Indolently#gtlt(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGtlt() {
+
+        assertTrue(gtlt(0, 1, 2));
+        assertFalse(gtlt(1, 1, 2));
+        assertFalse(gtlt(1, 2, 2));
+        assertFalse(gtlt(0, 0, 0));
+        assertFalse(gtlt(1, 0, 2));
+        assertFalse(gtlt(0, 2, 1));
+
+        assertTrue(gtlt(0.0, 1.0, 2.0));
+        assertFalse(gtlt(1.0, 1.0, 2.0));
+        assertFalse(gtlt(1.0, 2.0, 2.0));
+        assertFalse(gtlt(0.0, 0.0, 0.0));
+        assertFalse(gtlt(1.0, 0.0, 2.0));
+        assertFalse(gtlt(0.0, 2.0, 1.0));
+
+        assertTrue(gtlt("0", "1", "2"));
+        assertFalse(gtlt("1", "1", "2"));
+        assertFalse(gtlt("1", "2", "2"));
+        assertFalse(gtlt("0", "0", "0"));
+        assertFalse(gtlt("1", "0", "2"));
+        assertFalse(gtlt("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#gelt(long, long, long)}/{@link Indolently#gelt(double, double, double)}/
+     * {@link Indolently#gelt(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGelt() {
+
+        assertTrue(gelt(0, 1, 2));
+        assertTrue(gelt(1, 1, 2));
+        assertFalse(gelt(1, 2, 2));
+        assertFalse(gelt(0, 0, 0));
+        assertFalse(gelt(1, 0, 2));
+        assertFalse(gelt(0, 2, 1));
+
+        assertTrue(gelt(0.0, 1.0, 2.0));
+        assertTrue(gelt(1.0, 1.0, 2.0));
+        assertFalse(gelt(1.0, 2.0, 2.0));
+        assertFalse(gelt(0.0, 0.0, 0.0));
+        assertFalse(gelt(1.0, 0.0, 2.0));
+        assertFalse(gelt(0.0, 2.0, 1.0));
+
+        assertTrue(gelt("0", "1", "2"));
+        assertTrue(gelt("1", "1", "2"));
+        assertFalse(gelt("1", "2", "2"));
+        assertFalse(gelt("0", "0", "0"));
+        assertFalse(gelt("1", "0", "2"));
+        assertFalse(gelt("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#gtle(long, long, long)}/{@link Indolently#gtle(double, double, double)}/
+     * {@link Indolently#gtle(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGtle() {
+
+        assertTrue(gtle(0, 1, 2));
+        assertFalse(gtle(1, 1, 2));
+        assertTrue(gtle(1, 2, 2));
+        assertFalse(gtle(0, 0, 0));
+        assertFalse(gtle(1, 0, 2));
+        assertFalse(gtle(0, 2, 1));
+
+        assertTrue(gtle(0.0, 1.0, 2.0));
+        assertFalse(gtle(1.0, 1.0, 2.0));
+        assertTrue(gtle(1.0, 2.0, 2.0));
+        assertFalse(gtle(0.0, 0.0, 0.0));
+        assertFalse(gtle(1.0, 0.0, 2.0));
+        assertFalse(gtle(0.0, 2.0, 1.0));
+
+        assertTrue(gtle("0", "1", "2"));
+        assertFalse(gtle("1", "1", "2"));
+        assertTrue(gtle("1", "2", "2"));
+        assertFalse(gtle("0", "0", "0"));
+        assertFalse(gtle("1", "0", "2"));
+        assertFalse(gtle("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#gele(long, long, long)}/{@link Indolently#gele(double, double, double)}/
+     * {@link Indolently#gele(Comparable, Comparable, Comparable)}
+     */
+    @Test
+    public void testGele() {
+
+        assertTrue(gele(0, 1, 2));
+        assertTrue(gele(1, 1, 2));
+        assertTrue(gele(1, 2, 2));
+        assertTrue(gele(0, 0, 0));
+        assertFalse(gele(1, 0, 2));
+        assertFalse(gele(0, 2, 1));
+
+        assertTrue(gele(0.0, 1.0, 2.0));
+        assertTrue(gele(1.0, 1.0, 2.0));
+        assertTrue(gele(1.0, 2.0, 2.0));
+        assertTrue(gele(0.0, 0.0, 0.0));
+        assertFalse(gele(1.0, 0.0, 2.0));
+        assertFalse(gele(0.0, 2.0, 1.0));
+
+        assertTrue(gele("0", "1", "2"));
+        assertTrue(gele("1", "1", "2"));
+        assertTrue(gele("1", "2", "2"));
+        assertTrue(gele("0", "0", "0"));
+        assertFalse(gele("1", "0", "2"));
+        assertFalse(gele("0", "2", "1"));
+    }
+
+    /**
+     * {@link Indolently#ge(long, long)}/{@link Indolently#ge(double, double)}/
+     * {@link Indolently#ge(Comparable, Comparable)}
+     */
+    @Test
+    public void testGreaterEqual() {
+
+        assertTrue(ge(2, 1));
+        assertTrue(ge(1, 1));
+        assertFalse(ge(0, 1));
+
+        assertTrue(ge(2.0, 1.0));
+        assertTrue(ge(1.0, 1.0));
+        assertFalse(ge(0.0, 1.0));
+
+        assertTrue(ge("2", "1"));
+        assertTrue(ge("1", "1"));
+        assertFalse(ge("0", "1"));
+    }
+
+    /**
+     * {@link Indolently#gt(long, long)}/{@link Indolently#gt(double, double)}/
+     * {@link Indolently#gt(Comparable, Comparable)}
+     */
+    @Test
+    public void testGreaterThan() {
+
+        assertTrue(gt(2, 1));
+        assertFalse(gt(1, 1));
+        assertFalse(gt(0, 1));
+
+        assertTrue(gt(2.0, 1.0));
+        assertFalse(gt(1.0, 1.0));
+        assertFalse(gt(0.0, 1.0));
+
+        assertTrue(gt("2", "1"));
+        assertFalse(gt("1", "1"));
+        assertFalse(gt("0", "1"));
+    }
+
+    /**
+     * {@link Indolently#le(long, long)}/{@link Indolently#le(double, double)}/
+     * {@link Indolently#le(Comparable, Comparable)}
+     */
+    @Test
+    public void testLessEqual() {
+
+        assertTrue(le(1, 2));
+        assertTrue(le(1, 1));
+        assertFalse(le(1, 0));
+
+        assertTrue(le(1.0, 2.0));
+        assertTrue(le(1.0, 1.0));
+        assertFalse(le(1.0, 0.0));
+
+        assertTrue(le("1", "2"));
+        assertTrue(le("1", "1"));
+        assertFalse(le("1", "0"));
+    }
+
+    /**
+     * {@link Indolently#lt(long, long)}/{@link Indolently#lt(double, double)}/
+     * {@link Indolently#lt(Comparable, Comparable)}
+     */
+    @Test
+    public void testLessThan() {
+
+        assertTrue(lt(1, 2));
+        assertFalse(lt(1, 1));
+        assertFalse(lt(1, 0));
+
+        assertTrue(lt(1.0, 2.0));
+        assertFalse(lt(1.0, 1.0));
+        assertFalse(lt(1.0, 0.0));
+
+        assertTrue(lt("1", "2"));
+        assertFalse(lt("1", "1"));
+        assertFalse(lt("1", "0"));
+    }
+
+    /**
      * {@link Indolently#empty(Iterable)}
      *
      * @param desc description
@@ -69,6 +265,140 @@ public class IndolentlyTest {
             , oarray("non empty collection", false, list(0)) //
             , oarray("empty iterable", true, iterator(() -> false, () -> 0)) //
             , oarray("non empty iterable", false, iterator(() -> true, () -> 1)) //
+        );
+    }
+
+    /**
+     * {@link Indolently#empty(CharSequence...)}, {@link Indolently#empty(Optional...)},
+     * {@link Indolently#empty(Iterable...)}, {@link Indolently#empty(Map...)}
+     *
+     * @param desc description
+     * @param expected expected value
+     * @param args args
+     * @param type array type
+     */
+    @Parameters
+    @Test
+    public void testEmptyVarargs(final String desc, final boolean expected, final Object[] args, final Class<?> type) {
+
+        if (type == String.class) {
+
+            assertThat(empty((CharSequence[]) args)).isEqualTo(expected);
+        } else if (type == Optional.class) {
+
+            assertThat(empty((Optional[]) args)).isEqualTo(expected);
+        } else if (type == Iterable.class) {
+
+            assertThat(empty((Iterable<?>[]) args)).isEqualTo(expected);
+        } else if (type == Map.class) {
+
+            assertThat(empty((Map<?, ?>[]) args)).isEqualTo(expected);
+        } else {
+
+            fail();
+        }
+    }
+
+    static List<?> parametersForTestEmptyVarargs() {
+
+        return list(
+            //
+            oarray("null", true, null, Iterable.class) //
+            ,
+            oarray("empty arguments", true, new List<?>[0], Iterable.class) //
+            ,
+            oarray("null argument", true, new List<?>[1], Iterable.class) //
+            ,
+            oarray("empty list", true, arrayOf(list()), Iterable.class) //
+            ,
+            oarray("empty lists", true, arrayOf(list(), list()), Iterable.class) //
+            ,
+            oarray("non empty list only", false, arrayOf(list(0)), Iterable.class) //
+            ,
+            oarray("empty and non empty lists", false, arrayOf(list(0), list()), Iterable.class) //
+            ,
+            oarray("non empty lists only", false, arrayOf(list(0), list(0)), Iterable.class) //
+
+            ,
+            oarray("null", true, null, Map.class) //
+            ,
+            oarray("empty arguments", true, new Map<?, ?>[0], Map.class) //
+            ,
+            oarray("null argument", true, new Map<?, ?>[1], Map.class) //
+            ,
+            oarray("empty map", true, arrayOf(map()), Map.class) //
+            ,
+            oarray("empty maps", true, arrayOf(map(), map()), Map.class) //
+            ,
+            oarray("non empty map only", false, arrayOf(map("a", 1)), Map.class) //
+            ,
+            oarray("empty and non empty maps", false, arrayOf(map("a", 1), map()), Map.class) //
+            ,
+            oarray("non empty maps only", false, arrayOf(map("a", 1), map("a", 1)), Map.class) //
+
+            ,
+            oarray("null", true, null, String.class) //
+            ,
+            oarray("empty arguments", true, new String[0], String.class) //
+            ,
+            oarray("null argument", true, new String[1], String.class) //
+            ,
+            oarray("empty string", true, arrayOf(""), String.class) //
+            ,
+            oarray("blank string", false, arrayOf(" "), String.class) //
+            ,
+            oarray("empty strings", true, arrayOf("", ""), String.class) //
+            ,
+            oarray("non empty string only", false, arrayOf("a"), String.class) //
+            ,
+            oarray("empty and non empty strings", false, arrayOf("a", ""), String.class) //
+            ,
+            oarray("non empty strings only", false, arrayOf("a", "b"), String.class) //
+
+            ,
+            oarray("null", true, null, Optional.class) //
+            ,
+            oarray("empty arguments", true, new Optional[0], Optional.class) //
+            ,
+            oarray("null argument", true, new Optional[1], Optional.class) //
+            ,
+            oarray("empty optional", true, arrayOf(Optional.empty()), Optional.class) //
+            ,
+            oarray("empty optionals", true, arrayOf(Optional.empty(), Optional.empty()), Optional.class) //
+            ,
+            oarray("non empty optional only", false, arrayOf(Optional.of("a")), Optional.class) //
+            ,
+            oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class) //
+            , oarray("non empty optionals only", false, arrayOf(Optional.of("a"), Optional.of("b")), Optional.class) //
+        );
+    }
+
+    /**
+     * {@link Indolently#blank(CharSequence...)}
+     *
+     * @param desc description
+     * @param expected expected value
+     * @param val test value
+     */
+    @Parameters
+    @Test
+    public void testBlank(final String desc, final boolean expected, final CharSequence[] val) {
+
+        assertThat(blank(val)).as(desc).isEqualTo(expected);
+    }
+
+    static List<Object[]> parametersForTestBlank() {
+
+        return list( //
+            oarray("null", true, null) //
+            , oarray("empty array", true, new String[0]) //
+            , oarray("empty", true, array("")) //
+            , oarray("blank", true, array("  ")) //
+            , oarray("empty and blank", true, array("", "  ")) //
+            , oarray("blank strings", true, array("  ", "  ")) //
+            , oarray("non blank and empty", false, array("a", "")) //
+            , oarray("non blank and blank", false, array("a", "")) //
+            , oarray("non blnak strings", false, array("a", "b")) //
         );
     }
 
@@ -131,9 +461,9 @@ public class IndolentlyTest {
     }
 
     /**
-     * {@link Indolently#min(Comparable, Comparable, Comparable...)} /
-     * {@link Indolently#min(Comparable, Comparable, Comparable...)}
+     * {@link Indolently#max(Iterable)} / {@link Indolently#min(Iterable)}
      */
+    @SuppressWarnings("javadoc")
     @Test
     public void testMinMax() {
 
@@ -143,6 +473,17 @@ public class IndolentlyTest {
 
         assertThat(min(ints)).isEqualTo(1);
         assertThat(max(ints)).isEqualTo(100);
+    }
+
+    /**
+     * {@link Indolently#min(Comparable, Comparable, Comparable...)} /
+     * {@link Indolently#max(Comparable, Comparable, Comparable...)}
+     */
+    @Test
+    public void testMinMaxVarargs() {
+
+        assertThat(min(1, 3, 2, 4)).isEqualTo(1);
+        assertThat(max(1, 3, 2, 4)).isEqualTo(4);
     }
 
     /**
@@ -385,6 +726,20 @@ public class IndolentlyTest {
 
         list0.freeze();
         list1.freeze();
+
+        try {
+            list0.add(new Object());
+            fail();
+        } catch (final UnsupportedOperationException e) {
+            assert true;
+        }
+
+        try {
+            list1.add(new Object());
+            fail();
+        } catch (final UnsupportedOperationException e) {
+            assert true;
+        }
     }
 
     /**
@@ -414,5 +769,23 @@ public class IndolentlyTest {
             , new Object[] { "compound typed set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } } //
             , new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } } //
             , new Object[] { "empty set", new HashSet<>(), new Object[] {} });
+    }
+
+    /**
+     * {@link Indolently#map(Object, Object)}
+     */
+    @Test
+    public void testMap() {
+
+        assertThat(
+            (Map<String, Integer>) map("0", 0, "1", 1, "2", 2, "3", 3, "4", 4, "5", 5, "6", 6, "7", 7, "8", 8, "9", 9,
+                "10", 10, "11", 11, "12", 12, "13", 13, "14", 14, "15", 15, "16", 16, "17", 17, "18", 18, "19", 19,
+                "20", 20, "21", 21, "22", 22, "23", 23, "24", 24, "25", 25, "26", 26, "27", 27, "28", 28, "29", 29,
+                "30", 30, "31", 31)) //
+            .hasSize(32) //
+            .containsKey("0") //
+            .containsValue(0) //
+            .containsKey("31") //
+            .containsValue(31);
     }
 }
