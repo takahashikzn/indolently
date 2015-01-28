@@ -242,12 +242,12 @@ public interface SMap<K, V>
      * @return entries
      */
     default SSet<SEntry<K, V>> entries() {
-        return Indolently.set(this.entrySet()).map(x -> new SEntry<>(x));
+        return Indolently.set(this.entrySet()).map(SEntry<K, V>::new);
     }
 
     @Override
     default SIter<SEntry<K, V>> iterator() {
-        return Indolently.wrap(this.entrySet().iterator()).map(x -> new SEntry<>(x));
+        return Indolently.wrap(this.entrySet().iterator()).map(SEntry<K, V>::new);
     }
 
     /**
