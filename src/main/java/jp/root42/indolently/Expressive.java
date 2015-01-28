@@ -68,17 +68,17 @@ public class Expressive {
      */
     public static <T> T raise(final Supplier<? extends Throwable> f) {
 
-        final Throwable e = f.get();
+        throw optional(f.get()).map(e -> {
+            if (e instanceof Error) {
+                throw (Error) e;
+            }
 
-        if (e == null) {
-            throw new NullPointerException("supplier returns null: " + f);
-        } else if (e instanceof RuntimeException) {
-            throw (RuntimeException) e;
-        } else if (e instanceof Error) {
-            throw (Error) e;
-        } else {
-            throw new RaisedException(e);
-        }
+            if (e instanceof RuntimeException) {
+                return (RuntimeException) e;
+            } else {
+                return new RaisedException(e);
+            }
+        }).orElseGet(() -> new NullPointerException("supplier returns null: " + f));
     }
 
     /**
