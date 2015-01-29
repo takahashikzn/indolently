@@ -54,11 +54,9 @@ public class SListTest {
                     x.key = "key2";
                     x.bean2 = prog1(() -> new Bean2(), y -> y.val = 16);
                 })) //
-                .group(x -> x.key), //
-                x -> {
-                    assertEquals(x.map(y -> y.map(z -> z.bean2.val)),
-                        map("key1", list(1, 8), "key2", list(2, 16), "key3", list(4)));
-                }) //
+                .group(x -> x.key),
+                x -> assertEquals(x.map(y -> y.map(z -> z.bean2.val)),
+                    map("key1", list(1, 8), "key2", list(2, 16), "key3", list(4)))) //
                 .vals() //
                 .map(x -> x.map(y -> y.bean2.val) //
                     .reduce(0, (y, z) -> y + z)) //
