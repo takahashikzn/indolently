@@ -1227,20 +1227,20 @@ public class Indolently {
 
     @SafeVarargs
     public static <T extends Comparable<T>> T max(final T first, final T second, final T... rest) {
-        return max(max(first, second), max(list(rest)));
+        return max(list(rest)).map(x -> max(x, max(first, second))).orElseGet(() -> max(first, second));
     }
 
     @SafeVarargs
     public static <T extends Comparable<T>> T min(final T first, final T second, final T... rest) {
-        return min(min(first, second), min(list(rest)));
+        return min(list(rest)).map(x -> min(x, min(first, second))).orElseGet(() -> min(first, second));
     }
 
-    public static <T extends Comparable<T>> T max(final Iterable<? extends T> values) {
-        return list(values).reduce((l, r) -> max(l, r)).get();
+    public static <T extends Comparable<T>> Optional<T> max(final Iterable<T> values) {
+        return list(values).reduce((l, r) -> max(l, r));
     }
 
-    public static <T extends Comparable<T>> T min(final Iterable<? extends T> values) {
-        return list(values).reduce((l, r) -> min(l, r)).get();
+    public static <T extends Comparable<T>> Optional<T> min(final Iterable<T> values) {
+        return list(values).reduce((l, r) -> min(l, r));
     }
 
     public static Class<?> typed(@SuppressWarnings("rawtypes")

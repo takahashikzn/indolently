@@ -463,7 +463,6 @@ public class IndolentlyTest {
     /**
      * {@link Indolently#max(Iterable)} / {@link Indolently#min(Iterable)}
      */
-    @SuppressWarnings("javadoc")
     @Test
     public void testMinMax() {
 
@@ -471,8 +470,11 @@ public class IndolentlyTest {
 
         Collections.shuffle(ints);
 
-        assertThat(min(ints)).isEqualTo(1);
-        assertThat(max(ints)).isEqualTo(100);
+        assertThat(min(ints)).isEqualTo(Optional.of(1));
+        assertThat(max(ints)).isEqualTo(Optional.of(100));
+
+        assertThat(min(list()).isPresent()).isFalse();
+        assertThat(max(list()).isPresent()).isFalse();
     }
 
     /**
@@ -484,6 +486,9 @@ public class IndolentlyTest {
 
         assertThat(min(1, 3, 2, 4)).isEqualTo(1);
         assertThat(max(1, 3, 2, 4)).isEqualTo(4);
+
+        assertThat(min(1, 3, new Integer[0])).isEqualTo(1);
+        assertThat(max(1, 3, new Integer[0])).isEqualTo(3);
     }
 
     /**
