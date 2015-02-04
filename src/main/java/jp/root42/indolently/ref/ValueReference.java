@@ -19,14 +19,28 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.Indolently;
 import jp.root42.indolently.function.Expression;
+import jp.root42.indolently.trait.Identical;
 
 
 /**
  * @param <T> value type
+ * @param <S> self type
  * @author takahashikzn
  */
-public interface ValueReference<T>
-    extends Supplier<T>, Consumer<T> {
+public interface ValueReference<T, S extends ValueReference<T, S>>
+    extends Supplier<T>, Consumer<T>, Identical<S> {
+
+    /**
+     * get value then do something with this instance.
+     *
+     * @param f any operation
+     * @return the value
+     */
+    default T getThen(final Consumer<? super S> f) {
+        final T curr = this.get();
+        f.accept(this.identity());
+        return curr;
+    }
 
     /**
      * get value as optional representation.

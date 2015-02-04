@@ -24,7 +24,7 @@ import jp.root42.indolently.function.Statement;
  * @version $Id$
  */
 public class BoolRef
-    extends AbstractRef<Boolean>
+    extends AbstractRef<Boolean, BoolRef>
     implements Comparable<BoolRef>, BooleanSupplier {
 
     private static final long serialVersionUID = 8087914133902951131L;

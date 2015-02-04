@@ -18,8 +18,8 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 public class ShortRef
-    extends AbstractRef<Short>
-    implements Comparable<ShortRef> {
+    extends AbstractRef<Short, ShortRef>
+    implements NumberRef<Short, ShortRef>, Comparable<ShortRef> {
 
     private static final long serialVersionUID = -6819998391641172785L;
 
@@ -66,5 +66,29 @@ public class ShortRef
     @Override
     public int compareTo(final ShortRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    @Override
+    public ShortRef add(final Short val) {
+        this.val += val;
+        return this;
+    }
+
+    @Override
+    public ShortRef mul(final Short val) {
+        this.val *= val;
+        return this;
+    }
+
+    @Override
+    public ShortRef div(final Short val) {
+        this.val /= val;
+        return this;
+    }
+
+    @Override
+    public ShortRef negate() {
+        this.val = (short) -this.val;
+        return this;
     }
 }

@@ -18,8 +18,8 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 public class ByteRef
-    extends AbstractRef<Byte>
-    implements Comparable<ByteRef> {
+    extends AbstractRef<Byte, ByteRef>
+    implements NumberRef<Byte, ByteRef>, Comparable<ByteRef> {
 
     private static final long serialVersionUID = -6479571510369831870L;
 
@@ -66,5 +66,29 @@ public class ByteRef
     @Override
     public int compareTo(final ByteRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    @Override
+    public ByteRef add(final Byte val) {
+        this.val += val;
+        return this;
+    }
+
+    @Override
+    public ByteRef mul(final Byte val) {
+        this.val *= val;
+        return this;
+    }
+
+    @Override
+    public ByteRef div(final Byte val) {
+        this.val /= val;
+        return this;
+    }
+
+    @Override
+    public ByteRef negate() {
+        this.val = (byte) -this.val;
+        return this;
     }
 }

@@ -21,8 +21,8 @@ import java.util.Objects;
  * @param <T> value type
  * @author takahashikzn
  */
-abstract class AbstractRef<T>
-    implements Serializable, ValueReference<T> {
+abstract class AbstractRef<T, S extends AbstractRef<T, S>>
+    implements Serializable, ValueReference<T, S> {
 
     private static final long serialVersionUID = -1617670706001823922L;
 
@@ -42,7 +42,7 @@ abstract class AbstractRef<T>
         }
 
         @SuppressWarnings("unchecked")
-        final AbstractRef<T> that = (AbstractRef<T>) o;
+        final AbstractRef<T, ?> that = (AbstractRef<T, ?>) o;
 
         return Objects.equals(this.get(), that.get());
     }
