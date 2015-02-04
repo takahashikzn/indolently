@@ -37,7 +37,17 @@ public interface ValueReference<T, S extends ValueReference<T, S>>
      * @return the value
      */
     default T getThen(final Consumer<? super S> f) {
-        final T curr = this.get();
+        return this.optThen(f).get();
+    }
+
+    /**
+     * get value if exists, then do something with this instance.
+     *
+     * @param f any operation
+     * @return optional representation of the value
+     */
+    default Optional<T> optThen(final Consumer<? super S> f) {
+        final Optional<T> curr = this.opt();
         f.accept(this.identity());
         return curr;
     }
