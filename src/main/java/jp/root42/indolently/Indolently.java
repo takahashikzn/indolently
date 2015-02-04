@@ -725,11 +725,26 @@ public class Indolently {
     }
 
     public static String join(final Collection<? extends CharSequence> col) {
-        return join(col, "");
+        return join(col, null);
     }
 
     public static String join(final Collection<? extends CharSequence> col, final String sep) {
-        return list(col).reduce((x, y) -> x + sep + y).map(x -> x.toString()).orElse("");
+
+        return optional(col).map(x -> {
+
+            final StringBuilder sb = new StringBuilder();
+            final String s = optional(sep).orElse("");
+
+            for (final Iterator<? extends CharSequence> i = x.iterator(); i.hasNext();) {
+                sb.append(i.next());
+
+                if (i.hasNext()) {
+                    sb.append(s);
+                }
+            }
+
+            return sb.toString();
+        }).orElse("");
     }
 
     @SafeVarargs
