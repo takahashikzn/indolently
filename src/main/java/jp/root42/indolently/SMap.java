@@ -213,10 +213,30 @@ public interface SMap<K, V>
             return this.val;
         }
 
+        /**
+         * Use {@link #update(Object)} instead of.
+         * This method is unsupported.
+         *
+         * @throws UnsupportedOperationException always thrown
+         */
         @Deprecated
         @Override
-        public final V setValue(final V value) {
+        public final V setValue(final V value) throws UnsupportedOperationException {
             throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Update the value corresponded to the key of this entry.
+         * <p>
+         * Important: the field {@link #val} never changed by calling this method.
+         * </p>
+         *
+         * @param value new value
+         * @return {@code this} instance
+         * @see #setValue(Object)
+         */
+        public V update(final V value) {
+            return this.e.setValue(value);
         }
 
         @Override
