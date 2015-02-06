@@ -29,7 +29,7 @@ import java.util.SortedSet;
  */
 public abstract class ObjFactory {
 
-    private static volatile ObjFactory instance = new JdkObjFactory();
+    private static volatile ObjFactory instance;
 
     static {
         if (isPresent("net.openhft.koloboke.collect.impl.hash.ObjHash")) {
