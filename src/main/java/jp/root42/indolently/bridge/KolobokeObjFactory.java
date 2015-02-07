@@ -29,7 +29,7 @@ import net.openhft.koloboke.collect.set.hash.HashObjSets;
 final class KolobokeObjFactory
     extends JdkObjFactory {
 
-    private static class KolobokeHashSet<V>
+    private static final class KolobokeHashSet<V>
         extends SerializableSet<V> {
 
         private static final long serialVersionUID = -4881881384304670668L;
@@ -41,11 +41,11 @@ final class KolobokeObjFactory
 
         @Override
         protected Set<V> newSet() {
-            return HashObjSets.newMutableSet();
+            return HashObjSets.newMutableSet(INITIAL_CAPACITY);
         }
     }
 
-    private static class KolobokeHashMap<K, V>
+    private static final class KolobokeHashMap<K, V>
         extends SerializableMap<K, V> {
 
         private static final long serialVersionUID = 3578828373651399016L;
@@ -57,7 +57,7 @@ final class KolobokeObjFactory
 
         @Override
         protected Map<K, V> newMap() {
-            return HashObjObjMaps.newMutableMap();
+            return HashObjObjMaps.newMutableMap(INITIAL_CAPACITY);
         }
     }
 
