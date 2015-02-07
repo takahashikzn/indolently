@@ -24,17 +24,18 @@ import jp.root42.indolently.Expressive.When;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
+import jp.root42.indolently.ref.IntRef;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
@@ -197,49 +198,44 @@ public class ExpressiveTest {
      * @param to range to
      * @param step range step
      */
-    @Ignore
     @Parameters
     @Test
     public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to, final int step) {
 
-        // ECJ-4.5-20150203 can't compile this code
+        assertThat(list( //
+            iterator( //
+                ref(from), //
+                env -> match( //
+                    when((final IntRef x) -> from < to, x -> x.val <= to), //
+                    when(x -> to < from, x -> to <= x.val) //
+                ).defaults(x -> x.val == from).apply(env), // Expressive#test raises compilation error with OracleJDK
+                match( //
+                    when((final IntRef x) -> from < to, x -> x.getThen(self -> self.val += step)) //
+                ).defaults(x -> prog1(x::get, () -> x.val -= step)) //
+            ) //
+            )) //
+            .isEqualTo(expected);
 
-        // assertThat(list( //
-        // iterator( //
-        // ref(from), //
-        // env -> match( //
-        // when((final IntRef x) -> from < to, x -> x.val <= to), //
-        // when(x -> to < from, x -> to <= x.val) //
-        // ).defaults(x -> x.val == from).apply(env), // Expressive#test raises compilation error with OracleJDK
-        // match( //
-        // when((final IntRef x) -> from < to, x -> prog1( //
-        // x::get, //
-        // () -> x.val += step)) //
-        // ).defaults(x -> prog1(x::get, () -> x.val -= step)) //
-        // ) //
-        // )).isEqualTo(expected);
-        //
-        // assertThat(list( //
-        // iterator( //
-        // ref(from), //
-        // env -> match( //
-        // when( //
-        // (final IntRef x) -> from < to, //
-        // x -> x.val <= to), //
-        // when( //
-        // x -> to < from, //
-        // x -> to <= x.val) //
-        // ).defaults(x -> x.val == from).apply(env), //
-        // env -> when( //
-        // (final IntRef x) -> from < to, //
-        // x -> prog1( //
-        // x::get, //
-        // () -> x.val += step)) //
-        // .other( //
-        // x -> prog1( //
-        // x::get, //
-        // () -> x.val -= step)).apply(env) //
-        // )).reduce((l, r) -> l + r)).isEqualTo(list(expected).reduce((l, r) -> l + r));
+        assertThat(list( //
+            iterator( //
+                ref(from), //
+                env -> match( //
+                    when( //
+                        (final IntRef x) -> from < to, //
+                        x -> x.val <= to), //
+                    when( //
+                        x -> to < from, //
+                        x -> to <= x.val) //
+                ).defaults(x -> x.val == from).apply(env), //
+                env -> when( //
+                    (final IntRef x) -> from < to, x -> x.getThen(self -> self.val += step)) //
+                    .other( //
+                        x -> prog1( //
+                            x::get, //
+                            () -> x.val -= step)).apply(env) //
+            )) //
+            .reduce((l, r) -> l + r)) //
+            .isEqualTo(list(expected).reduce((l, r) -> l + r));
     }
 
     static List<Object[]> parametersForTestComplicatedTypeInference() {
