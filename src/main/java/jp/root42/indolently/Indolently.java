@@ -556,6 +556,12 @@ public class Indolently {
         return sort(map, Comparator.naturalOrder());
     }
 
+    public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<K, V> map,
+        final Function<? super K, ? extends S> f) {
+
+        return sort(map, (l, r) -> f.apply(l).compareTo(f.apply(r)));
+    }
+
     public static <K, V> SMap<K, V> sort(final Map<K, V> map, final Comparator<? super K> comp) {
         return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(
             map);
@@ -565,6 +571,12 @@ public class Indolently {
         return sort(elems, Comparator.naturalOrder());
     }
 
+    public static <T, S extends Comparable<S>> SSet<T> sort(final Set<? extends T> elems,
+        final Function<? super T, ? extends S> f) {
+
+        return sort(elems, (l, r) -> f.apply(l).compareTo(f.apply(r)));
+    }
+
     public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
         return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(
             elems);
@@ -572,6 +584,12 @@ public class Indolently {
 
     public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
         return sort(elems, Comparator.naturalOrder());
+    }
+
+    public static <T, S extends Comparable<S>> SList<T> sort(final List<? extends T> elems,
+        final Function<? super T, ? extends S> f) {
+
+        return sort(elems, (l, r) -> f.apply(l).compareTo(f.apply(r)));
     }
 
     public static <T> SList<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {

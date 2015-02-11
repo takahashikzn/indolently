@@ -430,6 +430,14 @@ public class IndolentlyTest {
             .isExactlyInstanceOf(Number[].class);
     }
 
+    private static class SortKey {
+        public final int val;
+
+        public SortKey(final int val) {
+            this.val = val;
+        }
+    }
+
     /**
      * {@link Indolently#sort(List)} / {@link Indolently#sort(Set)}
      */
@@ -441,8 +449,15 @@ public class IndolentlyTest {
 
         assertThat(sort(ints)) //
             .isEqualTo(list(1, 2, 3, 4, 5));
+
         assertThat(sort(set(ints)).list()) //
             .isEqualTo(list(1, 2, 3, 4, 5));
+
+        assertThat(sort(set(new SortKey(3), new SortKey(1), new SortKey(2)), x -> x.val).list().map(x -> x.val)) //
+            .isEqualTo(list(1, 2, 3));
+
+        assertThat(sort(list(new SortKey(3), new SortKey(1), new SortKey(2)), x -> x.val).map(x -> x.val)) //
+            .isEqualTo(list(1, 2, 3));
     }
 
     /**
@@ -457,6 +472,13 @@ public class IndolentlyTest {
             .isEqualTo(list(1, 3, 2));
 
         assertThat(list(sort(map).keySet())) //
+            .isEqualTo(list(1, 2, 3));
+
+        assertThat(
+            list(
+                sort(
+                    wrap(new LinkedHashMap<>(), new SortKey(3), "a").push(new SortKey(1), "b")
+                        .push(new SortKey(2), "c"), x -> x.val).keySet()).map(x -> x.val)) //
             .isEqualTo(list(1, 2, 3));
     }
 
