@@ -177,6 +177,15 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link Optional#empty()}.
+     *
+     * @return Optional representation of nothing
+     */
+    public static <T> Optional<T> none() {
+        return Optional.empty();
+    }
+
+    /**
      * An alias of {@link Optional#ofNullable(Object)}.
      *
      * @param <T> type of value
