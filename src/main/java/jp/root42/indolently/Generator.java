@@ -72,9 +72,9 @@ public interface Generator<T>
 
         return new Generator<T>() {
 
-            private boolean stopped;
+            private boolean stopped; // NOPMD
 
-            private Optional<T> cur;
+            private Optional<T> cur; // NOPMD
 
             @Override
             public boolean hasNext() {

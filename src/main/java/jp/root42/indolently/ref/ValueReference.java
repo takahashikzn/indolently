@@ -132,7 +132,7 @@ public interface ValueReference<T, S extends ValueReference<T, S>>
      * @param val initial value
      * @return reference of value
      */
-    static ShortRef of(final short val) {
+    static ShortRef of(final short val) { // NOPMD
         return new ShortRef(val);
     }
 

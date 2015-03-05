@@ -37,10 +37,10 @@ public class Duo<F, S>
     private static final long serialVersionUID = 4058877644750960140L;
 
     /** first element */
-    public volatile F fst;
+    public volatile F fst; // NOPMD
 
     /** second element */
-    public volatile S snd;
+    public volatile S snd; // NOPMD
 
     @Destructive
     @Override

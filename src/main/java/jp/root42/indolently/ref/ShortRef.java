@@ -24,13 +24,13 @@ public class ShortRef
     private static final long serialVersionUID = -6819998391641172785L;
 
     /** the value. */
-    public volatile short val;
+    public volatile short val; // NOPMD
 
     /**
      * constructor.
      */
     protected ShortRef() {
-        this((short) 0);
+        this((short) 0); // NOPMD
     }
 
     /**
@@ -38,7 +38,7 @@ public class ShortRef
      *
      * @param val the value.
      */
-    protected ShortRef(final short val) {
+    protected ShortRef(final short val) { // NOPMD
         this.val = val;
     }
 
@@ -53,7 +53,7 @@ public class ShortRef
      * @param val value
      * @return {@code this}
      */
-    public ShortRef set(final short val) {
+    public ShortRef set(final short val) { // NOPMD
         this.val = val;
         return this;
     }
@@ -88,7 +88,7 @@ public class ShortRef
 
     @Override
     public ShortRef negate() {
-        this.val = (short) -this.val;
+        this.val = (short) -this.val; // NOPMD
         return this;
     }
 }
