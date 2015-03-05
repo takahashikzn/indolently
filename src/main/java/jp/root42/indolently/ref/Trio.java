@@ -38,13 +38,13 @@ public class Trio<F, S, T>
     private static final long serialVersionUID = 1387913510813532191L;
 
     /** first element */
-    public volatile F fst;
+    public volatile F fst; // NOPMD
 
     /** second element */
-    public volatile S snd;
+    public volatile S snd; // NOPMD
 
     /** third element */
-    public volatile T trd;
+    public volatile T trd; // NOPMD
 
     @Destructive
     @Override

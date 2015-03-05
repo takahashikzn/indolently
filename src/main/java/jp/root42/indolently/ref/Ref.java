@@ -23,7 +23,7 @@ public class Ref<T>
     private static final long serialVersionUID = 2548417883489580934L;
 
     /** the value. */
-    public volatile T val;
+    public volatile T val; // NOPMD
 
     /**
      * constructor.

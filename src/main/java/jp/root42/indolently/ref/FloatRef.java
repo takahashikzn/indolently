@@ -24,7 +24,7 @@ public class FloatRef
     private static final long serialVersionUID = -6479571510369831870L;
 
     /** the value. */
-    public volatile float val;
+    public volatile float val; // NOPMD
 
     /**
      * constructor.

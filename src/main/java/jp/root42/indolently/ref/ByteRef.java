@@ -24,7 +24,7 @@ public class ByteRef
     private static final long serialVersionUID = -6479571510369831870L;
 
     /** the value. */
-    public volatile byte val;
+    public volatile byte val; // NOPMD
 
     /**
      * constructor.
