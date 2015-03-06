@@ -23,6 +23,9 @@
         Java.type('java.lang.System').err.println(msg);
     };
 
+    ARI.cout = cout;
+    ARI.cerr = cerr;
+
     var array = function(ary) {
         return [].slice.apply(ary);
     };
@@ -30,7 +33,7 @@
     var option = function(x) {
         return {
             val: function() {
-                if (x != null) {
+                if (x != null) { // jshint ignore: line
                     return x;
                 } else {
                     throw new Error('value is null');
@@ -40,7 +43,7 @@
                 return option(f(x));
             },
             present: function(f) {
-                if (x != null) {
+                if (x != null) { // jshint ignore: line
                     return f(x);
                 }
             },
@@ -106,6 +109,9 @@
                 } else if (isNativeClass(clazz)) {
 
                     return clazz;
+                } else if (isNativeClass(clazz['class'])) {
+
+                    return clazz['class'];
                 } else if (clazz.getName) {
 
                     return classFacade.forName(clazz.getName());
@@ -156,23 +162,36 @@
             };
         }()),
 
-        isInstance: function(cls, obj) {
+        list: function(ary) {
+            var ArrayList = Java.type('java.util.ArrayList');
+            var list = new ArrayList();
+            array(ary).forEach(function(x) {
+                list.add(x);
+            });
+            return list;
+        },
 
+        toNativeArray: function(ary) {
+            return Java.to(array(ary), 'java.lang.Object[]');
+        },
+
+        isInstance: function(cls, obj) {
             return (this.nativeClass.java.lang.primitive[cls.name] || cls).isInstance(obj);
         },
 
         newInstance: function(clazz) {
 
-            var javaType = (typeof clazz == 'string') ? Java.type(clazz) : clazz;
+            var args = array(arguments).slice(1);
 
-            return new javaType(array(arguments).slice(1));
-        },
+            var candidates = array(this.nativeClass.of(clazz).constructors).filter(function(c) {
+                return c.parameterTypes.length === args.length;
+            });
 
-        newInstanceStrict: function(clazz) {
-
-            var javaClassName = (typeof clazz == 'string') ? clazz : clazz.name;
-
-            return this.nativeClass.of(javaClassName).constructors[0].newInstance(array(arguments).slice(1));
+            if (candidates.length === 1) {
+                return candidates[0].newInstance(this.toNativeArray(args));
+            } else {
+                throw new Error("can't match constructor: class = " + javaClassName + ', numberOfArgs = ' + args.length);
+            }
         },
 
         propType: function(clazz, name) {
@@ -232,7 +251,7 @@
 
             return obj;
         }
-    }
+    };
 
     var reentrant = {
 
@@ -275,7 +294,7 @@
 
     ARI.prop = function(name) {
         if (1 < arguments.length) {
-            ARI.echo('define property: ' + name + ' = ' + arguments[1])
+            ARI.echo('define property: ' + name + ' = ' + arguments[1]);
             project.setProperty(arguments[0], arguments[1]);
         }
 
@@ -315,7 +334,7 @@
      */
     ARI._createTask = function(taskName, attrs, parentWrapper) {
 
-        var task = javaOps.newInstance(Java.type('org.apache.tools.ant.UnknownElement'), taskName);
+        var task = javaOps.newInstance('org.apache.tools.ant.UnknownElement', taskName);
         task.project = project;
         task.taskName = taskName;
 
@@ -324,7 +343,7 @@
             task.taskType = x.taskType;
         });
 
-        var wrapper = javaOps.newInstanceStrict('org.apache.tools.ant.RuntimeConfigurable', task, taskName);
+        var wrapper = javaOps.newInstance('org.apache.tools.ant.RuntimeConfigurable', task, taskName);
 
         if (attrs) {
 
@@ -343,12 +362,12 @@
                         if (childAttrs instanceof Array) {
                             childAttrs.forEach(function(childVal) {
                                 ARI._createTask(x, childVal, wrapper);
-                            });
+                            }); // jshint ignore: line
                         } else {
                             ARI._createTask(x, childAttrs, wrapper);
                         }
                     }
-                } else if (val != null) {
+                } else if (val != null) { // jshint ignore: line
                     wrapper.setAttribute(key, '' + val);
                 }
             }
@@ -400,7 +419,9 @@
         task.classname = classname;
         task.antlibClassLoader = Java.type('org.apache.tools.ant.Main').class.classLoader;
 
-        attrs && javaOps.populate(task, attrs);
+        if (attrs) {
+            javaOps.populate(task, attrs);
+        }
 
         task.perform();
 
@@ -434,7 +455,7 @@
     };
 
     ARI.loadClass = function(fqcn) {
-        return Java.type('java.lang.Class').forName(fqcn);
+        return javaOpts.nativeClass.of('java.lang.Class').forName(fqcn);
     };
 
     ARI.classExists = function(fqcn) {
@@ -450,7 +471,7 @@
     };
 
     ARI.run = function(code) {
-        eval('function(ARI) { ' + code + ' }')(this);
+        eval('function(ARI) { ' + code + ' }')(this); // jshint ignore: line
     };
 
     Object.keys(ARI).forEach(function(x) {
