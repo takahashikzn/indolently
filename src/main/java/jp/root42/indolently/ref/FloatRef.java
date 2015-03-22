@@ -18,13 +18,13 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 public class FloatRef
-    extends AbstractRef<Float>
-    implements Comparable<FloatRef> {
+    extends AbstractRef<Float, FloatRef>
+    implements NumberRef<Float, FloatRef>, Comparable<FloatRef> {
 
     private static final long serialVersionUID = -6479571510369831870L;
 
     /** the value. */
-    public volatile float val;
+    public volatile float val; // NOPMD
 
     /**
      * constructor.
@@ -66,5 +66,29 @@ public class FloatRef
     @Override
     public int compareTo(final FloatRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    @Override
+    public FloatRef add(final Float val) {
+        this.val += val;
+        return this;
+    }
+
+    @Override
+    public FloatRef mul(final Float val) {
+        this.val *= val;
+        return this;
+    }
+
+    @Override
+    public FloatRef div(final Float val) {
+        this.val /= val;
+        return this;
+    }
+
+    @Override
+    public FloatRef negate() {
+        this.val = -this.val;
+        return this;
     }
 }

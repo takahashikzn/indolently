@@ -22,13 +22,13 @@ import java.util.function.IntSupplier;
  * @version $Id$
  */
 public class IntRef
-    extends AbstractRef<Integer>
-    implements Comparable<IntRef>, IntSupplier, IntConsumer {
+    extends AbstractRef<Integer, IntRef>
+    implements NumberRef<Integer, IntRef>, Comparable<IntRef>, IntSupplier, IntConsumer {
 
     private static final long serialVersionUID = -5827553121494604722L;
 
     /** the value. */
-    public volatile int val;
+    public volatile int val; // NOPMD
 
     /**
      * constructor.
@@ -80,5 +80,29 @@ public class IntRef
     @Override
     public int compareTo(final IntRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    @Override
+    public IntRef add(final Integer val) {
+        this.val += val;
+        return this;
+    }
+
+    @Override
+    public IntRef mul(final Integer val) {
+        this.val *= val;
+        return this;
+    }
+
+    @Override
+    public IntRef div(final Integer val) {
+        this.val /= val;
+        return this;
+    }
+
+    @Override
+    public IntRef negate() {
+        this.val = -this.val;
+        return this;
     }
 }

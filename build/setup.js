@@ -15,16 +15,16 @@
 [ {
     name: 'ivy-configure',
     classname: 'org.apache.ivy.ant.IvyConfigure',
-    then: function(name) {
-        ARI.task(name, {
+    then: function() {
+        ARI.task(this.name, {
             file: 'ivysettings.xml'
         });
     }
 }, {
     name: 'ivy-resolve',
     classname: 'org.apache.ivy.ant.IvyResolve',
-    then: function(name) {
-        ARI.task(name, {
+    then: function() {
+        ARI.task(this.name, {
             file: 'ivy.xml',
             haltonfailure: false
         });
@@ -32,7 +32,7 @@
 }, {
     name: 'ivy-retrieve',
     classname: 'org.apache.ivy.ant.IvyRetrieve',
-    then: function(name) {
+    then: function() {
 
         var libdir = 'target/lib';
 
@@ -41,7 +41,7 @@
             quiet: true
         }).task('mkdir', {
             dir: libdir
-        }).task(name, {
+        }).task(this.name, {
             conf: '*',
             pattern: 'target/lib/default/[module]-[revision].[ext]'
         });
@@ -49,5 +49,5 @@
 } ].forEach(function(x) {
 
     ARI.taskdef(x.name, x.classname);
-    x.then(x.name);
+    x.then();
 });

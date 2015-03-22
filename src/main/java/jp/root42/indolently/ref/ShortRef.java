@@ -18,19 +18,19 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 public class ShortRef
-    extends AbstractRef<Short>
-    implements Comparable<ShortRef> {
+    extends AbstractRef<Short, ShortRef>
+    implements NumberRef<Short, ShortRef>, Comparable<ShortRef> {
 
     private static final long serialVersionUID = -6819998391641172785L;
 
     /** the value. */
-    public volatile short val;
+    public volatile short val; // NOPMD
 
     /**
      * constructor.
      */
     protected ShortRef() {
-        this((short) 0);
+        this((short) 0); // NOPMD
     }
 
     /**
@@ -38,7 +38,7 @@ public class ShortRef
      *
      * @param val the value.
      */
-    protected ShortRef(final short val) {
+    protected ShortRef(final short val) { // NOPMD
         this.val = val;
     }
 
@@ -53,7 +53,7 @@ public class ShortRef
      * @param val value
      * @return {@code this}
      */
-    public ShortRef set(final short val) {
+    public ShortRef set(final short val) { // NOPMD
         this.val = val;
         return this;
     }
@@ -66,5 +66,29 @@ public class ShortRef
     @Override
     public int compareTo(final ShortRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    @Override
+    public ShortRef add(final Short val) {
+        this.val += val;
+        return this;
+    }
+
+    @Override
+    public ShortRef mul(final Short val) {
+        this.val *= val;
+        return this;
+    }
+
+    @Override
+    public ShortRef div(final Short val) {
+        this.val /= val;
+        return this;
+    }
+
+    @Override
+    public ShortRef negate() {
+        this.val = (short) -this.val; // NOPMD
+        return this;
     }
 }

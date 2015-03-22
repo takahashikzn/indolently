@@ -22,13 +22,13 @@ import java.util.function.DoubleSupplier;
  * @version $Id$
  */
 public class DoubleRef
-    extends AbstractRef<Double>
-    implements Comparable<DoubleRef>, DoubleSupplier, DoubleConsumer {
+    extends AbstractRef<Double, DoubleRef>
+    implements NumberRef<Double, DoubleRef>, Comparable<DoubleRef>, DoubleSupplier, DoubleConsumer {
 
     private static final long serialVersionUID = -3198217652103277386L;
 
     /** the value. */
-    public volatile double val;
+    public volatile double val; // NOPMD
 
     /**
      * constructor.
@@ -80,5 +80,29 @@ public class DoubleRef
     @Override
     public int compareTo(final DoubleRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    @Override
+    public DoubleRef add(final Double val) {
+        this.val += val;
+        return this;
+    }
+
+    @Override
+    public DoubleRef mul(final Double val) {
+        this.val *= val;
+        return this;
+    }
+
+    @Override
+    public DoubleRef div(final Double val) {
+        this.val /= val;
+        return this;
+    }
+
+    @Override
+    public DoubleRef negate() {
+        this.val = -this.val;
+        return this;
     }
 }

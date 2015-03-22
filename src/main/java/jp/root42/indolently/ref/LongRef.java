@@ -22,13 +22,13 @@ import java.util.function.LongSupplier;
  * @version $Id$
  */
 public class LongRef
-    extends AbstractRef<Long>
-    implements Comparable<LongRef>, LongSupplier, LongConsumer {
+    extends AbstractRef<Long, LongRef>
+    implements NumberRef<Long, LongRef>, Comparable<LongRef>, LongSupplier, LongConsumer {
 
     private static final long serialVersionUID = -5582550853171233363L;
 
     /** the value. */
-    public volatile long val;
+    public volatile long val; // NOPMD
 
     /**
      * constructor.
@@ -80,5 +80,29 @@ public class LongRef
     @Override
     public int compareTo(final LongRef that) {
         return this.get().compareTo(that.get());
+    }
+
+    @Override
+    public LongRef add(final Long val) {
+        this.val += val;
+        return this;
+    }
+
+    @Override
+    public LongRef mul(final Long val) {
+        this.val *= val;
+        return this;
+    }
+
+    @Override
+    public LongRef div(final Long val) {
+        this.val /= val;
+        return this;
+    }
+
+    @Override
+    public LongRef negate() {
+        this.val = -this.val;
+        return this;
     }
 }

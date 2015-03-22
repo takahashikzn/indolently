@@ -26,9 +26,6 @@ import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.IntRef;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +33,12 @@ import org.junit.runner.RunWith;
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 
 /**
@@ -45,6 +46,7 @@ import static org.junit.Assert.*;
  *
  * @author takahashikzn
  */
+@SuppressWarnings("unused")
 @RunWith(JUnitParamsRunner.class)
 public class ExpressiveTest {
 
@@ -65,6 +67,7 @@ public class ExpressiveTest {
 
     private static final class RaiseTestException
         extends Exception {
+
         private static final long serialVersionUID = 1L;
     }
 
@@ -79,6 +82,7 @@ public class ExpressiveTest {
 
     private static final class RaiseTestRuntimeException
         extends RuntimeException {
+
         private static final long serialVersionUID = 1L;
     }
 
@@ -93,6 +97,7 @@ public class ExpressiveTest {
 
     private static final class RaiseTestError
         extends Error {
+
         private static final long serialVersionUID = 1L;
     }
 
@@ -121,7 +126,7 @@ public class ExpressiveTest {
         try {
             eval(() -> {
                 throw e;
-            });
+            } );
 
             fail();
         } catch (final RaisedException err) {
@@ -153,7 +158,7 @@ public class ExpressiveTest {
         try {
             let(() -> {
                 throw e;
-            });
+            } );
 
             fail();
         } catch (final RaisedException err) {
@@ -183,7 +188,7 @@ public class ExpressiveTest {
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one") //
             , whenEq(2, "two") //
-            ).defaults(x -> "" + x);
+        ).defaults(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
@@ -200,7 +205,8 @@ public class ExpressiveTest {
      */
     @Parameters
     @Test
-    public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to, final int step) {
+    public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to,
+        final int step) {
 
         assertThat(list( //
             iterator( //
@@ -208,14 +214,13 @@ public class ExpressiveTest {
                 env -> match( //
                     when((final IntRef x) -> from < to, x -> x.val <= to), //
                     when(x -> to < from, x -> to <= x.val) //
-                ).defaults(x -> x.val == from).apply(env), // Expressive#test raises compilation error with OracleJDK
+        ).defaults(x -> x.val == from).apply(env), // Expressive#test raises compilation error with OracleJDK
                 match( //
-                    when((final IntRef x) -> from < to, x -> prog1( //
-                        x::get, //
-                        () -> x.val += step)) //
-                ).defaults(x -> prog1(x::get, () -> x.val -= step)) //
-            ) //
-            )).isEqualTo(expected);
+                    when((final IntRef x) -> from < to, x -> x.getThen(self -> self.val += step)) //
+        ).defaults(x -> prog1(x::get, () -> x.val -= step)) //
+        ) //
+        )) //
+            .isEqualTo(expected);
 
         assertThat(list( //
             iterator( //
@@ -227,17 +232,17 @@ public class ExpressiveTest {
                     when( //
                         x -> to < from, //
                         x -> to <= x.val) //
-                ).defaults(x -> x.val == from).apply(env), //
+        ).defaults(x -> x.val == from).apply(env), //
                 env -> when( //
-                    (final IntRef x) -> from < to, //
-                    x -> prog1( //
-                        x::get, //
-                        () -> x.val += step)) //
-                    .other( //
-                        x -> prog1( //
-                            x::get, //
-                            () -> x.val -= step)).apply(env) //
-            )).reduce((l, r) -> l + r)).isEqualTo(list(expected).reduce((l, r) -> l + r));
+                    (final IntRef x) -> from < to, x -> x.getThen(self -> self.val += step)) //
+                        .other( //
+                            x -> prog1( //
+                                x::get, //
+                                () -> x.val -= step))
+                        .apply(env) //
+        )) //
+            .reduce((l, r) -> l + r)) //
+                .isEqualTo(list(expected).reduce((l, r) -> l + r));
     }
 
     static List<Object[]> parametersForTestComplicatedTypeInference() {
@@ -258,7 +263,7 @@ public class ExpressiveTest {
         final Function<Integer, String> f1 = match( //
             when((final Integer x) -> x == 1, () -> "one")//
             , when(x -> x == 2, () -> "two") //
-            ).raise(x -> new RuntimeException("THE TEST OF " + x));
+        ).raise(x -> new RuntimeException("THE TEST OF " + x));
 
         try {
             f1.apply(42);

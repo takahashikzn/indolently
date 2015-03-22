@@ -168,11 +168,11 @@ public class Iterative {
         final Iterator<Supplier<? extends T>> i = list(values).iterator();
 
         return iterator(i::hasNext,
-        // avoid compilation error on OracleJDK
+            // avoid compilation error on OracleJDK
             () -> {
                 final T val = i.next().get();
                 return val;
-            });
+            } );
     }
 
     /**
@@ -281,29 +281,15 @@ public class Iterative {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        final Predicate<LongRef> pred = env -> {
-            if (from < to) {
-                return (env.val <= to);
-            } else if (to < from) {
-                return (to <= env.val);
-            } else {
-                return (env.val == from);
-            }
-        };
+        final Predicate<LongRef> pred = env -> (from < to) //
+            ? (env.val <= to) //
+            : (to < from) //
+                ? (to <= env.val) // /
+                : (env.val == from);
 
-        return iterator( //
-            ref(from), pred, //
-            env -> ifelse( //
-                pred.test(env), //
-                () -> prog1( //
-                    () -> env.val, //
-                    () -> {
-                        if (from < to) {
-                            env.val += step;
-                        } else {
-                            env.val -= step;
-                        }
-                    }), //
-                () -> raise(new NoSuchElementException())));
+        return iterator(ref(from), pred, //
+            env -> pred.test(env) //
+                ? env.getThen(x -> x.val += (from <= to ? step : -step)) //
+                : raise(new NoSuchElementException()));
     }
 }

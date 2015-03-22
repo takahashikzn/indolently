@@ -19,14 +19,38 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.Indolently;
 import jp.root42.indolently.function.Expression;
+import jp.root42.indolently.trait.Identical;
 
 
 /**
  * @param <T> value type
+ * @param <S> self type
  * @author takahashikzn
  */
-public interface ValueReference<T>
-    extends Supplier<T>, Consumer<T> {
+public interface ValueReference<T, S extends ValueReference<T, S>>
+    extends Supplier<T>, Consumer<T>, Identical<S> {
+
+    /**
+     * get value then do something with this instance.
+     *
+     * @param f any operation
+     * @return the value
+     */
+    default T getThen(final Consumer<? super S> f) {
+        return this.optThen(f).get();
+    }
+
+    /**
+     * get value if exists, then do something with this instance.
+     *
+     * @param f any operation
+     * @return optional representation of the value
+     */
+    default Optional<T> optThen(final Consumer<? super S> f) {
+        final Optional<T> curr = this.opt();
+        f.accept(this.identity());
+        return curr;
+    }
 
     /**
      * get value as optional representation.
@@ -49,7 +73,7 @@ public interface ValueReference<T>
             final T val = f.get();
             this.accept(val);
             return val;
-        });
+        } );
     }
 
     /**
@@ -108,7 +132,7 @@ public interface ValueReference<T>
      * @param val initial value
      * @return reference of value
      */
-    static ShortRef of(final short val) {
+    static ShortRef of(final short val) { // NOPMD
         return new ShortRef(val);
     }
 

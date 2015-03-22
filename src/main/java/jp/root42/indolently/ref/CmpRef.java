@@ -22,7 +22,7 @@ import jp.root42.indolently.Indolently;
  */
 public class CmpRef<T extends Comparable<T>>
     extends Ref<T>
-    implements Comparable<ValueReference<? extends T>> {
+    implements Comparable<ValueReference<? extends T, ? extends ValueReference<? extends T, ?>>> {
 
     private static final long serialVersionUID = 8031677453769730996L;
 
@@ -41,7 +41,7 @@ public class CmpRef<T extends Comparable<T>>
     }
 
     @Override
-    public int compareTo(final ValueReference<? extends T> that) {
+    public int compareTo(final ValueReference<? extends T, ? extends ValueReference<? extends T, ?>> that) {
         return this.get().compareTo(that.get());
     }
 
@@ -61,7 +61,7 @@ public class CmpRef<T extends Comparable<T>>
      * @param that comparison target
      * @return largest value.
      */
-    public T max(final ValueReference<? extends T> that) {
+    public T max(final ValueReference<? extends T, ?> that) {
         return Indolently.max(this.get(), that.get());
     }
 
@@ -81,7 +81,7 @@ public class CmpRef<T extends Comparable<T>>
      * @param that comparison target
      * @return smallest value.
      */
-    public T min(final ValueReference<? extends T> that) {
+    public T min(final ValueReference<? extends T, ?> that) {
         return Indolently.min(this.get(), that.get());
     }
 

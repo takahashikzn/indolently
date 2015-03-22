@@ -43,8 +43,8 @@ import static java.util.Objects.*;
  * @author takahashikzn
  */
 public interface SMap<K, V>
-    extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>,
-    Filterable<V, SMap<K, V>>, EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
+    extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>, Filterable<V, SMap<K, V>>,
+    EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
 
     /**
      * Clone this instance.
@@ -213,8 +213,29 @@ public interface SMap<K, V>
             return this.val;
         }
 
+        /**
+         * Use {@link #update(Object)} instead of.
+         * This method is unsupported.
+         *
+         * @throws UnsupportedOperationException always thrown
+         */
+        @Deprecated
         @Override
-        public V setValue(final V value) {
+        public final V setValue(final V value) throws UnsupportedOperationException {
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Update the value corresponded to the key of this entry.
+         * <p>
+         * Important: the field {@link #val} never changed by calling this method.
+         * </p>
+         *
+         * @param value new value
+         * @return {@code this} instance
+         * @see #setValue(Object)
+         */
+        public V update(final V value) {
             return this.e.setValue(value);
         }
 

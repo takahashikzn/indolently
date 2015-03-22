@@ -36,6 +36,8 @@ import java.util.TreeSet;
 class JdkObjFactory
     extends ObjFactory {
 
+    static final int INITIAL_CAPACITY = 32;
+
     @Override
     public <K, V> SortedMap<K, V> newSortedMap(final Comparator<? super K> comp) {
         return new TreeMap<>(comp);
@@ -58,16 +60,16 @@ class JdkObjFactory
 
     @Override
     public <K, V> Map<K, V> newMap() {
-        return new HashMap<>();
+        return new HashMap<>(INITIAL_CAPACITY);
     }
 
     @Override
     public <V> Set<V> newSet() {
-        return new HashSet<>();
+        return new HashSet<>(INITIAL_CAPACITY);
     }
 
     @Override
     public <V> List<V> newList() {
-        return new ArrayList<>();
+        return new ArrayList<>(INITIAL_CAPACITY);
     }
 }

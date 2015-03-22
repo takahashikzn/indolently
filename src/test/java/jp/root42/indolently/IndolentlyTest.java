@@ -26,17 +26,18 @@ import java.util.Set;
 
 import jp.root42.indolently.trait.Freezable;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 
 /**
@@ -44,6 +45,7 @@ import static org.junit.Assert.*;
  *
  * @author takahashikzn
  */
+@SuppressWarnings("unused")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
 
@@ -304,72 +306,41 @@ public class IndolentlyTest {
         return list(
             //
             oarray("null", true, null, Iterable.class) //
-            ,
-            oarray("empty arguments", true, new List<?>[0], Iterable.class) //
-            ,
-            oarray("null argument", true, new List<?>[1], Iterable.class) //
-            ,
-            oarray("empty list", true, arrayOf(list()), Iterable.class) //
-            ,
-            oarray("empty lists", true, arrayOf(list(), list()), Iterable.class) //
-            ,
-            oarray("non empty list only", false, arrayOf(list(0)), Iterable.class) //
-            ,
-            oarray("empty and non empty lists", false, arrayOf(list(0), list()), Iterable.class) //
-            ,
-            oarray("non empty lists only", false, arrayOf(list(0), list(0)), Iterable.class) //
+            , oarray("empty arguments", true, new List<?>[0], Iterable.class) //
+            , oarray("null argument", true, new List<?>[1], Iterable.class) //
+            , oarray("empty list", true, arrayOf(list()), Iterable.class) //
+            , oarray("empty lists", true, arrayOf(list(), list()), Iterable.class) //
+            , oarray("non empty list only", false, arrayOf(list(0)), Iterable.class) //
+            , oarray("empty and non empty lists", false, arrayOf(list(0), list()), Iterable.class) //
+            , oarray("non empty lists only", false, arrayOf(list(0), list(0)), Iterable.class) //
 
-            ,
-            oarray("null", true, null, Map.class) //
-            ,
-            oarray("empty arguments", true, new Map<?, ?>[0], Map.class) //
-            ,
-            oarray("null argument", true, new Map<?, ?>[1], Map.class) //
-            ,
-            oarray("empty map", true, arrayOf(map()), Map.class) //
-            ,
-            oarray("empty maps", true, arrayOf(map(), map()), Map.class) //
-            ,
-            oarray("non empty map only", false, arrayOf(map("a", 1)), Map.class) //
-            ,
-            oarray("empty and non empty maps", false, arrayOf(map("a", 1), map()), Map.class) //
-            ,
-            oarray("non empty maps only", false, arrayOf(map("a", 1), map("a", 1)), Map.class) //
+        , oarray("null", true, null, Map.class) //
+        , oarray("empty arguments", true, new Map<?, ?>[0], Map.class) //
+        , oarray("null argument", true, new Map<?, ?>[1], Map.class) //
+        , oarray("empty map", true, arrayOf(map()), Map.class) //
+        , oarray("empty maps", true, arrayOf(map(), map()), Map.class) //
+        , oarray("non empty map only", false, arrayOf(map("a", 1)), Map.class) //
+        , oarray("empty and non empty maps", false, arrayOf(map("a", 1), map()), Map.class) //
+        , oarray("non empty maps only", false, arrayOf(map("a", 1), map("a", 1)), Map.class) //
 
-            ,
-            oarray("null", true, null, String.class) //
-            ,
-            oarray("empty arguments", true, new String[0], String.class) //
-            ,
-            oarray("null argument", true, new String[1], String.class) //
-            ,
-            oarray("empty string", true, arrayOf(""), String.class) //
-            ,
-            oarray("blank string", false, arrayOf(" "), String.class) //
-            ,
-            oarray("empty strings", true, arrayOf("", ""), String.class) //
-            ,
-            oarray("non empty string only", false, arrayOf("a"), String.class) //
-            ,
-            oarray("empty and non empty strings", false, arrayOf("a", ""), String.class) //
-            ,
-            oarray("non empty strings only", false, arrayOf("a", "b"), String.class) //
+        , oarray("null", true, null, String.class) //
+        , oarray("empty arguments", true, new String[0], String.class) //
+        , oarray("null argument", true, new String[1], String.class) //
+        , oarray("empty string", true, arrayOf(""), String.class) //
+        , oarray("blank string", false, arrayOf(" "), String.class) //
+        , oarray("empty strings", true, arrayOf("", ""), String.class) //
+        , oarray("non empty string only", false, arrayOf("a"), String.class) //
+        , oarray("empty and non empty strings", false, arrayOf("a", ""), String.class) //
+        , oarray("non empty strings only", false, arrayOf("a", "b"), String.class) //
 
-            ,
-            oarray("null", true, null, Optional.class) //
-            ,
-            oarray("empty arguments", true, new Optional[0], Optional.class) //
-            ,
-            oarray("null argument", true, new Optional[1], Optional.class) //
-            ,
-            oarray("empty optional", true, arrayOf(Optional.empty()), Optional.class) //
-            ,
-            oarray("empty optionals", true, arrayOf(Optional.empty(), Optional.empty()), Optional.class) //
-            ,
-            oarray("non empty optional only", false, arrayOf(Optional.of("a")), Optional.class) //
-            ,
-            oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class) //
-            , oarray("non empty optionals only", false, arrayOf(Optional.of("a"), Optional.of("b")), Optional.class) //
+        , oarray("null", true, null, Optional.class) //
+        , oarray("empty arguments", true, new Optional[0], Optional.class) //
+        , oarray("null argument", true, new Optional[1], Optional.class) //
+        , oarray("empty optional", true, arrayOf(Optional.empty()), Optional.class) //
+        , oarray("empty optionals", true, arrayOf(Optional.empty(), Optional.empty()), Optional.class) //
+        , oarray("non empty optional only", false, arrayOf(Optional.of("a")), Optional.class) //
+        , oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class) //
+        , oarray("non empty optionals only", false, arrayOf(Optional.of("a"), Optional.of("b")), Optional.class) //
         );
     }
 
@@ -430,6 +401,15 @@ public class IndolentlyTest {
             .isExactlyInstanceOf(Number[].class);
     }
 
+    private static class SortKey {
+
+        public final int val;
+
+        public SortKey(final int val) {
+            this.val = val;
+        }
+    }
+
     /**
      * {@link Indolently#sort(List)} / {@link Indolently#sort(Set)}
      */
@@ -441,8 +421,15 @@ public class IndolentlyTest {
 
         assertThat(sort(ints)) //
             .isEqualTo(list(1, 2, 3, 4, 5));
+
         assertThat(sort(set(ints)).list()) //
             .isEqualTo(list(1, 2, 3, 4, 5));
+
+        assertThat(sort(set(new SortKey(3), new SortKey(1), new SortKey(2)), x -> x.val).list().map(x -> x.val)) //
+            .isEqualTo(list(1, 2, 3));
+
+        assertThat(sort(list(new SortKey(3), new SortKey(1), new SortKey(2)), x -> x.val).map(x -> x.val)) //
+            .isEqualTo(list(1, 2, 3));
     }
 
     /**
@@ -458,12 +445,16 @@ public class IndolentlyTest {
 
         assertThat(list(sort(map).keySet())) //
             .isEqualTo(list(1, 2, 3));
+
+        assertThat(list(
+            sort(wrap(new LinkedHashMap<>(), new SortKey(3), "a").push(new SortKey(1), "b").push(new SortKey(2), "c"),
+                x -> x.val).keySet()).map(x -> x.val)) //
+                    .isEqualTo(list(1, 2, 3));
     }
 
     /**
      * {@link Indolently#max(Iterable)} / {@link Indolently#min(Iterable)}
      */
-    @SuppressWarnings("javadoc")
     @Test
     public void testMinMax() {
 
@@ -471,8 +462,12 @@ public class IndolentlyTest {
 
         Collections.shuffle(ints);
 
-        assertThat(min(ints)).isEqualTo(1);
-        assertThat(max(ints)).isEqualTo(100);
+        assertThat(min(ints)).isEqualTo(Optional.of(1));
+        assertThat(max(ints)).isEqualTo(Optional.of(100));
+
+        // explicit type annotation is required for OrackeJDK' compiler
+        assertThat(min(Indolently.<String> list()).isPresent()).isFalse();
+        assertThat(max(Indolently.<String> list()).isPresent()).isFalse();
     }
 
     /**
@@ -484,6 +479,9 @@ public class IndolentlyTest {
 
         assertThat(min(1, 3, 2, 4)).isEqualTo(1);
         assertThat(max(1, 3, 2, 4)).isEqualTo(4);
+
+        assertThat(min(1, 3, new Integer[0])).isEqualTo(1);
+        assertThat(max(1, 3, new Integer[0])).isEqualTo(3);
     }
 
     /**
@@ -635,7 +633,9 @@ public class IndolentlyTest {
 
         assertThat((Map<String, String>) map("key", "value")).as("single key/value pair") //
             .isEqualTo(new HashMap<Object, Object>() {
+
                 private static final long serialVersionUID = 2171800138194558313L;
+
                 {
                     this.put("key", "value");
                 }
@@ -643,7 +643,9 @@ public class IndolentlyTest {
 
         assertThat((Map<String, ?>) map("int", 1, "string", "abc")).as("compound typed map") //
             .isEqualTo(new HashMap<Object, Object>() {
+
                 private static final long serialVersionUID = 6192281449667726402L;
+
                 {
                     this.put("int", 1);
                     this.put("string", "abc");
@@ -653,12 +655,15 @@ public class IndolentlyTest {
         final SMap<String, Object> actualNestedMap = map( //
             "int", 1 //
             , "string", "abc" //
-            , "level1", map( //
+            , "level1",
+            map( //
                 "level2", map( //
                     "level3", listOf(map("level4", 42))))).freeze();
 
         final Map<String, Object> expectedNestedMap = new HashMap<String, Object>() {
+
             private static final long serialVersionUID = 7482761660213570745L;
+
             {
                 final Map<String, Object> level1 = new HashMap<>();
                 final Map<String, Object> level2 = new HashMap<>();
@@ -777,15 +782,14 @@ public class IndolentlyTest {
     @Test
     public void testMap() {
 
-        assertThat(
-            (Map<String, Integer>) map("0", 0, "1", 1, "2", 2, "3", 3, "4", 4, "5", 5, "6", 6, "7", 7, "8", 8, "9", 9,
-                "10", 10, "11", 11, "12", 12, "13", 13, "14", 14, "15", 15, "16", 16, "17", 17, "18", 18, "19", 19,
-                "20", 20, "21", 21, "22", 22, "23", 23, "24", 24, "25", 25, "26", 26, "27", 27, "28", 28, "29", 29,
-                "30", 30, "31", 31)) //
-            .hasSize(32) //
-            .containsKey("0") //
-            .containsValue(0) //
-            .containsKey("31") //
-            .containsValue(31);
+        assertThat((Map<String, Integer>) map("0", 0, "1", 1, "2", 2, "3", 3, "4", 4, "5", 5, "6", 6, "7", 7, "8", 8,
+            "9", 9, "10", 10, "11", 11, "12", 12, "13", 13, "14", 14, "15", 15, "16", 16, "17", 17, "18", 18, "19", 19,
+            "20", 20, "21", 21, "22", 22, "23", 23, "24", 24, "25", 25, "26", 26, "27", 27, "28", 28, "29", 29, "30",
+            30, "31", 31)) //
+                .hasSize(32) //
+                .containsKey("0") //
+                .containsValue(0) //
+                .containsKey("31") //
+                .containsValue(31);
     }
 }

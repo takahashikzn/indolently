@@ -177,6 +177,15 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link Optional#empty()}.
+     *
+     * @return Optional representation of nothing
+     */
+    public static <T> Optional<T> none() {
+        return Optional.empty();
+    }
+
+    /**
      * An alias of {@link Optional#ofNullable(Object)}.
      *
      * @param <T> type of value
@@ -556,22 +565,40 @@ public class Indolently {
         return sort(map, Comparator.naturalOrder());
     }
 
+    public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<K, V> map,
+        final Function<? super K, ? extends S> f) {
+
+        return sort(map, (l, r) -> f.apply(l).compareTo(f.apply(r)));
+    }
+
     public static <K, V> SMap<K, V> sort(final Map<K, V> map, final Comparator<? super K> comp) {
-        return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(
-            map);
+        return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator")))
+            .pushAll(map);
     }
 
     public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
         return sort(elems, Comparator.naturalOrder());
     }
 
+    public static <T, S extends Comparable<S>> SSet<T> sort(final Set<? extends T> elems,
+        final Function<? super T, ? extends S> f) {
+
+        return sort(elems, (l, r) -> f.apply(l).compareTo(f.apply(r)));
+    }
+
     public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
-        return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(
-            elems);
+        return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator")))
+            .pushAll(elems);
     }
 
     public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
         return sort(elems, Comparator.naturalOrder());
+    }
+
+    public static <T, S extends Comparable<S>> SList<T> sort(final List<? extends T> elems,
+        final Function<? super T, ? extends S> f) {
+
+        return sort(elems, (l, r) -> f.apply(l).compareTo(f.apply(r)));
     }
 
     public static <T> SList<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {
@@ -611,7 +638,7 @@ public class Indolently {
             when(x -> (x instanceof List), x -> freeze((List) x)) //
             , when(x -> (x instanceof Set), x -> freeze((Set) x))//
             , when(x -> (x instanceof Map), x -> freeze((Map) x))) //
-            .defaults((Function) Function.identity());
+                .defaults((Function) Function.identity());
     }
 
     /**
@@ -725,11 +752,26 @@ public class Indolently {
     }
 
     public static String join(final Collection<? extends CharSequence> col) {
-        return join(col, "");
+        return join(col, null);
     }
 
     public static String join(final Collection<? extends CharSequence> col, final String sep) {
-        return list(col).reduce((x, y) -> x + sep + y).map(x -> x.toString()).orElse("");
+
+        return optional(col).map(x -> {
+
+            final StringBuilder sb = new StringBuilder();
+            final String s = optional(sep).orElse("");
+
+            for (final Iterator<? extends CharSequence> i = x.iterator(); i.hasNext();) {
+                sb.append(i.next());
+
+                if (i.hasNext()) {
+                    sb.append(s);
+                }
+            }
+
+            return sb.toString();
+        } ).orElse("");
     }
 
     @SafeVarargs
@@ -766,158 +808,158 @@ public class Indolently {
 
     /**
      * Test that the lower is less than upper.
-     * i.e. this method tests {@code lower < upper}.
+     * i.e. this method tests {@code l < r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean lt(final double l, final double u) {
-        return Double.compare(l, u) < 0;
+    public static boolean lt(final double l, final double r) {
+        return Double.compare(l, r) < 0;
     }
 
     /**
      * Test that the lower is less equal than upper.
-     * i.e. this method tests {@code lower <= upper}.
+     * i.e. this method tests {@code l <= r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean le(final double l, final double u) {
-        return Double.compare(l, u) <= 0;
+    public static boolean le(final double l, final double r) {
+        return Double.compare(l, r) <= 0;
     }
 
     /**
      * Test that the lower is greater than upper.
-     * i.e. this method tests {@code lower > upper}.
+     * i.e. this method tests {@code l > r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean gt(final double l, final double u) {
-        return Double.compare(l, u) > 0;
+    public static boolean gt(final double l, final double r) {
+        return Double.compare(l, r) > 0;
     }
 
     /**
      * Test that the lower is greater equal than upper.
-     * i.e. this method tests {@code lower >= upper}.
+     * i.e. this method tests {@code l >= r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean ge(final double l, final double u) {
-        return Double.compare(l, u) >= 0;
+    public static boolean ge(final double l, final double r) {
+        return Double.compare(l, r) >= 0;
     }
 
     /**
      * Test that the lower is less than upper.
-     * i.e. this method tests {@code lower < upper}.
+     * i.e. this method tests {@code l < r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean lt(final long l, final long u) {
-        return l < u;
+    public static boolean lt(final long l, final long r) {
+        return l < r;
     }
 
     /**
      * Test that the lower is less equal than upper.
-     * i.e. this method tests {@code lower <= upper}.
+     * i.e. this method tests {@code l <= r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean le(final long l, final long u) {
-        return l <= u;
+    public static boolean le(final long l, final long r) {
+        return l <= r;
     }
 
     /**
      * Test that the lower is greater than upper.
-     * i.e. this method tests {@code lower > upper}.
+     * i.e. this method tests {@code l > r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean gt(final long l, final long u) {
-        return l > u;
+    public static boolean gt(final long l, final long r) {
+        return l > r;
     }
 
     /**
      * Test that the lower is greater equal than upper.
-     * i.e. this method tests {@code lower >= upper}.
+     * i.e. this method tests {@code l >= r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static boolean ge(final long l, final long u) {
-        return l >= u;
+    public static boolean ge(final long l, final long r) {
+        return l >= r;
     }
 
     /**
      * Test that the lower is less than upper.
-     * i.e. this method tests {@code lower < upper}.
+     * i.e. this method tests {@code l < r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean lt(final T l, final T u) {
-        return l.compareTo(u) < 0;
+    public static <T extends Comparable<T>> boolean lt(final T l, final T r) {
+        return l.compareTo(r) < 0;
     }
 
     /**
      * Test that the lower is less equal than upper.
-     * i.e. this method tests {@code lower <= upper}.
+     * i.e. this method tests {@code l <= r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean le(final T l, final T u) {
-        return l.compareTo(u) <= 0;
+    public static <T extends Comparable<T>> boolean le(final T l, final T r) {
+        return l.compareTo(r) <= 0;
     }
 
     /**
      * Test that the lower is greater than upper.
-     * i.e. this method tests {@code lower > upper}.
+     * i.e. this method tests {@code l > r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gt(final T l, final T u) {
-        return l.compareTo(u) > 0;
+    public static <T extends Comparable<T>> boolean gt(final T l, final T r) {
+        return l.compareTo(r) > 0;
     }
 
     /**
      * Test that the lower is greater equal than upper.
-     * i.e. this method tests {@code lower >= upper}.
+     * i.e. this method tests {@code l >= r}.
      *
      * @param <T> value type
-     * @param l lower value
-     * @param u upper value
+     * @param l left side value
+     * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean ge(final T l, final T u) {
-        return l.compareTo(u) >= 0;
+    public static <T extends Comparable<T>> boolean ge(final T l, final T r) {
+        return l.compareTo(r) >= 0;
     }
 
     /**
@@ -1227,39 +1269,35 @@ public class Indolently {
 
     @SafeVarargs
     public static <T extends Comparable<T>> T max(final T first, final T second, final T... rest) {
-        return max(max(first, second), max(list(rest)));
+        return max(list(rest)).map(x -> max(x, max(first, second))).orElseGet(() -> max(first, second));
     }
 
     @SafeVarargs
     public static <T extends Comparable<T>> T min(final T first, final T second, final T... rest) {
-        return min(min(first, second), min(list(rest)));
+        return min(list(rest)).map(x -> min(x, min(first, second))).orElseGet(() -> min(first, second));
     }
 
-    public static <T extends Comparable<T>> T max(final Iterable<? extends T> values) {
-        return list(values).reduce((l, r) -> max(l, r)).get();
+    public static <T extends Comparable<T>> Optional<T> max(final Iterable<T> values) {
+        return list(values).reduce((l, r) -> max(l, r));
     }
 
-    public static <T extends Comparable<T>> T min(final Iterable<? extends T> values) {
-        return list(values).reduce((l, r) -> min(l, r)).get();
+    public static <T extends Comparable<T>> Optional<T> min(final Iterable<T> values) {
+        return list(values).reduce((l, r) -> min(l, r));
     }
 
-    public static Class<?> typed(@SuppressWarnings("rawtypes")
-    final Class cls) {
+    public static Class<?> typed(@SuppressWarnings("rawtypes") final Class cls) {
         return cls;
     }
 
-    public static Map<?, ?> typed(@SuppressWarnings("rawtypes")
-    final Map raw) {
+    public static Map<?, ?> typed(@SuppressWarnings("rawtypes") final Map raw) {
         return raw;
     }
 
-    public static List<?> typed(@SuppressWarnings("rawtypes")
-    final List raw) {
+    public static List<?> typed(@SuppressWarnings("rawtypes") final List raw) {
         return raw;
     }
 
-    public static Set<?> typed(@SuppressWarnings("rawtypes")
-    final Set raw) {
+    public static Set<?> typed(@SuppressWarnings("rawtypes") final Set raw) {
         return raw;
     }
 
@@ -1696,7 +1734,8 @@ public class Indolently {
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
-        final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11) {
+        final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11,
+        final V v11) {
 
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10).push(k11,
             v11);
@@ -1808,8 +1847,8 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22) {
 
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
-            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21).push(
-            k22, v22);
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21)
+                .push(k22, v22);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,

@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 
@@ -36,34 +36,30 @@ public class SListTest {
     @Test
     public void group() {
 
-        assertThat(
-            prog1(
-                () -> list(prog1(() -> new Bean1(), x -> {
-                    x.key = "key1";
-                    x.bean2 = prog1(() -> new Bean2(), y -> y.val = 1);
-                }), prog1(() -> new Bean1(), x -> {
-                    x.key = "key2";
-                    x.bean2 = prog1(() -> new Bean2(), y -> y.val = 2);
-                }), prog1(() -> new Bean1(), x -> {
-                    x.key = "key3";
-                    x.bean2 = prog1(() -> new Bean2(), y -> y.val = 4);
-                }), prog1(() -> new Bean1(), x -> {
-                    x.key = "key1";
-                    x.bean2 = prog1(() -> new Bean2(), y -> y.val = 8);
-                }), prog1(() -> new Bean1(), x -> {
-                    x.key = "key2";
-                    x.bean2 = prog1(() -> new Bean2(), y -> y.val = 16);
-                })) //
-                .group(x -> x.key), //
-                x -> {
-                    assertEquals(x.map(y -> y.map(z -> z.bean2.val)),
-                        map("key1", list(1, 8), "key2", list(2, 16), "key3", list(4)));
-                }) //
-                .vals() //
-                .map(x -> x.map(y -> y.bean2.val) //
-                    .reduce(0, (y, z) -> y + z)) //
+        assertThat(prog1(() -> list(prog1(() -> new Bean1(), x -> {
+            x.key = "key1";
+            x.bean2 = prog1(() -> new Bean2(), y -> y.val = 1);
+        } ), prog1(() -> new Bean1(), x -> {
+            x.key = "key2";
+            x.bean2 = prog1(() -> new Bean2(), y -> y.val = 2);
+        } ), prog1(() -> new Bean1(), x -> {
+            x.key = "key3";
+            x.bean2 = prog1(() -> new Bean2(), y -> y.val = 4);
+        } ), prog1(() -> new Bean1(), x -> {
+            x.key = "key1";
+            x.bean2 = prog1(() -> new Bean2(), y -> y.val = 8);
+        } ), prog1(() -> new Bean1(), x -> {
+            x.key = "key2";
+            x.bean2 = prog1(() -> new Bean2(), y -> y.val = 16);
+        } )) //
+            .group(x -> x.key),
+            x -> assertEquals(x.map(y -> y.map(z -> z.bean2.val)),
+                map("key1", list(1, 8), "key2", list(2, 16), "key3", list(4)))) //
+                    .vals() //
+                    .map(x -> x.map(y -> y.bean2.val) //
+                        .reduce(0, (y, z) -> y + z)) //
         ) //
-        .isEqualTo(list(9, 18, 4));
+            .isEqualTo(list(9, 18, 4));
     }
 
     static class Bean1 {
@@ -74,6 +70,7 @@ public class SListTest {
     }
 
     static class Bean2 {
+
         int val;
     }
 
@@ -83,8 +80,8 @@ public class SListTest {
     @Test
     public void flatten() {
 
-        assertThat(list("123", "abc").flatten(x -> plist(x.toCharArray()))).isEqualTo(
-            list('1', '2', '3', 'a', 'b', 'c'));
+        assertThat(list("123", "abc").flatten(x -> plist(x.toCharArray())))
+            .isEqualTo(list('1', '2', '3', 'a', 'b', 'c'));
     }
 
     /**

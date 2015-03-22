@@ -41,20 +41,6 @@ public interface Reducible<T> {
     }
 
     /**
-     * Map then Reduce operation with initial value.
-     *
-     * @param <R> mapping target type
-     * @param initial initial value
-     * @param f function
-     * @return result value
-     */
-    default <R> Optional<R> reduce(final Optional<? extends R> initial,
-        final BiFunction<? super R, ? super T, ? extends R> f) {
-
-        return initial.map(x -> Optional.ofNullable(this.reduce(initial.get(), f))).orElse(Optional.empty());
-    }
-
-    /**
      * Reduce operation.
      *
      * @param f function

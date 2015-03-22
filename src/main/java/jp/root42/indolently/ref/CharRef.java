@@ -18,13 +18,13 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 public class CharRef
-    extends AbstractRef<Character>
+    extends AbstractRef<Character, CharRef>
     implements Comparable<CharRef> {
 
     private static final long serialVersionUID = 6739224434382670429L;
 
     /** the value. */
-    public volatile char val;
+    public volatile char val; // NOPMD
 
     /**
      * constructor.
