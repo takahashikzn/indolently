@@ -262,11 +262,11 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestEmpty() {
 
         return list( //
-            oarray("null", true, null) //
-            , oarray("empty collection", true, list()) //
-            , oarray("non empty collection", false, list(0)) //
-            , oarray("empty iterable", true, iterator(() -> false, () -> 0)) //
-            , oarray("non empty iterable", false, iterator(() -> true, () -> 1)) //
+            oarray("null", true, null), //
+            oarray("empty collection", true, list()), //
+            oarray("non empty collection", false, list(0)), //
+            oarray("empty iterable", true, iterator(() -> false, () -> 0)), //
+            oarray("non empty iterable", false, iterator(() -> true, () -> 1)) //
         );
     }
 
@@ -303,45 +303,49 @@ public class IndolentlyTest {
 
     static List<?> parametersForTestEmptyVarargs() {
 
-        return list(
-            //
-            oarray("null", true, null, Iterable.class) //
-            , oarray("empty arguments", true, new List<?>[0], Iterable.class) //
-            , oarray("null argument", true, new List<?>[1], Iterable.class) //
-            , oarray("empty list", true, arrayOf(list()), Iterable.class) //
-            , oarray("empty lists", true, arrayOf(list(), list()), Iterable.class) //
-            , oarray("non empty list only", false, arrayOf(list(0)), Iterable.class) //
-            , oarray("empty and non empty lists", false, arrayOf(list(0), list()), Iterable.class) //
-            , oarray("non empty lists only", false, arrayOf(list(0), list(0)), Iterable.class) //
+        return list( //
+            oarray("null", true, null, Iterable.class), //
+            oarray("empty arguments", true, new List<?>[0], Iterable.class), //
+            oarray("null argument", true, new List<?>[1], Iterable.class), //
+            oarray("empty list", true, arrayOf(list()), Iterable.class), //
+            oarray("empty lists", true, arrayOf(list(), list()), Iterable.class), //
+            oarray("non empty list only", false, arrayOf(list(0)), Iterable.class), //
+            oarray("empty and non empty lists", false, arrayOf(list(0), list()), Iterable.class), //
+            oarray("non empty lists only", false, arrayOf(list(0), list(0)), Iterable.class), //
+            oarray("null", true, null, Map.class), //
+            oarray("empty arguments", true, new Map<?, ?>[0], Map.class), //
+            oarray("null argument", true, new Map<?, ?>[1], Map.class), //
+            oarray("empty map", true, arrayOf(map()), Map.class), //
+            oarray("empty maps", true, arrayOf(map(), map()), Map.class), //
+            oarray("non empty map only", false, arrayOf(map("a", 1)), Map.class), //
+            oarray("empty and non empty maps", false, arrayOf(map("a", 1), map()), Map.class), //
+            oarray("non empty maps only", false, arrayOf(map("a", 1), map("a", 1)), Map.class), //
+            oarray("null", true, null, String.class), //
+            oarray("empty arguments", true, new String[0], String.class), //
+            oarray("null argument", true, new String[1], String.class), //
+            oarray("empty string", true, arrayOf(""), String.class), //
+            oarray("blank string", false, arrayOf(" "), String.class), //
+            oarray("empty strings", true, arrayOf("", ""), String.class), //
+            oarray("non empty string only", false, arrayOf("a"), String.class), //
+            oarray("empty and non empty strings", false, arrayOf("a", ""), String.class), //
+            oarray("non empty strings only", false, arrayOf("a", "b"), String.class), //
+            oarray("null", true, null, Optional.class), //
+            oarray("empty arguments", true, new Optional[0], Optional.class), //
+            oarray("null argument", true, new Optional[1], Optional.class), //
+            oarray("empty optional", true, arrayOf(Optional.empty()), Optional.class), //
+            oarray("empty optionals", true, arrayOf(Optional.empty(), Optional.empty()), Optional.class), //
+            oarray("non empty optional only", false, arrayOf(Optional.of("a")), Optional.class), //
+            oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class), //
+            oarray("non empty optionals only", false, arrayOf(Optional.of("a"), Optional.of("b")), Optional.class));
+    }
 
-        , oarray("null", true, null, Map.class) //
-        , oarray("empty arguments", true, new Map<?, ?>[0], Map.class) //
-        , oarray("null argument", true, new Map<?, ?>[1], Map.class) //
-        , oarray("empty map", true, arrayOf(map()), Map.class) //
-        , oarray("empty maps", true, arrayOf(map(), map()), Map.class) //
-        , oarray("non empty map only", false, arrayOf(map("a", 1)), Map.class) //
-        , oarray("empty and non empty maps", false, arrayOf(map("a", 1), map()), Map.class) //
-        , oarray("non empty maps only", false, arrayOf(map("a", 1), map("a", 1)), Map.class) //
+    /**
+     * {@link Indolently#blank(CharSequence...)}
+     */
+    @Test
+    public void testBlankNullPassed() {
 
-        , oarray("null", true, null, String.class) //
-        , oarray("empty arguments", true, new String[0], String.class) //
-        , oarray("null argument", true, new String[1], String.class) //
-        , oarray("empty string", true, arrayOf(""), String.class) //
-        , oarray("blank string", false, arrayOf(" "), String.class) //
-        , oarray("empty strings", true, arrayOf("", ""), String.class) //
-        , oarray("non empty string only", false, arrayOf("a"), String.class) //
-        , oarray("empty and non empty strings", false, arrayOf("a", ""), String.class) //
-        , oarray("non empty strings only", false, arrayOf("a", "b"), String.class) //
-
-        , oarray("null", true, null, Optional.class) //
-        , oarray("empty arguments", true, new Optional[0], Optional.class) //
-        , oarray("null argument", true, new Optional[1], Optional.class) //
-        , oarray("empty optional", true, arrayOf(Optional.empty()), Optional.class) //
-        , oarray("empty optionals", true, arrayOf(Optional.empty(), Optional.empty()), Optional.class) //
-        , oarray("non empty optional only", false, arrayOf(Optional.of("a")), Optional.class) //
-        , oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class) //
-        , oarray("non empty optionals only", false, arrayOf(Optional.of("a"), Optional.of("b")), Optional.class) //
-        );
+        this.testBlank("null", true, null);
     }
 
     /**
@@ -361,15 +365,14 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestBlank() {
 
         return list( //
-            oarray("null", true, null) //
-            , oarray("empty array", true, new String[0]) //
-            , oarray("empty", true, array("")) //
-            , oarray("blank", true, array("  ")) //
-            , oarray("empty and blank", true, array("", "  ")) //
-            , oarray("blank strings", true, array("  ", "  ")) //
-            , oarray("non blank and empty", false, array("a", "")) //
-            , oarray("non blank and blank", false, array("a", "")) //
-            , oarray("non blnak strings", false, array("a", "b")) //
+            oarray("empty array", true, new String[0]), //
+            oarray("empty", true, array("")), //
+            oarray("blank", true, array("  ")), //
+            oarray("empty and blank", true, array("", "  ")), //
+            oarray("blank strings", true, array("  ", "  ")), //
+            oarray("non blank and empty", false, array("a", "")), //
+            oarray("non blank and blank", false, array("a", "")), //
+            oarray("non blnak strings", false, array("a", "b")) //
         );
     }
 
@@ -506,10 +509,10 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestUnion() {
 
         return list( //
-            oarray("standard", set(1, 2, 3, 4), set(1, 2, 3), set(2, 3, 4)) //
-            , oarray("completely different", set(1, 2, 3, 4, 5, 6), set(1, 2, 3), set(4, 5, 6)) //
-            , oarray("completely equivalent", set(1, 2, 3), set(1, 2, 3), set(1, 2, 3)) //
-            , oarray("empty", set(), set(), set()) //
+            oarray("standard", set(1, 2, 3, 4), set(1, 2, 3), set(2, 3, 4)), //
+            oarray("completely different", set(1, 2, 3, 4, 5, 6), set(1, 2, 3), set(4, 5, 6)), //
+            oarray("completely equivalent", set(1, 2, 3), set(1, 2, 3), set(1, 2, 3)), //
+            oarray("empty", set(), set(), set()) //
         );
     }
 
@@ -536,10 +539,10 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestIntersect() {
 
         return list( //
-            oarray("standard", set(2, 3), set(1, 2, 3), set(2, 3, 4)) //
-            , oarray("completely different", set(), set(1, 2, 3), set(4, 5, 6)) //
-            , oarray("completely equivalent", set(1, 2, 3), set(1, 2, 3), set(1, 2, 3)) //
-            , oarray("empty", set(), set(), set()) //
+            oarray("standard", set(2, 3), set(1, 2, 3), set(2, 3, 4)), //
+            oarray("completely different", set(), set(1, 2, 3), set(4, 5, 6)), //
+            oarray("completely equivalent", set(1, 2, 3), set(1, 2, 3), set(1, 2, 3)), //
+            oarray("empty", set(), set(), set()) //
         );
     }
 
@@ -565,11 +568,20 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestDiff() {
 
         return list( //
-            oarray("standard", set(1, 4), set(1, 2, 3), set(2, 3, 4)) //
-            , oarray("completely different", set(1, 2, 3, 4, 5, 6), set(1, 2, 3), set(4, 5, 6)) //
-            , oarray("completely equivalent", set(), set(1, 2, 3), set(1, 2, 3)) //
-            , oarray("empty", set(), set(), set()) //
+            oarray("standard", set(1, 4), set(1, 2, 3), set(2, 3, 4)), //
+            oarray("completely different", set(1, 2, 3, 4, 5, 6), set(1, 2, 3), set(4, 5, 6)), //
+            oarray("completely equivalent", set(), set(1, 2, 3), set(1, 2, 3)), //
+            oarray("empty", set(), set(), set()) //
         );
+    }
+
+    /**
+     * {@link Indolently#list(Object...)}
+     */
+    @Test
+    public void testListVarArgsNullPassed() {
+
+        this.testListVarArgs("null args", new ArrayList<>(), null);
     }
 
     /**
@@ -595,10 +607,9 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestListVarArgs() {
 
         return Arrays.asList( //
-            new Object[] { "int list", Arrays.asList(1, 2, 3), new Object[] { 1, 2, 3 } } //
-            , new Object[] { "compound typed list", Arrays.asList(1, "a"), new Object[] { 1, "a" } } //
-            , new Object[] { "null args", new ArrayList<>(), null } //
-            , new Object[] { "empty list", new ArrayList<>(), new Object[] {} });
+            new Object[] { "int list", Arrays.asList(1, 2, 3), new Object[] { 1, 2, 3 } }, //
+            new Object[] { "compound typed list", Arrays.asList(1, "a"), new Object[] { 1, "a" } }, //
+            new Object[] { "empty list", new ArrayList<>(), new Object[] {} });
     }
 
     /**
@@ -608,18 +619,16 @@ public class IndolentlyTest {
     public void testObjectArray() {
 
         final SList<Object[]> actual = list( //
-            oarray("int list", list(1, 2, 3), oarray(1, 2, 3)) //
-            , oarray("compound typed list", list(1, "a"), oarray(1, "a")) //
-            , oarray("null args", list(), null) //
-            , oarray("empty list", list(), oarray()));
+            oarray("int list", list(1, 2, 3), oarray(1, 2, 3)), //
+            oarray("compound typed list", list(1, "a"), oarray(1, "a")), //
+            oarray("empty list", list(), oarray()));
 
         final List<Object[]> expected = parametersForTestListVarArgs();
 
-        assertThat(actual).hasSize(4);
+        assertThat(actual).hasSize(3);
         assertArrayEquals(expected.get(0), actual.get(0));
         assertArrayEquals(expected.get(1), actual.get(1));
         assertArrayEquals(expected.get(2), actual.get(2));
-        assertArrayEquals(expected.get(3), actual.get(3));
     }
 
     /**
@@ -770,10 +779,10 @@ public class IndolentlyTest {
     static List<Object[]> parametersForTestSetVarArgs() {
 
         return Arrays.asList( //
-            new Object[] { "int set", new HashSet<>(Arrays.asList(1, 2, 3)), new Object[] { 1, 2, 3 } } //
-            , new Object[] { "compound typed set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } } //
-            , new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } } //
-            , new Object[] { "empty set", new HashSet<>(), new Object[] {} });
+            new Object[] { "int set", new HashSet<>(Arrays.asList(1, 2, 3)), new Object[] { 1, 2, 3 } }, //
+            new Object[] { "compound typed set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } }, //
+            new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } }, //
+            new Object[] { "empty set", new HashSet<>(), new Object[] {} });
     }
 
     /**
