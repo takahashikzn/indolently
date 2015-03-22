@@ -43,8 +43,8 @@ import static java.util.Objects.*;
  * @author takahashikzn
  */
 public interface SMap<K, V>
-    extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>,
-    Filterable<V, SMap<K, V>>, EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
+    extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>, Filterable<V, SMap<K, V>>,
+    EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
 
     /**
      * Clone this instance.

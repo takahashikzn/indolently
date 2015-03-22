@@ -22,16 +22,17 @@ import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.Trio;
 
-import junitparams.JUnitParamsRunner;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
+
+import junitparams.JUnitParamsRunner;
 
 
 /**
@@ -48,20 +49,19 @@ public class FunctionalTest {
     @Test
     public void testListComprehension() {
 
-        assertThat(
-            range(2, 10)
-                .filter(z -> function((final BiFunction<Integer, Integer, Boolean> self) -> {}, (self, x, y) -> {
-                    if (y <= 1) {
-                        return true;
-                    } else if ((x % y) == 0) {
-                        return false;
-                    } else {
-                        return self.apply(x, y - 1);
-                    }
-                }).apply(z, z - 1)) //
-                .map(x -> "" + x) //
-                .list()) //
-            .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
+        assertThat(range(2, 10)
+            .filter(z -> function((final BiFunction<Integer, Integer, Boolean> self) -> {} , (self, x, y) -> {
+                if (y <= 1) {
+                    return true;
+                } else if ((x % y) == 0) {
+                    return false;
+                } else {
+                    return self.apply(x, y - 1);
+                }
+            } ).apply(z, z - 1)) //
+            .map(x -> "" + x) //
+            .list()) //
+                .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
     }
 
     /**
@@ -76,12 +76,12 @@ public class FunctionalTest {
             (final Function<Integer, Integer> self) -> {
                 self.apply(1); // check no stackoverflow
                 initCount.val++;
-            }, (self, x) -> //
+            } , (self, x) -> //
             (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
 
         final SList<Integer> fibonacciNums =
-            list(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946,
-                17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887,
+            list(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711,
+                28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887,
                 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296).freeze();
 
         assertThat(initCount.val).isEqualTo(0);
@@ -89,7 +89,7 @@ public class FunctionalTest {
         assertThat(range(1, 10).each(x -> {
             assertThat(range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val)))).isEqualTo(fibonacciNums);
             assertThat(initCount.val).isEqualTo(1);
-        }).last()).isEqualTo(10);
+        } ).last()).isEqualTo(10);
     }
 
     /**
@@ -115,7 +115,7 @@ public class FunctionalTest {
     public void testFunction2() {
 
         final Function<Trio<Integer, Integer, Integer>, Integer> tarai =
-            function((final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {}, (self, v) -> {
+            function((final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {} , (self, v) -> {
 
                 final int x = v.fst;
                 final int y = v.snd;
@@ -129,7 +129,7 @@ public class FunctionalTest {
                             self.apply(tuple(y - 1, z, x)), //
                             self.apply(tuple(z - 1, x, y)))), //
                     () -> y);
-            }).memoize();
+            } ).memoize();
 
         assertThat(tarai.apply(tuple(20, 6, 0))).isEqualTo(20);
     }
@@ -139,7 +139,7 @@ public class FunctionalTest {
     @Test
     public void testFunction3() {
 
-        final SFunc<Trio<Integer, Integer, Integer>, Integer> tarai = func(self -> {}, (self, v) -> {
+        final SFunc<Trio<Integer, Integer, Integer>, Integer> tarai = func(self -> {} , (self, v) -> {
 
             final int x = v.fst;
             final int y = v.snd;
@@ -153,7 +153,7 @@ public class FunctionalTest {
                         self.apply(tuple(y - 1, z, x)), //
                         self.apply(tuple(z - 1, x, y)))), //
                 () -> y);
-        });
+        } );
 
         assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }

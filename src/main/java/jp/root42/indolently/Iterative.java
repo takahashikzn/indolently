@@ -168,11 +168,11 @@ public class Iterative {
         final Iterator<Supplier<? extends T>> i = list(values).iterator();
 
         return iterator(i::hasNext,
-        // avoid compilation error on OracleJDK
+            // avoid compilation error on OracleJDK
             () -> {
                 final T val = i.next().get();
                 return val;
-            });
+            } );
     }
 
     /**
