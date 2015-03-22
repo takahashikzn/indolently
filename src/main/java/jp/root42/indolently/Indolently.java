@@ -572,8 +572,8 @@ public class Indolently {
     }
 
     public static <K, V> SMap<K, V> sort(final Map<K, V> map, final Comparator<? super K> comp) {
-        return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(
-            map);
+        return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator")))
+            .pushAll(map);
     }
 
     public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
@@ -587,8 +587,8 @@ public class Indolently {
     }
 
     public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
-        return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(
-            elems);
+        return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator")))
+            .pushAll(elems);
     }
 
     public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
@@ -638,7 +638,7 @@ public class Indolently {
             when(x -> (x instanceof List), x -> freeze((List) x)) //
             , when(x -> (x instanceof Set), x -> freeze((Set) x))//
             , when(x -> (x instanceof Map), x -> freeze((Map) x))) //
-            .defaults((Function) Function.identity());
+                .defaults((Function) Function.identity());
     }
 
     /**
@@ -771,7 +771,7 @@ public class Indolently {
             }
 
             return sb.toString();
-        }).orElse("");
+        } ).orElse("");
     }
 
     @SafeVarargs
@@ -1285,23 +1285,19 @@ public class Indolently {
         return list(values).reduce((l, r) -> min(l, r));
     }
 
-    public static Class<?> typed(@SuppressWarnings("rawtypes")
-    final Class cls) {
+    public static Class<?> typed(@SuppressWarnings("rawtypes") final Class cls) {
         return cls;
     }
 
-    public static Map<?, ?> typed(@SuppressWarnings("rawtypes")
-    final Map raw) {
+    public static Map<?, ?> typed(@SuppressWarnings("rawtypes") final Map raw) {
         return raw;
     }
 
-    public static List<?> typed(@SuppressWarnings("rawtypes")
-    final List raw) {
+    public static List<?> typed(@SuppressWarnings("rawtypes") final List raw) {
         return raw;
     }
 
-    public static Set<?> typed(@SuppressWarnings("rawtypes")
-    final Set raw) {
+    public static Set<?> typed(@SuppressWarnings("rawtypes") final Set raw) {
         return raw;
     }
 
@@ -1738,7 +1734,8 @@ public class Indolently {
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
         final K k3, final V v3, final K k4, final V v4, final K k5, final V v5, final K k6, final V v6, final K k7,
-        final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11, final V v11) {
+        final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11,
+        final V v11) {
 
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10).push(k11,
             v11);
@@ -1850,8 +1847,8 @@ public class Indolently {
         final K k20, final V v20, final K k21, final V v21, final K k22, final V v22) {
 
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
-            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21).push(
-            k22, v22);
+            k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21)
+                .push(k22, v22);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,

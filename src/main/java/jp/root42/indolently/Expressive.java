@@ -78,7 +78,7 @@ public class Expressive {
             } else {
                 return new RaisedException(e);
             }
-        }).orElseGet(() -> new NullPointerException("supplier returns null: " + f));
+        } ).orElseGet(() -> new NullPointerException("supplier returns null: " + f));
     }
 
     /**
@@ -187,7 +187,8 @@ public class Expressive {
      * @param other result value if condition is {@code false}
      * @return evaluation result
      */
-    public static <T> T ifelse(final boolean cond, final Supplier<? extends T> then, final Supplier<? extends T> other) {
+    public static <T> T ifelse(final boolean cond, final Supplier<? extends T> then,
+        final Supplier<? extends T> other) {
         return cond ? then.get() : other.get();
     }
 
@@ -350,7 +351,7 @@ public class Expressive {
         static <C, V> When<C, V> raise(final Function<? super C, ? extends RuntimeException> expr) {
             return of(x -> true, (final C x) -> {
                 throw expr.apply(x);
-            });
+            } );
         }
 
         static <C, V> When<C, V> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
@@ -362,6 +363,7 @@ public class Expressive {
             Objects.requireNonNull(expr, "expr");
 
             return new When<C, V>() {
+
                 @Override
                 public boolean test(final C cond) {
                     return pred.test(cond);
@@ -415,7 +417,7 @@ public class Expressive {
                 }
 
                 return null;
-            }));
+            } ));
         }
 
         /**
@@ -451,7 +453,7 @@ public class Expressive {
 
             return this.defaults(x -> {
                 throw f.apply(x);
-            });
+            } );
         }
 
         /**
