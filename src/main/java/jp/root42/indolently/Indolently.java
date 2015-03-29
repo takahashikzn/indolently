@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -194,6 +195,21 @@ public class Indolently {
      */
     public static <T> Optional<T> optional(final T value) {
         return Optional.ofNullable(value);
+    }
+
+    /**
+     * An alias of {@link Optional#ofNullable(Object)}.
+     *
+     * @param <T> type of value
+     * @param value the value
+     * @param consumers invoked consumers only if value is present
+     * @return Optional representation of value
+     */
+    @SafeVarargs
+    public static <T> Optional<T> optional(final T value, final Consumer<? super T>... consumers) {
+        final Optional<T> opt = optional(value);
+        list(consumers).each(f -> opt.ifPresent(f));
+        return opt;
     }
 
     /**
