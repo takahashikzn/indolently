@@ -577,17 +577,17 @@ public class Indolently {
         return set;
     }
 
-    public static <K extends Comparable<K>, V> SMap<K, V> sort(final Map<K, V> map) {
+    public static <K extends Comparable<K>, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map) {
         return sort(map, Comparator.naturalOrder());
     }
 
-    public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<K, V> map,
+    public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<? extends K, ? extends V> map,
         final Function<? super K, ? extends S> f) {
 
         return sort(map, (l, r) -> f.apply(l).compareTo(f.apply(r)));
     }
 
-    public static <K, V> SMap<K, V> sort(final Map<K, V> map, final Comparator<? super K> comp) {
+    public static <K, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map, final Comparator<? super K> comp) {
         return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator")))
             .pushAll(map);
     }
