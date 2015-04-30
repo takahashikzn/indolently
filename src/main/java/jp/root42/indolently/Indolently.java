@@ -767,11 +767,11 @@ public class Indolently {
         return (ary == null) || (ary.length == 0);
     }
 
-    public static String join(final Collection<? extends CharSequence> col) {
+    public static String join(final Iterable<? extends CharSequence> col) {
         return join(col, null);
     }
 
-    public static String join(final Collection<? extends CharSequence> col, final String sep) {
+    public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
         return optional(col).map(x -> {
 
@@ -787,7 +787,7 @@ public class Indolently {
             }
 
             return sb.toString();
-        } ).orElse("");
+        } ).orElse(null);
     }
 
     @SafeVarargs
