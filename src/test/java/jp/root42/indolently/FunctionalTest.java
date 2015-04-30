@@ -114,8 +114,9 @@ public class FunctionalTest {
     @Test
     public void testFunction2() {
 
-        final Function<Trio<Integer, Integer, Integer>, Integer> tarai =
-            function((final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {} , (self, v) -> {
+        assertThat(function( //
+            (final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {} , // function decl
+            (self, v) -> { // function body
 
                 final int x = v.fst;
                 final int y = v.snd;
@@ -129,9 +130,7 @@ public class FunctionalTest {
                             self.apply(tuple(y - 1, z, x)), //
                             self.apply(tuple(z - 1, x, y)))), //
                     () -> y);
-            } ).memoize();
-
-        assertThat(tarai.apply(tuple(20, 6, 0))).isEqualTo(20);
+            } ).memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }
 
     /**
