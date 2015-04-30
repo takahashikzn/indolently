@@ -122,14 +122,13 @@ public class FunctionalTest {
                 final int y = v.snd;
                 final int z = v.trd;
 
-                return ifelse( //
-                    () -> (y < x), //
-                    () -> self.apply( //
+                return when(() -> (y < x)) //
+                    .then(() -> (int) self.apply( //
                         tuple( //
                             self.apply(tuple(x - 1, y, z)), //
                             self.apply(tuple(y - 1, z, x)), //
-                            self.apply(tuple(z - 1, x, y)))), //
-                    () -> y);
+                            self.apply(tuple(z - 1, x, y)))))
+                    .none(() -> y);
             } ).memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }
 
@@ -144,14 +143,13 @@ public class FunctionalTest {
             final int y = v.snd;
             final int z = v.trd;
 
-            return ifelse( //
-                () -> (y < x), //
-                () -> self.apply( //
+            return when(() -> (y < x)) //
+                .then(() -> (int) self.apply( //
                     tuple( //
                         self.apply(tuple(x - 1, y, z)), //
                         self.apply(tuple(y - 1, z, x)), //
-                        self.apply(tuple(z - 1, x, y)))), //
-                () -> y);
+                        self.apply(tuple(z - 1, x, y)))))
+                .none(() -> y);
         } );
 
         assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);

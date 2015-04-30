@@ -44,8 +44,6 @@ import jp.root42.indolently.ref.ShortRef;
 import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
 
-import static jp.root42.indolently.Expressive.*;
-
 
 /**
  * The Java Syntactic sugar collection for indolent person (like you).
@@ -650,11 +648,17 @@ public class Indolently {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Function freezer() {
 
-        return match( //
-            when(x -> (x instanceof List), x -> freeze((List) x)) //
-            , when(x -> (x instanceof Set), x -> freeze((Set) x))//
-            , when(x -> (x instanceof Map), x -> freeze((Map) x))) //
-                .defaults((Function) Function.identity());
+        return x -> {
+            if (x instanceof List) {
+                return freeze((List) x);
+            } else if (x instanceof Set) {
+                return freeze((Set) x);
+            } else if (x instanceof Map) {
+                return freeze((Map) x);
+            } else {
+                return x;
+            }
+        };
     }
 
     /**
