@@ -75,12 +75,7 @@ public class Functional {
     }
 
     public static <T> Supplier<T> memoize(final Supplier<? extends T> f) {
-
-        // DON'T INLINE THIS
-        // to avoid compilation error
-        final Function<Object, T> g = x -> f.get();
-
-        return curry(memoize(g), null);
+        return curry(memoize((Function<Object, T>) x -> f.get()), null);
     }
 
     public static <T, R> Function<T, R> memoize(final Function<? super T, ? extends R> f) {

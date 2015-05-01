@@ -225,7 +225,6 @@ public class Expressive {
     }
 
     @SuppressWarnings("javadoc")
-    @FunctionalInterface
     public interface When {
 
         <T> Then<T> then(Supplier<? extends T> then);
@@ -263,7 +262,6 @@ public class Expressive {
     }
 
     @SuppressWarnings("javadoc")
-    @FunctionalInterface
     public interface ContextualWhen<C> {
 
         <T> Then<C, T> then(Function<? super C, ? extends T> then);
@@ -321,32 +319,34 @@ public class Expressive {
     public static When when(final BooleanSupplier pred) {
 
         final Ref<Boolean> predVal = ref(null);
-        final BooleanSupplier cachedPred = () -> predVal.init(e -> e.val = pred.getAsBoolean()).val;
+        final BooleanSupplier predCache = () -> predVal.init(e -> e.val = pred.getAsBoolean()).val;
 
         return new When() {
 
-            final Ref<Then<?>> thenCache = ref((Then<?>) null);
+            Then<?> thenCache;
 
             @Override
             public <T> Then<T> then(final Supplier<? extends T> then) {
 
-                final When self = this;
+                if (this.thenCache == null) {
 
-                @SuppressWarnings("unchecked")
-                final Then<T> ret = (Then<T>) this.thenCache.init(e -> e.val = new Then<T>() {
+                    final When self = this;
 
-                    @Override
-                    public T none(final Supplier<? extends T> none) {
-                        return cachedPred.getAsBoolean() ? then.get() : none.get();
-                    }
+                    this.thenCache = new Then<T>() {
 
-                    @Override
-                    public When when(final BooleanSupplier when) {
-                        return cachedPred.getAsBoolean() ? self : Expressive.when(when);
-                    }
-                }).val;
+                        @Override
+                        public T none(final Supplier<? extends T> none) {
+                            return predCache.getAsBoolean() ? then.get() : none.get();
+                        }
 
-                return ret;
+                        @Override
+                        public When when(final BooleanSupplier when) {
+                            return predCache.getAsBoolean() ? self : Expressive.when(when);
+                        }
+                    };
+                }
+
+                return Then.class.cast(this.thenCache);
             }
         };
     }
@@ -360,32 +360,34 @@ public class Expressive {
     public static <C> ContextualWhen<C> when(final C ctx, final Predicate<? super C> pred) {
 
         final Ref<Boolean> predVal = ref(null);
-        final BooleanSupplier cachedPred = () -> predVal.init(e -> e.val = pred.test(ctx)).val;
+        final BooleanSupplier predCache = () -> predVal.init(e -> e.val = pred.test(ctx)).val;
 
         return new ContextualWhen<C>() {
 
-            final Ref<Then<C, ?>> thenCache = ref((Then<C, ?>) null);
+            Then<C, ?> thenCache;
 
             @Override
             public <T> Then<C, T> then(final Function<? super C, ? extends T> then) {
 
-                final ContextualWhen<C> self = this;
+                if (this.thenCache == null) {
 
-                @SuppressWarnings("unchecked")
-                final Then<C, T> ret = (Then<C, T>) this.thenCache.init(e -> e.val = new Then<C, T>() {
+                    final ContextualWhen<C> self = this;
 
-                    @Override
-                    public T none(final Function<? super C, ? extends T> none) {
-                        return cachedPred.getAsBoolean() ? then.apply(ctx) : none.apply(ctx);
-                    }
+                    this.thenCache = new Then<C, T>() {
 
-                    @Override
-                    public ContextualWhen<C> when(final Predicate<? super C> when) {
-                        return cachedPred.getAsBoolean() ? self : Expressive.when(ctx, when);
-                    }
-                }).val;
+                        @Override
+                        public T none(final Function<? super C, ? extends T> none) {
+                            return predCache.getAsBoolean() ? then.apply(ctx) : none.apply(ctx);
+                        }
 
-                return ret;
+                        @Override
+                        public ContextualWhen<C> when(final Predicate<? super C> when) {
+                            return predCache.getAsBoolean() ? self : Expressive.when(ctx, when);
+                        }
+                    };
+                }
+
+                return Then.class.cast(this.thenCache);
             }
         };
     }
