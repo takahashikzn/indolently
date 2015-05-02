@@ -39,19 +39,19 @@ public class SListTest {
         assertThat(prog1(() -> list(prog1(() -> new Bean1(), x -> {
             x.key = "key1";
             x.bean2 = prog1(() -> new Bean2(), y -> y.val = 1);
-        } ), prog1(() -> new Bean1(), x -> {
+        }), prog1(() -> new Bean1(), x -> {
             x.key = "key2";
             x.bean2 = prog1(() -> new Bean2(), y -> y.val = 2);
-        } ), prog1(() -> new Bean1(), x -> {
+        }), prog1(() -> new Bean1(), x -> {
             x.key = "key3";
             x.bean2 = prog1(() -> new Bean2(), y -> y.val = 4);
-        } ), prog1(() -> new Bean1(), x -> {
+        }), prog1(() -> new Bean1(), x -> {
             x.key = "key1";
             x.bean2 = prog1(() -> new Bean2(), y -> y.val = 8);
-        } ), prog1(() -> new Bean1(), x -> {
+        }), prog1(() -> new Bean1(), x -> {
             x.key = "key2";
             x.bean2 = prog1(() -> new Bean2(), y -> y.val = 16);
-        } )) //
+        })) //
             .group(x -> x.key),
             x -> assertEquals(x.map(y -> y.map(z -> z.bean2.val)),
                 map("key1", list(1, 8), "key2", list(2, 16), "key3", list(4)))) //

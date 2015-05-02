@@ -157,7 +157,7 @@ public class Functional {
             }
 
             return body.test(self);
-        } );
+        });
     }
 
     public static <T> SSuppl<T> suppl(final Consumer<? super Supplier<T>> init,
@@ -179,7 +179,7 @@ public class Functional {
             }
 
             return body.apply(self);
-        } );
+        });
     }
 
     public static <T, R> SFunc<T, R> func(final Consumer<? super Function<T, R>> init,
@@ -202,7 +202,7 @@ public class Functional {
             }
 
             return body.apply(self, x);
-        } );
+        });
     }
 
     public static <T, U, R> SBiFunc<T, U, R> bifunc(final Consumer<? super BiFunction<T, U, R>> init,
@@ -225,7 +225,7 @@ public class Functional {
             }
 
             return body.apply(self, x, y);
-        } );
+        });
     }
 
     public static <T> SPred<T> pred(final Consumer<? super Predicate<T>> init,
@@ -248,7 +248,7 @@ public class Functional {
             }
 
             return body.test(self, x);
-        } );
+        });
     }
 
     public static <T, U> SBiPred<T, U> bipred(final Consumer<? super BiPredicate<T, U>> init,
@@ -271,7 +271,7 @@ public class Functional {
             }
 
             return body.test(self, x, y);
-        } );
+        });
     }
 
     public static <T> Expression<T> expressionOf(final Expression<T> f) {

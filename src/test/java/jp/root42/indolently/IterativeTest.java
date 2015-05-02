@@ -81,7 +81,7 @@ public class IterativeTest {
             ref(1), //
             env -> (10 < env.val) ? breaks() : env.val++) //
                 .forEach(consumerOf((final Integer x) -> ints.add(x)) //
-                    .andThen(x -> {} ));
+                    .andThen(x -> {}));
 
         assertThat(ints.reduce((x, y) -> x + y).get()).isEqualTo(55);
     }
@@ -116,7 +116,7 @@ public class IterativeTest {
             generator( //
                 ref(1), //
                 env -> (10 < env.val) ? breaks() : env.val++)) //
-                    .forEach(consumerOf((final Integer x) -> {} ));
+                    .forEach(consumerOf((final Integer x) -> {}));
     }
 
     /**
