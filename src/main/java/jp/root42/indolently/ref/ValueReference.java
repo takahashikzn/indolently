@@ -87,7 +87,7 @@ public interface ValueReference<T, S extends ValueReference<T, S>>
             final T val = f.get();
             this.accept(val);
             return val;
-        } );
+        });
     }
 
     /**

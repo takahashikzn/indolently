@@ -123,7 +123,7 @@ public class ExpressiveTest {
         try {
             eval(() -> {
                 throw e;
-            } );
+            });
 
             fail();
         } catch (final RaisedException err) {
@@ -155,7 +155,7 @@ public class ExpressiveTest {
         try {
             let(() -> {
                 throw e;
-            } );
+            });
 
             fail();
         } catch (final RaisedException err) {

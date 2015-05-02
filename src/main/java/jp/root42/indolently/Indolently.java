@@ -791,7 +791,7 @@ public class Indolently {
             }
 
             return sb.toString();
-        } ).orElse(null);
+        }).orElse(null);
     }
 
     @SafeVarargs
