@@ -260,7 +260,7 @@ public class Expressive {
             }
         }
 
-        public interface Case<T> {
+        interface Case<T> {
 
             Then<T> then(Supplier<? extends T> then);
 
