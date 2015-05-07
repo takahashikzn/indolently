@@ -185,11 +185,13 @@ public class ExpressiveTest {
         final Function<Integer, String> f1 = ctx -> match(ctx) //
             .when(x -> x == 1).then(x -> "one") //
             .when(x -> x == 2).then(x -> "two") //
+            .when(x -> x == 3).then(x -> "three") //
             .none(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
-        assertThat(f1.apply(3)).isEqualTo("3");
+        assertThat(f1.apply(3)).isEqualTo("three");
+        assertThat(f1.apply(4)).isEqualTo("4");
     }
 
     /**
@@ -242,7 +244,7 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive.Match.Case#raise(Supplier)}
+     * {@link Expressive.Match.Root#raise(Supplier)}
      */
     @Test
     public void testSwitchOfFailure() {
