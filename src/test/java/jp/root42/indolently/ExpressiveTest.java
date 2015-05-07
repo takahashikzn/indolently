@@ -242,7 +242,7 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive.ContextualWhen.Then#raise(Supplier)}
+     * {@link Expressive.Match.Case#raise(Supplier)}
      */
     @Test
     public void testSwitchOfFailure() {

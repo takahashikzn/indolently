@@ -20,6 +20,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.Expressive.Match.Case;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriFunction;
@@ -262,55 +263,6 @@ public class Expressive {
     }
 
     @SuppressWarnings("javadoc")
-    public interface ContextualWhen<C> {
-
-        <T> Then<C, T> then(Function<? super C, ? extends T> then);
-
-        default <T> Then<C, T> then(final T then) {
-            return this.then(() -> then);
-        }
-
-        default <T> Then<C, T> then(final Supplier<? extends T> then) {
-            return this.then(x -> then.get());
-        }
-
-        interface Then<C, T> {
-
-            T none(Function<? super C, ? extends T> none);
-
-            ContextualWhen<C> when(Predicate<? super C> when);
-
-            default T none(final T none) {
-                return this.none(() -> none);
-            }
-
-            default T none(final Supplier<? extends T> none) {
-                return this.none(x -> none.get());
-            }
-
-            default ContextualWhen<C> when(final boolean when) {
-                return this.when(() -> when);
-            }
-
-            default ContextualWhen<C> when(final BooleanSupplier when) {
-                return this.when(x -> when.getAsBoolean());
-            }
-
-            default T raise(final Function<? super C, ? extends RuntimeException> raise) {
-                return this.none(x -> Expressive.raise(() -> raise.apply(x)));
-            }
-
-            default T fatal() {
-                return Indolently.fatal();
-            }
-
-            default T fatal(final Object msg) {
-                return Indolently.fatal(msg);
-            }
-        }
-    }
-
-    @SuppressWarnings("javadoc")
     public static When when(final boolean pred) {
         return when(() -> pred);
     }
@@ -352,33 +304,74 @@ public class Expressive {
     }
 
     @SuppressWarnings("javadoc")
-    @FunctionalInterface
     public interface Match<C> {
 
-        ContextualWhen<C> when(Predicate<? super C> pred);
+        Case<C> when(Predicate<? super C> pred);
 
-        default ContextualWhen<C> when(final boolean pred) {
+        default Case<C> when(final boolean pred) {
             return this.when(x -> pred);
+        }
+
+        interface Case<C> {
+
+            <T> Then<C, T> then(Function<? super C, ? extends T> then);
+
+            default <T> Then<C, T> then(final T then) {
+                return this.then(() -> then);
+            }
+
+            default <T> Then<C, T> then(final Supplier<? extends T> then) {
+                return this.then(x -> then.get());
+            }
+
+            interface Then<C, T> {
+
+                T none(Function<? super C, ? extends T> none);
+
+                Case<C> when(Predicate<? super C> when);
+
+                default T none(final T none) {
+                    return this.none(() -> none);
+                }
+
+                default T none(final Supplier<? extends T> none) {
+                    return this.none(x -> none.get());
+                }
+
+                default Case<C> when(final boolean when) {
+                    return this.when(() -> when);
+                }
+
+                default Case<C> when(final BooleanSupplier when) {
+                    return this.when(x -> when.getAsBoolean());
+                }
+
+                default T raise(final Function<? super C, ? extends RuntimeException> raise) {
+                    return this.none(x -> Expressive.raise(() -> raise.apply(x)));
+                }
+
+                default T fatal() {
+                    return Indolently.fatal();
+                }
+
+                default T fatal(final Object msg) {
+                    return Indolently.fatal(msg);
+                }
+            }
         }
     }
 
     @SuppressWarnings("javadoc")
     public static <C> Match<C> match(final C ctx) {
-        return pred -> Expressive.when(ctx, pred);
+        return pred -> match(ctx, pred);
     }
 
-    @SuppressWarnings("javadoc")
-    public static <C> ContextualWhen<C> when(final C ctx, final boolean pred) {
-        return when(ctx, x -> pred);
-    }
-
-    @SuppressWarnings("javadoc")
-    public static <C> ContextualWhen<C> when(final C ctx, final Predicate<? super C> pred) {
+    private static <C> Case<C> match(final C ctx, final Predicate<? super C> pred) {
 
         final Ref<Boolean> predVal = ref(null);
         final BooleanSupplier predCache = () -> predVal.init(e -> e.val = pred.test(ctx)).val;
 
-        return new ContextualWhen<C>() {
+        return new Case<C>() {
 
             Then<C, ?> thenCache;
 
@@ -387,9 +380,9 @@ public class Expressive {
 
                 if (this.thenCache == null) {
 
-                    final ContextualWhen<C> self = this;
+                    final Case<C> self = this;
 
-                    this.thenCache = new Then<C, T>() {
+                    this.thenCache = new Case.Then<C, T>() {
 
                         @Override
                         public T none(final Function<? super C, ? extends T> none) {
@@ -397,8 +390,8 @@ public class Expressive {
                         }
 
                         @Override
-                        public ContextualWhen<C> when(final Predicate<? super C> when) {
-                            return predCache.getAsBoolean() ? self : Expressive.when(ctx, when);
+                        public Case<C> when(final Predicate<? super C> when) {
+                            return predCache.getAsBoolean() ? self : Expressive.match(ctx, when);
                         }
                     };
                 }
