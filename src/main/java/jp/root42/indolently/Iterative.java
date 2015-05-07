@@ -282,8 +282,8 @@ public class Iterative {
                 .none(() -> env.val == from);
 
         return iterator(ref(from), pred,
-            env -> when(env, pred) //
-                .then(x -> x.getThen(y -> y.val += (from <= to ? step : -step))) //
+            env -> match(env) //
+                .when(pred).then(x -> x.getThen(y -> y.val += (from <= to ? step : -step))) //
                 .raise(x -> new NoSuchElementException()));
     }
 }
