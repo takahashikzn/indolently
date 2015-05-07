@@ -278,33 +278,6 @@ public class Expressive {
     @SuppressWarnings("javadoc")
     public static When when(final BooleanSupplier pred) {
 
-        final class CaseAdaptor<T>
-            implements When.Case<T> {
-
-            final Match.Case<?, T> theCase;
-
-            CaseAdaptor(final Match.Case<?, T> theCase) {
-                this.theCase = theCase;
-            }
-
-            @Override
-            public When.Then<T> then(final Supplier<? extends T> then) {
-
-                return new When.Then<T>() {
-
-                    @Override
-                    public T none(final Supplier<? extends T> none) {
-                        return CaseAdaptor.this.theCase.then(then).none(none);
-                    }
-
-                    @Override
-                    public When.Case<T> when(final BooleanSupplier when) {
-                        return new CaseAdaptor<>(CaseAdaptor.this.theCase.then(then).when(when));
-                    }
-                };
-            }
-        }
-
         final Match.IntroCase<?> intro = match(null).when(x -> pred.getAsBoolean());
 
         return new When() {
@@ -321,9 +294,25 @@ public class Expressive {
 
                     @Override
                     public Case<T> when(final BooleanSupplier when) {
-                        return new CaseAdaptor<>(intro.then(x -> (T) then.get()).when(x -> when.getAsBoolean()));
+                        return toWhenCase(intro.then(x -> (T) then.get()).when(x -> when.getAsBoolean()));
                     }
                 };
+            }
+        };
+    }
+
+    private static <T> When.Case<T> toWhenCase(final Match.Case<?, T> theCase) {
+
+        return then -> new When.Then<T>() {
+
+            @Override
+            public T none(final Supplier<? extends T> none) {
+                return theCase.then(then).none(none);
+            }
+
+            @Override
+            public When.Case<T> when(final BooleanSupplier when) {
+                return toWhenCase(theCase.then(then).when(when));
             }
         };
     }
@@ -402,14 +391,19 @@ public class Expressive {
     @SuppressWarnings("javadoc")
     public static <C> Match<C> match(final C ctx) {
 
-        final class Resolved<T>
-            implements Match.Case<C, T> {
+        return pred -> new Match.IntroCase<C>() {
 
-            final T value;
-
-            Resolved(final T value) {
-                this.value = value;
+            @Override
+            public <T> Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
+                return Expressive.<C, T> toUnresolvedCase(ctx, pred).then(then);
             }
+        };
+    }
+
+    private static <C, T> Match.Case<C, T> toResolvedCase(final T value) {
+
+        final class Resolved
+            implements Match.Case<C, T> {
 
             @Override
             public Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
@@ -418,7 +412,7 @@ public class Expressive {
 
                     @Override
                     public T none(final Function<? super C, ? extends T> none) {
-                        return Resolved.this.value;
+                        return value;
                     }
 
                     @Override
@@ -429,48 +423,26 @@ public class Expressive {
             }
         }
 
-        final class Unresolved<T>
-            implements Match.Case<C, T> {
+        return new Resolved();
+    }
 
-            final Predicate<? super C> pred;
+    private static <C, T> Match.Case<C, T> toUnresolvedCase(final C ctx, final Predicate<? super C> condition) {
 
-            Unresolved(final Predicate<? super C> pred) {
-                this.pred = Functional.wrap(pred).memoize();
+        final Predicate<? super C> pred = Functional.wrap(condition).memoize();
+
+        return then -> new Match.Then<C, T>() {
+
+            @Override
+            public T none(final Function<? super C, ? extends T> none) {
+
+                return pred.test(ctx) ? then.apply(ctx) : none.apply(ctx);
             }
 
             @Override
-            public Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
+            public Case<C, T> when(final Predicate<? super C> when) {
 
-                return new Match.Then<C, T>() {
-
-                    @Override
-                    public T none(final Function<? super C, ? extends T> none) {
-
-                        return Unresolved.this.pred.test(ctx) //
-                            ? then.apply(ctx) //
-                            : none.apply(ctx);
-                    }
-
-                    @Override
-                    public Case<C, T> when(final Predicate<? super C> when) {
-
-                        return Unresolved.this.pred.test(ctx) //
-                            ? new Resolved<>(then.apply(ctx)) //
-                            : new Unresolved<>(when);
-                    }
-                };
+                return pred.test(ctx) ? toResolvedCase(then.apply(ctx)) : toUnresolvedCase(ctx, when);
             }
-        }
-
-        return pred -> {
-
-            return new Match.IntroCase<C>() {
-
-                @Override
-                public <T> Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
-                    return new Unresolved<T>(pred).then(then);
-                }
-            };
         };
     }
 }
