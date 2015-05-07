@@ -187,7 +187,7 @@ public class Functional {
     }
 
     public static <T, R> SFunc<T, R> wrap(final Function<? super T, ? extends R> func) {
-        return function(self -> {} , (self, x) -> func.apply(x));
+        return func(self -> {} , (self, x) -> func.apply(x));
     }
 
     public static <T, R> SFunc<T, R> func(final Consumer<? super Function<T, R>> init,
