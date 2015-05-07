@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -22,6 +20,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.Expressive.Match.Case;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriFunction;
@@ -71,14 +70,12 @@ public class Expressive {
         throw optional(f.get()).map(e -> {
             if (e instanceof Error) {
                 throw (Error) e;
-            }
-
-            if (e instanceof RuntimeException) {
+            } else if (e instanceof RuntimeException) {
                 return (RuntimeException) e;
             } else {
                 return new RaisedException(e);
             }
-        } ).orElseGet(() -> new NullPointerException("supplier returns null: " + f));
+        }).orElseGet(() -> new NullPointerException("supplier returns null: " + f));
     }
 
     /**
@@ -179,52 +176,6 @@ public class Expressive {
     }
 
     /**
-     * Lazy evaluated inline if-else operator.
-     *
-     * @param <T> value type
-     * @param cond condition
-     * @param then result value if condition is {@code true}
-     * @param other result value if condition is {@code false}
-     * @return evaluation result
-     */
-    public static <T> T ifelse(final boolean cond, final Supplier<? extends T> then,
-        final Supplier<? extends T> other) {
-        return cond ? then.get() : other.get();
-    }
-
-    /**
-     * Lazy evaluated inline if-else operator.
-     *
-     * @param <T> value type
-     * @param cond condition
-     * @param then result value if condition is {@code true}
-     * @param other result value if condition is {@code false}
-     * @return evaluation result
-     */
-    public static <T> T ifelse(final BooleanSupplier cond, final Supplier<? extends T> then,
-        final Supplier<? extends T> other) {
-
-        return cond.getAsBoolean() ? then.get() : other.get();
-    }
-
-    /**
-     * Lazy evaluated inline if-else operator.
-     *
-     * @param <C> context type
-     * @param <V> return value type
-     * @param context context value
-     * @param cond context test function
-     * @param then context conversion function used if the condition is {@code true}
-     * @param other context conversion function used if the condition is {@code false}
-     * @return evaluation result
-     */
-    public static <C, V> V ifelse(final C context, final Predicate<? super C> cond,
-        final Function<? super C, ? extends V> then, final Function<? super C, ? extends V> other) {
-
-        return cond.test(context) ? then.apply(context) : other.apply(context);
-    }
-
-    /**
      * evaluate following forms then return evaluation result of first expressions.
      *
      * @param first evaluation result of this expression
@@ -274,311 +225,224 @@ public class Expressive {
     }
 
     @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> whenNull(final V val) {
-        return when(x -> x == null, val);
-    }
+    public interface When {
 
-    @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> whenNonNull(final Function<? super C, ? extends V> expr) {
-        return when(x -> x != null, expr);
-    }
+        <T> Then<T> then(Supplier<? extends T> then);
 
-    @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> whenEq(final C pred, final V val) {
-        return when(x -> equiv(x, pred), () -> val);
-    }
-
-    @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> whenEq(final C pred, final Supplier<? extends V> expr) {
-        return when(x -> equiv(x, pred), expr);
-    }
-
-    @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> whenEq(final C pred, final Function<? super C, ? extends V> expr) {
-        return when(x -> equiv(x, pred), expr);
-    }
-
-    @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> when(final Predicate<? super C> pred, final V val) {
-        return when(pred, () -> val);
-    }
-
-    @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
-        return When.of(pred, x -> expr.get());
-    }
-
-    @SuppressWarnings("javadoc")
-    public static <C, V> When<C, V> when(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
-        return When.of(pred, expr);
-    }
-
-    @SuppressWarnings("javadoc")
-    @SafeVarargs
-    public static <C, V> Match<C, V> match(final When<C, V>... cases) {
-        return Match.of(cases);
-    }
-
-    @SuppressWarnings("javadoc")
-    @SafeVarargs
-    public static <C> BoolMatch<C> test(final When<C, Boolean>... cases) {
-        return BoolMatch.of(cases);
-    }
-
-    /**
-     * A 'case' clause of 'match' expression.
-     *
-     * @param <C> testing value type
-     * @param <V> expression body value type
-     * @author takahashikzn
-     */
-    @SuppressWarnings("javadoc")
-    public interface When<C, V>
-        extends Predicate<C>, Function<C, V> {
-
-        static <C, V> When<C, V> defaults(final Supplier<? extends V> expr) {
-            return defaults(x -> expr.get());
+        default <T> Then<T> then(final T then) {
+            return this.then(() -> then);
         }
 
-        static <C, V> When<C, V> defaults(final Function<? super C, ? extends V> expr) {
-            return of(x -> true, x -> expr.apply(x));
+        interface Then<T> {
+
+            T none(Supplier<? extends T> none);
+
+            Case<T> when(BooleanSupplier when);
+
+            default T none(final T none) {
+                return this.none(() -> none);
+            }
+
+            default Case<T> when(final boolean when) {
+                return this.when(() -> when);
+            }
+
+            default T raise(final Supplier<? extends RuntimeException> raise) {
+                return this.none(() -> Expressive.raise(() -> raise.get()));
+            }
+
+            default T fatal() {
+                return Indolently.fatal();
+            }
+
+            default T fatal(final Object msg) {
+                return Indolently.fatal(msg);
+            }
         }
 
-        static <C, V> When<C, V> raise(final Supplier<? extends RuntimeException> expr) {
-            return raise(x -> expr.get());
-        }
+        interface Case<T> {
 
-        static <C, V> When<C, V> raise(final Function<? super C, ? extends RuntimeException> expr) {
-            return of(x -> true, (final C x) -> {
-                throw expr.apply(x);
-            } );
-        }
+            Then<T> then(Supplier<? extends T> then);
 
-        static <C, V> When<C, V> of(final Predicate<? super C> pred, final Supplier<? extends V> expr) {
-            return of(pred, x -> expr.get());
-        }
-
-        static <C, V> When<C, V> of(final Predicate<? super C> pred, final Function<? super C, ? extends V> expr) {
-            Objects.requireNonNull(pred, "pred");
-            Objects.requireNonNull(expr, "expr");
-
-            return new When<C, V>() {
-
-                @Override
-                public boolean test(final C cond) {
-                    return pred.test(cond);
-                }
-
-                @Override
-                public V apply(final C cond) {
-                    return expr.apply(cond);
-                }
-            };
-        }
-
-        default Function<C, V> other(final V value) {
-            return this.other(x -> value);
-        }
-
-        default Function<C, V> other(final Supplier<? extends V> f) {
-            return this.other(x -> f.get());
-        }
-
-        default Function<C, V> other(final Function<? super C, ? extends V> f) {
-            return x -> this.test(x) ? this.apply(x) : f.apply(x);
+            default Then<T> then(final T then) {
+                return this.then(() -> then);
+            }
         }
     }
 
-    /**
-     * The 'match' expression.
-     *
-     * @param <C> testing value type
-     * @param <V> expression body value type
-     * @author takahashikzn
-     */
-    @FunctionalInterface
-    public interface Match<C, V>
-        extends Function<C, Optional<V>> {
+    @SuppressWarnings("javadoc")
+    public static When when(final boolean pred) {
+        return when(() -> pred);
+    }
 
-        /**
-         * Create match expression functor.
-         *
-         * @param cases case clauses
-         * @return match expression functor
-         */
-        @SafeVarargs
-        static <C, V> Match<C, V> of(final When<C, V>... cases) {
+    @SuppressWarnings("javadoc")
+    public static When when(final BooleanSupplier pred) {
 
-            return x -> optional(eval(() -> {
-                for (final When<C, V> c : cases) {
-                    if (c.test(x)) {
-                        return c.apply(x);
+        final Match.IntroCase<?> intro = match(null).when(x -> pred.getAsBoolean());
+
+        return new When() {
+
+            @Override
+            public <T> Then<T> then(final Supplier<? extends T> then) {
+
+                return new Then<T>() {
+
+                    @Override
+                    public T none(final Supplier<? extends T> none) {
+                        return intro.then(x -> (T) then.get()).none(none);
                     }
-                }
 
-                return null;
-            } ));
+                    @Override
+                    public Case<T> when(final BooleanSupplier when) {
+                        return toWhenCase(intro.then(x -> (T) then.get()).when(x -> when.getAsBoolean()));
+                    }
+                };
+            }
+        };
+    }
+
+    private static <T> When.Case<T> toWhenCase(final Match.Case<?, T> theCase) {
+
+        return then -> new When.Then<T>() {
+
+            @Override
+            public T none(final Supplier<? extends T> none) {
+                return theCase.then(then).none(none);
+            }
+
+            @Override
+            public When.Case<T> when(final BooleanSupplier when) {
+                return toWhenCase(theCase.then(then).when(when));
+            }
+        };
+    }
+
+    @SuppressWarnings("javadoc")
+    public interface Match<C> {
+
+        IntroCase<C> when(Predicate<? super C> pred);
+
+        default IntroCase<C> when(final boolean pred) {
+            return this.when(x -> pred);
         }
 
-        /**
-         * Append 'default throw' clause to the end of this expression.
-         *
-         * @param e exception to throw
-         * @return 'default' attached match expression
-         */
-        default Function<C, V> raise(final RuntimeException e) {
-            return this.raise(() -> e);
+        interface IntroCase<C> {
+
+            <T> Then<C, T> then(Function<? super C, ? extends T> then);
+
+            default <T> Then<C, T> then(final T then) {
+                return this.then(() -> then);
+            }
+
+            default <T> Then<C, T> then(final Supplier<? extends T> then) {
+                return this.then(x -> then.get());
+            }
         }
 
-        /**
-         * Append 'default throw' clause to the end of this expression.
-         *
-         * @param f exception supplier to throw
-         * @return 'default' attached match expression
-         */
-        default Function<C, V> raise(final Supplier<? extends RuntimeException> f) {
-            Objects.requireNonNull(f);
+        interface Then<C, T> {
 
-            return this.raise(x -> f.get());
+            T none(Function<? super C, ? extends T> none);
+
+            Case<C, T> when(Predicate<? super C> when);
+
+            default Case<C, T> when(final boolean when) {
+                return this.when(() -> when);
+            }
+
+            default Case<C, T> when(final BooleanSupplier when) {
+                return this.when(x -> when.getAsBoolean());
+            }
+
+            default T none(final T none) {
+                return this.none(() -> none);
+            }
+
+            default T none(final Supplier<? extends T> none) {
+                return this.none(x -> none.get());
+            }
+
+            default T raise(final Function<? super C, ? extends RuntimeException> raise) {
+                return this.none(x -> Expressive.raise(() -> raise.apply(x)));
+            }
+
+            default T fatal() {
+                return Indolently.fatal();
+            }
+
+            default T fatal(final Object msg) {
+                return Indolently.fatal(msg);
+            }
         }
 
-        /**
-         * Append 'default throw' clause to the end of this expression.
-         *
-         * @param f exception supplier to throw
-         * @return 'default' attached match expression
-         */
-        default Function<C, V> raise(final Function<? super C, ? extends RuntimeException> f) {
-            Objects.requireNonNull(f);
+        interface Case<C, T> {
 
-            return this.defaults(x -> {
-                throw f.apply(x);
-            } );
-        }
+            Then<C, T> then(Function<? super C, ? extends T> then);
 
-        /**
-         * Append 'default' clause to the end of this match expression.
-         *
-         * @param f default value supplier
-         * @return 'default' attached match expression
-         */
-        default Function<C, V> defaults(final Supplier<? extends V> f) {
-            Objects.requireNonNull(f);
+            default Then<C, T> then(final T then) {
+                return this.then(() -> then);
+            }
 
-            return this.defaults(x -> f.get());
-        }
-
-        /**
-         * Append 'default' clause to the end of this match expression.
-         *
-         * @param f default value supplier
-         * @return 'default' attached match expression
-         */
-        default Function<C, V> defaults(final Function<? super C, ? extends V> f) {
-            Objects.requireNonNull(f);
-
-            return x -> this.apply(x).orElseGet(() -> f.apply(x));
+            default Then<C, T> then(final Supplier<? extends T> then) {
+                return this.then(x -> then.get());
+            }
         }
     }
 
-    /**
-     * The 'match' expression.
-     *
-     * @param <C> testing value type
-     * @author takahashikzn
-     */
-    @FunctionalInterface
-    public interface BoolMatch<C>
-        extends Predicate<C> {
+    @SuppressWarnings("javadoc")
+    public static <C> Match<C> match(final C ctx) {
 
-        /**
-         * Create match expression functor.
-         *
-         * @param cases case clauses
-         * @return match expression functor
-         */
-        @SafeVarargs
-        static <C> BoolMatch<C> of(final When<C, Boolean>... cases) {
+        return pred -> new Match.IntroCase<C>() {
 
-            return x -> {
-                for (final When<C, Boolean> c : cases) {
-                    if (c.test(x)) {
-                        return c.apply(x);
+            @Override
+            public <T> Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
+                return Expressive.<C, T> toUnresolvedCase(ctx, pred).then(then);
+            }
+        };
+    }
+
+    private static <C, T> Match.Case<C, T> toResolvedCase(final T value) {
+
+        final class Resolved
+            implements Match.Case<C, T> {
+
+            @Override
+            public Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
+
+                return new Match.Then<C, T>() {
+
+                    @Override
+                    public T none(final Function<? super C, ? extends T> none) {
+                        return value;
                     }
-                }
 
-                return false;
-            };
+                    @Override
+                    public Case<C, T> when(final Predicate<? super C> when) {
+                        return Resolved.this;
+                    }
+                };
+            }
         }
 
-        /**
-         * Append 'default throw' clause to the end of this expression.
-         *
-         * @param e exception to throw
-         * @return 'default' attached match expression
-         */
-        default Predicate<C> raise(final RuntimeException e) {
-            return this.raise(() -> e);
-        }
+        return new Resolved();
+    }
 
-        /**
-         * Append 'default throw' clause to the end of this expression.
-         *
-         * @param f exception supplier to throw
-         * @return 'default' attached match expression
-         */
-        default Predicate<C> raise(final Supplier<? extends RuntimeException> f) {
-            Objects.requireNonNull(f);
+    private static <C, T> Match.Case<C, T> toUnresolvedCase(final C ctx, final Predicate<? super C> condition) {
 
-            return this.raise(x -> f.get());
-        }
+        final Predicate<? super C> pred = Functional.wrap(condition).memoize();
 
-        /**
-         * Append 'default throw' clause to the end of this expression.
-         *
-         * @param f exception supplier to throw
-         * @return 'default' attached match expression
-         */
-        default Predicate<C> raise(final Function<? super C, ? extends RuntimeException> f) {
-            Objects.requireNonNull(f);
+        return then -> new Match.Then<C, T>() {
 
-            return x -> {
-                if (this.test(x)) {
-                    return true;
-                } else {
-                    throw f.apply(x);
-                }
-            };
-        }
+            @Override
+            public T none(final Function<? super C, ? extends T> none) {
 
-        /**
-         * Append 'default' clause to the end of this match expression.
-         *
-         * @param f default value supplier
-         * @return 'default' attached match expression
-         */
-        default Predicate<C> defaults(final BooleanSupplier f) {
-            Objects.requireNonNull(f);
+                return pred.test(ctx) ? then.apply(ctx) : none.apply(ctx);
+            }
 
-            return this.defaults(x -> f.getAsBoolean());
-        }
+            @Override
+            public Case<C, T> when(final Predicate<? super C> when) {
 
-        /**
-         * Append 'default' clause to the end of this match expression.
-         *
-         * @param f default value supplier
-         * @return 'default' attached match expression
-         */
-        default Predicate<C> defaults(final Predicate<? super C> f) {
-            Objects.requireNonNull(f);
-
-            return x -> {
-                if (this.test(x)) {
-                    return true;
-                } else {
-                    return f.test(x);
-                }
-            };
-        }
+                return pred.test(ctx) ? toResolvedCase(then.apply(ctx)) : toUnresolvedCase(ctx, when);
+            }
+        };
     }
 }

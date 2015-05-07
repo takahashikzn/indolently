@@ -99,7 +99,7 @@ public class BoolRef
         this.ifThen(cond, () -> {
             this.val = !this.val;
             f.execute();
-        } );
+        });
     }
 
     /**

@@ -53,6 +53,20 @@ public interface ValueReference<T, S extends ValueReference<T, S>>
     }
 
     /**
+     * do something with this instance, then get value if exists.
+     *
+     * @param f any operation
+     * @return optional representation of the value
+     */
+    default S init(final Consumer<? super S> f) {
+        if (this.get() == null) {
+            f.accept(this.identity());
+        }
+
+        return this.identity();
+    }
+
+    /**
      * get value as optional representation.
      *
      * @return optional representation of the value
@@ -73,7 +87,7 @@ public interface ValueReference<T, S extends ValueReference<T, S>>
             final T val = f.get();
             this.accept(val);
             return val;
-        } );
+        });
     }
 
     /**

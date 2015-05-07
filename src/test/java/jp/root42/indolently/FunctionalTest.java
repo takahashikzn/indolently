@@ -58,7 +58,7 @@ public class FunctionalTest {
                 } else {
                     return self.apply(x, y - 1);
                 }
-            } ).apply(z, z - 1)) //
+            }).apply(z, z - 1)) //
             .map(x -> "" + x) //
             .list()) //
                 .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
@@ -89,7 +89,7 @@ public class FunctionalTest {
         assertThat(range(1, 10).each(x -> {
             assertThat(range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val)))).isEqualTo(fibonacciNums);
             assertThat(initCount.val).isEqualTo(1);
-        } ).last()).isEqualTo(10);
+        }).last()).isEqualTo(10);
     }
 
     /**
@@ -114,24 +114,22 @@ public class FunctionalTest {
     @Test
     public void testFunction2() {
 
-        final Function<Trio<Integer, Integer, Integer>, Integer> tarai =
-            function((final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {} , (self, v) -> {
+        assertThat(function( //
+            (final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {} , // function decl
+            (self, v) -> { // function body
 
                 final int x = v.fst;
                 final int y = v.snd;
                 final int z = v.trd;
 
-                return ifelse( //
-                    () -> (y < x), //
-                    () -> self.apply( //
+                return when(() -> (y < x)) //
+                    .then(() -> (int) self.apply( //
                         tuple( //
                             self.apply(tuple(x - 1, y, z)), //
                             self.apply(tuple(y - 1, z, x)), //
-                            self.apply(tuple(z - 1, x, y)))), //
-                    () -> y);
-            } ).memoize();
-
-        assertThat(tarai.apply(tuple(20, 6, 0))).isEqualTo(20);
+                            self.apply(tuple(z - 1, x, y)))))
+                    .none(() -> y);
+            }).memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }
 
     /**
@@ -145,15 +143,14 @@ public class FunctionalTest {
             final int y = v.snd;
             final int z = v.trd;
 
-            return ifelse( //
-                () -> (y < x), //
-                () -> self.apply( //
+            return when(() -> (y < x)) //
+                .then(() -> (int) self.apply( //
                     tuple( //
                         self.apply(tuple(x - 1, y, z)), //
                         self.apply(tuple(y - 1, z, x)), //
-                        self.apply(tuple(z - 1, x, y)))), //
-                () -> y);
-        } );
+                        self.apply(tuple(z - 1, x, y)))))
+                .none(() -> y);
+        });
 
         assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }

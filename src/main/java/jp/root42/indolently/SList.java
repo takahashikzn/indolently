@@ -278,7 +278,7 @@ public interface SList<T>
             x.get(key).add(y);
 
             return x;
-        } );
+        });
     }
 
     @Override

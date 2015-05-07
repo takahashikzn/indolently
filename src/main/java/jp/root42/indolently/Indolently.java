@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -42,8 +43,6 @@ import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
 import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
-
-import static jp.root42.indolently.Expressive.*;
 
 
 /**
@@ -194,6 +193,21 @@ public class Indolently {
      */
     public static <T> Optional<T> optional(final T value) {
         return Optional.ofNullable(value);
+    }
+
+    /**
+     * An alias of {@link Optional#ofNullable(Object)}.
+     *
+     * @param <T> type of value
+     * @param value the value
+     * @param consumers invoked consumers only if value is present
+     * @return Optional representation of value
+     */
+    @SafeVarargs
+    public static <T> Optional<T> optional(final T value, final Consumer<? super T>... consumers) {
+        final Optional<T> opt = optional(value);
+        list(consumers).each(f -> opt.ifPresent(f));
+        return opt;
     }
 
     /**
@@ -561,17 +575,17 @@ public class Indolently {
         return set;
     }
 
-    public static <K extends Comparable<K>, V> SMap<K, V> sort(final Map<K, V> map) {
+    public static <K extends Comparable<K>, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map) {
         return sort(map, Comparator.naturalOrder());
     }
 
-    public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<K, V> map,
+    public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<? extends K, ? extends V> map,
         final Function<? super K, ? extends S> f) {
 
         return sort(map, (l, r) -> f.apply(l).compareTo(f.apply(r)));
     }
 
-    public static <K, V> SMap<K, V> sort(final Map<K, V> map, final Comparator<? super K> comp) {
+    public static <K, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map, final Comparator<? super K> comp) {
         return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator")))
             .pushAll(map);
     }
@@ -634,11 +648,17 @@ public class Indolently {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Function freezer() {
 
-        return match( //
-            when(x -> (x instanceof List), x -> freeze((List) x)) //
-            , when(x -> (x instanceof Set), x -> freeze((Set) x))//
-            , when(x -> (x instanceof Map), x -> freeze((Map) x))) //
-                .defaults((Function) Function.identity());
+        return x -> {
+            if (x instanceof List) {
+                return freeze((List) x);
+            } else if (x instanceof Set) {
+                return freeze((Set) x);
+            } else if (x instanceof Map) {
+                return freeze((Map) x);
+            } else {
+                return x;
+            }
+        };
     }
 
     /**
@@ -751,11 +771,11 @@ public class Indolently {
         return (ary == null) || (ary.length == 0);
     }
 
-    public static String join(final Collection<? extends CharSequence> col) {
+    public static String join(final Iterable<? extends CharSequence> col) {
         return join(col, null);
     }
 
-    public static String join(final Collection<? extends CharSequence> col, final String sep) {
+    public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
         return optional(col).map(x -> {
 
@@ -771,7 +791,7 @@ public class Indolently {
             }
 
             return sb.toString();
-        } ).orElse("");
+        }).orElse(null);
     }
 
     @SafeVarargs

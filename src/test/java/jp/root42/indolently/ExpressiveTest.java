@@ -18,9 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressive.Match;
 import jp.root42.indolently.Expressive.RaisedException;
-import jp.root42.indolently.Expressive.When;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
@@ -126,7 +124,7 @@ public class ExpressiveTest {
         try {
             eval(() -> {
                 throw e;
-            } );
+            });
 
             fail();
         } catch (final RaisedException err) {
@@ -158,7 +156,7 @@ public class ExpressiveTest {
         try {
             let(() -> {
                 throw e;
-            } );
+            });
 
             fail();
         } catch (final RaisedException err) {
@@ -180,23 +178,53 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive#match(When...)}
+     * {@link Expressive#match(Object)}
      */
     @Test
     public void testMatch() {
 
-        final Function<Integer, String> f1 = match( //
-            when((final Integer x) -> x == 1, () -> "one") //
-            , whenEq(2, "two") //
-        ).defaults(x -> "" + x);
+        final Function<Integer, String> f1 = //
+            ctx -> match(ctx) //
+                .when(x -> x == 1).then(x -> "one") //
+                .when(x -> x == 2).then(x -> "two") //
+                .when(x -> x == 3).then("three") //
+                .none(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
-        assertThat(f1.apply(3)).isEqualTo("3");
+        assertThat(f1.apply(3)).isEqualTo("three");
+        assertThat(f1.apply(4)).isEqualTo("4");
     }
 
     /**
-     * very complicated type inference test of {@link Expressive#match(When...)}.
+     * {@link Expressive#when(boolean)}
+     */
+    @Test
+    public void testWhen() {
+
+        final IntRef x = ref(0);
+
+        final Supplier<String> f1 = //
+            () -> when(() -> x.val == 1).then(() -> "one") //
+                .when(() -> x.val == 2).then(() -> "two") //
+                .when(() -> x.val == 3).then("three") //
+                .none("" + x.val);
+
+        x.val = 1;
+        assertThat(f1.get()).isEqualTo("one");
+
+        x.val = 2;
+        assertThat(f1.get()).isEqualTo("two");
+
+        x.val = 3;
+        assertThat(f1.get()).isEqualTo("three");
+
+        x.val = 4;
+        assertThat(f1.get()).isEqualTo("4");
+    }
+
+    /**
+     * complicated type inference test of {@link Expressive#when(boolean)}.
      *
      * @param expected expected value
      * @param from range from
@@ -211,13 +239,12 @@ public class ExpressiveTest {
         assertThat(list( //
             iterator( //
                 ref(from), //
-                env -> match( //
-                    when((final IntRef x) -> from < to, x -> x.val <= to), //
-                    when(x -> to < from, x -> to <= x.val) //
-        ).defaults(x -> x.val == from).apply(env), // Expressive#test raises compilation error with OracleJDK
-                match( //
-                    when((final IntRef x) -> from < to, x -> x.getThen(self -> self.val += step)) //
-        ).defaults(x -> prog1(x::get, () -> x.val -= step)) //
+                ref -> when(from < to).then(() -> ref.val <= to) //
+                    .when(to < from).then(() -> to <= ref.val) //
+                    .none(() -> ref.val == from),
+                ref -> when(from < to) //
+                    .then(() -> ref.getThen(self -> self.val += step)) //
+                    .none(() -> prog1(ref::get, () -> ref.val -= step)) //
         ) //
         )) //
             .isEqualTo(expected);
@@ -225,24 +252,15 @@ public class ExpressiveTest {
         assertThat(list( //
             iterator( //
                 ref(from), //
-                env -> match( //
-                    when( //
-                        (final IntRef x) -> from < to, //
-                        x -> x.val <= to), //
-                    when( //
-                        x -> to < from, //
-                        x -> to <= x.val) //
-        ).defaults(x -> x.val == from).apply(env), //
-                env -> when( //
-                    (final IntRef x) -> from < to, x -> x.getThen(self -> self.val += step)) //
-                        .other( //
-                            x -> prog1( //
-                                x::get, //
-                                () -> x.val -= step))
-                        .apply(env) //
-        )) //
-            .reduce((l, r) -> l + r)) //
-                .isEqualTo(list(expected).reduce((l, r) -> l + r));
+                ref -> when(from < to).then(() -> ref.val <= to) //
+                    .when(to < from).then(() -> to <= ref.val) //
+                    .none(() -> ref.val == from),
+                ref -> when(from < to) //
+                    .then(() -> ref.getThen(self -> self.val += step)) //
+                    .none(() -> prog1(ref::get, () -> ref.val -= step)) //
+        ) //
+        ).reduce((l, r) -> l + r)) //
+            .isEqualTo(list(expected).reduce((l, r) -> l + r));
     }
 
     static List<Object[]> parametersForTestComplicatedTypeInference() {
@@ -255,15 +273,15 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Match#raise(Supplier)}
+     * {@link Expressive.Match.IntroCase#raise(Supplier)}
      */
     @Test
-    public void testMatchFailure() {
+    public void testSwitchOfFailure() {
 
-        final Function<Integer, String> f1 = match( //
-            when((final Integer x) -> x == 1, () -> "one")//
-            , when(x -> x == 2, () -> "two") //
-        ).raise(x -> new RuntimeException("THE TEST OF " + x));
+        final Function<Integer, String> f1 = ctx -> match(ctx) //
+            .when(x -> x == 1).then(x -> "one") //
+            .when(x -> x == 2).then(x -> "two") //
+            .raise(x -> new RuntimeException("THE TEST OF " + x));
 
         try {
             f1.apply(42);

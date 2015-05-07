@@ -608,7 +608,7 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>UncommentedEmptyMethod</name>
+            <name>UncommentedEmptyMethodBody</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>

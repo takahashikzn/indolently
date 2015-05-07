@@ -45,7 +45,10 @@ public interface EdgeAwareIterable<T>
      * @return first element or alternative value
      */
     default T head(final Supplier<? extends T> other) {
-        return Expressive.ifelse(this.iterator(), i -> i.hasNext(), i -> i.next(), i -> other.get());
+        return Expressive //
+            .match(this.iterator()) //
+            .when(i -> i.hasNext()).then(i -> i.next()) //
+            .none(() -> other.get());
     }
 
     /**

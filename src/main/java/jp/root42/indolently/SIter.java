@@ -102,7 +102,7 @@ public interface SIter<T>
         return this.map(x -> {
             f.accept(x);
             return x;
-        } );
+        });
     }
 
     @Override

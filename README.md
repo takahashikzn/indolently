@@ -122,39 +122,29 @@ range(1, 10)
 ```
 
 
-### Match expression
+### when-then ladder expression
 
 ```java
 // Totally wasteful manner of computing sum of integer range
 int sumOfRange(final int from, final int to) {
 
-    return list(iterator(
-        ref(from),
+    return list(
+        iterator(
+            ref(from),
 
-        env -> match(
-                when(
-                    (final IntRef x) -> from < to,
-                    x -> x.val <= to),
-                when(
-                    x -> to < from,
-                    x -> to <= x.val)
-                ).defaults(
-                    x -> x.val == from
-            ).apply(env),
+            ref ->
+                when(from < to).
+                    then(() -> ref.val <= to).
+                when(to < from).
+                    then(() -> to <= ref.val).
+                none(() -> ref.val == from),
 
-        env -> match(
-                when(
-                    (final IntRef x) -> from < to,
-                    x -> prog1(
-                            x::get,
-                            () -> x.val += 1))
-                ).defaults(
-                    x -> prog1(
-                            x::get,
-                            () -> x.val -= 1)
-            ).apply(env)
-
-    )).reduce((l, r) -> l + r).get();
+            ref ->
+                when(from < to).
+                    then(() -> ref.getThen(self -> self.val += step)).
+                none(() -> prog1(ref::get, () -> ref.val -= step))
+        )
+    ).reduce((l, r) -> l + r);
 }
 
 // equivalent to range(-2, 5).reduce((l, r) -> l + r).get() => 12
