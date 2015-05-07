@@ -22,6 +22,7 @@ import jp.root42.indolently.Expressive.RaisedException;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
+import jp.root42.indolently.ref.IntRef;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -185,13 +186,40 @@ public class ExpressiveTest {
         final Function<Integer, String> f1 = ctx -> match(ctx) //
             .when(x -> x == 1).then(x -> "one") //
             .when(x -> x == 2).then(x -> "two") //
-            .when(x -> x == 3).then(x -> "three") //
+            .when(x -> x == 3).then("three") //
             .none(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
         assertThat(f1.apply(3)).isEqualTo("three");
         assertThat(f1.apply(4)).isEqualTo("4");
+    }
+
+    /**
+     * {@link Expressive#when(boolean)}
+     */
+    @Test
+    public void testWhen() {
+
+        final IntRef x = ref(0);
+
+        final Supplier<String> f1 = () -> //
+        when(() -> x.val == 1).then(() -> "one") //
+            .when(() -> x.val == 2).then(() -> "two") //
+            .when(() -> x.val == 3).then("three") //
+            .none("" + x.val);
+
+        x.val = 1;
+        assertThat(f1.get()).isEqualTo("one");
+
+        x.val = 2;
+        assertThat(f1.get()).isEqualTo("two");
+
+        x.val = 3;
+        assertThat(f1.get()).isEqualTo("three");
+
+        x.val = 4;
+        assertThat(f1.get()).isEqualTo("4");
     }
 
     /**
@@ -244,7 +272,7 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive.Match.Root#raise(Supplier)}
+     * {@link Expressive.Match.IntroCase#raise(Supplier)}
      */
     @Test
     public void testSwitchOfFailure() {
