@@ -160,6 +160,10 @@ public class Functional {
         });
     }
 
+    public static <T> SSuppl<T> wrap(final Supplier<? extends T> suppl) {
+        return suppl(self -> {} , self -> suppl.get());
+    }
+
     public static <T> SSuppl<T> suppl(final Consumer<? super Supplier<T>> init,
         final Function<? super Supplier<? extends T>, ? extends T> body) {
         return function(init, body);
@@ -180,6 +184,10 @@ public class Functional {
 
             return body.apply(self);
         });
+    }
+
+    public static <T, R> SFunc<T, R> wrap(final Function<? super T, ? extends R> func) {
+        return function(self -> {} , (self, x) -> func.apply(x));
     }
 
     public static <T, R> SFunc<T, R> func(final Consumer<? super Function<T, R>> init,
@@ -205,6 +213,10 @@ public class Functional {
         });
     }
 
+    public static <T, U, R> SBiFunc<T, U, R> wrap(final BiFunction<? super T, ? super U, ? extends R> func) {
+        return bifunc(self -> {} , (self, x, y) -> func.apply(x, y));
+    }
+
     public static <T, U, R> SBiFunc<T, U, R> bifunc(final Consumer<? super BiFunction<T, U, R>> init,
         final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> body) {
 
@@ -228,6 +240,10 @@ public class Functional {
         });
     }
 
+    public static <T> SPred<T> wrap(final Predicate<? super T> pred) {
+        return pred(self -> {} , (self, x) -> pred.test(x));
+    }
+
     public static <T> SPred<T> pred(final Consumer<? super Predicate<T>> init,
         final BiPredicate<? super Predicate<T>, ? super T> body) {
 
@@ -249,6 +265,10 @@ public class Functional {
 
             return body.test(self, x);
         });
+    }
+
+    public static <T, U> SBiPred<T, U> wrap(final BiPredicate<T, U> pred) {
+        return bipred(self -> {} , (self, x, y) -> pred.test(x, y));
     }
 
     public static <T, U> SBiPred<T, U> bipred(final Consumer<? super BiPredicate<T, U>> init,
