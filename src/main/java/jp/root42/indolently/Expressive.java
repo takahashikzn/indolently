@@ -24,7 +24,6 @@ import jp.root42.indolently.Expressive.Match.Case;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriFunction;
-import jp.root42.indolently.ref.Ref;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -238,13 +237,13 @@ public class Expressive {
 
             T none(Supplier<? extends T> none);
 
-            When when(BooleanSupplier when);
+            Case<T> when(BooleanSupplier when);
 
             default T none(final T none) {
                 return this.none(() -> none);
             }
 
-            default When when(final boolean when) {
+            default Case<T> when(final boolean when) {
                 return this.when(() -> when);
             }
 
@@ -260,6 +259,15 @@ public class Expressive {
                 return Indolently.fatal(msg);
             }
         }
+
+        public interface Case<T> {
+
+            Then<T> then(Supplier<? extends T> then);
+
+            default Then<T> then(final T then) {
+                return this.then(() -> then);
+            }
+        }
     }
 
     @SuppressWarnings("javadoc")
@@ -270,35 +278,52 @@ public class Expressive {
     @SuppressWarnings("javadoc")
     public static When when(final BooleanSupplier pred) {
 
-        final Ref<Boolean> predVal = ref(null);
-        final BooleanSupplier predCache = () -> predVal.init(e -> e.val = pred.getAsBoolean()).val;
+        final class CaseAdaptor<T>
+            implements When.Case<T> {
+
+            final Match.Case<?, T> theCase;
+
+            CaseAdaptor(final Match.Case<?, T> theCase) {
+                this.theCase = theCase;
+            }
+
+            @Override
+            public When.Then<T> then(final Supplier<? extends T> then) {
+
+                return new When.Then<T>() {
+
+                    @Override
+                    public T none(final Supplier<? extends T> none) {
+                        return CaseAdaptor.this.theCase.then(then).none(none);
+                    }
+
+                    @Override
+                    public When.Case<T> when(final BooleanSupplier when) {
+                        return new CaseAdaptor<>(CaseAdaptor.this.theCase.then(then).when(when));
+                    }
+                };
+            }
+        }
+
+        final Match.IntroCase<?> intro = match(null).when(x -> pred.getAsBoolean());
 
         return new When() {
-
-            Then<?> thenCache;
 
             @Override
             public <T> Then<T> then(final Supplier<? extends T> then) {
 
-                if (this.thenCache == null) {
+                return new Then<T>() {
 
-                    final When self = this;
+                    @Override
+                    public T none(final Supplier<? extends T> none) {
+                        return intro.then(x -> (T) then.get()).none(none);
+                    }
 
-                    this.thenCache = new Then<T>() {
-
-                        @Override
-                        public T none(final Supplier<? extends T> none) {
-                            return predCache.getAsBoolean() ? then.get() : none.get();
-                        }
-
-                        @Override
-                        public When when(final BooleanSupplier when) {
-                            return predCache.getAsBoolean() ? self : Expressive.when(when);
-                        }
-                    };
-                }
-
-                return Then.class.cast(this.thenCache);
+                    @Override
+                    public Case<T> when(final BooleanSupplier when) {
+                        return new CaseAdaptor<>(intro.then(x -> (T) then.get()).when(x -> when.getAsBoolean()));
+                    }
+                };
             }
         };
     }
@@ -306,13 +331,13 @@ public class Expressive {
     @SuppressWarnings("javadoc")
     public interface Match<C> {
 
-        Root<C> when(Predicate<? super C> pred);
+        IntroCase<C> when(Predicate<? super C> pred);
 
-        default Root<C> when(final boolean pred) {
+        default IntroCase<C> when(final boolean pred) {
             return this.when(x -> pred);
         }
 
-        interface Root<C> {
+        interface IntroCase<C> {
 
             <T> Then<C, T> then(Function<? super C, ? extends T> then);
 
@@ -439,7 +464,7 @@ public class Expressive {
 
         return pred -> {
 
-            return new Match.Root<C>() {
+            return new Match.IntroCase<C>() {
 
                 @Override
                 public <T> Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
