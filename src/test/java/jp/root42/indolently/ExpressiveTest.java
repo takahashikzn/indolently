@@ -183,11 +183,12 @@ public class ExpressiveTest {
     @Test
     public void testMatch() {
 
-        final Function<Integer, String> f1 = ctx -> match(ctx) //
-            .when(x -> x == 1).then(x -> "one") //
-            .when(x -> x == 2).then(x -> "two") //
-            .when(x -> x == 3).then("three") //
-            .none(x -> "" + x);
+        final Function<Integer, String> f1 = //
+            ctx -> match(ctx) //
+                .when(x -> x == 1).then(x -> "one") //
+                .when(x -> x == 2).then(x -> "two") //
+                .when(x -> x == 3).then("three") //
+                .none(x -> "" + x);
 
         assertThat(f1.apply(1)).isEqualTo("one");
         assertThat(f1.apply(2)).isEqualTo("two");
@@ -203,11 +204,11 @@ public class ExpressiveTest {
 
         final IntRef x = ref(0);
 
-        final Supplier<String> f1 = () -> //
-        when(() -> x.val == 1).then(() -> "one") //
-            .when(() -> x.val == 2).then(() -> "two") //
-            .when(() -> x.val == 3).then("three") //
-            .none("" + x.val);
+        final Supplier<String> f1 = //
+            () -> when(() -> x.val == 1).then(() -> "one") //
+                .when(() -> x.val == 2).then(() -> "two") //
+                .when(() -> x.val == 3).then("three") //
+                .none("" + x.val);
 
         x.val = 1;
         assertThat(f1.get()).isEqualTo("one");
