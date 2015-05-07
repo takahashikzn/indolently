@@ -177,13 +177,13 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive#when(Object, java.util.function.Predicate)}
+     * {@link Expressive#match(Object)}
      */
     @Test
-    public void testContextualWhen() {
+    public void testMatch() {
 
-        final Function<Integer, String> f1 = ctx -> //
-        when(ctx, x -> x == 1).then(x -> "one") //
+        final Function<Integer, String> f1 = ctx -> match(ctx) //
+            .when(x -> x == 1).then(x -> "one") //
             .when(x -> x == 2).then(x -> "two") //
             .none(x -> "" + x);
 
@@ -193,7 +193,7 @@ public class ExpressiveTest {
     }
 
     /**
-     * complicated type inference test of {@link Expressive#when(Object, java.util.function.Predicate)}.
+     * complicated type inference test of {@link Expressive#when(boolean)}.
      *
      * @param expected expected value
      * @param from range from
@@ -247,8 +247,8 @@ public class ExpressiveTest {
     @Test
     public void testSwitchOfFailure() {
 
-        final Function<Integer, String> f1 = ctx -> //
-        when(ctx, x -> x == 1).then(x -> "one") //
+        final Function<Integer, String> f1 = ctx -> match(ctx) //
+            .when(x -> x == 1).then(x -> "one") //
             .when(x -> x == 2).then(x -> "two") //
             .raise(x -> new RuntimeException("THE TEST OF " + x));
 

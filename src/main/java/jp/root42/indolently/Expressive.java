@@ -352,6 +352,22 @@ public class Expressive {
     }
 
     @SuppressWarnings("javadoc")
+    @FunctionalInterface
+    public interface Match<C> {
+
+        ContextualWhen<C> when(Predicate<? super C> pred);
+
+        default ContextualWhen<C> when(final boolean pred) {
+            return this.when(x -> pred);
+        }
+    }
+
+    @SuppressWarnings("javadoc")
+    public static <C> Match<C> match(final C ctx) {
+        return pred -> Expressive.when(ctx, pred);
+    }
+
+    @SuppressWarnings("javadoc")
     public static <C> ContextualWhen<C> when(final C ctx, final boolean pred) {
         return when(ctx, x -> pred);
     }
