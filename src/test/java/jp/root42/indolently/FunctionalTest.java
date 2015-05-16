@@ -17,6 +17,8 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.assertj.core.api.Assertions;
+
 import jp.root42.indolently.function.SFunc;
 import jp.root42.indolently.function.TriFunction;
 import jp.root42.indolently.ref.IntRef;
@@ -28,9 +30,7 @@ import org.junit.runner.RunWith;
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Iterative.*;
-import static org.assertj.core.api.Assertions.*;
 
 import junitparams.JUnitParamsRunner;
 
@@ -49,7 +49,7 @@ public class FunctionalTest {
     @Test
     public void testListComprehension() {
 
-        assertThat(range(2, 10)
+        Assertions.assertThat(range(2, 10)
             .filter(z -> function((final BiFunction<Integer, Integer, Boolean> self) -> {} , (self, x, y) -> {
                 if (y <= 1) {
                     return true;
@@ -61,7 +61,7 @@ public class FunctionalTest {
             }).apply(z, z - 1)) //
             .map(x -> "" + x) //
             .list()) //
-                .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
+            .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
     }
 
     /**
@@ -84,11 +84,12 @@ public class FunctionalTest {
                 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887,
                 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296).freeze();
 
-        assertThat(initCount.val).isEqualTo(0);
+        Assertions.assertThat(initCount.val).isEqualTo(0);
 
-        assertThat(range(1, 10).each(x -> {
-            assertThat(range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val)))).isEqualTo(fibonacciNums);
-            assertThat(initCount.val).isEqualTo(1);
+        Assertions.assertThat(range(1, 10).each(x -> {
+            Assertions.assertThat(range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val))))
+                .isEqualTo(fibonacciNums);
+            Assertions.assertThat(initCount.val).isEqualTo(1);
         }).last()).isEqualTo(10);
     }
 
@@ -114,7 +115,7 @@ public class FunctionalTest {
     @Test
     public void testFunction2() {
 
-        assertThat(function( //
+        Assertions.assertThat(function( //
             (final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {} , // function decl
             (self, v) -> { // function body
 
@@ -152,6 +153,6 @@ public class FunctionalTest {
                 .none(() -> y);
         });
 
-        assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
+        Assertions.assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }
 }

@@ -20,6 +20,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import net.jodah.typetools.TypeResolver;
+
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriFunction;
@@ -409,6 +411,16 @@ public class Expressive {
             return this.when(x -> pred);
         }
 
+        default <SC extends C, T> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
+
+            return this.when(x -> TypeResolver.resolveRawArguments(Function.class, then.getClass())[0].isInstance(x))
+                .then(x -> {
+                    @SuppressWarnings("unchecked")
+                    final SC y = (SC) x;
+                    return then.apply(y);
+                });
+        }
+
         interface IntroCase<C> {
 
             <T> Match.Then<C, T> then(Function<? super C, ? extends T> then);
@@ -427,6 +439,17 @@ public class Expressive {
             T none(Function<? super C, ? extends T> none);
 
             Match.Case<C, T> when(Predicate<? super C> when);
+
+            default <SC extends C> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
+
+                return this
+                    .when(x -> TypeResolver.resolveRawArguments(Function.class, then.getClass())[0].isInstance(x))
+                    .then(x -> {
+                        @SuppressWarnings("unchecked")
+                        final SC y = (SC) x;
+                        return then.apply(y);
+                    });
+            }
 
             default Match.Case<C, T> when(final boolean when) {
                 return this.when(() -> when);

@@ -197,6 +197,25 @@ public class ExpressiveTest {
     }
 
     /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchType() {
+
+        final Function<Number, String> f = //
+            ctx -> match(ctx) //
+                .type((final Long x) -> "long: " + x.longValue()) //
+                .when(x -> x.intValue() < 0).then(x -> "negative: " + x) //
+                .type((final Double x) -> "double: " + x.doubleValue()) //
+                .none(x -> "num: " + x.doubleValue());
+
+        assertThat(f.apply(1)).isEqualTo("num: 1.0");
+        assertThat(f.apply(2L)).isEqualTo("long: 2");
+        assertThat(f.apply(3.1)).isEqualTo("double: 3.1");
+        assertThat(f.apply(-1)).isEqualTo("negative: -1");
+    }
+
+    /**
      * {@link Expressive#when(boolean)}
      */
     @Test
