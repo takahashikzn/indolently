@@ -140,11 +140,23 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
         // optimization
         final Collection<? extends T> vals =
-            (values instanceof Collection) ? (Collection<? extends T>) values : Indolently.list(values);
+            (values instanceof Collection) ? (Collection<? extends T>) values : list(values);
 
         this.removeAll(vals);
 
         return this.identity();
+    }
+
+    /**
+     * remove value then return this instance.
+     *
+     * @param val value to remove
+     * @return {@code this} instance
+     * @see #removeAll(Collection)
+     */
+    @Destructive
+    default SELF delete(final T val) {
+        return this.delete(list(val));
     }
 
     /**

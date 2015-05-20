@@ -402,6 +402,11 @@ public class Expressive {
         };
     }
 
+    @SuppressWarnings("unchecked")
+    private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
+        return (Class<T>) TypeResolver.resolveRawArguments(Function.class, f.getClass())[0];
+    }
+
     @SuppressWarnings("javadoc")
     public interface Match<C> {
 
@@ -413,12 +418,8 @@ public class Expressive {
 
         default <SC extends C, T> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
 
-            return this.when(x -> TypeResolver.resolveRawArguments(Function.class, then.getClass())[0].isInstance(x))
-                .then(x -> {
-                    @SuppressWarnings("unchecked")
-                    final SC y = (SC) x;
-                    return then.apply(y);
-                });
+            return eval(argTypeOf(then),
+                argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
         }
 
         interface IntroCase<C> {
@@ -442,13 +443,8 @@ public class Expressive {
 
             default <SC extends C> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
 
-                return this
-                    .when(x -> TypeResolver.resolveRawArguments(Function.class, then.getClass())[0].isInstance(x))
-                    .then(x -> {
-                        @SuppressWarnings("unchecked")
-                        final SC y = (SC) x;
-                        return then.apply(y);
-                    });
+                return eval(argTypeOf(then),
+                    argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
             }
 
             default Match.Case<C, T> when(final boolean when) {
