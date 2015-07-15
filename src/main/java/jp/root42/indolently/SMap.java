@@ -24,6 +24,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import jp.root42.indolently.SMap.SEntry;
+import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
@@ -45,6 +46,15 @@ import static java.util.Objects.*;
 public interface SMap<K, V>
     extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>, Filterable<V, SMap<K, V>>,
     EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
+
+    /**
+     * Create a new fifo Map instance which containing all entries which this instance contains.
+     *
+     * @return a new fifo Map instance which containing all entries which this instance contains
+     */
+    default SMap<K, V> fifo() {
+        return of(ObjFactory.getInstance().<K, V> newFifoMap()).pushAll(this);
+    }
 
     /**
      * Clone this instance.
