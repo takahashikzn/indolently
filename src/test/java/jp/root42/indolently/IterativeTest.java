@@ -221,10 +221,10 @@ public class IterativeTest {
     static List<Object[]> parametersForTestRange() {
 
         return list( //
-            oarray("1..4 (stepping 1)", list(1, 2, 3, 4), 1, 4, 1) //
-            , oarray("4..1 (stepping 2)", list(4, 2), 4, 1, 2) //
-            , oarray("-2..2 (stepping 1)", list(-2, -1, 0, 1, 2), -2, 2, 1) //
-            , oarray("0..0 (stepping 1)", list(0), 0, 0, 1) //
+            oarray("1..4 (stepping 1)", list(1, 2, 3, 4), 1, 4, 1), //
+            oarray("4..1 (stepping 2)", list(4, 2), 4, 1, 2), //
+            oarray("-2..2 (stepping 1)", list(-2, -1, 0, 1, 2), -2, 2, 1), //
+            oarray("0..0 (stepping 1)", list(0), 0, 0, 1) //
         );
     }
 }

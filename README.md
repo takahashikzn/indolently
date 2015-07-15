@@ -19,9 +19,19 @@ Java8. That is all.
 
 # Dependencies
 
-There is no runtime dependency.
+### Runtime
+* [typetools](http://github.com/jhalterman/typetools)
 
-[Apache Ant](http://ant.apache.org/) and [Apache Ivy](http://ant.apache.org/ivy/) are required to build.
+### Test
+* [JUnit](http://junit.org/)
+* [Hamcrest](http://hamcrest.org/JavaHamcrest/)
+* [AssertJ](http://joel-costigliola.github.io/assertj/)
+* [Mockito](http://mockito.org/)
+* [JUnitParams](http://pragmatists.github.io/JUnitParams/)
+
+### Build
+* [Apache Ant](http://ant.apache.org/)
+* [Apache Ivy](http://ant.apache.org/ivy/)
 
 
 # Installation

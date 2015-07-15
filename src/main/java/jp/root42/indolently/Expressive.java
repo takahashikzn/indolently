@@ -20,7 +20,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressive.Match.Case;
+import net.jodah.typetools.TypeResolver;
+
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.TriFunction;
@@ -50,7 +51,7 @@ public class Expressive {
     /**
      * Throw exception in expression manner.
      *
-     * @param <T> pseudo expression type
+     * @param <T> the type of expression
      * @param e exception
      * @return actually return nothing
      */
@@ -61,7 +62,7 @@ public class Expressive {
     /**
      * Throw exception in expression manner.
      *
-     * @param <T> pseudo expression type
+     * @param <T> the type of expression
      * @param f supplies exception to throw
      * @return actually return nothing
      */
@@ -90,7 +91,7 @@ public class Expressive {
     /**
      * In-line evaluation expression.
      *
-     * @param <R> expression type
+     * @param <R> the type of expression
      * @param expr expression body
      * @return the value of body expression
      */
@@ -131,7 +132,7 @@ public class Expressive {
      * In-line evaluation expression.
      *
      * @param <T> value type
-     * @param <R> expression type
+     * @param <R> the type of expression
      * @param val the value
      * @param expr expression body
      * @return the value function returned
@@ -145,7 +146,7 @@ public class Expressive {
      *
      * @param <T1> first value type
      * @param <T2> second value type
-     * @param <R> expression type
+     * @param <R> the type of expression
      * @param val1 first value
      * @param val2 second value
      * @param expr expression body
@@ -163,6 +164,7 @@ public class Expressive {
      * @param <T1> first value type
      * @param <T2> second value type
      * @param <T3> third value type
+     * @param <R> the type of expression
      * @param val1 first value
      * @param val2 second value
      * @param val3 third value
@@ -178,6 +180,7 @@ public class Expressive {
     /**
      * evaluate following forms then return evaluation result of first expressions.
      *
+     * @param <T> the type of expression
      * @param first evaluation result of this expression
      * @param form evaluation target form. argument is evaluation result of {@code first}.
      * @return first expression evaluation result
@@ -189,6 +192,7 @@ public class Expressive {
     /**
      * evaluate following forms then return evaluation result of first expressions.
      *
+     * @param <T> the type of expression
      * @param first evaluation result of this expression
      * @param forms evaluation target forms. argument is evaluation result of {@code first}.
      * @return first expression evaluation result
@@ -211,6 +215,7 @@ public class Expressive {
     /**
      * evaluate following forms then return first expression evaluation result.
      *
+     * @param <T> the type of entire expression
      * @param first evaluation result of this expression
      * @param forms evaluation target forms
      * @return first expression evaluation result
@@ -224,26 +229,66 @@ public class Expressive {
         return val;
     }
 
-    @SuppressWarnings("javadoc")
+    /**
+     * if-then-else expression.
+     *
+     * @see Expressive#when(BooleanSupplier)
+     * @author takahashikzn
+     */
     public interface When {
 
+        /**
+         * The value expression treated as the return value of the entire expression if the just before conditional
+         * expression evaluated as <code>true</code>.
+         *
+         * @param <T> the type of entire expression
+         * @param then value expression
+         * @return 'then' object
+         */
         <T> Then<T> then(Supplier<? extends T> then);
 
+        /**
+         * The value treated as the return value of the entire expression if the just before conditional expression
+         * evaluated as <code>true</code>.
+         *
+         * @param <T> the type of entire expression
+         * @param then a value
+         * @return 'then' object
+         */
         default <T> Then<T> then(final T then) {
             return this.then(() -> then);
         }
 
+        /**
+         * The body expression of 'if' expression.
+         *
+         * @param <T> the type of entire expression
+         * @author takahashikzn
+         */
         interface Then<T> {
 
+            /**
+             * Returns the value of entire expression. This is terminal operation.
+             *
+             * @param none value expression evaluated if and only if all conditional expression evaluated as
+             * <code>false</code>.
+             * @return the return value of the entire expression
+             */
             T none(Supplier<? extends T> none);
 
-            Case<T> when(BooleanSupplier when);
+            /**
+             * 'else-if' expression.
+             *
+             * @param when a condition
+             * @return 'case' object as an 'else-if' expression.
+             */
+            When.Case<T> when(BooleanSupplier when);
 
             default T none(final T none) {
                 return this.none(() -> none);
             }
 
-            default Case<T> when(final boolean when) {
+            default When.Case<T> when(final boolean when) {
                 return this.when(() -> when);
             }
 
@@ -260,22 +305,58 @@ public class Expressive {
             }
         }
 
+        /**
+         * 'if' expression.
+         *
+         * @param <T> the type of entire expression
+         * @author takahashikzn
+         */
         interface Case<T> {
 
-            Then<T> then(Supplier<? extends T> then);
+            When.Then<T> then(Supplier<? extends T> then);
 
-            default Then<T> then(final T then) {
+            default When.Then<T> then(final T then) {
                 return this.then(() -> then);
             }
         }
     }
 
-    @SuppressWarnings("javadoc")
+    /**
+     * A shortcut of <code>when(() -> pred)</code>.
+     *
+     * @param pred constant conditional value
+     * @return 'when' object
+     */
     public static When when(final boolean pred) {
         return when(() -> pred);
     }
 
-    @SuppressWarnings("javadoc")
+    /**
+     * if-then-else expression.
+     * <p>
+     * <h3>Example</h3>
+     *
+     * <pre>
+     * <code>
+     * int x = ...;
+     *
+     * String evenOrOdd = Expressive
+     *     .when(() -> x % 2 == 0).then(() -> "even")
+     *     .when(() -> x % 2 != 0).then(() -> "odd")
+     *     .none(() -> "This is terminal operation but never called in this example.");
+     *
+     * // constants are acceptable
+     * String simplerEvenOrOdd = Expressive
+     *     .when(x % 2 == 0).then("even")
+     *     .when(x % 2 != 0).then("odd")
+     *     .none("This is terminal operation but never called in this example.");
+     * </code>
+     * </pre>
+     * </p>
+     *
+     * @param pred first condition
+     * @return 'when' object
+     */
     public static When when(final BooleanSupplier pred) {
 
         final Match.IntroCase<?> intro = match(null).when(x -> pred.getAsBoolean());
@@ -283,18 +364,22 @@ public class Expressive {
         return new When() {
 
             @Override
-            public <T> Then<T> then(final Supplier<? extends T> then) {
+            public <T> When.Then<T> then(final Supplier<? extends T> then) {
 
-                return new Then<T>() {
+                return new When.Then<T>() {
 
                     @Override
                     public T none(final Supplier<? extends T> none) {
-                        return intro.then(x -> (T) then.get()).none(none);
+                        return intro //
+                            .then(x -> (T) then.get()) //
+                            .none(none);
                     }
 
                     @Override
-                    public Case<T> when(final BooleanSupplier when) {
-                        return toWhenCase(intro.then(x -> (T) then.get()).when(x -> when.getAsBoolean()));
+                    public When.Case<T> when(final BooleanSupplier when) {
+                        return toWhenCase(intro //
+                            .then(x -> (T) then.get()) //
+                            .when(x -> when.getAsBoolean()));
                     }
                 };
             }
@@ -317,24 +402,35 @@ public class Expressive {
         };
     }
 
+    @SuppressWarnings("unchecked")
+    private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
+        return (Class<T>) TypeResolver.resolveRawArguments(Function.class, f.getClass())[0];
+    }
+
     @SuppressWarnings("javadoc")
     public interface Match<C> {
 
-        IntroCase<C> when(Predicate<? super C> pred);
+        Match.IntroCase<C> when(Predicate<? super C> pred);
 
-        default IntroCase<C> when(final boolean pred) {
+        default Match.IntroCase<C> when(final boolean pred) {
             return this.when(x -> pred);
+        }
+
+        default <SC extends C, T> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
+
+            return eval(argTypeOf(then),
+                argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
         }
 
         interface IntroCase<C> {
 
-            <T> Then<C, T> then(Function<? super C, ? extends T> then);
+            <T> Match.Then<C, T> then(Function<? super C, ? extends T> then);
 
-            default <T> Then<C, T> then(final T then) {
+            default <T> Match.Then<C, T> then(final T then) {
                 return this.then(() -> then);
             }
 
-            default <T> Then<C, T> then(final Supplier<? extends T> then) {
+            default <T> Match.Then<C, T> then(final Supplier<? extends T> then) {
                 return this.then(x -> then.get());
             }
         }
@@ -343,13 +439,19 @@ public class Expressive {
 
             T none(Function<? super C, ? extends T> none);
 
-            Case<C, T> when(Predicate<? super C> when);
+            Match.Case<C, T> when(Predicate<? super C> when);
 
-            default Case<C, T> when(final boolean when) {
+            default <SC extends C> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
+
+                return eval(argTypeOf(then),
+                    argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
+            }
+
+            default Match.Case<C, T> when(final boolean when) {
                 return this.when(() -> when);
             }
 
-            default Case<C, T> when(final BooleanSupplier when) {
+            default Match.Case<C, T> when(final BooleanSupplier when) {
                 return this.when(x -> when.getAsBoolean());
             }
 
@@ -376,13 +478,13 @@ public class Expressive {
 
         interface Case<C, T> {
 
-            Then<C, T> then(Function<? super C, ? extends T> then);
+            Match.Then<C, T> then(Function<? super C, ? extends T> then);
 
-            default Then<C, T> then(final T then) {
+            default Match.Then<C, T> then(final T then) {
                 return this.then(() -> then);
             }
 
-            default Then<C, T> then(final Supplier<? extends T> then) {
+            default Match.Then<C, T> then(final Supplier<? extends T> then) {
                 return this.then(x -> then.get());
             }
         }
@@ -402,11 +504,12 @@ public class Expressive {
 
     private static <C, T> Match.Case<C, T> toResolvedCase(final T value) {
 
-        final class Resolved
-            implements Match.Case<C, T> {
+        return new Match.Case<C, T>() {
 
             @Override
             public Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
+
+                final Match.Case<C, T> self = this;
 
                 return new Match.Then<C, T>() {
 
@@ -416,14 +519,12 @@ public class Expressive {
                     }
 
                     @Override
-                    public Case<C, T> when(final Predicate<? super C> when) {
-                        return Resolved.this;
+                    public Match.Case<C, T> when(final Predicate<? super C> when) {
+                        return self;
                     }
                 };
             }
-        }
-
-        return new Resolved();
+        };
     }
 
     private static <C, T> Match.Case<C, T> toUnresolvedCase(final C ctx, final Predicate<? super C> condition) {
@@ -434,14 +535,16 @@ public class Expressive {
 
             @Override
             public T none(final Function<? super C, ? extends T> none) {
-
-                return pred.test(ctx) ? then.apply(ctx) : none.apply(ctx);
+                return pred.test(ctx) //
+                    ? then.apply(ctx) //
+                    : none.apply(ctx);
             }
 
             @Override
-            public Case<C, T> when(final Predicate<? super C> when) {
-
-                return pred.test(ctx) ? toResolvedCase(then.apply(ctx)) : toUnresolvedCase(ctx, when);
+            public Match.Case<C, T> when(final Predicate<? super C> when) {
+                return pred.test(ctx) //
+                    ? toResolvedCase(then.apply(ctx)) //
+                    : toUnresolvedCase(ctx, when);
             }
         };
     }

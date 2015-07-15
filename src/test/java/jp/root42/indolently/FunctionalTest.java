@@ -28,9 +28,8 @@ import org.junit.runner.RunWith;
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Iterative.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.StrictAssertions.*;
 
 import junitparams.JUnitParamsRunner;
 
@@ -153,5 +152,9 @@ public class FunctionalTest {
         });
 
         assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
+    }
+
+    private static Trio<Integer, Integer, Integer> tuple(final int x, final int y, final int z) {
+        return Indolently.tuple(x, y, z);
     }
 }

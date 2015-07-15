@@ -183,17 +183,36 @@ public class ExpressiveTest {
     @Test
     public void testMatch() {
 
-        final Function<Integer, String> f1 = //
+        final Function<Integer, String> f = //
             ctx -> match(ctx) //
                 .when(x -> x == 1).then(x -> "one") //
                 .when(x -> x == 2).then(x -> "two") //
                 .when(x -> x == 3).then("three") //
                 .none(x -> "" + x);
 
-        assertThat(f1.apply(1)).isEqualTo("one");
-        assertThat(f1.apply(2)).isEqualTo("two");
-        assertThat(f1.apply(3)).isEqualTo("three");
-        assertThat(f1.apply(4)).isEqualTo("4");
+        assertThat(f.apply(1)).isEqualTo("one");
+        assertThat(f.apply(2)).isEqualTo("two");
+        assertThat(f.apply(3)).isEqualTo("three");
+        assertThat(f.apply(4)).isEqualTo("4");
+    }
+
+    /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchType() {
+
+        final Function<Number, String> f = //
+            ctx -> match(ctx) //
+                .type((final Long x) -> "long: " + x.longValue()) //
+                .when(x -> x.intValue() < 0).then(x -> "negative: " + x) //
+                .type((final Double x) -> "double: " + x.doubleValue()) //
+                .none(x -> "num: " + x.doubleValue());
+
+        assertThat(f.apply(1)).isEqualTo("num: 1.0");
+        assertThat(f.apply(2L)).isEqualTo("long: 2");
+        assertThat(f.apply(3.1)).isEqualTo("double: 3.1");
+        assertThat(f.apply(-1)).isEqualTo("negative: -1");
     }
 
     /**
@@ -202,25 +221,25 @@ public class ExpressiveTest {
     @Test
     public void testWhen() {
 
-        final IntRef x = ref(0);
+        final IntRef i = ref(0);
 
-        final Supplier<String> f1 = //
-            () -> when(() -> x.val == 1).then(() -> "one") //
-                .when(() -> x.val == 2).then(() -> "two") //
-                .when(() -> x.val == 3).then("three") //
-                .none("" + x.val);
+        final Supplier<String> f = //
+            () -> when(() -> i.val == 1).then(() -> "one") //
+                .when(() -> i.val == 2).then(() -> "two") //
+                .when(() -> i.val == 3).then("three") //
+                .none("" + i.val);
 
-        x.val = 1;
-        assertThat(f1.get()).isEqualTo("one");
+        i.val = 1;
+        assertThat(f.get()).isEqualTo("one");
 
-        x.val = 2;
-        assertThat(f1.get()).isEqualTo("two");
+        i.val = 2;
+        assertThat(f.get()).isEqualTo("two");
 
-        x.val = 3;
-        assertThat(f1.get()).isEqualTo("three");
+        i.val = 3;
+        assertThat(f.get()).isEqualTo("three");
 
-        x.val = 4;
-        assertThat(f1.get()).isEqualTo("4");
+        i.val = 4;
+        assertThat(f.get()).isEqualTo("4");
     }
 
     /**
@@ -266,9 +285,9 @@ public class ExpressiveTest {
     static List<Object[]> parametersForTestComplicatedTypeInference() {
 
         return list( //
-            oarray(list(1, 3, 5), 1, 6, 2) //
-            , oarray(list(3, 1, -1), 3, -1, 2) //
-            , oarray(list(1), 1, 1, 1) //
+            oarray(list(1, 3, 5), 1, 6, 2), //
+            oarray(list(3, 1, -1), 3, -1, 2), //
+            oarray(list(1), 1, 1, 1) //
         );
     }
 
@@ -278,13 +297,14 @@ public class ExpressiveTest {
     @Test
     public void testSwitchOfFailure() {
 
-        final Function<Integer, String> f1 = ctx -> match(ctx) //
-            .when(x -> x == 1).then(x -> "one") //
-            .when(x -> x == 2).then(x -> "two") //
-            .raise(x -> new RuntimeException("THE TEST OF " + x));
+        final Function<Integer, String> f = //
+            ctx -> match(ctx) //
+                .when(x -> x == 1).then(x -> "one") //
+                .when(x -> x == 2).then(x -> "two") //
+                .raise(x -> new RuntimeException("THE TEST OF " + x));
 
         try {
-            f1.apply(42);
+            f.apply(42);
             fail();
         } catch (final RuntimeException e) {
             assertThat(e.getMessage()).contains("THE TEST OF 42");
