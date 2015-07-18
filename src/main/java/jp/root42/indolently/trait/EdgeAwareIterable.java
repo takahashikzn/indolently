@@ -18,8 +18,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressive;
-
 
 /**
  * @param <T> -
@@ -35,7 +33,7 @@ public interface EdgeAwareIterable<T>
      * @throws NoSuchElementException if empty
      */
     default T head() {
-        return this.iterator().next();
+        return this.head(x -> true).get();
     }
 
     /**
@@ -45,10 +43,7 @@ public interface EdgeAwareIterable<T>
      * @return first element or alternative value
      */
     default T head(final Supplier<? extends T> other) {
-        return Expressive //
-            .match(this.iterator()) //
-            .when(i -> i.hasNext()).then(i -> i.next()) //
-            .none(() -> other.get());
+        return this.head(x -> true).orElseGet(other);
     }
 
     /**
@@ -75,11 +70,17 @@ public interface EdgeAwareIterable<T>
      * @throws NoSuchElementException if this iterator is empty
      */
     default T last() {
-        if (!this.iterator().hasNext()) {
-            throw new NoSuchElementException();
-        }
-
         return this.last(x -> true).get();
+    }
+
+    /**
+     * get last element if exists, otherwise return alternative value.
+     *
+     * @param other alternative value.
+     * @return last element or alternative value
+     */
+    default T last(final Supplier<? extends T> other) {
+        return this.last(x -> true).orElseGet(other);
     }
 
     /**
