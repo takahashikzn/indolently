@@ -82,7 +82,7 @@ public class Expressive {
     /**
      * Block statement.
      *
-     * @param stmt expression body
+     * @param stmt statement body
      */
     public static void let(final Statement stmt) {
         stmt.execute();
@@ -107,6 +107,24 @@ public class Expressive {
      */
     public static <T> void let(final T value, final Consumer<? super T> stmt) {
         stmt.accept(value);
+    }
+
+    /**
+     * Block statement which applied only if the value is an instance of the statement's argument type.
+     *
+     * @param value the value
+     * @param stmt statement body
+     */
+    public static <T> void ifInstance(final Object value, final Consumer<T> stmt) {
+
+        final Class<?> argType = argTypeOf(stmt);
+
+        if (argType.isInstance(value)) {
+
+            @SuppressWarnings("unchecked")
+            final T casted = (T) value;
+            stmt.accept(casted);
+        }
     }
 
     /**
@@ -405,6 +423,11 @@ public class Expressive {
     @SuppressWarnings("unchecked")
     private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
         return (Class<T>) TypeResolver.resolveRawArguments(Function.class, f.getClass())[0];
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Class<T> argTypeOf(final Consumer<T> f) {
+        return (Class<T>) TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0];
     }
 
     @SuppressWarnings("javadoc")
