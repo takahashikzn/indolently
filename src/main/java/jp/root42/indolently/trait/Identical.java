@@ -32,7 +32,7 @@ public interface Identical<SELF extends Identical<SELF>> {
      * @return {@code this} instance.
      */
     default SELF identity() {
-        return Indolently.unchecked(this);
+        return Indolently.cast(this);
     }
 
     /**
@@ -42,7 +42,7 @@ public interface Identical<SELF extends Identical<SELF>> {
      * @return {@code this} instance.
      */
     default SELF identity(final Consumer<? super SELF> f) {
-        final SELF self = Indolently.unchecked(this);
+        final SELF self = Indolently.cast(this);
         f.accept(self);
         return self;
     }
