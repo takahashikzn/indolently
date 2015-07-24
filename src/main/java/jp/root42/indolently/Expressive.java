@@ -117,13 +117,8 @@ public class Expressive {
      */
     public static <T> void ifInstance(final Object value, final Consumer<T> stmt) {
 
-        final Class<?> argType = argTypeOf(stmt);
-
-        if (argType.isInstance(value)) {
-
-            @SuppressWarnings("unchecked")
-            final T casted = (T) value;
-            stmt.accept(casted);
+        if (argTypeOf(stmt).isInstance(value)) {
+            stmt.accept(unchecked(value));
         }
     }
 
@@ -420,14 +415,12 @@ public class Expressive {
         };
     }
 
-    @SuppressWarnings("unchecked")
     private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
-        return (Class<T>) TypeResolver.resolveRawArguments(Function.class, f.getClass())[0];
+        return unchecked(TypeResolver.resolveRawArguments(Function.class, f.getClass())[0]);
     }
 
-    @SuppressWarnings("unchecked")
     private static <T> Class<T> argTypeOf(final Consumer<T> f) {
-        return (Class<T>) TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0];
+        return unchecked(TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0]);
     }
 
     @SuppressWarnings("javadoc")
