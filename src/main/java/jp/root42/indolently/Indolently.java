@@ -67,7 +67,7 @@ public class Indolently {
      * @return casted value
      */
     @SuppressWarnings("unchecked")
-    public static <T> T unchecked(final Object o) {
+    public static <T> T cast(final Object o) {
         return (T) o;
     }
 
@@ -334,7 +334,7 @@ public class Indolently {
 
         return list(first) //
             .pushAll(list(rest)) //
-            .toArray(unchecked(Array.newInstance(first.getClass(), len)));
+            .toArray(cast(Array.newInstance(first.getClass(), len)));
     }
 
     /**
@@ -351,14 +351,14 @@ public class Indolently {
     public static <T, V extends T> T[] array(final Class<T> type, final V first, final V... rest) {
 
         if (first == null) {
-            return unchecked(Array.newInstance(type, 0));
+            return cast(Array.newInstance(type, 0));
         }
 
         final int len = 1 + ((rest == null) ? 0 : rest.length);
 
         return list(first) //
             .pushAll(list(rest)) //
-            .toArray(unchecked(Array.newInstance(type, len)));
+            .toArray(cast(Array.newInstance(type, len)));
     }
 
     /**
@@ -1274,7 +1274,7 @@ public class Indolently {
     public static <T> boolean equiv(final T l, final T r) {
 
         if ((l instanceof Comparable) && (r instanceof Comparable)) {
-            return equal(unchecked(l), unchecked(r));
+            return equal(cast(l), cast(r));
         } else {
             return equal(l, r);
         }

@@ -118,7 +118,7 @@ public class Expressive {
     public static <T> void ifInstance(final Object value, final Consumer<T> stmt) {
 
         if (argTypeOf(stmt).isInstance(value)) {
-            stmt.accept(unchecked(value));
+            stmt.accept(cast(value));
         }
     }
 
@@ -416,11 +416,11 @@ public class Expressive {
     }
 
     private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
-        return unchecked(TypeResolver.resolveRawArguments(Function.class, f.getClass())[0]);
+        return cast(TypeResolver.resolveRawArguments(Function.class, f.getClass())[0]);
     }
 
     private static <T> Class<T> argTypeOf(final Consumer<T> f) {
-        return unchecked(TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0]);
+        return cast(TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0]);
     }
 
     @SuppressWarnings("javadoc")
