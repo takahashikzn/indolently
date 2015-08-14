@@ -12,7 +12,7 @@ import jp.root42.indolently.SMap.SEntry;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.StrictAssertions.*;
 import static org.mockito.Mockito.*;
 
 

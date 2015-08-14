@@ -20,7 +20,7 @@ import jp.root42.indolently.Indolently;
 import org.junit.Test;
 
 import static jp.root42.indolently.Indolently.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.StrictAssertions.*;
 
 
 /**
