@@ -217,6 +217,47 @@ public class ExpressiveTest {
     }
 
     /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchConst() {
+
+        final Function<Integer, String> f = //
+            ctx -> match(ctx) //
+                .when(() -> 1).then(x -> "one") //
+                .when(() -> 2).then(x -> "two") //
+                .when(() -> 3).then("three") //
+                .none(x -> "" + x);
+
+        assertThat(f.apply(1)).isEqualTo("one");
+        assertThat(f.apply(2)).isEqualTo("two");
+        assertThat(f.apply(3)).isEqualTo("three");
+        assertThat(f.apply(4)).isEqualTo("4");
+    }
+
+    @SuppressWarnings("javadoc")
+    public enum EnumOfTestMatch {
+        FOO, BAR, BAZ;
+    }
+
+    /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchEnum() {
+
+        final Function<EnumOfTestMatch, String> f = //
+            ctx -> match(ctx) //
+                .when(() -> EnumOfTestMatch.FOO).then(x -> "foo") //
+                .when(() -> EnumOfTestMatch.BAR).then(x -> "bar") //
+                .none(x -> "none");
+
+        assertThat(f.apply(EnumOfTestMatch.FOO)).isEqualTo("foo");
+        assertThat(f.apply(EnumOfTestMatch.BAR)).isEqualTo("bar");
+        assertThat(f.apply(EnumOfTestMatch.BAZ)).isEqualTo("none");
+    }
+
+    /**
      * {@link Expressive#when(boolean)}
      */
     @Test
