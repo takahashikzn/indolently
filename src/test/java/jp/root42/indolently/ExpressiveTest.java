@@ -207,7 +207,7 @@ public class ExpressiveTest {
             ctx -> match(ctx) //
                 .type((final Long x) -> "long: " + x.longValue()) //
                 .when(x -> x.intValue() < 0).then(x -> "negative: " + x) //
-                .type((final Double x) -> "double: " + x.doubleValue()) //
+                .when(Double.class).then(x -> "double: " + x.doubleValue()) //
                 .none(x -> "num: " + x.doubleValue());
 
         assertThat(f.apply(1)).isEqualTo("num: 1.0");
