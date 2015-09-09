@@ -436,6 +436,10 @@ public class Expressive {
             return this.when(x -> Indolently.equal(x, pred.get()));
         }
 
+        default Match.IntroCase<C> when(final Class<? extends C> type) {
+            return this.when(x -> type.isInstance(x));
+        }
+
         default <SC extends C, T> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
 
             return eval(argTypeOf(then),
@@ -460,6 +464,10 @@ public class Expressive {
             T none(Function<? super C, ? extends T> none);
 
             Match.Case<C, T> when(Predicate<? super C> when);
+
+            default Match.Case<C, T> when(final Class<? extends C> type) {
+                return this.when(x -> type.isInstance(x));
+            }
 
             default <SC extends C> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
 
