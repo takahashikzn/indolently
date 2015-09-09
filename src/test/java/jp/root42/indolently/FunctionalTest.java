@@ -29,7 +29,7 @@ import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
-import static org.assertj.core.api.StrictAssertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import junitparams.JUnitParamsRunner;
 

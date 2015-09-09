@@ -476,7 +476,7 @@ public class Expressive {
             }
 
             default Match.Case<C, T> when(final boolean when) {
-                return this.when(() -> when);
+                return this.when(x -> when);
             }
 
             default Match.Case<C, T> when(final BooleanSupplier when) {

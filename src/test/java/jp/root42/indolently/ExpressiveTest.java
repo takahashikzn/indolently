@@ -32,7 +32,6 @@ import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
