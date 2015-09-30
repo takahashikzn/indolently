@@ -206,13 +206,54 @@ public class ExpressiveTest {
             ctx -> match(ctx) //
                 .type((final Long x) -> "long: " + x.longValue()) //
                 .when(x -> x.intValue() < 0).then(x -> "negative: " + x) //
-                .type((final Double x) -> "double: " + x.doubleValue()) //
+                .when(Double.class).then(x -> "double: " + x.doubleValue()) //
                 .none(x -> "num: " + x.doubleValue());
 
         assertThat(f.apply(1)).isEqualTo("num: 1.0");
         assertThat(f.apply(2L)).isEqualTo("long: 2");
         assertThat(f.apply(3.1)).isEqualTo("double: 3.1");
         assertThat(f.apply(-1)).isEqualTo("negative: -1");
+    }
+
+    /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchConst() {
+
+        final Function<Integer, String> f = //
+            ctx -> match(ctx) //
+                .when(() -> 1).then(x -> "one") //
+                .when(() -> 2).then(x -> "two") //
+                .when(() -> 3).then("three") //
+                .none(x -> "" + x);
+
+        assertThat(f.apply(1)).isEqualTo("one");
+        assertThat(f.apply(2)).isEqualTo("two");
+        assertThat(f.apply(3)).isEqualTo("three");
+        assertThat(f.apply(4)).isEqualTo("4");
+    }
+
+    @SuppressWarnings("javadoc")
+    public enum EnumOfTestMatch {
+        FOO, BAR, BAZ;
+    }
+
+    /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchEnum() {
+
+        final Function<EnumOfTestMatch, String> f = //
+            ctx -> match(ctx) //
+                .when(() -> EnumOfTestMatch.FOO).then(x -> "foo") //
+                .when(() -> EnumOfTestMatch.BAR).then(x -> "bar") //
+                .none(x -> "none");
+
+        assertThat(f.apply(EnumOfTestMatch.FOO)).isEqualTo("foo");
+        assertThat(f.apply(EnumOfTestMatch.BAR)).isEqualTo("bar");
+        assertThat(f.apply(EnumOfTestMatch.BAZ)).isEqualTo("none");
     }
 
     /**

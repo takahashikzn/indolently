@@ -82,7 +82,7 @@ public class Expressive {
     /**
      * Block statement.
      *
-     * @param stmt expression body
+     * @param stmt statement body
      */
     public static void let(final Statement stmt) {
         stmt.execute();
@@ -107,6 +107,19 @@ public class Expressive {
      */
     public static <T> void let(final T value, final Consumer<? super T> stmt) {
         stmt.accept(value);
+    }
+
+    /**
+     * Block statement which applied only if the value is an instance of the statement's argument type.
+     *
+     * @param value the value
+     * @param stmt statement body
+     */
+    public static <T> void ifInstance(final Object value, final Consumer<T> stmt) {
+
+        if (argTypeOf(stmt).isInstance(value)) {
+            stmt.accept(cast(value));
+        }
     }
 
     /**
@@ -402,9 +415,12 @@ public class Expressive {
         };
     }
 
-    @SuppressWarnings("unchecked")
     private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
-        return (Class<T>) TypeResolver.resolveRawArguments(Function.class, f.getClass())[0];
+        return cast(TypeResolver.resolveRawArguments(Function.class, f.getClass())[0]);
+    }
+
+    private static <T> Class<T> argTypeOf(final Consumer<T> f) {
+        return cast(TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0]);
     }
 
     @SuppressWarnings("javadoc")
@@ -414,6 +430,14 @@ public class Expressive {
 
         default Match.IntroCase<C> when(final boolean pred) {
             return this.when(x -> pred);
+        }
+
+        default Match.IntroCase<C> when(final Supplier<? extends C> pred) {
+            return this.when(x -> Indolently.equal(x, pred.get()));
+        }
+
+        default Match.IntroCase<C> when(final Class<? extends C> type) {
+            return this.when(x -> type.isInstance(x));
         }
 
         default <SC extends C, T> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
@@ -441,6 +465,10 @@ public class Expressive {
 
             Match.Case<C, T> when(Predicate<? super C> when);
 
+            default Match.Case<C, T> when(final Class<? extends C> type) {
+                return this.when(x -> type.isInstance(x));
+            }
+
             default <SC extends C> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
 
                 return eval(argTypeOf(then),
@@ -448,11 +476,15 @@ public class Expressive {
             }
 
             default Match.Case<C, T> when(final boolean when) {
-                return this.when(() -> when);
+                return this.when(x -> when);
             }
 
             default Match.Case<C, T> when(final BooleanSupplier when) {
                 return this.when(x -> when.getAsBoolean());
+            }
+
+            default Match.Case<C, T> when(final Supplier<? extends C> pred) {
+                return this.when(x -> Indolently.equal(x, pred.get()));
             }
 
             default T none(final T none) {

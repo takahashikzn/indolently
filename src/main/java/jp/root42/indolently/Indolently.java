@@ -60,6 +60,17 @@ public class Indolently {
         return 0 <= idx ? idx : list.size() + idx;
     }
 
+    /**
+     * Cast the value.
+     *
+     * @param o the value
+     * @return casted value
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(final Object o) {
+        return (T) o;
+    }
+
     public static <T> T fatal() {
         throw new AssertionError();
     }
@@ -320,10 +331,10 @@ public class Indolently {
         }
 
         final int len = 1 + ((rest == null) ? 0 : rest.length);
-        @SuppressWarnings("unchecked")
-        final T[] ary = (T[]) Array.newInstance(first.getClass(), len);
 
-        return list(first).pushAll(list(rest)).toArray(ary);
+        return list(first) //
+            .pushAll(list(rest)) //
+            .toArray(cast(Array.newInstance(first.getClass(), len)));
     }
 
     /**
@@ -340,16 +351,14 @@ public class Indolently {
     public static <T, V extends T> T[] array(final Class<T> type, final V first, final V... rest) {
 
         if (first == null) {
-            @SuppressWarnings("unchecked")
-            final T[] ary = (T[]) Array.newInstance(type, 0);
-            return ary;
+            return cast(Array.newInstance(type, 0));
         }
 
         final int len = 1 + ((rest == null) ? 0 : rest.length);
-        @SuppressWarnings("unchecked")
-        final T[] ary = (T[]) Array.newInstance(type, len);
 
-        return list(first).pushAll(list(rest)).toArray(ary);
+        return list(first) //
+            .pushAll(list(rest)) //
+            .toArray(cast(Array.newInstance(type, len)));
     }
 
     /**
@@ -1265,9 +1274,7 @@ public class Indolently {
     public static <T> boolean equiv(final T l, final T r) {
 
         if ((l instanceof Comparable) && (r instanceof Comparable)) {
-            @SuppressWarnings({ "rawtypes", "unchecked" })
-            final boolean rslt = equal((Comparable) l, (Comparable) r);
-            return rslt;
+            return equal(cast(l), cast(r));
         } else {
             return equal(l, r);
         }

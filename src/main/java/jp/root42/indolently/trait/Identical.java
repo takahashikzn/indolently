@@ -15,6 +15,8 @@ package jp.root42.indolently.trait;
 
 import java.util.function.Consumer;
 
+import jp.root42.indolently.Indolently;
+
 
 /**
  * Express this instance can be identical.
@@ -30,9 +32,7 @@ public interface Identical<SELF extends Identical<SELF>> {
      * @return {@code this} instance.
      */
     default SELF identity() {
-        @SuppressWarnings("unchecked")
-        final SELF self = (SELF) this;
-        return self;
+        return Indolently.cast(this);
     }
 
     /**
@@ -42,8 +42,7 @@ public interface Identical<SELF extends Identical<SELF>> {
      * @return {@code this} instance.
      */
     default SELF identity(final Consumer<? super SELF> f) {
-        @SuppressWarnings("unchecked")
-        final SELF self = (SELF) this;
+        final SELF self = Indolently.cast(this);
         f.accept(self);
         return self;
     }
