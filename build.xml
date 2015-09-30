@@ -70,11 +70,15 @@
     </jar>
   </target>
 
-  <target name="test" depends="jar" description="run">
+  <target name="runtest" description="run test">
     <loadfile srcfile="build/test.js" property="test.js" />
     <script language="javascript">
       eval(project.getProperty('ari.js')).run(project.getProperty('test.js'));
     </script>
+  </target>
+
+  <target name="test" depends="jar" description="make and run test">
+    <antcall target="runtest" />
   </target>
 
 </project>
