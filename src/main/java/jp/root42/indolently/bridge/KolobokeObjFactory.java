@@ -29,6 +29,23 @@ import net.openhft.koloboke.collect.set.hash.HashObjSets;
 final class KolobokeObjFactory
     extends JdkObjFactory {
 
+    /**
+     * @throws UnsupportedOperationException if Koloboke isn't available.
+     */
+    public KolobokeObjFactory() throws UnsupportedOperationException {
+        if (!isPresent("net.openhft.koloboke.collect.impl.hash.ObjHash")) {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    private static boolean isPresent(final String fqcn) {
+        try {
+            return Class.forName(fqcn) != null;
+        } catch (final ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     private static final class KolobokeHashSet<V>
         extends SerializableSet<V> {
 

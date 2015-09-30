@@ -32,18 +32,10 @@ public abstract class ObjFactory {
     private static volatile ObjFactory instance;
 
     static {
-        if (isPresent("net.openhft.koloboke.collect.impl.hash.ObjHash")) {
-            instance = new KolobokeObjFactory();
-        } else {
-            instance = new JdkObjFactory();
-        }
-    }
-
-    private static boolean isPresent(final String fqcn) {
         try {
-            return Class.forName(fqcn) != null;
-        } catch (final ClassNotFoundException e) {
-            return false;
+            instance = new KolobokeObjFactory();
+        } catch (final UnsupportedOperationException e) {
+            instance = new JdkObjFactory();
         }
     }
 
