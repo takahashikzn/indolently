@@ -1998,4 +1998,56 @@ public class Indolently {
             v22, k23, v23, k24, v24, k25, v25, k26, v26, k27, v27, k28, v28, k29, v29, k30, v30).push(k31, v31);
     }
     // CHECKSTYLE:ON
+
+    public static <T extends Comparable<T>> Predicate<T> lt(final T r) {
+        return l -> lt(l, r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> le(final T r) {
+        return l -> le(l, r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gt(final T r) {
+        return l -> gt(l, r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> ge(final T r) {
+        return l -> ge(l, r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gtlt(final T l, final T u) {
+        return m -> gtlt(l, m, u);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gelt(final T l, final T u) {
+        return m -> gelt(l, m, u);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gtle(final T l, final T u) {
+        return m -> gtle(l, m, u);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gele(final T l, final T u) {
+        return m -> gele(l, m, u);
+    }
+
+    public static <T extends CharSequence> Predicate<T> empty() {
+        return Indolently::empty;
+    }
+
+    public static <T extends CharSequence> Predicate<T> blank() {
+        return Indolently::blank;
+    }
+
+    public static <T> Predicate<T> not(final Predicate<T> f) {
+        return x -> !f.test(x);
+    }
+
+    public static <T> Predicate<T> eq(final T x) {
+        return y -> equal(x, y);
+    }
+
+    public static <T> Predicate<T> nil() {
+        return x -> x == null;
+    }
 }
