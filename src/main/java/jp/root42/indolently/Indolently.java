@@ -2050,4 +2050,28 @@ public class Indolently {
     public static <T> Predicate<T> nil() {
         return x -> x == null;
     }
+
+    public static <T> Predicate<T> isa(final Class<?> x) {
+        return y -> x.isInstance(y);
+    }
+
+    @SafeVarargs
+    public static <T> Predicate<T> and(final Predicate<? super T> x0, final Predicate<? super T> x1,
+        final Predicate<? super T>... x2) {
+
+        final SList<Predicate<? super T>> preds =
+            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+
+        return y -> preds.every(z -> z.test(y));
+    }
+
+    @SafeVarargs
+    public static <T> Predicate<T> or(final Predicate<? super T> x0, final Predicate<? super T> x1,
+        final Predicate<? super T>... x2) {
+
+        final SList<Predicate<? super T>> preds =
+            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+
+        return y -> preds.some(z -> z.test(y));
+    }
 }
