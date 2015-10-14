@@ -2040,11 +2040,7 @@ public class Indolently {
     }
 
     public static <T> Predicate<T> not(final Predicate<T> f) {
-        return x -> !f.test(x);
-    }
-
-    public static <T> Predicate<T> eq(final T x) {
-        return y -> equal(x, y);
+        return f.negate();
     }
 
     public static <T> Predicate<T> nil() {
@@ -2053,6 +2049,30 @@ public class Indolently {
 
     public static <T> Predicate<T> isa(final Class<?> x) {
         return y -> x.isInstance(y);
+    }
+
+    public static <T> Predicate<T> eq(final T x) {
+        return y -> equal(x, y);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> eq(final T x) {
+        return y -> equal(x, y);
+    }
+
+    @SafeVarargs
+    public static <T> Predicate<T> in(final T... x) {
+
+        final SList<Predicate<T>> preds = list(x).map(y -> eq(y));
+
+        return y -> preds.some(z -> z.test(y));
+    }
+
+    @SafeVarargs
+    public static <T extends Comparable<T>> Predicate<T> in(final T x0, final T x1, final T... x2) {
+
+        final SList<Predicate<T>> preds = list(x0, x1).pushAll(list(x2)).map(y -> eq(y));
+
+        return y -> preds.some(z -> z.test(y));
     }
 
     @SafeVarargs
