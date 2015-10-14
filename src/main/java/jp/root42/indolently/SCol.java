@@ -219,7 +219,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
     @Override
     default boolean some(final Predicate<? super T> f) {
-        return !this.filter(f).isEmpty();
+        return this.iterator().filter(f).hasNext();
     }
 
     /**
