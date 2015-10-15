@@ -2059,6 +2059,10 @@ public class Indolently {
         return y -> equal(x, y);
     }
 
+    public static <T> Predicate<T> in(final Collection<? extends T> x) {
+        return y -> x.contains(y);
+    }
+
     @SafeVarargs
     public static <T> Predicate<T> in(final T... x) {
 
