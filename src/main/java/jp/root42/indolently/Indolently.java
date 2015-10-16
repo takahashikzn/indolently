@@ -2063,6 +2063,10 @@ public class Indolently {
         return y -> x.contains(y);
     }
 
+    public static <T> Function<T, T> itself() {
+        return x -> x;
+    }
+
     @SafeVarargs
     public static <T> Predicate<T> in(final T... x) {
 
