@@ -310,11 +310,11 @@ public class Expressive {
             }
 
             default T fatal() {
-                return Indolently.fatal();
+                return this.none(() -> Indolently.fatal());
             }
 
             default T fatal(final Object msg) {
-                return Indolently.fatal(msg);
+                return this.none(() -> Indolently.fatal(msg));
             }
         }
 
@@ -500,11 +500,11 @@ public class Expressive {
             }
 
             default T fatal() {
-                return Indolently.fatal();
+                return this.none(() -> Indolently.fatal());
             }
 
             default T fatal(final Object msg) {
-                return Indolently.fatal(msg);
+                return this.none(() -> Indolently.fatal(msg));
             }
         }
 
