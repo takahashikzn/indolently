@@ -276,6 +276,7 @@ public class ExpressiveTest {
             .when(in(3, 4)).then(() -> "NG") //
             .when(or(eq(5), eq(6))).then(() -> "NG") //
             .when(and(ge(7), lt(8))).then(() -> "OK") //
+            .when(gele(7, 8)).then("NG") //
             .fatal()).isEqualTo("OK");
     }
 
