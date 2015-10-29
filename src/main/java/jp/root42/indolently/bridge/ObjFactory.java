@@ -34,7 +34,7 @@ public abstract class ObjFactory {
     static {
         try {
             instance = new KolobokeObjFactory();
-        } catch (final UnsupportedOperationException e) {
+        } catch (@SuppressWarnings("unused") final UnsupportedOperationException e) {
             instance = new JdkObjFactory();
         }
     }

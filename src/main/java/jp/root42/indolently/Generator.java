@@ -77,7 +77,7 @@ public interface Generator<T>
                 try {
                     this.cur = optional(next.apply(env));
                     return true;
-                } catch (final Break s) {
+                } catch (@SuppressWarnings("unused") final Break s) {
                     this.stopped = true;
                     return false;
                 }
