@@ -2093,11 +2093,6 @@ public class Indolently {
         return in(itself(), val);
     }
 
-    @SafeVarargs
-    public static <T extends Comparable<T>> Predicate<T> in(final T val0, final T val1, final T... val2) {
-        return in(itself(), val0, val1, val2);
-    }
-
     public static <X, T extends Comparable<T>> Predicate<X> lt(final Function<X, ? extends T> f, final T r) {
         return l -> lt(f.apply(l), r);
     }
@@ -2158,30 +2153,12 @@ public class Indolently {
         return x -> equal(val, f.apply(x));
     }
 
-    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) {
-        return x -> val.contains(f.apply(x));
-    }
-
     @SafeVarargs
     public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final T... val) {
-
-        final SList<Predicate<T>> preds = list(val).map(x -> eq(x));
-
-        return x -> {
-            final T mapped = f.apply(x);
-            return preds.some(y -> y.test(mapped));
-        };
+        return in(f, list(val));
     }
 
-    @SafeVarargs
-    public static <X, T extends Comparable<T>> Predicate<X> in(final Function<X, ? extends T> f, final T val0,
-        final T val1, final T... val2) {
-
-        final SList<Predicate<T>> preds = list(val0, val1).pushAll(list(val2)).map(x -> eq(x));
-
-        return x -> {
-            final T mapped = f.apply(x);
-            return preds.some(y -> y.test(mapped));
-        };
+    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) {
+        return x -> val.contains(f.apply(x));
     }
 }
