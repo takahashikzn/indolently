@@ -2167,7 +2167,10 @@ public class Indolently {
 
         final SList<Predicate<T>> preds = list(val).map(x -> eq(x));
 
-        return x -> preds.some(y -> y.test(f.apply(x)));
+        return x -> {
+            final T mapped = f.apply(x);
+            return preds.some(y -> y.test(mapped));
+        };
     }
 
     @SafeVarargs
@@ -2176,6 +2179,9 @@ public class Indolently {
 
         final SList<Predicate<T>> preds = list(val0, val1).pushAll(list(val2)).map(x -> eq(x));
 
-        return x -> preds.some(y -> y.test(f.apply(x)));
+        return x -> {
+            final T mapped = f.apply(x);
+            return preds.some(y -> y.test(mapped));
+        };
     }
 }
