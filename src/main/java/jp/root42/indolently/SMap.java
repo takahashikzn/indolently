@@ -116,7 +116,7 @@ public interface SMap<K, V>
 
     /**
      * put all key/value pairs then return this instance only if the condition is satisfied.
-     * 
+     *
      * @param map map to put
      * @param cond condition. the argument is this instance.
      * @return {@code this} instance
@@ -426,6 +426,28 @@ public interface SMap<K, V>
                 (map, e) -> map.push( //
                     e.key, //
                     f.apply(e.key, e.val)));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     * This operation is constructive.
+     *
+     * @param <K2> mapping target type (key)
+     * @param <V2> mapping target type (value)
+     * @param fk function
+     * @param fv function
+     * @return new converted map
+     */
+    default <K2, V2> SMap<K2, V2> map(final Function<? super K, ? extends K2> fk,
+        final Function<? super V, ? extends V2> fv) {
+
+        return this //
+            .entries() //
+            .reduce( //
+                Indolently.map(), //
+                (map, e) -> map.push( //
+                    fk.apply(e.key), //
+                    fv.apply(e.val)));
     }
 
     /**
