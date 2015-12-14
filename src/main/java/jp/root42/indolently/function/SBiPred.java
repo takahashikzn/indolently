@@ -16,6 +16,7 @@ package jp.root42.indolently.function;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.Functional;
 
@@ -53,7 +54,17 @@ public class SBiPred<T, U>
      * @return curried function
      */
     public SPred<U> curry(final T x) {
-        return new SPred<>((self, y) -> this.test(x, y));
+        return this.curry(() -> x);
+    }
+
+    /**
+     * currying this function.
+     *
+     * @param x argument to bind
+     * @return curried function
+     */
+    public SPred<U> curry(final Supplier<? extends T> x) {
+        return new SPred<>((self, y) -> this.test(x.get(), y));
     }
 
     /**
@@ -64,6 +75,17 @@ public class SBiPred<T, U>
      * @return curried function
      */
     public SBoolSuppl curry(final T x, final U y) {
+        return this.curry(() -> x, () -> y);
+    }
+
+    /**
+     * currying this function.
+     *
+     * @param x 1st argument to bind
+     * @param y 2nd argument to bind
+     * @return curried function
+     */
+    public SBoolSuppl curry(final Supplier<? extends T> x, final Supplier<? extends U> y) {
         return this.curry(x).curry(y);
     }
 

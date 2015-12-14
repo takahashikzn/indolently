@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.Functional;
 
@@ -54,7 +55,17 @@ public class SFunc<T, R>
      * @return curried function
      */
     public SSuppl<R> curry(final T x) {
-        return new SSuppl<>(self -> this.apply(x));
+        return this.curry(() -> x);
+    }
+
+    /**
+     * currying this function.
+     *
+     * @param x argument to bind
+     * @return curried function
+     */
+    public SSuppl<R> curry(final Supplier<? extends T> x) {
+        return new SSuppl<>(self -> this.apply(x.get()));
     }
 
     /**
