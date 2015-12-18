@@ -801,4 +801,16 @@ public class IndolentlyTest {
                 .containsKey("31") //
                 .containsValue(31);
     }
+
+    /**
+     * {@link Indolently#assignable(Class)}
+     */
+    @Test
+    public void testAssignable() {
+
+        assertThat(assignable(Integer.class).test(Number.class)).isTrue();
+        assertThat(assignable(Number.class).test(Integer.class)).isFalse();
+        assertThat(assignable(x -> Number.class, Integer.class).test(0)).isTrue();
+        assertThat(assignable(x -> x.getClass(), Number.class).test(0)).isFalse();
+    }
 }

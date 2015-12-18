@@ -2076,6 +2076,10 @@ public class Indolently {
         return isa(itself(), cls);
     }
 
+    public static Predicate<Class<?>> assignable(final Class<?> cls) {
+        return assignable(itself(), cls);
+    }
+
     public static <T> Predicate<T> eq(final T val) {
         return eq(itself(), val);
     }
@@ -2143,6 +2147,10 @@ public class Indolently {
 
     public static <X, T> Predicate<X> isa(final Function<X, ? extends T> f, final Class<?> cls) {
         return x -> cls.isInstance(f.apply(x));
+    }
+
+    public static <X> Predicate<X> assignable(final Function<X, Class<?>> f, final Class<?> cls) {
+        return x -> f.apply(x).isAssignableFrom(cls);
     }
 
     public static <X, T> Predicate<X> eq(final Function<X, ? extends T> f, final T val) {
