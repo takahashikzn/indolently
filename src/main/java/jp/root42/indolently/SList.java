@@ -188,6 +188,16 @@ public interface SList<T>
     }
 
     /**
+     * an alias of {@link #subList(int)} but newly constructed (detached) view.
+     *
+     * @param from from index (inclusive)
+     * @return detached sub list
+     */
+    default SList<T> slice(final int from) {
+        return Indolently.list(this.subList(from));
+    }
+
+    /**
      * an alias of {@link #subList(int, int)} but newly constructed (detached) view.
      *
      * @param from from index (inclusive)
