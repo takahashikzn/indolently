@@ -21,6 +21,7 @@ Java8. That is all.
 
 ### Runtime
 * [typetools](http://github.com/jhalterman/typetools)
+* [Koloboke](http://github.com/OpenHFT/Koloboke) (Optional)
 
 ### Test
 * [JUnit](http://junit.org/)
@@ -224,7 +225,7 @@ See JUnit testcase for more details.
 
 I'm using this library in my daily works but it is still in experimental stage.
 
-Currently production use is strongly not recommended
+Currently production use is not recommended
 because the codes are largely not tested and incompatibly changed very frequently.
 
 
