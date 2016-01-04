@@ -21,6 +21,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.trait.EdgeAwareIterable;
@@ -67,7 +68,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     @Destructive
     default SELF pushAll(final Iterable<? extends T> values) {
-        return this.pushAll(values, x -> true);
+        return this.pushAll(() -> values, x -> true);
     }
 
     /**
@@ -87,18 +88,18 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     }
 
     /**
-     * add all values then return this instance only if condition satisfied.
+     * add all values then return this instance only if the condition is satisfied.
      *
      * @param values values to add
-     * @param f condition
+     * @param cond condition. the argument is this instance.
      * @return {@code this} instance
      */
     @Destructive
-    default SELF pushAll(final Iterable<? extends T> values, final Predicate<? super Iterable<? extends T>> f) {
-        if (f.test(values)) {
-            for (final T val : values) {
-                this.add(val);
-            }
+    default SELF pushAll(final Supplier<? extends Iterable<? extends T>> values,
+        final Predicate<? super Iterable<? extends T>> cond) {
+
+        if (cond.test(this)) {
+            values.get().forEach(this::add);
         }
 
         return this.identity();
@@ -219,7 +220,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
     @Override
     default boolean some(final Predicate<? super T> f) {
-        return !this.filter(f).isEmpty();
+        return this.iterator().filter(f).hasNext();
     }
 
     /**

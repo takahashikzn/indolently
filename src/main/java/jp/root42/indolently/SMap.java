@@ -22,6 +22,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.SMap.SEntry;
 import jp.root42.indolently.bridge.ObjFactory;
@@ -110,6 +111,24 @@ public interface SMap<K, V>
     @Destructive
     default SMap<K, V> pushAll(final Map<? extends K, ? extends V> map) {
         this.putAll(map);
+        return this;
+    }
+
+    /**
+     * put all key/value pairs then return this instance only if the condition is satisfied.
+     *
+     * @param map map to put
+     * @param cond condition. the argument is this instance.
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SMap<K, V> pushAll(final Supplier<? extends Map<? extends K, ? extends V>> map,
+        final Predicate<? super SMap<K, V>> cond) {
+
+        if (cond.test(this)) {
+            this.putAll(map.get());
+        }
+
         return this;
     }
 
@@ -407,6 +426,28 @@ public interface SMap<K, V>
                 (map, e) -> map.push( //
                     e.key, //
                     f.apply(e.key, e.val)));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     * This operation is constructive.
+     *
+     * @param <K2> mapping target type (key)
+     * @param <V2> mapping target type (value)
+     * @param fk function
+     * @param fv function
+     * @return new converted map
+     */
+    default <K2, V2> SMap<K2, V2> map(final Function<? super K, ? extends K2> fk,
+        final Function<? super V, ? extends V2> fv) {
+
+        return this //
+            .entries() //
+            .reduce( //
+                Indolently.map(), //
+                (map, e) -> map.push( //
+                    fk.apply(e.key), //
+                    fv.apply(e.val)));
     }
 
     /**

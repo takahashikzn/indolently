@@ -30,6 +30,8 @@ import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.in;
+import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -232,6 +234,50 @@ public class ExpressiveTest {
         assertThat(f.apply(2)).isEqualTo("two");
         assertThat(f.apply(3)).isEqualTo("three");
         assertThat(f.apply(4)).isEqualTo("4");
+    }
+
+    /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchFatal() {
+
+        try {
+            match(1) //
+                .when(eq(1)) //
+                .then(() -> "NG").fatal("OK");
+        } catch (final AssertionError e) {
+            assertThat(e.getMessage()).isEqualTo("OK");
+        }
+    }
+
+    /**
+     * {@link Expressive#when(boolean)}
+     */
+    @Test
+    public void testWhenFatal() {
+
+        try {
+            when(false).then("NG").fatal("OK");
+        } catch (final AssertionError e) {
+            assertThat(e.getMessage()).isEqualTo("OK");
+        }
+    }
+
+    /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
+    public void testMatchWithOps() {
+
+        assertThat(match(7) //
+            .when(eq(1)).then(() -> "NG") //
+            .when(not(not(eq(2)))).then(() -> "NG") //
+            .when(in(3, 4)).then(() -> "NG") //
+            .when(or(eq(5), eq(6))).then(() -> "NG") //
+            .when(and(ge(7), lt(8))).then(() -> "OK") //
+            .when(gele(7, 8)).then("NG") //
+            .fatal()).isEqualTo("OK");
     }
 
     @SuppressWarnings("javadoc")

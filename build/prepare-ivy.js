@@ -12,18 +12,21 @@
  */
 "use strict";
 
-if (ARI.classExists('org.apache.ivy.ant.IvyConfigure')) {
-    ARI.echo('ivy installed');
-    return;
-}
+(function() {
 
-var ivyVersion = '2.4.0';
-var jarFile = ARI.prop('ivy.jar.file');
-var ivyJarUrl = 'http://repo2.maven.org/maven2/org/apache/ivy/ivy/' + ivyVersion + '/ivy-' + ivyVersion + '.jar';
+    if (ARI.classExists('org.apache.ivy.ant.IvyConfigure')) {
+        ARI.echo('ivy installed');
+        return;
+    }
 
-ARI.task('mkdir', {
-    dir: ARI.prop('ivy.jar.dir')
-}).task('get', {
-    src: ivyJarUrl,
-    dest: jarFile
-});
+    var ivyVersion = '2.4.0';
+    var jarFile = ARI.prop('ivy.jar.file');
+    var ivyJarUrl = 'http://repo2.maven.org/maven2/org/apache/ivy/ivy/' + ivyVersion + '/ivy-' + ivyVersion + '.jar';
+
+    ARI.task('mkdir', {
+        dir: ARI.prop('ivy.jar.dir')
+    }).task('get', {
+        src: ivyJarUrl,
+        dest: jarFile
+    });
+}());

@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.Functional;
 
@@ -53,7 +54,17 @@ public class SPred<T>
      * @return curried function
      */
     public SBoolSuppl curry(final T x) {
-        return new SBoolSuppl(self -> this.test(x));
+        return this.curry(() -> x);
+    }
+
+    /**
+     * currying this function.
+     *
+     * @param x argument to bind
+     * @return curried function
+     */
+    public SBoolSuppl curry(final Supplier<? extends T> x) {
+        return new SBoolSuppl(self -> this.test(x.get()));
     }
 
     /**

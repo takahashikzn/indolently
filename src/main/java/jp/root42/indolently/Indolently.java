@@ -1997,5 +1997,176 @@ public class Indolently {
             k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21, k22,
             v22, k23, v23, k24, v24, k25, v25, k26, v26, k27, v27, k28, v28, k29, v29, k30, v30).push(k31, v31);
     }
+
     // CHECKSTYLE:ON
+
+    public static <T> Function<T, T> itself() {
+        return x -> x;
+    }
+
+    public static <T> Predicate<T> not(final Predicate<T> f) {
+        return f.negate();
+    }
+
+    @SafeVarargs
+    public static <T> Predicate<T> and(final Predicate<? super T> x0, final Predicate<? super T> x1,
+        final Predicate<? super T>... x2) {
+
+        final SList<Predicate<? super T>> preds =
+            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+
+        return y -> preds.every(z -> z.test(y));
+    }
+
+    @SafeVarargs
+    public static <T> Predicate<T> or(final Predicate<? super T> x0, final Predicate<? super T> x1,
+        final Predicate<? super T>... x2) {
+
+        final SList<Predicate<? super T>> preds =
+            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+
+        return y -> preds.some(z -> z.test(y));
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> lt(final T r) {
+        return lt(itself(), r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> le(final T r) {
+        return le(itself(), r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gt(final T r) {
+        return gt(itself(), r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> ge(final T r) {
+        return ge(itself(), r);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gtlt(final T l, final T u) {
+        return gtlt(itself(), l, u);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gelt(final T l, final T u) {
+        return gelt(itself(), l, u);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gtle(final T l, final T u) {
+        return gtle(itself(), l, u);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> gele(final T l, final T u) {
+        return gele(itself(), l, u);
+    }
+
+    public static <T extends CharSequence> Predicate<T> empty() {
+        return empty(itself());
+    }
+
+    public static <T extends CharSequence> Predicate<T> blank() {
+        return empty(itself());
+    }
+
+    public static <T> Predicate<T> nil() {
+        return nil(itself());
+    }
+
+    public static <T> Predicate<T> isa(final Class<?> cls) {
+        return isa(itself(), cls);
+    }
+
+    public static Predicate<Class<?>> assignable(final Class<?> cls) {
+        return assignable(itself(), cls);
+    }
+
+    public static <T> Predicate<T> eq(final T val) {
+        return eq(itself(), val);
+    }
+
+    public static <T extends Comparable<T>> Predicate<T> eq(final T val) {
+        return eq(itself(), val);
+    }
+
+    public static <T> Predicate<T> in(final Collection<? extends T> val) {
+        return in(itself(), val);
+    }
+
+    @SafeVarargs
+    public static <T> Predicate<T> in(final T... val) {
+        return in(itself(), val);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> lt(final Function<X, ? extends T> f, final T r) {
+        return l -> lt(f.apply(l), r);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> le(final Function<X, ? extends T> f, final T r) {
+        return l -> le(f.apply(l), r);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> gt(final Function<X, ? extends T> f, final T r) {
+        return l -> gt(f.apply(l), r);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> ge(final Function<X, ? extends T> f, final T r) {
+        return l -> ge(f.apply(l), r);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> gtlt(final Function<X, ? extends T> f, final T l,
+        final T u) {
+        return m -> gtlt(l, f.apply(m), u);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> gelt(final Function<X, ? extends T> f, final T l,
+        final T u) {
+        return m -> gelt(l, f.apply(m), u);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> gtle(final Function<X, ? extends T> f, final T l,
+        final T u) {
+        return m -> gtle(l, f.apply(m), u);
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> gele(final Function<X, ? extends T> f, final T l,
+        final T u) {
+        return m -> gele(l, f.apply(m), u);
+    }
+
+    public static <X, T extends CharSequence> Predicate<X> empty(final Function<X, ? extends T> f) {
+        return x -> empty(f.apply(x));
+    }
+
+    public static <X, T extends CharSequence> Predicate<X> blank(final Function<X, ? extends T> f) {
+        return x -> blank(f.apply(x));
+    }
+
+    public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {
+        return x -> f.apply(x) == null;
+    }
+
+    public static <X, T> Predicate<X> isa(final Function<X, ? extends T> f, final Class<?> cls) {
+        return x -> cls.isInstance(f.apply(x));
+    }
+
+    public static <X> Predicate<X> assignable(final Function<X, Class<?>> f, final Class<?> cls) {
+        return x -> f.apply(x).isAssignableFrom(cls);
+    }
+
+    public static <X, T> Predicate<X> eq(final Function<X, ? extends T> f, final T val) {
+        return x -> equal(val, f.apply(x));
+    }
+
+    public static <X, T extends Comparable<T>> Predicate<X> eq(final Function<X, ? extends T> f, final T val) {
+        return x -> equal(val, f.apply(x));
+    }
+
+    @SafeVarargs
+    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final T... val) {
+        return in(f, list(val));
+    }
+
+    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) {
+        return x -> val.contains(f.apply(x));
+    }
 }
