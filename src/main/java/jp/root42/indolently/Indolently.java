@@ -71,6 +71,86 @@ public class Indolently {
         return (T) o;
     }
 
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static int unbox(final Integer x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static long unbox(final Long x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static short unbox(final Short x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static byte unbox(final Byte x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static float unbox(final Float x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static double unbox(final Double x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static char unbox(final Character x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static boolean unbox(final Boolean x) {
+        return (x == null) ? false : x;
+    }
+
     public static <T> T fatal() {
         throw new AssertionError();
     }
