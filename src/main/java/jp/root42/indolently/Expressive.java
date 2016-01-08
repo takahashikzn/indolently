@@ -248,8 +248,8 @@ public class Expressive {
      * @param res the resource
      * @param stmt expression body
      */
-    public static <T extends AutoCloseable> void tryWith(final T res, final Consumer<? super T> stmt) {
-        tryWith(res, x -> {
+    public static <T extends AutoCloseable> void letWith(final T res, final Consumer<? super T> stmt) {
+        evalWith(res, x -> {
             stmt.accept(x);
             return null;
         });
@@ -262,7 +262,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T extends AutoCloseable, R> R tryWith(final T res, final Function<? super T, ? extends R> expr) {
+    public static <T extends AutoCloseable, R> R evalWith(final T res, final Function<? super T, ? extends R> expr) {
         return eval(() -> {
             try (T x = res) {
                 return expr.apply(x);
