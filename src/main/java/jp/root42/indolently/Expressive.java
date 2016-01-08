@@ -249,10 +249,9 @@ public class Expressive {
      * @param stmt expression body
      */
     public static <T extends AutoCloseable> void tryWith(final T res, final Consumer<? super T> stmt) {
-        let(() -> {
-            try (T x = res) {
-                stmt.accept(x);
-            }
+        tryWith(res, x -> {
+            stmt.accept(x);
+            return null;
         });
     }
 
