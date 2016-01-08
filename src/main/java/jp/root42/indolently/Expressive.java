@@ -249,7 +249,8 @@ public class Expressive {
      * @param stmt expression body
      */
     public static <T extends AutoCloseable> void letWith(final T res, final Consumer<? super T> stmt) {
-        letWith(() -> res, stmt);
+        // cast is required to avoid compilation failure on javac
+        letWith((Supplier<T>) () -> res, stmt);
     }
 
     /**
@@ -275,7 +276,8 @@ public class Expressive {
      * @return the value function returned
      */
     public static <T extends AutoCloseable, R> R evalWith(final T res, final Function<? super T, ? extends R> expr) {
-        return evalWith(() -> res, expr);
+        // cast is required to avoid compilation failure on javac
+        return evalWith((Supplier<T>) () -> res, expr);
     }
 
     /**
