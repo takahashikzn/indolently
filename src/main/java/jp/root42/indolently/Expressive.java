@@ -243,6 +243,35 @@ public class Expressive {
     }
 
     /**
+     * try-with-resource statement.
+     *
+     * @param res the resource
+     * @param stmt expression body
+     */
+    public static <T extends AutoCloseable> void tryWith(final T res, final Consumer<? super T> stmt) {
+        let(() -> {
+            try (T x = res) {
+                stmt.accept(x);
+            }
+        });
+    }
+
+    /**
+     * try-with-resource expression.
+     *
+     * @param res the resource
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T extends AutoCloseable, R> R tryWith(final T res, final Function<? super T, ? extends R> expr) {
+        return eval(() -> {
+            try (T x = res) {
+                return expr.apply(x);
+            }
+        });
+    }
+
+    /**
      * if-then-else expression.
      *
      * @see Expressive#when(BooleanSupplier)
