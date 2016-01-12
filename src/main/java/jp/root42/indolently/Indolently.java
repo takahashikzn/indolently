@@ -535,6 +535,20 @@ public class Indolently {
     /**
      * Create a list of <code>char</code>.
      *
+     * @param cs character sequence
+     * @return char list
+     */
+    public static SList<Character> chars(final CharSequence cs) {
+        final SList<Character> list = list();
+        for (int i = 0; i < cs.length(); i++) {
+            list.add(cs.charAt(i));
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>char</code>.
+     *
      * @param elems elements of array
      * @return char list
      */
