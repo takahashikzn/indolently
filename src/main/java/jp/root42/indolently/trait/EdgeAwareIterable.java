@@ -51,12 +51,13 @@ public interface EdgeAwareIterable<T>
      *
      * @param f condition
      * @return first element as optional representation
+     * @throws NullPointerException if the value which satisfy the condition is null
      */
     default Optional<T> head(final Predicate<? super T> f) {
 
         for (final T val : this) {
             if (f.test(val)) {
-                return Optional.ofNullable(val);
+                return Optional.of(val);
             }
         }
 
@@ -88,6 +89,7 @@ public interface EdgeAwareIterable<T>
      *
      * @param f condition
      * @return last element as optional representation
+     * @throws NullPointerException if the value which satisfy the condition is null
      */
     default Optional<T> last(final Predicate<? super T> f) {
 
@@ -95,7 +97,7 @@ public interface EdgeAwareIterable<T>
 
         for (final T val : this) {
             if (f.test(val)) {
-                rslt = Optional.ofNullable(val);
+                rslt = Optional.of(val);
             }
         }
 
