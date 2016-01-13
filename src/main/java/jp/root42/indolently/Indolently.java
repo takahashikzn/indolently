@@ -1321,11 +1321,11 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> boolean equal(final T l, final T r) {
-        return (l == null) ? (r == null) : (r == l) || (l.compareTo(r) == 0);
+        return (l == null) ? (r == null) : (r != null) && ((r == l) || (l.compareTo(r) == 0));
     }
 
     public static boolean equal(final Object l, final Object r) {
-        return (l == null) ? (r == null) : (l == r) || l.equals(r);
+        return (l == null) ? (r == null) : (r != null) && ((l == r) || l.equals(r));
     }
 
     public enum ComparisonResult {

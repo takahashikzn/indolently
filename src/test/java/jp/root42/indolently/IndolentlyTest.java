@@ -377,6 +377,32 @@ public class IndolentlyTest {
     }
 
     /**
+     * {@link Indolently#equal(Comparable, Comparable)}
+     *
+     * @param expected expected value
+     * @param lhs test value
+     * @param rhs test value
+     */
+    @Parameters
+    @Test
+    public <T extends Comparable<T>> void testEqual(final boolean expected, final T lhs, final T rhs) {
+
+        assertThat(equal(lhs, rhs)).isEqualTo(expected);
+    }
+
+    static List<Object[]> parametersForTestEqual() {
+
+        return list( //
+            oarray(true, "a", "a"), //
+            oarray(true, "a", new String("a")), //
+            oarray(false, "a", "b"), //
+            oarray(false, "a", null), //
+            oarray(false, null, "b"), //
+            oarray(true, null, null) //
+        );
+    }
+
+    /**
      * {@link Indolently#array(Object, Object...)} / {@link Indolently#array(Iterable)} /
      * {@link Indolently#array(Class, Object, Object...)}
      */

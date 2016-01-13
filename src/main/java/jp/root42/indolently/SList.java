@@ -188,7 +188,7 @@ public interface SList<T>
     }
 
     /**
-     * an alias of {@link #subList(int)} but newly constructed (detached) view.
+     * Almost same as {@link #subList(int)} but returns newly constructed (detached) view.
      *
      * @param from from index (inclusive)
      * @return detached sub list
@@ -198,7 +198,7 @@ public interface SList<T>
     }
 
     /**
-     * an alias of {@link #subList(int, int)} but newly constructed (detached) view.
+     * Almost same as {@link #subList(int, int)} but returns newly constructed (detached) view.
      *
      * @param from from index (inclusive)
      * @param to to index (exclusive)

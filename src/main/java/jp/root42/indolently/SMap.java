@@ -181,7 +181,7 @@ public interface SMap<K, V>
     }
 
     /**
-     * An alias of {@link Map#keySet()} but newly constructed, detached one.
+     * Almost same as {@link Map#keySet()} but returns newly constructed, detached one.
      * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.set(map.keySet())}.
      *
@@ -192,7 +192,7 @@ public interface SMap<K, V>
     }
 
     /**
-     * An alias of {@link Map#values()} but newly constructed, detached one.
+     * Almost same as {@link Map#values()} but returns newly constructed, detached one.
      * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.list(map.values())}.
      *
@@ -285,7 +285,7 @@ public interface SMap<K, V>
     }
 
     /**
-     * An alias of {@link Map#entrySet()} but newly constructed, detached one.
+     * Almost same as {@link Map#entrySet()} but returns newly constructed, detached one.
      * Any modification don't effect to this map.
      * Equivalent to {@code Indolently.set(map.entrySet())}.
      *
