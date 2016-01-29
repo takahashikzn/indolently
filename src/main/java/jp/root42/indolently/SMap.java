@@ -406,7 +406,7 @@ public interface SMap<K, V>
      * @return new converted map
      */
     default <R> SMap<K, R> map(final Function<? super V, ? extends R> f) {
-        return this.map((key, val) -> f.apply(val));
+        return this.map((k, v) -> f.apply(v));
     }
 
     /**
@@ -418,14 +418,7 @@ public interface SMap<K, V>
      * @return new converted map
      */
     default <R> SMap<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
-
-        return this //
-            .entries() //
-            .reduce( //
-                Indolently.map(), //
-                (map, e) -> map.push( //
-                    e.key, //
-                    f.apply(e.key, e.val)));
+        return this.map((k, v) -> k, (k, v) -> f.apply(k, v));
     }
 
     /**
@@ -441,13 +434,29 @@ public interface SMap<K, V>
     default <K2, V2> SMap<K2, V2> map(final Function<? super K, ? extends K2> fk,
         final Function<? super V, ? extends V2> fv) {
 
+        return this.map((k, v) -> fk.apply(k), (k, v) -> fv.apply(v));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     * This operation is constructive.
+     *
+     * @param <K2> mapping target type (key)
+     * @param <V2> mapping target type (value)
+     * @param fk function
+     * @param fv function
+     * @return new converted map
+     */
+    default <K2, V2> SMap<K2, V2> map(final BiFunction<? super K, ? super V, ? extends K2> fk,
+        final BiFunction<? super K, ? super V, ? extends V2> fv) {
+
         return this //
             .entries() //
             .reduce( //
                 Indolently.map(), //
                 (map, e) -> map.push( //
-                    fk.apply(e.key), //
-                    fv.apply(e.val)));
+                    fk.apply(e.key, e.val), //
+                    fv.apply(e.key, e.val)));
     }
 
     /**
