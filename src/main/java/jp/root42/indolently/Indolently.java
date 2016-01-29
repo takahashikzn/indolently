@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -722,6 +723,21 @@ public class Indolently {
         final SList<T> rslt = list(elems);
         Collections.sort(rslt, Objects.requireNonNull(comp, "comparator"));
         return rslt;
+    }
+
+    public static <T> SList<T> uniq(final List<? extends T> elems) {
+        return uniq(elems, (x, y) -> equal(x, y));
+    }
+
+    public static <T> SList<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
+
+        return wrap(elems).reduce(list(), (ret, x) -> {
+            if (ret.isEmpty() || ret.every(y -> !f.test(x, y))) {
+                ret.add(x);
+            }
+
+            return ret;
+        });
     }
 
     public static <K, V> SMap<K, V> freeze(final Map<? extends K, ? extends V> map) {
