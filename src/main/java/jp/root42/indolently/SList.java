@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -294,5 +295,15 @@ public interface SList<T>
     @Override
     default SList<T> sortWith(final Comparator<? super T> comp) {
         return Indolently.sort(this, comp);
+    }
+
+    @SuppressWarnings("javadoc")
+    default SList<T> uniq() {
+        return Indolently.uniq(this);
+    }
+
+    @SuppressWarnings("javadoc")
+    default SList<T> uniq(final BiPredicate<? super T, ? super T> f) {
+        return Indolently.uniq(this, f);
     }
 }
