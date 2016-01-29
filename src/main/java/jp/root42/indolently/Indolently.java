@@ -732,7 +732,7 @@ public class Indolently {
     public static <T> SList<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
 
         return wrap(elems).reduce(list(), (ret, x) -> {
-            if (ret.isEmpty() || ret.every(y -> !f.test(x, y))) {
+            if (ret.isEmpty() || !ret.some(y -> f.test(x, y))) {
                 ret.add(x);
             }
 
