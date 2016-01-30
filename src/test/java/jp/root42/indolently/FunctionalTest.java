@@ -49,7 +49,7 @@ public class FunctionalTest {
     public void testListComprehension() {
 
         assertThat(range(2, 10)
-            .filter(z -> function((final BiFunction<Integer, Integer, Boolean> self) -> {} , (self, x, y) -> {
+            .filter(z -> function((final BiFunction<Integer, Integer, Boolean> self) -> {}, (self, x, y) -> {
                 if (y <= 1) {
                     return true;
                 } else if ((x % y) == 0) {
@@ -75,7 +75,7 @@ public class FunctionalTest {
             (final Function<Integer, Integer> self) -> {
                 self.apply(1); // check no stackoverflow
                 initCount.val++;
-            } , (self, x) -> //
+            }, (self, x) -> //
             (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
 
         final SList<Integer> fibonacciNums =
@@ -114,7 +114,7 @@ public class FunctionalTest {
     public void testFunction2() {
 
         assertThat(function( //
-            (final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {} , // function decl
+            (final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {}, // function decl
             (self, v) -> { // function body
 
                 final int x = v.fst;
@@ -136,7 +136,7 @@ public class FunctionalTest {
     @Test
     public void testFunction3() {
 
-        final SFunc<Trio<Integer, Integer, Integer>, Integer> tarai = func(self -> {} , (self, v) -> {
+        final SFunc<Trio<Integer, Integer, Integer>, Integer> tarai = func(self -> {}, (self, v) -> {
 
             final int x = v.fst;
             final int y = v.snd;
