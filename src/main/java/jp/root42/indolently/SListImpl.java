@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -90,7 +91,11 @@ class SListImpl<T>
         final int actFrom = Indolently.idx(this, from);
         final int actTo = Indolently.idx(this, to);
 
-        return this.store.subList(actFrom, ((from < 0) && (actTo == 0)) ? this.size() : actTo);
+        if (this.size() <= (actFrom - 1)) {
+            return Collections.emptyList();
+        } else {
+            return this.store.subList(actFrom, ((from < 0) && (actTo == 0)) ? this.size() : actTo);
+        }
     }
 
     @Override
