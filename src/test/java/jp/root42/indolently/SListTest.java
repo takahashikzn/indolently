@@ -106,4 +106,20 @@ public class SListTest {
 
         assertThat(list().orElseGet(() -> list(42))).isEqualTo(list(42));
     }
+
+    /**
+     * Test of {@link SList#subList(int, int)}
+     */
+    @Test
+    public void subList() {
+
+        assertThat(list(1, 2, 3).subList(1)).isEqualTo(list(2, 3));
+        assertThat(list(1, 2, 3).subList(0, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).subList(0, -2)).isEqualTo(list(1));
+        assertThat(list(1, 2, 3).subList(-3)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).subList(-3, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).subList(-3, 0)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).subList(3)).isEqualTo(list());
+        assertThat(list(1, 2, 3).subList(4)).isEqualTo(list());
+    }
 }
