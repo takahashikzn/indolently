@@ -890,6 +890,38 @@ public class Indolently {
         return (ary == null) || (ary.length == 0);
     }
 
+    public static boolean empty(final byte[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final int[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final long[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final short[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final float[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final double[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final boolean[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final char[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
     public static String join(final Iterable<? extends CharSequence> col) {
         return join(col, null);
     }
