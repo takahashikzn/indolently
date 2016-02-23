@@ -269,7 +269,7 @@ public interface SList<T>
      * Return this instance if not empty, otherwise return the invocation result of {@code other}.
      *
      * @param other alternative value supplier
-     * @return this instance or other
+     * @return {@code this} instance or other
      */
     default SList<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
         return Indolently.nonEmpty(this).orElseGet(() -> Indolently.list(other.get()));
@@ -305,5 +305,33 @@ public interface SList<T>
     @SuppressWarnings("javadoc")
     default SList<T> uniq(final BiPredicate<? super T, ? super T> f) {
         return Indolently.uniq(this, f);
+    }
+
+    /**
+     * Replace value at the position if exists.
+     *
+     * @param idx index of the element
+     * @param f function
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SList<T> replace(final int idx, final Function<? super T, ? extends T> f) {
+
+        this.opt(idx).ifPresent(val -> {
+            this.set(Indolently.idx(this, idx), f.apply(val));
+        });
+
+        return this;
+    }
+
+    /**
+     * Replace value at the position if exists.
+     *
+     * @param idx index of the element
+     * @param f function
+     * @return newly constructed list
+     */
+    default SList<T> map(final int idx, final Function<? super T, ? extends T> f) {
+        return this.clone().replace(idx, f);
     }
 }
