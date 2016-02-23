@@ -488,4 +488,32 @@ public interface SMap<K, V>
     default SMap<K, V> sortWith(final Comparator<? super K> comp) {
         return Indolently.sort(this, comp);
     }
+
+    /**
+     * Replace value of the key if exists.
+     *
+     * @param key key of map
+     * @param f function
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SMap<K, V> replace(final K key, final Function<? super V, ? extends V> f) {
+
+        this.opt(key).ifPresent(val -> {
+            this.put(key, f.apply(val));
+        });
+
+        return this;
+    }
+
+    /**
+     * Replace value of the key if exists.
+     *
+     * @param key key of map
+     * @param f function
+     * @return newly constructed map
+     */
+    default SMap<K, V> map(final K key, final Function<? super V, ? extends V> f) {
+        return this.clone().replace(key, f);
+    }
 }
