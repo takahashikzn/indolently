@@ -470,13 +470,13 @@ public interface SMap<K, V>
     }
 
     /**
-     * Return value as optional representation.
+     * Get value of the key which is contained by this instance.
      *
-     * @param key key of the value
+     * @param key the key of value
      * @return optional representation of the value
      */
     default Optional<V> opt(final K key) {
-        return Indolently.optional(this.get(key));
+        return this.containsKey(key) ? Indolently.optional(this.get(key)) : Optional.empty();
     }
 
     /**
@@ -497,12 +497,21 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> replace(final K key, final Function<? super V, ? extends V> f) {
+    default SMap<K, V> update(final K key, final Function<? super V, ? extends V> f) {
+        this.opt(key).ifPresent(val -> this.put(key, f.apply(val)));
+        return this;
+    }
 
-        this.opt(key).ifPresent(val -> {
-            this.put(key, f.apply(val));
-        });
-
+    /**
+     * Replace value of the key if exists.
+     *
+     * @param key key of map
+     * @param f function
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SMap<K, V> update(final BiFunction<? super K, ? super V, ? extends V> f) {
+        this.replaceAll(f);
         return this;
     }
 
@@ -514,6 +523,6 @@ public interface SMap<K, V>
      * @return newly constructed map
      */
     default SMap<K, V> map(final K key, final Function<? super V, ? extends V> f) {
-        return this.clone().replace(key, f);
+        return this.clone().update(key, f);
     }
 }
