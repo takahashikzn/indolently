@@ -312,14 +312,39 @@ public interface SList<T>
      *
      * @param idx index of the element
      * @param f function
+     * @param val replacement value
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> replace(final int idx, final Function<? super T, ? extends T> f) {
+    default SList<T> update(final int idx, final T val) {
+        return this.update(idx, x -> val);
+    }
 
-        this.opt(idx).ifPresent(val -> {
-            this.set(Indolently.idx(this, idx), f.apply(val));
-        });
+    /**
+     * Replace value at the position if exists.
+     *
+     * @param idx index of the element
+     * @param f function
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SList<T> update(final int idx, final Function<? super T, ? extends T> f) {
+        this.opt(idx).ifPresent(x -> this.set(Indolently.idx(this, idx), f.apply(x)));
+        return this;
+    }
+
+    /**
+     * Replace value at the position if exists.
+     *
+     * @param f function
+     * @return {@code this} instance
+     */
+    @Destructive
+    default SList<T> update(final Function<? super T, ? extends T> f) {
+
+        for (int i = 0; i < this.size(); i++) {
+            this.update(i, f);
+        }
 
         return this;
     }
@@ -332,6 +357,6 @@ public interface SList<T>
      * @return newly constructed list
      */
     default SList<T> map(final int idx, final Function<? super T, ? extends T> f) {
-        return this.clone().replace(idx, f);
+        return this.clone().update(idx, f);
     }
 }
