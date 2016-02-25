@@ -37,16 +37,6 @@ public interface EdgeAwareIterable<T>
     }
 
     /**
-     * get first element if exists, otherwise return alternative value.
-     *
-     * @param other alternative value.
-     * @return first element or alternative value
-     */
-    default T head(final Supplier<? extends T> other) {
-        return this.head(x -> true).orElseGet(other);
-    }
-
-    /**
      * get first element which satisfy the condition.
      *
      * @param f condition
@@ -65,6 +55,34 @@ public interface EdgeAwareIterable<T>
     }
 
     /**
+     * get first element if exists, otherwise return alternative value.
+     *
+     * @param other alternative value.
+     * @return first element or alternative value
+     */
+    default T head(final Supplier<? extends T> other) {
+        return this.head(x -> true, other);
+    }
+
+    /**
+     * get first element which satisfy the condition, otherwise return alternative value.
+     *
+     * @param f condition
+     * @param other alternative value.
+     * @return first element or alternative value
+     */
+    default T head(final Predicate<? super T> f, final Supplier<? extends T> other) {
+
+        for (final T val : this) {
+            if (f.test(val)) {
+                return val;
+            }
+        }
+
+        return other.get();
+    }
+
+    /**
      * get last element of this iterator.
      *
      * @return last element
@@ -72,16 +90,6 @@ public interface EdgeAwareIterable<T>
      */
     default T last() {
         return this.last(x -> true).get();
-    }
-
-    /**
-     * get last element if exists, otherwise return alternative value.
-     *
-     * @param other alternative value.
-     * @return last element or alternative value
-     */
-    default T last(final Supplier<? extends T> other) {
-        return this.last(x -> true).orElseGet(other);
     }
 
     /**
@@ -102,5 +110,37 @@ public interface EdgeAwareIterable<T>
         }
 
         return rslt;
+    }
+
+    /**
+     * get last element if exists, otherwise return alternative value.
+     *
+     * @param other alternative value.
+     * @return last element or alternative value
+     */
+    default T last(final Supplier<? extends T> other) {
+        return this.last(x -> true, other);
+    }
+
+    /**
+     * get last element which satisfy the condition, otherwise return alternative value.
+     *
+     * @param f condition
+     * @param other alternative value
+     * @return last element or alternative value
+     */
+    default T last(final Predicate<? super T> f, final Supplier<? extends T> other) {
+
+        boolean found = false;
+        T rslt = null;
+
+        for (final T val : this) {
+            if (f.test(val)) {
+                found = true;
+                rslt = val;
+            }
+        }
+
+        return found ? rslt : other.get();
     }
 }
