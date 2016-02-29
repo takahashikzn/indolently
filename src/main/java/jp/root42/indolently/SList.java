@@ -250,9 +250,14 @@ public interface SList<T>
         return rslt;
     }
 
-    @SuppressWarnings("javadoc")
+    /**
+     * Flatten this list.
+     * 
+     * @param f value generator
+     * @return newly constructed flatten list
+     */
     default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return this.iterator().flatten(f).reduce(Indolently.list(), (x, y) -> x.push(y));
+        return Indolently.list(this.iterator().flatten(f));
     }
 
     /**
