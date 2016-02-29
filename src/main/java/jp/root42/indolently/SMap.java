@@ -525,4 +525,16 @@ public interface SMap<K, V>
     default SMap<K, V> map(final K key, final Function<? super V, ? extends V> f) {
         return this.clone().update(key, f);
     }
+
+    /**
+     * Flatten this map.
+     *
+     * @param f value generator
+     * @return newly constructed flatten map
+     */
+    default <RK, RV> SMap<RK, RV> flatten(
+        final BiFunction<? super K, ? super V, ? extends Map<? extends RK, ? extends RV>> f) {
+
+        return this.entries().reduce(Indolently.map(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
+    }
 }
