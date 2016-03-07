@@ -195,7 +195,7 @@ public interface SList<T>
      * @return detached sub list
      */
     default SList<T> slice(final int from) {
-        return Indolently.list(this.subList(from));
+        return this.slice(from, this.size());
     }
 
     /**
@@ -206,7 +206,19 @@ public interface SList<T>
      * @return detached sub list
      */
     default SList<T> slice(final int from, final int to) {
-        return Indolently.list(this.subList(from, to));
+
+        final int fromIndex = Indolently.idx(this, from);
+        int toIndex = Indolently.idx(this, to);
+
+        if (this.size() < toIndex) {
+            toIndex = this.size();
+        }
+
+        if (toIndex < fromIndex) {
+            return Indolently.list();
+        }
+
+        return Indolently.list(this.subList(from, toIndex));
     }
 
     /**
@@ -252,7 +264,7 @@ public interface SList<T>
 
     /**
      * Flatten this list.
-     * 
+     *
      * @param f value generator
      * @return newly constructed flatten list
      */
