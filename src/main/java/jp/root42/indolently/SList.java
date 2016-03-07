@@ -189,24 +189,59 @@ public interface SList<T>
     }
 
     /**
-     * Almost same as {@link #subList(int)} but returns newly constructed (detached) view.
+     * Almost same as {@link #narrow(int)} but returns newly constructed (detached) view.
      *
      * @param from from index (inclusive)
      * @return detached sub list
      */
     default SList<T> slice(final int from) {
-        return Indolently.list(this.subList(from));
+        return this.narrow(from).clone();
     }
 
     /**
-     * Almost same as {@link #subList(int, int)} but returns newly constructed (detached) view.
+     * Almost same as {@link #narrow(int, int)} but returns newly constructed (detached) view.
      *
      * @param from from index (inclusive)
      * @param to to index (exclusive)
      * @return detached sub list
      */
     default SList<T> slice(final int from, final int to) {
-        return Indolently.list(this.subList(from, to));
+        return this.narrow(from, to).clone();
+    }
+
+    /**
+     * Almost same as {@link #subList(int, int)} but never throw {@link IllegalArgumentException} and
+     * {@link IndexOutOfBoundsException}.
+     *
+     * @param from from index (inclusive)
+     * @return the narrowed view of this list
+     */
+    default SList<T> narrow(final int from) {
+        return this.narrow(from, this.size());
+    }
+
+    /**
+     * Almost same as {@link #subList(int, int)} but never throw {@link IllegalArgumentException} and
+     * {@link IndexOutOfBoundsException}.
+     *
+     * @param from from index (inclusive)
+     * @param to to index (exclusive)
+     * @return the narrowed view of this list
+     */
+    default SList<T> narrow(final int from, final int to) {
+
+        final int fromIndex = Indolently.idx(this, from);
+        int toIndex = Indolently.idx(this, to);
+
+        if (((from < 0) && (toIndex == 0)) || (this.size() < toIndex)) {
+            toIndex = this.size();
+        }
+
+        if (toIndex < fromIndex) {
+            return Indolently.list();
+        }
+
+        return Indolently.wrap(this.subList(from, toIndex));
     }
 
     /**
@@ -252,7 +287,7 @@ public interface SList<T>
 
     /**
      * Flatten this list.
-     * 
+     *
      * @param f value generator
      * @return newly constructed flatten list
      */
