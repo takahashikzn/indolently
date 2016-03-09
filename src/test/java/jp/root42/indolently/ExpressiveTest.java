@@ -46,7 +46,6 @@ import junitparams.Parameters;
  *
  * @author takahashikzn
  */
-@SuppressWarnings("unused")
 @RunWith(JUnitParamsRunner.class)
 public class ExpressiveTest {
 
