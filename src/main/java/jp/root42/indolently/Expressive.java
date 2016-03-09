@@ -491,7 +491,7 @@ public class Expressive {
             return this.when(x -> Indolently.equal(x, pred.get()));
         }
 
-        default Match.IntroCase<C> when(final Class<? extends C> type) {
+        default Match.IntroCase<C> when(final Class<?> type) {
             return this.when(x -> type.isInstance(x));
         }
 
@@ -520,7 +520,7 @@ public class Expressive {
 
             Match.Case<C, T> when(Predicate<? super C> when);
 
-            default Match.Case<C, T> when(final Class<? extends C> type) {
+            default Match.Case<C, T> when(final Class<?> type) {
                 return this.when(x -> type.isInstance(x));
             }
 

@@ -277,6 +277,30 @@ public class Indolently {
     }
 
     /**
+     * A shorter version of {@link #optional(Object)}.
+     *
+     * @param <T> type of value
+     * @param value the value
+     * @return Optional representation of value
+     */
+    public static <T> Optional<T> opt(final T value) {
+        return optional(value);
+    }
+
+    /**
+     * A shorter version of {@link #optional(Object, Consumer...)}.
+     *
+     * @param <T> type of value
+     * @param value the value
+     * @param consumers invoked consumers only if value is present
+     * @return Optional representation of value
+     */
+    @SafeVarargs
+    public static <T> Optional<T> opt(final T value, final Consumer<? super T>... consumers) {
+        return optional(value, consumers);
+    }
+
+    /**
      * An alias of {@link Optional#ofNullable(Object)}.
      *
      * @param <T> type of value
@@ -833,7 +857,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?> opt) {
-        return (opt == null) || !opt.isPresent();
+        return optional(opt).map(x -> !x.isPresent()).orElse(true);
     }
 
     /**
