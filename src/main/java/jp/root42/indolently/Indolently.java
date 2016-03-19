@@ -277,37 +277,13 @@ public class Indolently {
     }
 
     /**
-     * A shorter version of {@link #optional(Object)}.
-     *
-     * @param <T> type of value
-     * @param value the value
-     * @return Optional representation of value
-     */
-    public static <T> Optional<T> opt(final T value) {
-        return optional(value);
-    }
-
-    /**
-     * A shorter version of {@link #optional(Object, Consumer...)}.
-     *
-     * @param <T> type of value
-     * @param value the value
-     * @param consumers invoked consumers only if value is present
-     * @return Optional representation of value
-     */
-    @SafeVarargs
-    public static <T> Optional<T> opt(final T value, final Consumer<? super T>... consumers) {
-        return optional(value, consumers);
-    }
-
-    /**
      * An alias of {@link Optional#ofNullable(Object)}.
      *
      * @param <T> type of value
      * @param value the value
      * @return Optional representation of value
      */
-    public static <T> Optional<T> optional(final T value) {
+    public static <T> Optional<T> opt(final T value) {
         return Optional.ofNullable(value);
     }
 
@@ -320,10 +296,23 @@ public class Indolently {
      * @return Optional representation of value
      */
     @SafeVarargs
-    public static <T> Optional<T> optional(final T value, final Consumer<? super T>... consumers) {
-        final Optional<T> opt = optional(value);
+    public static <T> Optional<T> opt(final T value, final Consumer<? super T>... consumers) {
+        final Optional<T> opt = opt(value);
         list(consumers).each(f -> opt.ifPresent(f));
         return opt;
+    }
+
+    /** @deprecated Use {@link #opt(Object)} instead of */
+    @Deprecated
+    public static <T> Optional<T> optional(final T value) {
+        return opt(value);
+    }
+
+    /** @deprecated Use {@link #opt(Object, Consumer...)} instead of */
+    @Deprecated
+    @SafeVarargs
+    public static <T> Optional<T> optional(final T value, final Consumer<? super T>... consumers) {
+        return opt(value, consumers);
     }
 
     /**

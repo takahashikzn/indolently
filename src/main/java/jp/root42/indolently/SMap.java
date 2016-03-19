@@ -476,7 +476,7 @@ public interface SMap<K, V>
      * @return optional representation of the value
      */
     default Optional<V> opt(final K key) {
-        return this.containsKey(key) ? Indolently.optional(this.get(key)) : Optional.empty();
+        return this.containsKey(key) ? Indolently.opt(this.get(key)) : Optional.empty();
     }
 
     /**
