@@ -68,7 +68,7 @@ public class Expressive {
      */
     public static <T> T raise(final Supplier<? extends Throwable> f) {
 
-        throw optional(f.get()).map(e -> {
+        throw opt(f.get()).map(e -> {
             if (e instanceof Error) {
                 throw (Error) e;
             } else if (e instanceof RuntimeException) {

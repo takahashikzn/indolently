@@ -43,7 +43,7 @@ public interface SMatcher
         final Ref<Boolean> found = ref();
 
         return Iterative.iterator( //
-            () -> optional(found.val) //
+            () -> opt(found.val) //
                 .orElseGet(() -> found.val = this.find()), //
             () -> prog1( //
                 () -> this.group(), //
