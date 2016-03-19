@@ -114,7 +114,7 @@ public interface SIter<T>
 
             @Override
             public boolean hasNext() {
-                if (this.cur != null) {
+                if (!Indolently.isNull(this.cur)) {
                     return true;
                 } else if (!SIter.this.hasNext()) {
                     return false;

@@ -857,7 +857,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?> opt) {
-        return optional(opt).map(x -> !x.isPresent()).orElse(true);
+        return isNull(opt) || !opt.isPresent();
     }
 
     /**
@@ -888,6 +888,16 @@ public class Indolently {
      */
     public static boolean empty(final CharSequence... cs) {
         return empty((Object[]) cs) || list(cs).every(Indolently::empty);
+    }
+
+    /**
+     * test whether the argument is null or not.
+     *
+     * @param o test target
+     * @return test result
+     */
+    public static boolean isNull(final Object o) {
+        return o == null;
     }
 
     /**

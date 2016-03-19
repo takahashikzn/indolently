@@ -70,7 +70,7 @@ public interface Generator<T>
             public boolean hasNext() {
                 if (this.stopped) {
                     return false;
-                } else if (this.cur != null) {
+                } else if (!isNull(this.cur)) {
                     return true;
                 }
 
