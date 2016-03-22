@@ -257,7 +257,7 @@ public class Indolently {
     }
 
     /**
-     * An alias of {@link #optional(Object)}.
+     * An alias of {@link #opt(Object)}.
      *
      * @param <T> type of value
      * @param value the value
