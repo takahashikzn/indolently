@@ -264,7 +264,7 @@ public class Indolently {
      * @return Optional representation of value
      */
     public static <T> Optional<T> nonNull(final T value) {
-        return optional(value);
+        return opt(value);
     }
 
     /**
@@ -302,17 +302,39 @@ public class Indolently {
         return opt;
     }
 
-    /** @deprecated Use {@link #opt(Object)} instead of */
-    @Deprecated
-    public static <T> Optional<T> optional(final T value) {
-        return opt(value);
+    /**
+     * A shortcut notation of {@code Optional.ofNullable(value).orElse(other)}.
+     *
+     * @param value value
+     * @param other default value
+     * @return value or default value
+     */
+    public static <T> T optional(final T value, final T other) {
+        return opt(value).orElse(other);
     }
 
-    /** @deprecated Use {@link #opt(Object, Consumer...)} instead of */
-    @Deprecated
-    @SafeVarargs
-    public static <T> Optional<T> optional(final T value, final Consumer<? super T>... consumers) {
-        return opt(value, consumers);
+    /**
+     * A shortcut notation of {@code Optional.ofNullable(value).map(mapper).orElse(other)}.
+     *
+     * @param value value
+     * @param mapper mapper function
+     * @param other default value
+     * @return mapped value or default value
+     */
+    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final S other) {
+        return opt(value).map(mapper).orElse(other);
+    }
+
+    /**
+     * A shortcut notation of {@code Optional.ofNullable(value).map(mapper).orElseGet(other)}.
+     *
+     * @param value value
+     * @param mapper mapper function
+     * @param other default value supplier
+     * @return mapped value or default value
+     */
+    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final Supplier<S> other) {
+        return opt(value).map(mapper).orElseGet(other);
     }
 
     /**
@@ -349,7 +371,7 @@ public class Indolently {
      * @return new list
      */
     public static <T> SList<T> list(final Iterable<? extends T> elems) {
-        return new SListImpl<T>().pushAll(optional(elems));
+        return new SListImpl<T>().pushAll(opt(elems));
     }
 
     /**
@@ -663,7 +685,7 @@ public class Indolently {
     }
 
     public static <T> SSet<T> set(final Iterable<? extends T> elems) {
-        return new SSetImpl<T>().pushAll(optional(elems));
+        return new SSetImpl<T>().pushAll(opt(elems));
     }
 
     /**
@@ -951,10 +973,10 @@ public class Indolently {
 
     public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
-        return optional(col).map(x -> {
+        return optional(col, x -> {
 
             final StringBuilder sb = new StringBuilder();
-            final String s = optional(sep).orElse("");
+            final String s = optional(sep, "");
 
             for (final Iterator<? extends CharSequence> i = x.iterator(); i.hasNext();) {
                 sb.append(i.next());
@@ -965,7 +987,7 @@ public class Indolently {
             }
 
             return sb.toString();
-        }).orElse(null);
+        }, (String) null);
     }
 
     @SafeVarargs
@@ -1494,7 +1516,7 @@ public class Indolently {
     }
 
     public static <K, V> SMap<K, V> map(final Map<? extends K, ? extends V> map) {
-        return new SMapImpl<K, V>().pushAll(optional(map));
+        return new SMapImpl<K, V>().pushAll(opt(map));
     }
 
     public static <K, V> SMap<K, V> map() {
