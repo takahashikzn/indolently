@@ -2229,6 +2229,10 @@ public class Indolently {
         return empty(itself());
     }
 
+    public static Predicate<Optional<?>> present() {
+        return Optional::isPresent;
+    }
+
     public static <T extends CharSequence> Predicate<T> blank() {
         return empty(itself());
     }
