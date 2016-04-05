@@ -826,6 +826,8 @@ public class Indolently {
             return true;
         } else if (i instanceof Collection) { // for optimization
             return ((Collection<?>) i).isEmpty();
+        } else if (i instanceof Map) { // for optimization
+            return ((Map<?, ?>) i).isEmpty();
         } else {
             return !i.iterator().hasNext();
         }
