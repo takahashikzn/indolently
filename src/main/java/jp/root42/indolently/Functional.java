@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -80,40 +82,24 @@ public class Functional {
 
     public static <T, R> Function<T, R> memoize(final Function<? super T, ? extends R> f) {
 
-        final SMap<T, R> memo = map();
+        final Map<T, R> memo = new ConcurrentHashMap<>();
 
-        synchronized (memo) {
-            return x -> (memo.containsKey(x) ? memo : memo.push(x, f.apply(x))).get(x);
-        }
+        return x -> memo.computeIfAbsent(x, f::apply);
     }
 
     public static <T, U, R> BiFunction<T, U, R> memoize(final BiFunction<? super T, ? super U, ? extends R> f) {
 
-        final SMap<Duo<T, U>, R> memo = map();
+        final Map<Duo<T, U>, R> memo = new ConcurrentHashMap<>();
 
-        return (x, y) -> {
-
-            final Duo<T, U> key = tuple(x, y);
-
-            synchronized (memo) {
-                return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y))).get(key);
-            }
-        };
+        return (x, y) -> memo.computeIfAbsent(tuple(x, y), z -> f.apply(x, y));
     }
 
     public static <T, U, V, R> TriFunction<T, U, V, R> memoize(
         final TriFunction<? super T, ? super U, ? super V, ? extends R> f) {
 
-        final SMap<Trio<T, U, V>, R> memo = map();
+        final Map<Trio<T, U, V>, R> memo = new ConcurrentHashMap<>();
 
-        return (x, y, z) -> {
-
-            final Trio<T, U, V> key = tuple(x, y, z);
-
-            synchronized (memo) {
-                return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y, z))).get(key);
-            }
-        };
+        return (x, y, z) -> memo.computeIfAbsent(tuple(x, y, z), w -> f.apply(x, y, z));
     }
 
     public static <T> Predicate<T> memoize(final Predicate<? super T> f) {
@@ -127,7 +113,7 @@ public class Functional {
 
         final BiFunction<T, U, Boolean> memoized = memoize(biFunctionOf((final T x, final U y) -> f.test(x, y)));
 
-        return (x, y) -> memoized.apply(x, y);
+        return memoized::apply;
     }
 
     public static <T, U, V> TriPredicate<T, U, V> memoize(final TriPredicate<? super T, ? super U, ? super V> f) {
@@ -135,7 +121,7 @@ public class Functional {
         final TriFunction<T, U, V, Boolean> memoized =
             memoize(triFunctionOf((final T x, final U y, final V z) -> f.test(x, y, z)));
 
-        return (x, y, z) -> memoized.apply(x, y, z);
+        return memoized::apply;
     }
 
     public static SBoolSuppl boolsuppl(final Consumer<? super BooleanSupplier> init,
