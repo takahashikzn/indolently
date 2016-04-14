@@ -21,16 +21,16 @@ import java.util.Objects;
  */
 @SuppressWarnings("javadoc")
 @FunctionalInterface
-public interface TriConsumer<T, U, V> {
+public interface Consumer3<X0, X1, X2> {
 
-    void accept(T t, U u, V v);
+    void accept(X0 x0, X1 x1, X2 x2);
 
-    default TriConsumer<T, U, V> andThen(final TriConsumer<? super T, ? super U, ? super V> after) {
+    default Consumer3<X0, X1, X2> andThen(final Consumer3<? super X0, ? super X1, ? super X2> after) {
         Objects.requireNonNull(after);
 
-        return (l, r, v) -> {
-            accept(l, r, v);
-            after.accept(l, r, v);
+        return (x0, x1, x2) -> {
+            this.accept(x0, x1, x2);
+            after.accept(x0, x1, x2);
         };
     }
 }

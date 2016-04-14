@@ -14,20 +14,28 @@
 package jp.root42.indolently.function;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 
 /**
  * @author takahashikzn
  */
-@FunctionalInterface
 @SuppressWarnings("javadoc")
-public interface TriFunction<T, U, V, R> {
+@FunctionalInterface
+public interface Predicate3<T, U, V> {
 
-    R apply(T t, U u, V v);
+    boolean test(T t, U u, V v);
 
-    default <W> TriFunction<T, U, V, W> andThen(final Function<? super R, ? extends W> after) {
-        Objects.requireNonNull(after);
-        return (t, u, v) -> after.apply(apply(t, u, v));
+    default Predicate3<T, U, V> and(final Predicate3<? super T, ? super U, ? super V> other) {
+        Objects.requireNonNull(other);
+        return (t, u, v) -> test(t, u, v) && other.test(t, u, v);
+    }
+
+    default Predicate3<T, U, V> negate() {
+        return (t, u, v) -> !test(t, u, v);
+    }
+
+    default Predicate3<T, U, V> or(final Predicate3<? super T, ? super U, ? super V> other) {
+        Objects.requireNonNull(other);
+        return (t, u, v) -> test(t, u, v) || other.test(t, u, v);
     }
 }

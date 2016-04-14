@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 
-import jp.root42.indolently.function.TriFunction;
+import jp.root42.indolently.function.Function3;
 
 
 /**
@@ -29,7 +29,7 @@ public interface ReducibleIterable<T>
 
     @Override
     default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
-        final TriFunction<Integer, ? super R, ? super R, ? extends R> fr) {
+        final Function3<Integer, ? super R, ? super R, ? extends R> fr) {
 
         final Iterator<T> i = this.iterator();
 
@@ -49,7 +49,7 @@ public interface ReducibleIterable<T>
 
     @Override
     default <R> Optional<R> reduce(final Optional<? extends R> initial,
-        final TriFunction<Integer, ? super R, ? super T, ? extends R> f) {
+        final Function3<Integer, ? super R, ? super T, ? extends R> f) {
 
         R rem = initial.orElse(null);
 
