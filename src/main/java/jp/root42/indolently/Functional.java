@@ -84,14 +84,14 @@ public class Functional {
 
     public static <X, Y> Function<X, Y> memoize(final Function<? super X, ? extends Y> f) {
 
-        final BiFunction<X, String, Y> g = memoize((x0, x1) -> f.apply(x0));
+        final BiFunction<X, String, Y> g = memoize((BiFunction<X, String, Y>) (x0, x1) -> f.apply(x0));
 
         return x -> g.apply(x, "");
     }
 
     public static <X0, X1, Y> BiFunction<X0, X1, Y> memoize(final BiFunction<? super X0, ? super X1, ? extends Y> f) {
 
-        final Function3<X0, X1, String, Y> g = memoize((x0, x1, x2) -> f.apply(x0, x1));
+        final Function3<X0, X1, String, Y> g = memoize((Function3<X0, X1, String, Y>) (x0, x1, x2) -> f.apply(x0, x1));
 
         return (x0, x1) -> g.apply(x0, x1, "");
     }
@@ -99,7 +99,8 @@ public class Functional {
     public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> memoize(
         final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) {
 
-        final Function4<X0, X1, X2, String, Y> g = memoize((x0, x1, x2, x3) -> f.apply(x0, x1, x2));
+        final Function4<X0, X1, X2, String, Y> g =
+            memoize((Function4<X0, X1, X2, String, Y>) (x0, x1, x2, x3) -> f.apply(x0, x1, x2));
 
         return (x0, x1, x2) -> g.apply(x0, x1, x2, "");
     }
