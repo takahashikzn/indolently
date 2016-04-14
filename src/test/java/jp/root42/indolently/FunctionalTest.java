@@ -17,9 +17,9 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.function.SFunc;
 import jp.root42.indolently.function.SFunc3;
-import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.Trio;
 
@@ -29,6 +29,7 @@ import org.junit.runner.RunWith;
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -128,11 +129,12 @@ public class FunctionalTest {
                             self.apply(tuple(x - 1, y, z)), //
                             self.apply(tuple(y - 1, z, x)), //
                             self.apply(tuple(z - 1, x, y)))))
-                    .none(() -> y);
+                    .none(y);
             }).memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }
 
     /**
+     * Tarai function.
      */
     @Test
     public void testFunction3() {
@@ -149,7 +151,7 @@ public class FunctionalTest {
                         self.apply(tuple(x - 1, y, z)), //
                         self.apply(tuple(y - 1, z, x)), //
                         self.apply(tuple(z - 1, x, y)))))
-                .none(() -> y);
+                .none(y);
         });
 
         assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
@@ -171,10 +173,11 @@ public class FunctionalTest {
                     self.apply(x - 1, y, z), //
                     self.apply(y - 1, z, x), //
                     self.apply(z - 1, x, y)))
-                .none(() -> y)).memoize().apply(20, 6, 0)).isEqualTo(20);
+                .none(y)).memoize().apply(20, 6, 0)).isEqualTo(20);
     }
 
     /**
+     * Tarai function.
      */
     @Test
     public void testFunction5() {
@@ -189,12 +192,8 @@ public class FunctionalTest {
                     self.apply(x - 1, y, z), //
                     self.apply(y - 1, z, x), //
                     self.apply(z - 1, x, y)))
-                .none(() -> y));
+                .none(y));
 
         assertThat(tarai.memoize().apply(20, 6, 0)).isEqualTo(20);
-    }
-
-    private static Trio<Integer, Integer, Integer> tuple(final int x, final int y, final int z) {
-        return Indolently.tuple(x, y, z);
     }
 }
