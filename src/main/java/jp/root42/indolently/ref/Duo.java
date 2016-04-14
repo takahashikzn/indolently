@@ -138,7 +138,7 @@ public class Duo<F, S>
 
     @Override
     public int hashCode() {
-        return this.getClass().hashCode() ^ Objects.hash(this.fst, this.snd) ^ 42;
+        return Objects.hash(this.getClass(), this.fst, this.snd);
     }
 
     @Override

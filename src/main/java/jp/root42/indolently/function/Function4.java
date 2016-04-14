@@ -1,4 +1,4 @@
-// Copyright 2014 takahashikzn
+// Copyright 2016 takahashikzn
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,28 +14,20 @@
 package jp.root42.indolently.function;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 @FunctionalInterface
-public interface TriPredicate<T, U, V> {
+@SuppressWarnings("javadoc")
+public interface Function4<X0, X1, X2, X3, Y> {
 
-    boolean test(T t, U u, V v);
+    Y apply(X0 x0, X1 x1, X2 x2, X3 x3);
 
-    default TriPredicate<T, U, V> and(final TriPredicate<? super T, ? super U, ? super V> other) {
-        Objects.requireNonNull(other);
-        return (t, u, v) -> test(t, u, v) && other.test(t, u, v);
-    }
-
-    default TriPredicate<T, U, V> negate() {
-        return (t, u, v) -> !test(t, u, v);
-    }
-
-    default TriPredicate<T, U, V> or(final TriPredicate<? super T, ? super U, ? super V> other) {
-        Objects.requireNonNull(other);
-        return (t, u, v) -> test(t, u, v) || other.test(t, u, v);
+    default <Z> Function4<X0, X1, X2, X3, Z> andThen(final Function<? super Y, ? extends Z> after) {
+        Objects.requireNonNull(after);
+        return (x0, x1, x2, x3) -> after.apply(this.apply(x0, x1, x2, x3));
     }
 }

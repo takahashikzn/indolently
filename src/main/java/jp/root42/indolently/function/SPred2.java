@@ -15,79 +15,78 @@ package jp.root42.indolently.function;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Functional;
 
 
 /**
- * @param <T> first argument type
- * @param <U> second argument type
- * @param <R> return value type
+ * @param <X0> argument type
+ * @param <X1> return value type
  * @author takahashikzn
  */
-public class SBiFunc<T, U, R>
-    implements Serializable, BiFunction<T, U, R>, SLambda<SBiFunc<T, U, R>> {
+public class SPred2<X0, X1>
+    implements Serializable, BiPredicate<X0, X1>, SLambda<SPred2<X0, X1>> {
 
-    private static final long serialVersionUID = 5099015871546179565L;
+    private static final long serialVersionUID = 2715052895955591445L;
 
-    private final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body;
+    private final Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body;
 
     /**
      * constructor
      *
      * @param body function body
      */
-    public SBiFunc(final TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body) {
+    public SPred2(final Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body) {
         this.body = Objects.requireNonNull(body);
     }
 
     @Override
-    public R apply(final T x, final U y) {
-        return this.body.apply(this, x, y);
+    public boolean test(final X0 x0, final X1 x1) {
+        return this.body.test(this, x0, x1);
     }
 
     /**
      * currying this function.
      *
-     * @param x argument to bind
+     * @param x0 argument to bind
      * @return curried function
      */
-    public SFunc<U, R> curry(final T x) {
-        return this.curry(() -> x);
+    public SPred<X1> curry(final X0 x0) {
+        return this.curry(() -> x0);
     }
 
     /**
      * currying this function.
      *
-     * @param x argument to bind
+     * @param x0 argument to bind
      * @return curried function
      */
-    public SFunc<U, R> curry(final Supplier<? extends T> x) {
-        return new SFunc<>((self, y) -> this.apply(x.get(), y));
+    public SPred<X1> curry(final Supplier<? extends X0> x0) {
+        return new SPred<>((self, x1) -> this.test(x0.get(), x1));
     }
 
     /**
      * currying this function.
      *
-     * @param x 1st argument to bind
-     * @param y 2nd argument to bind
+     * @param x0 1st argument to bind
+     * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final T x, final U y) {
-        return this.curry(() -> x, () -> y);
+    public SBoolSuppl curry(final X0 x0, final X1 x1) {
+        return this.curry(() -> x0, () -> x1);
     }
 
     /**
      * currying this function.
      *
-     * @param x 1st argument to bind
-     * @param y 2nd argument to bind
+     * @param x0 1st argument to bind
+     * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final Supplier<? extends T> x, final Supplier<? extends U> y) {
-        return this.curry(x).curry(y);
+    public SBoolSuppl curry(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1) {
+        return this.curry(x0).curry(x1);
     }
 
     /**
@@ -95,13 +94,13 @@ public class SBiFunc<T, U, R>
      *
      * @return function body
      */
-    public TriFunction<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body() {
+    public Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body() {
         return this.body;
     }
 
     @Override
-    public SBiFunc<T, U, R> memoize() {
-        return new SBiFunc<>(Functional.memoize(this.body));
+    public SPred2<X0, X1> memoize() {
+        return new SPred2<>(Functional.memoize(this.body));
     }
 
     @Override
@@ -120,11 +119,11 @@ public class SBiFunc<T, U, R>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof SBiFunc)) {
+        } else if (!(o instanceof SPred2)) {
             return false;
         }
 
-        final SBiFunc<?, ?, ?> that = (SBiFunc<?, ?, ?>) o;
+        final SPred2<?, ?> that = (SPred2<?, ?>) o;
         return this.body.equals(that.body);
     }
 }

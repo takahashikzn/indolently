@@ -15,36 +15,37 @@ package jp.root42.indolently.function;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.BiPredicate;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Functional;
 
 
 /**
- * @param <T> argument type
- * @param <U> return value type
+ * @param <T> first argument type
+ * @param <U> second argument type
+ * @param <R> return value type
  * @author takahashikzn
  */
-public class SBiPred<T, U>
-    implements Serializable, BiPredicate<T, U>, SLambda<SBiPred<T, U>> {
+public class SFunc2<T, U, R>
+    implements Serializable, BiFunction<T, U, R>, SLambda<SFunc2<T, U, R>> {
 
-    private static final long serialVersionUID = 2715052895955591445L;
+    private static final long serialVersionUID = 5099015871546179565L;
 
-    private final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body;
+    private final Function3<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body;
 
     /**
      * constructor
      *
      * @param body function body
      */
-    public SBiPred(final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
+    public SFunc2(final Function3<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body) {
         this.body = Objects.requireNonNull(body);
     }
 
     @Override
-    public boolean test(final T x, final U y) {
-        return this.body.test(this, x, y);
+    public R apply(final T x, final U y) {
+        return this.body.apply(this, x, y);
     }
 
     /**
@@ -53,7 +54,7 @@ public class SBiPred<T, U>
      * @param x argument to bind
      * @return curried function
      */
-    public SPred<U> curry(final T x) {
+    public SFunc<U, R> curry(final T x) {
         return this.curry(() -> x);
     }
 
@@ -63,8 +64,8 @@ public class SBiPred<T, U>
      * @param x argument to bind
      * @return curried function
      */
-    public SPred<U> curry(final Supplier<? extends T> x) {
-        return new SPred<>((self, y) -> this.test(x.get(), y));
+    public SFunc<U, R> curry(final Supplier<? extends T> x) {
+        return new SFunc<>((self, y) -> this.apply(x.get(), y));
     }
 
     /**
@@ -74,7 +75,7 @@ public class SBiPred<T, U>
      * @param y 2nd argument to bind
      * @return curried function
      */
-    public SBoolSuppl curry(final T x, final U y) {
+    public SSuppl<R> curry(final T x, final U y) {
         return this.curry(() -> x, () -> y);
     }
 
@@ -85,7 +86,7 @@ public class SBiPred<T, U>
      * @param y 2nd argument to bind
      * @return curried function
      */
-    public SBoolSuppl curry(final Supplier<? extends T> x, final Supplier<? extends U> y) {
+    public SSuppl<R> curry(final Supplier<? extends T> x, final Supplier<? extends U> y) {
         return this.curry(x).curry(y);
     }
 
@@ -94,13 +95,13 @@ public class SBiPred<T, U>
      *
      * @return function body
      */
-    public TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body() {
+    public Function3<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body() {
         return this.body;
     }
 
     @Override
-    public SBiPred<T, U> memoize() {
-        return new SBiPred<>(Functional.memoize(this.body));
+    public SFunc2<T, U, R> memoize() {
+        return new SFunc2<>(Functional.memoize(this.body));
     }
 
     @Override
@@ -119,11 +120,11 @@ public class SBiPred<T, U>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof SBiPred)) {
+        } else if (!(o instanceof SFunc2)) {
             return false;
         }
 
-        final SBiPred<?, ?> that = (SBiPred<?, ?>) o;
+        final SFunc2<?, ?, ?> that = (SFunc2<?, ?, ?>) o;
         return this.body.equals(that.body);
     }
 }

@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import jp.root42.indolently.function.TriFunction;
+import jp.root42.indolently.function.Function3;
 
 
 /**
@@ -76,7 +76,7 @@ public interface Reducible<T> {
      * @return result value
      * @throws NoSuchElementException if the result not present
      */
-    default <R> R reduce(final R initial, final TriFunction<Integer, ? super R, ? super T, ? extends R> f) {
+    default <R> R reduce(final R initial, final Function3<Integer, ? super R, ? super T, ? extends R> f) {
         return this.reduce(Optional.of(initial), f).get();
     }
 
@@ -88,7 +88,7 @@ public interface Reducible<T> {
      * @param f function
      * @return result value
      */
-    <R> Optional<R> reduce(Optional<? extends R> initial, TriFunction<Integer, ? super R, ? super T, ? extends R> f);
+    <R> Optional<R> reduce(Optional<? extends R> initial, Function3<Integer, ? super R, ? super T, ? extends R> f);
 
     /**
      * Reduce operation.
@@ -98,7 +98,7 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      * @see #mapred(Function, BiFunction)
      */
-    default Optional<T> reduce(final TriFunction<Integer, ? super T, ? super T, ? extends T> f) {
+    default Optional<T> reduce(final Function3<Integer, ? super T, ? super T, ? extends T> f) {
 
         // "x -> x" lambda literal occurs compilation error on OracleJDK compiler
         return this.mapred(Function.identity(), f);
@@ -114,5 +114,5 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      */
     <R> Optional<R> mapred(Function<? super T, ? extends R> fm,
-        TriFunction<Integer, ? super R, ? super R, ? extends R> fr);
+        Function3<Integer, ? super R, ? super R, ? extends R> fr);
 }

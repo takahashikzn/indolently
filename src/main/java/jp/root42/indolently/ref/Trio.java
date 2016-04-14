@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.Destructive;
-import jp.root42.indolently.function.TriConsumer;
+import jp.root42.indolently.function.Consumer3;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -33,7 +33,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public class Trio<F, S, T>
-    implements Serializable, TriConsumer<F, S, T>, Supplier<Trio<F, S, T>>, Consumer<Trio<F, S, T>> {
+    implements Serializable, Consumer3<F, S, T>, Supplier<Trio<F, S, T>>, Consumer<Trio<F, S, T>> {
 
     private static final long serialVersionUID = 1387913510813532191L;
 
@@ -250,7 +250,7 @@ public class Trio<F, S, T>
 
     @Override
     public int hashCode() {
-        return this.getClass().hashCode() ^ Objects.hash(this.fst, this.snd, this.trd) ^ 42;
+        return Objects.hash(this.getClass(), this.fst, this.snd, this.trd);
     }
 
     @Override

@@ -23,28 +23,28 @@ import jp.root42.indolently.Functional;
 
 
 /**
- * @param <T> argument type
+ * @param <X> argument type
  * @param <R> return value type
  * @author takahashikzn
  */
-public class SFunc<T, R>
-    implements Serializable, Function<T, R>, SLambda<SFunc<T, R>> {
+public class SFunc<X, R>
+    implements Serializable, Function<X, R>, SLambda<SFunc<X, R>> {
 
     private static final long serialVersionUID = -8241959687855651918L;
 
-    private final BiFunction<? super Function<T, R>, ? super T, ? extends R> body;
+    private final BiFunction<? super Function<X, R>, ? super X, ? extends R> body;
 
     /**
      * constructor
      *
      * @param body function body
      */
-    public SFunc(final BiFunction<? super Function<T, R>, ? super T, ? extends R> body) {
+    public SFunc(final BiFunction<? super Function<X, R>, ? super X, ? extends R> body) {
         this.body = Objects.requireNonNull(body);
     }
 
     @Override
-    public R apply(final T x) {
+    public R apply(final X x) {
         return this.body.apply(this, x);
     }
 
@@ -54,7 +54,7 @@ public class SFunc<T, R>
      * @param x argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final T x) {
+    public SSuppl<R> curry(final X x) {
         return this.curry(() -> x);
     }
 
@@ -64,7 +64,7 @@ public class SFunc<T, R>
      * @param x argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final Supplier<? extends T> x) {
+    public SSuppl<R> curry(final Supplier<? extends X> x) {
         return new SSuppl<>(self -> this.apply(x.get()));
     }
 
@@ -73,12 +73,12 @@ public class SFunc<T, R>
      *
      * @return function body
      */
-    public BiFunction<? super Function<T, R>, ? super T, ? extends R> body() {
+    public BiFunction<? super Function<X, R>, ? super X, ? extends R> body() {
         return this.body;
     }
 
     @Override
-    public SFunc<T, R> memoize() {
+    public SFunc<X, R> memoize() {
         return new SFunc<>(Functional.memoize(this.body));
     }
 

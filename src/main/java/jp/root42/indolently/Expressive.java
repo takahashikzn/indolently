@@ -24,7 +24,7 @@ import net.jodah.typetools.TypeResolver;
 
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.function.TriFunction;
+import jp.root42.indolently.function.Function3;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -185,7 +185,7 @@ public class Expressive {
      * @return the value function returned
      */
     public static <T1, T2, T3, R> R eval(final T1 val1, final T2 val2, final T3 val3,
-        final TriFunction<? super T1, ? super T2, ? super T3, ? extends R> expr) {
+        final Function3<? super T1, ? super T2, ? super T3, ? extends R> expr) {
 
         return expr.apply(val1, val2, val3);
     }

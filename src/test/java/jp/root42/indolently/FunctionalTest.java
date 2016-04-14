@@ -18,7 +18,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import jp.root42.indolently.function.SFunc;
-import jp.root42.indolently.function.TriFunction;
+import jp.root42.indolently.function.SFunc3;
+import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.Trio;
 
@@ -43,7 +44,7 @@ import junitparams.JUnitParamsRunner;
 public class FunctionalTest {
 
     /**
-     * {@link Functional#function(Consumer, TriFunction)}
+     * {@link Functional#function(Consumer, Function3)}
      */
     @Test
     public void testListComprehension() {
@@ -152,6 +153,45 @@ public class FunctionalTest {
         });
 
         assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
+    }
+
+    /**
+     * Tarai function.
+     */
+    @Test
+    public void testFunction4() {
+
+        assertThat(function( //
+            // function decl
+            (final Function3<Integer, Integer, Integer, Integer> self) -> {},
+
+            // function body
+            (self, x, y, z) -> when(() -> (y < x)) //
+                .then(() -> (int) self.apply( //
+                    self.apply(x - 1, y, z), //
+                    self.apply(y - 1, z, x), //
+                    self.apply(z - 1, x, y)))
+                .none(() -> y)).memoize().apply(20, 6, 0)).isEqualTo(20);
+    }
+
+    /**
+     */
+    @Test
+    public void testFunction5() {
+
+        final SFunc3<Integer, Integer, Integer, Integer> tarai = func3(
+            // function initializer
+            self -> {},
+
+            // function body
+            (self, x, y, z) -> when(() -> (y < x)) //
+                .then(() -> (int) self.apply( //
+                    self.apply(x - 1, y, z), //
+                    self.apply(y - 1, z, x), //
+                    self.apply(z - 1, x, y)))
+                .none(() -> y));
+
+        assertThat(tarai.memoize().apply(20, 6, 0)).isEqualTo(20);
     }
 
     private static Trio<Integer, Integer, Integer> tuple(final int x, final int y, final int z) {
