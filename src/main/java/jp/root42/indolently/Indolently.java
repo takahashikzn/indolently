@@ -17,6 +17,7 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -824,13 +825,20 @@ public class Indolently {
     public static boolean empty(final Iterable<?> i) {
         if (i == null) {
             return true;
-        } else if (i instanceof Collection) { // for optimization
-            return ((Collection<?>) i).isEmpty();
-        } else if (i instanceof Map) { // for optimization
-            return ((Map<?, ?>) i).isEmpty();
-        } else {
-            return !i.iterator().hasNext();
         }
+
+        // for optimization
+        if (i instanceof Collection) {
+            return ((Collection<?>) i).isEmpty();
+        } else if (i instanceof Map) {
+            return ((Map<?, ?>) i).isEmpty();
+        } else if (i instanceof Iterator<?>) {
+            return !((Iterator<?>) i).hasNext();
+        } else if (i instanceof Enumeration<?>) {
+            return !((Enumeration<?>) i).hasMoreElements();
+        }
+
+        return !i.iterator().hasNext();
     }
 
     /**
