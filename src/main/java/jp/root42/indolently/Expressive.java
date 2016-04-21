@@ -24,7 +24,7 @@ import net.jodah.typetools.TypeResolver;
 
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.function.TriFunction;
+import jp.root42.indolently.function.Function3;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -68,7 +68,7 @@ public class Expressive {
      */
     public static <T> T raise(final Supplier<? extends Throwable> f) {
 
-        throw optional(f.get()).map(e -> {
+        throw opt(f.get()).map(e -> {
             if (e instanceof Error) {
                 throw (Error) e;
             } else if (e instanceof RuntimeException) {
@@ -185,7 +185,7 @@ public class Expressive {
      * @return the value function returned
      */
     public static <T1, T2, T3, R> R eval(final T1 val1, final T2 val2, final T3 val3,
-        final TriFunction<? super T1, ? super T2, ? super T3, ? extends R> expr) {
+        final Function3<? super T1, ? super T2, ? super T3, ? extends R> expr) {
 
         return expr.apply(val1, val2, val3);
     }
@@ -240,6 +240,61 @@ public class Expressive {
         list(forms).each(f -> f.execute());
 
         return val;
+    }
+
+    /**
+     * try-with-resource statement.
+     *
+     * @param res the resource
+     * @param stmt expression body
+     */
+    public static <T extends AutoCloseable> void letWith(final T res, final Consumer<? super T> stmt) {
+        // cast is required to avoid compilation failure on javac
+        letWith((Supplier<T>) () -> res, stmt);
+    }
+
+    /**
+     * try-with-resource statement.
+     *
+     * @param res the resource
+     * @param stmt expression body
+     */
+    public static <T extends AutoCloseable> void letWith(final Supplier<? extends T> res,
+        final Consumer<? super T> stmt) {
+
+        evalWith(res, x -> {
+            stmt.accept(x);
+            return null;
+        });
+    }
+
+    /**
+     * try-with-resource expression.
+     *
+     * @param res the resource
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T extends AutoCloseable, R> R evalWith(final T res, final Function<? super T, ? extends R> expr) {
+        // cast is required to avoid compilation failure on javac
+        return evalWith((Supplier<T>) () -> res, expr);
+    }
+
+    /**
+     * try-with-resource expression.
+     *
+     * @param res the resource
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T extends AutoCloseable, R> R evalWith(final Supplier<? extends T> res,
+        final Function<? super T, ? extends R> expr) {
+
+        return eval(() -> {
+            try (T x = res.get()) {
+                return expr.apply(x);
+            }
+        });
     }
 
     /**
@@ -436,7 +491,7 @@ public class Expressive {
             return this.when(x -> Indolently.equal(x, pred.get()));
         }
 
-        default Match.IntroCase<C> when(final Class<? extends C> type) {
+        default Match.IntroCase<C> when(final Class<?> type) {
             return this.when(x -> type.isInstance(x));
         }
 
@@ -465,7 +520,7 @@ public class Expressive {
 
             Match.Case<C, T> when(Predicate<? super C> when);
 
-            default Match.Case<C, T> when(final Class<? extends C> type) {
+            default Match.Case<C, T> when(final Class<?> type) {
                 return this.when(x -> type.isInstance(x));
             }
 

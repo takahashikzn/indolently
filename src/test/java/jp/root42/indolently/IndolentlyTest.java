@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiPredicate;
 
 import jp.root42.indolently.trait.Freezable;
 
@@ -373,6 +374,32 @@ public class IndolentlyTest {
             oarray("non blank and empty", false, array("a", "")), //
             oarray("non blank and blank", false, array("a", "")), //
             oarray("non blnak strings", false, array("a", "b")) //
+        );
+    }
+
+    /**
+     * {@link Indolently#equal(Comparable, Comparable)}
+     *
+     * @param expected expected value
+     * @param lhs test value
+     * @param rhs test value
+     */
+    @Parameters
+    @Test
+    public <T extends Comparable<T>> void testEqual(final boolean expected, final T lhs, final T rhs) {
+
+        assertThat(equal(lhs, rhs)).isEqualTo(expected);
+    }
+
+    static List<Object[]> parametersForTestEqual() {
+
+        return list( //
+            oarray(true, "a", "a"), //
+            oarray(true, "a", new String("a")), //
+            oarray(false, "a", "b"), //
+            oarray(false, "a", null), //
+            oarray(false, null, "b"), //
+            oarray(true, null, null) //
         );
     }
 
@@ -812,5 +839,15 @@ public class IndolentlyTest {
         assertThat(assignable(Number.class).test(Integer.class)).isFalse();
         assertThat(assignable(x -> Number.class, Integer.class).test(0)).isTrue();
         assertThat(assignable(x -> x.getClass(), Number.class).test(0)).isFalse();
+    }
+
+    /**
+     * {@link Indolently#uniq(List, BiPredicate)}
+     */
+    @Test
+    public void testUniq() {
+
+        assertThat(uniq(list(1, 2, 3, 1, 2, 4), (x, y) -> x == y)).isEqualTo(list(1, 2, 3, 4));
+        assertThat(uniq(list(1, 2, 3, -1, -2, 4), (x, y) -> Math.abs(x) == Math.abs(y))).isEqualTo(list(1, 2, 3, 4));
     }
 }

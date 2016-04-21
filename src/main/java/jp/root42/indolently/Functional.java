@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -22,20 +23,21 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.function.Consumer3;
 import jp.root42.indolently.function.Expression;
-import jp.root42.indolently.function.SBiFunc;
-import jp.root42.indolently.function.SBiPred;
+import jp.root42.indolently.function.Function3;
+import jp.root42.indolently.function.Function4;
+import jp.root42.indolently.function.Predicate3;
 import jp.root42.indolently.function.SBoolSuppl;
 import jp.root42.indolently.function.SFunc;
+import jp.root42.indolently.function.SFunc2;
+import jp.root42.indolently.function.SFunc3;
 import jp.root42.indolently.function.SPred;
+import jp.root42.indolently.function.SPred2;
 import jp.root42.indolently.function.SSuppl;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.function.TriConsumer;
-import jp.root42.indolently.function.TriFunction;
-import jp.root42.indolently.function.TriPredicate;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.Duo;
-import jp.root42.indolently.ref.Trio;
 
 import static java.util.Objects.*;
 import static jp.root42.indolently.Indolently.*;
@@ -49,69 +51,68 @@ public class Functional {
 
     protected Functional() {}
 
-    public static <T, R> Supplier<R> curry(final Function<? super T, ? extends R> f, final T t) {
-        return () -> f.apply(t);
+    public static <X, Y> Supplier<Y> curry(final Function<? super X, ? extends Y> f, final X x) {
+        return () -> f.apply(x);
     }
 
-    public static <T, U, R> Function<U, R> curry(final BiFunction<? super T, ? super U, ? extends R> f, final T t) {
-        return x -> f.apply(t, x);
+    public static <X0, X1, R> Function<X1, R> curry(final BiFunction<? super X0, ? super X1, ? extends R> f,
+        final X0 x0) {
+        return x1 -> f.apply(x0, x1);
     }
 
-    public static <T, U, V, R> BiFunction<U, V, R> curry(
-        final TriFunction<? super T, ? super U, ? super V, ? extends R> f, final T t) {
-        return (u, v) -> f.apply(t, u, v);
+    public static <X0, X1, X2, Y> BiFunction<X1, X2, Y> curry(
+        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f, final X0 x0) {
+        return (x2, x3) -> f.apply(x0, x2, x3);
     }
 
-    public static <T> BooleanSupplier curry(final Predicate<? super T> f, final T t) {
-        return () -> f.test(t);
+    public static <X> BooleanSupplier curry(final Predicate<? super X> f, final X x) {
+        return () -> f.test(x);
     }
 
-    public static <T, U> Predicate<U> curry(final BiPredicate<? super T, ? super U> f, final T t) {
-        return x -> f.test(t, x);
+    public static <X0, X1> Predicate<X1> curry(final BiPredicate<? super X0, ? super X1> f, final X0 x0) {
+        return x1 -> f.test(x0, x1);
     }
 
-    public static <T, U, V> BiPredicate<U, V> curry(final TriPredicate<? super T, ? super U, ? super V> f, final T t) {
-        return (u, v) -> f.test(t, u, v);
+    public static <X0, X1, X2> BiPredicate<X1, X2> curry(final Predicate3<? super X0, ? super X1, ? super X2> f,
+        final X0 x0) {
+        return (x1, x2) -> f.test(x0, x1, x2);
     }
 
     public static <T> Supplier<T> memoize(final Supplier<? extends T> f) {
         return curry(memoize((Function<Object, T>) x -> f.get()), null);
     }
 
-    public static <T, R> Function<T, R> memoize(final Function<? super T, ? extends R> f) {
+    public static <X, Y> Function<X, Y> memoize(final Function<? super X, ? extends Y> f) {
 
-        final SMap<T, R> memo = map();
+        final BiFunction<X, String, Y> g = memoize((BiFunction<X, String, Y>) (x0, x1) -> f.apply(x0));
 
-        synchronized (memo) {
-            return x -> (memo.containsKey(x) ? memo : memo.push(x, f.apply(x))).get(x);
-        }
+        return x -> g.apply(x, "");
     }
 
-    public static <T, U, R> BiFunction<T, U, R> memoize(final BiFunction<? super T, ? super U, ? extends R> f) {
+    public static <X0, X1, Y> BiFunction<X0, X1, Y> memoize(final BiFunction<? super X0, ? super X1, ? extends Y> f) {
 
-        final SMap<Duo<T, U>, R> memo = map();
+        final Function3<X0, X1, String, Y> g = memoize((Function3<X0, X1, String, Y>) (x0, x1, x2) -> f.apply(x0, x1));
 
-        return (x, y) -> {
-
-            final Duo<T, U> key = tuple(x, y);
-
-            synchronized (memo) {
-                return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y))).get(key);
-            }
-        };
+        return (x0, x1) -> g.apply(x0, x1, "");
     }
 
-    public static <T, U, V, R> TriFunction<T, U, V, R> memoize(
-        final TriFunction<? super T, ? super U, ? super V, ? extends R> f) {
+    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> memoize(
+        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) {
 
-        final SMap<Trio<T, U, V>, R> memo = map();
+        final Function4<X0, X1, X2, String, Y> g =
+            memoize((Function4<X0, X1, X2, String, Y>) (x0, x1, x2, x3) -> f.apply(x0, x1, x2));
 
-        return (x, y, z) -> {
+        return (x0, x1, x2) -> g.apply(x0, x1, x2, "");
+    }
 
-            final Trio<T, U, V> key = tuple(x, y, z);
+    public static <X0, X1, X2, X3, Y> Function4<X0, X1, X2, X3, Y> memoize(
+        final Function4<? super X0, ? super X1, ? super X2, ? super X3, ? extends Y> f) {
 
+        final Map<Duo<Duo<X0, X1>, Duo<X2, X3>>, Y> memo = map();
+
+        return (x0, x1, x2, x3) -> {
             synchronized (memo) {
-                return (memo.containsKey(key) ? memo : memo.push(key, f.apply(x, y, z))).get(key);
+                return memo.computeIfAbsent(tuple(tuple(x0, x1), tuple(x2, x3)), key -> f.apply(x0, x1, x2, x3));
             }
         };
     }
@@ -123,19 +124,19 @@ public class Functional {
         return memoized::apply;
     }
 
-    public static <T, U> BiPredicate<T, U> memoize(final BiPredicate<? super T, ? super U> f) {
+    public static <X0, X1> BiPredicate<X0, X1> memoize(final BiPredicate<? super X0, ? super X1> f) {
 
-        final BiFunction<T, U, Boolean> memoized = memoize(biFunctionOf((final T x, final U y) -> f.test(x, y)));
+        final BiFunction<X0, X1, Boolean> memoized = memoize(function2Of((final X0 x0, final X1 x1) -> f.test(x0, x1)));
 
-        return (x, y) -> memoized.apply(x, y);
+        return memoized::apply;
     }
 
-    public static <T, U, V> TriPredicate<T, U, V> memoize(final TriPredicate<? super T, ? super U, ? super V> f) {
+    public static <X0, X1, X2> Predicate3<X0, X1, X2> memoize(final Predicate3<? super X0, ? super X1, ? super X2> f) {
 
-        final TriFunction<T, U, V, Boolean> memoized =
-            memoize(triFunctionOf((final T x, final U y, final V z) -> f.test(x, y, z)));
+        final Function3<X0, X1, X2, Boolean> memoized =
+            memoize(function4Of((final X0 x0, final X1 x1, final X2 x2) -> f.test(x0, x1, x2)));
 
-        return (x, y, z) -> memoized.apply(x, y, z);
+        return memoized::apply;
     }
 
     public static SBoolSuppl boolsuppl(final Consumer<? super BooleanSupplier> init,
@@ -161,7 +162,7 @@ public class Functional {
     }
 
     public static <T> SSuppl<T> wrap(final Supplier<? extends T> suppl) {
-        return suppl(self -> {} , self -> suppl.get());
+        return suppl(self -> {}, self -> suppl.get());
     }
 
     public static <T> SSuppl<T> suppl(final Consumer<? super Supplier<T>> init,
@@ -186,18 +187,18 @@ public class Functional {
         });
     }
 
-    public static <T, R> SFunc<T, R> wrap(final Function<? super T, ? extends R> func) {
-        return func(self -> {} , (self, x) -> func.apply(x));
+    public static <X, Y> SFunc<X, Y> wrap(final Function<? super X, ? extends Y> func) {
+        return func(self -> {}, (self, x) -> func.apply(x));
     }
 
-    public static <T, R> SFunc<T, R> func(final Consumer<? super Function<T, R>> init,
-        final BiFunction<? super Function<? super T, ? extends R>, ? super T, ? extends R> body) {
+    public static <X, Y> SFunc<X, Y> func(final Consumer<? super Function<X, Y>> init,
+        final BiFunction<? super Function<? super X, ? extends Y>, ? super X, ? extends Y> body) {
 
         return function(init, body);
     }
 
-    public static <T, R> SFunc<T, R> function(final Consumer<? super Function<T, R>> init,
-        final BiFunction<? super Function<? super T, ? extends R>, ? super T, ? extends R> body) {
+    public static <X, Y> SFunc<X, Y> function(final Consumer<? super Function<X, Y>> init,
+        final BiFunction<? super Function<? super X, ? extends Y>, ? super X, ? extends Y> body) {
 
         requireNonNull(init, "init");
         requireNonNull(body, "body");
@@ -213,45 +214,68 @@ public class Functional {
         });
     }
 
-    public static <T, U, R> SBiFunc<T, U, R> wrap(final BiFunction<? super T, ? super U, ? extends R> func) {
-        return bifunc(self -> {} , (self, x, y) -> func.apply(x, y));
+    public static <X0, X1, Y> SFunc2<X0, X1, Y> wrap(final BiFunction<? super X0, ? super X1, ? extends Y> func) {
+        return func2(self -> {}, (self, x0, x1) -> func.apply(x0, x1));
     }
 
-    public static <T, U, R> SBiFunc<T, U, R> bifunc(final Consumer<? super BiFunction<T, U, R>> init,
-        final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> body) {
+    public static <X0, X1, Y> SFunc2<X0, X1, Y> func2(final Consumer<? super BiFunction<X0, X1, Y>> init,
+        final Function3<? super BiFunction<? super X0, ? super X1, ? extends Y>, ? super X0, ? super X1, ? extends Y> body) {
 
         return function(init, body);
     }
 
-    public static <T, U, R> SBiFunc<T, U, R> function(final Consumer<? super BiFunction<T, U, R>> init,
-        final TriFunction<? super BiFunction<? super T, ? super U, ? extends R>, ? super T, ? super U, ? extends R> body) {
+    public static <X0, X1, Y> SFunc2<X0, X1, Y> function(final Consumer<? super BiFunction<X0, X1, Y>> init,
+        final Function3<? super BiFunction<? super X0, ? super X1, ? extends Y>, ? super X0, ? super X1, ? extends Y> body) {
 
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
-        return new SBiFunc<>((self, x, y) -> {
+        return new SFunc2<>((self, x0, x1) -> {
             synchronized (initialized) {
                 initialized.negateIf(false, () -> init.accept(self));
             }
 
-            return body.apply(self, x, y);
+            return body.apply(self, x0, x1);
         });
     }
 
-    public static <T> SPred<T> wrap(final Predicate<? super T> pred) {
-        return pred(self -> {} , (self, x) -> pred.test(x));
-    }
-
-    public static <T> SPred<T> pred(final Consumer<? super Predicate<T>> init,
-        final BiPredicate<? super Predicate<T>, ? super T> body) {
+    public static <X0, X1, X2, Y> SFunc3<X0, X1, X2, Y> func3(final Consumer<? super Function3<X0, X1, X2, Y>> init,
+        final Function4<? super Function3<? super X0, ? super X1, ? super X2, ? extends Y>, ? super X0, ? super X1, ? super X2, ? extends Y> body) {
 
         return function(init, body);
     }
 
-    public static <T> SPred<T> function(final Consumer<? super Predicate<T>> init,
-        final BiPredicate<? super Predicate<T>, ? super T> body) {
+    public static <X0, X1, X2, Y> SFunc3<X0, X1, X2, Y> function(final Consumer<? super Function3<X0, X1, X2, Y>> init,
+        final Function4<? super Function3<? super X0, ? super X1, ? super X2, ? extends Y>, ? super X0, ? super X1, ? super X2, ? extends Y> body) {
+
+        requireNonNull(init, "init");
+        requireNonNull(body, "body");
+
+        final BoolRef initialized = ref(false);
+
+        return new SFunc3<>((self, x0, x1, x2) -> {
+            synchronized (initialized) {
+                initialized.negateIf(false, () -> init.accept(self));
+            }
+
+            return body.apply(self, x0, x1, x2);
+        });
+    }
+
+    public static <X> SPred<X> wrap(final Predicate<? super X> pred) {
+        return pred(self -> {}, (self, x) -> pred.test(x));
+    }
+
+    public static <X> SPred<X> pred(final Consumer<? super Predicate<X>> init,
+        final BiPredicate<? super Predicate<X>, ? super X> body) {
+
+        return function(init, body);
+    }
+
+    public static <X> SPred<X> function(final Consumer<? super Predicate<X>> init,
+        final BiPredicate<? super Predicate<X>, ? super X> body) {
 
         requireNonNull(init, "init");
         requireNonNull(body, "body");
@@ -267,30 +291,30 @@ public class Functional {
         });
     }
 
-    public static <T, U> SBiPred<T, U> wrap(final BiPredicate<T, U> pred) {
-        return bipred(self -> {} , (self, x, y) -> pred.test(x, y));
+    public static <X0, X1> SPred2<X0, X1> wrap(final BiPredicate<X0, X1> pred) {
+        return pred2(self -> {}, (self, x0, x1) -> pred.test(x0, x1));
     }
 
-    public static <T, U> SBiPred<T, U> bipred(final Consumer<? super BiPredicate<T, U>> init,
-        final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
+    public static <X0, X1> SPred2<X0, X1> pred2(final Consumer<? super BiPredicate<X0, X1>> init,
+        final Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body) {
 
         return function(init, body);
     }
 
-    public static <T, U> SBiPred<T, U> function(final Consumer<? super BiPredicate<T, U>> init,
-        final TriPredicate<? super BiPredicate<T, U>, ? super T, ? super U> body) {
+    public static <X0, X1> SPred2<X0, X1> function(final Consumer<? super BiPredicate<X0, X1>> init,
+        final Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body) {
 
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
         final BoolRef initialized = ref(false);
 
-        return new SBiPred<>((self, x, y) -> {
+        return new SPred2<>((self, x0, x1) -> {
             synchronized (initialized) {
                 initialized.negateIf(false, () -> init.accept(self));
             }
 
-            return body.test(self, x, y);
+            return body.test(self, x0, x1);
         });
     }
 
@@ -306,43 +330,44 @@ public class Functional {
         return f;
     }
 
-    public static <T> Consumer<? super T> consumerOf(final Consumer<? super T> f) {
+    public static <X> Consumer<? super X> consumerOf(final Consumer<? super X> f) {
         return f;
     }
 
-    public static <T, U> BiConsumer<? super T, ? super U> biConsumerOf(final BiConsumer<? super T, ? super U> f) {
+    public static <X0, X1> BiConsumer<? super X0, ? super X1> consumer2Of(final BiConsumer<? super X0, ? super X1> f) {
         return f;
     }
 
-    public static <T, U, V> TriConsumer<? super T, ? super U, ? super V> triConsumerOf(
-        final TriConsumer<? super T, ? super U, ? super V> f) {
+    public static <X0, X1, X2> Consumer3<? super X0, ? super X1, ? super X2> consumer3Of(
+        final Consumer3<? super X0, ? super X1, ? super X2> f) {
         return f;
     }
 
-    public static <T, R> Function<? super T, ? extends R> functionOf(final Function<? super T, ? extends R> f) {
+    public static <X0, X1> Function<? super X0, ? extends X1> functionOf(final Function<? super X0, ? extends X1> f) {
         return f;
     }
 
-    public static <T, U, R> BiFunction<? super T, ? super U, ? extends R> biFunctionOf(
-        final BiFunction<? super T, ? super U, ? extends R> f) {
+    public static <X0, X1, Y> BiFunction<? super X0, ? super X1, ? extends Y> function2Of(
+        final BiFunction<? super X0, ? super X1, ? extends Y> f) {
         return f;
     }
 
-    public static <T, U, V, R> TriFunction<? super T, ? super U, ? super V, ? extends R> triFunctionOf(
-        final TriFunction<? super T, ? super U, ? super V, ? extends R> f) {
+    public static <X0, X1, X2, Y> Function3<? super X0, ? super X1, ? super X2, ? extends Y> function4Of(
+        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) {
         return f;
     }
 
-    public static <T> Predicate<? super T> predicateOf(final Predicate<? super T> f) {
+    public static <X> Predicate<? super X> predicateOf(final Predicate<? super X> f) {
         return f;
     }
 
-    public static <T, U> BiPredicate<? super T, ? super U> biPredicateOf(final BiPredicate<? super T, ? super U> f) {
+    public static <X0, X1> BiPredicate<? super X0, ? super X1> predicate2Of(
+        final BiPredicate<? super X0, ? super X1> f) {
         return f;
     }
 
-    public static <T, U, V> TriPredicate<? super T, ? super U, ? super V> triPredicateOf(
-        final TriPredicate<? super T, ? super U, ? super V> f) {
+    public static <X0, X1, X2> Predicate3<? super X0, ? super X1, ? super X2> predicate3Of(
+        final Predicate3<? super X0, ? super X1, ? super X2> f) {
         return f;
     }
 }

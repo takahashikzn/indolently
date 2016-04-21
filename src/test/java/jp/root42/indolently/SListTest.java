@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static jp.root42.indolently.Expressive.*;
@@ -105,5 +106,91 @@ public class SListTest {
     public void orElseGet() {
 
         assertThat(list().orElseGet(() -> list(42))).isEqualTo(list(42));
+    }
+
+    /**
+     * Test of {@link SList#subList(int, int)}
+     */
+    @Test
+    public void subList() {
+
+        assertThat(list(1, 2, 3).subList(1)).isEqualTo(list(2, 3));
+        assertThat(list(1, 2, 3).subList(0, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).subList(0, -2)).isEqualTo(list(1));
+        assertThat(list(1, 2, 3).subList(-3)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).subList(-3, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).subList(-3, 0)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).subList(3)).isEqualTo(list());
+
+        try {
+            list(1, 2, 3).subList(4);
+            Assert.fail();
+        } catch (@SuppressWarnings("unused") final IllegalArgumentException e) {
+            assert true;
+        }
+
+        try {
+            list(1, 2, 3).subList(0, 4);
+            Assert.fail();
+        } catch (@SuppressWarnings("unused") final IndexOutOfBoundsException e) {
+            assert true;
+        }
+
+        try {
+            list(1, 2, 3).subList(2, 1);
+            Assert.fail();
+        } catch (@SuppressWarnings("unused") final IllegalArgumentException e) {
+            assert true;
+        }
+    }
+
+    /**
+     * Test of {@link SList#slice(int, int)}
+     */
+    @Test
+    public void slice() {
+
+        assertThat(list(1, 2, 3).slice(1)).isEqualTo(list(2, 3));
+        assertThat(list(1, 2, 3).slice(0, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).slice(0, -2)).isEqualTo(list(1));
+        assertThat(list(1, 2, 3).slice(-3)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).slice(-3, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).slice(-3, 0)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).slice(3)).isEqualTo(list());
+        assertThat(list(1, 2, 3).slice(4)).isEqualTo(list());
+        assertThat(list(1, 2, 3).slice(0, 4)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).slice(2, 1)).isEqualTo(list());
+        assertThat(Iterative.range(1, 10).list().slice(-5, 0)).isEqualTo(list(6, 7, 8, 9, 10));
+
+        final SList<Integer> original = list(1, 2, 3);
+        final SList<Integer> sliced = original.slice(0, 2);
+        sliced.add(4);
+        assertThat(original).isEqualTo(list(1, 2, 3));
+        assertThat(sliced).isEqualTo(list(1, 2, 4));
+    }
+
+    /**
+     * Test of {@link SList#narrow(int, int)}
+     */
+    @Test
+    public void narrow() {
+
+        assertThat(list(1, 2, 3).narrow(1)).isEqualTo(list(2, 3));
+        assertThat(list(1, 2, 3).narrow(0, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).narrow(0, -2)).isEqualTo(list(1));
+        assertThat(list(1, 2, 3).narrow(-3)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).narrow(-3, -1)).isEqualTo(list(1, 2));
+        assertThat(list(1, 2, 3).narrow(-3, 0)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).narrow(3)).isEqualTo(list());
+        assertThat(list(1, 2, 3).narrow(4)).isEqualTo(list());
+        assertThat(list(1, 2, 3).narrow(0, 4)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).narrow(2, 1)).isEqualTo(list());
+        assertThat(Iterative.range(1, 10).list().narrow(-5, 0)).isEqualTo(list(6, 7, 8, 9, 10));
+
+        final SList<Integer> original = list(1, 2, 3);
+        final SList<Integer> sliced = original.narrow(0, 2);
+        sliced.add(4);
+        assertThat(original).isEqualTo(list(1, 2, 4, 3));
+        assertThat(sliced).isEqualTo(list(1, 2, 4));
     }
 }

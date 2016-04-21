@@ -46,7 +46,6 @@ import junitparams.Parameters;
  *
  * @author takahashikzn
  */
-@SuppressWarnings("unused")
 @RunWith(JUnitParamsRunner.class)
 public class ExpressiveTest {
 
@@ -351,7 +350,7 @@ public class ExpressiveTest {
                 ref -> when(from < to) //
                     .then(() -> ref.getThen(self -> self.val += step)) //
                     .none(() -> prog1(ref::get, () -> ref.val -= step)) //
-        ) //
+            ) //
         )) //
             .isEqualTo(expected);
 
@@ -364,7 +363,7 @@ public class ExpressiveTest {
                 ref -> when(from < to) //
                     .then(() -> ref.getThen(self -> self.val += step)) //
                     .none(() -> prog1(ref::get, () -> ref.val -= step)) //
-        ) //
+            ) //
         ).reduce((l, r) -> l + r)) //
             .isEqualTo(list(expected).reduce((l, r) -> l + r));
     }

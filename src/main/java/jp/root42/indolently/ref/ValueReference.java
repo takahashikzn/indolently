@@ -72,7 +72,7 @@ public interface ValueReference<T, S extends ValueReference<T, S>>
      * @return optional representation of the value
      */
     default Optional<T> opt() {
-        return Indolently.optional(this.get());
+        return Indolently.opt(this.get());
     }
 
     /**

@@ -17,12 +17,14 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -69,6 +71,86 @@ public class Indolently {
     @SuppressWarnings("unchecked")
     public static <T> T cast(final Object o) {
         return (T) o;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static int unbox(final Integer x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static long unbox(final Long x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static short unbox(final Short x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static byte unbox(final Byte x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static float unbox(final Float x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static double unbox(final Double x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static char unbox(final Character x) {
+        return (x == null) ? 0 : x;
+    }
+
+    /**
+     * null-safe wrapper to primitive conversion.
+     *
+     * @param x wrapper value
+     * @return primitive value
+     */
+    public static boolean unbox(final Boolean x) {
+        return (x == null) ? false : x;
     }
 
     public static <T> T fatal() {
@@ -176,14 +258,14 @@ public class Indolently {
     }
 
     /**
-     * An alias of {@link #optional(Object)}.
+     * An alias of {@link #opt(Object)}.
      *
      * @param <T> type of value
      * @param value the value
      * @return Optional representation of value
      */
     public static <T> Optional<T> nonNull(final T value) {
-        return optional(value);
+        return opt(value);
     }
 
     /**
@@ -202,7 +284,7 @@ public class Indolently {
      * @param value the value
      * @return Optional representation of value
      */
-    public static <T> Optional<T> optional(final T value) {
+    public static <T> Optional<T> opt(final T value) {
         return Optional.ofNullable(value);
     }
 
@@ -215,10 +297,45 @@ public class Indolently {
      * @return Optional representation of value
      */
     @SafeVarargs
-    public static <T> Optional<T> optional(final T value, final Consumer<? super T>... consumers) {
-        final Optional<T> opt = optional(value);
+    public static <T> Optional<T> opt(final T value, final Consumer<? super T>... consumers) {
+        final Optional<T> opt = opt(value);
         list(consumers).each(f -> opt.ifPresent(f));
         return opt;
+    }
+
+    /**
+     * A shortcut notation of {@code Optional.ofNullable(value).orElse(other)}.
+     *
+     * @param value value
+     * @param other default value
+     * @return value or default value
+     */
+    public static <T> T optional(final T value, final T other) {
+        return opt(value).orElse(other);
+    }
+
+    /**
+     * A shortcut notation of {@code Optional.ofNullable(value).map(mapper).orElse(other)}.
+     *
+     * @param value value
+     * @param mapper mapper function
+     * @param other default value
+     * @return mapped value or default value
+     */
+    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final S other) {
+        return opt(value).map(mapper).orElse(other);
+    }
+
+    /**
+     * A shortcut notation of {@code Optional.ofNullable(value).map(mapper).orElseGet(other)}.
+     *
+     * @param value value
+     * @param mapper mapper function
+     * @param other default value supplier
+     * @return mapped value or default value
+     */
+    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final Supplier<S> other) {
+        return opt(value).map(mapper).orElseGet(other);
     }
 
     /**
@@ -255,7 +372,7 @@ public class Indolently {
      * @return new list
      */
     public static <T> SList<T> list(final Iterable<? extends T> elems) {
-        return new SListImpl<T>().pushAll(optional(elems));
+        return new SListImpl<T>().pushAll(opt(elems));
     }
 
     /**
@@ -455,6 +572,20 @@ public class Indolently {
     /**
      * Create a list of <code>char</code>.
      *
+     * @param cs character sequence
+     * @return char list
+     */
+    public static SList<Character> chars(final CharSequence cs) {
+        final SList<Character> list = list();
+        for (int i = 0; i < cs.length(); i++) {
+            list.add(cs.charAt(i));
+        }
+        return list;
+    }
+
+    /**
+     * Create a list of <code>char</code>.
+     *
      * @param elems elements of array
      * @return char list
      */
@@ -555,7 +686,7 @@ public class Indolently {
     }
 
     public static <T> SSet<T> set(final Iterable<? extends T> elems) {
-        return new SSetImpl<T>().pushAll(optional(elems));
+        return new SSetImpl<T>().pushAll(opt(elems));
     }
 
     /**
@@ -630,6 +761,21 @@ public class Indolently {
         return rslt;
     }
 
+    public static <T> SList<T> uniq(final List<? extends T> elems) {
+        return uniq(elems, (x, y) -> equal(x, y));
+    }
+
+    public static <T> SList<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
+
+        return wrap(elems).reduce(list(), (ret, x) -> {
+            if (ret.isEmpty() || !ret.some(y -> f.test(x, y))) {
+                ret.add(x);
+            }
+
+            return ret;
+        });
+    }
+
     public static <K, V> SMap<K, V> freeze(final Map<? extends K, ? extends V> map) {
 
         @SuppressWarnings("unchecked")
@@ -679,11 +825,20 @@ public class Indolently {
     public static boolean empty(final Iterable<?> i) {
         if (i == null) {
             return true;
-        } else if (i instanceof Collection) { // for optimization
-            return ((Collection<?>) i).isEmpty();
-        } else {
-            return !i.iterator().hasNext();
         }
+
+        // for optimization
+        if (i instanceof Collection) {
+            return ((Collection<?>) i).isEmpty();
+        } else if (i instanceof Map) {
+            return ((Map<?, ?>) i).isEmpty();
+        } else if (i instanceof Iterator<?>) {
+            return !((Iterator<?>) i).hasNext();
+        } else if (i instanceof Enumeration<?>) {
+            return !((Enumeration<?>) i).hasMoreElements();
+        }
+
+        return !i.iterator().hasNext();
     }
 
     /**
@@ -723,7 +878,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?> opt) {
-        return (opt == null) || !opt.isPresent();
+        return isNull(opt) || !opt.isPresent();
     }
 
     /**
@@ -757,6 +912,16 @@ public class Indolently {
     }
 
     /**
+     * test whether the argument is null or not.
+     *
+     * @param o test target
+     * @return test result
+     */
+    public static boolean isNull(final Object o) {
+        return o == null;
+    }
+
+    /**
      * test whether the argument is blank string or not.
      *
      * @param cs test target
@@ -780,16 +945,48 @@ public class Indolently {
         return (ary == null) || (ary.length == 0);
     }
 
+    public static boolean empty(final byte[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final int[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final long[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final short[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final float[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final double[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final boolean[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
+    public static boolean empty(final char[] ary) {
+        return (ary == null) || (ary.length == 0);
+    }
+
     public static String join(final Iterable<? extends CharSequence> col) {
         return join(col, null);
     }
 
     public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
-        return optional(col).map(x -> {
+        return optional(col, x -> {
 
             final StringBuilder sb = new StringBuilder();
-            final String s = optional(sep).orElse("");
+            final String s = optional(sep, "");
 
             for (final Iterator<? extends CharSequence> i = x.iterator(); i.hasNext();) {
                 sb.append(i.next());
@@ -800,7 +997,7 @@ public class Indolently {
             }
 
             return sb.toString();
-        }).orElse(null);
+        }, (String) null);
     }
 
     @SafeVarargs
@@ -1227,11 +1424,11 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> boolean equal(final T l, final T r) {
-        return (l == null) ? (r == null) : (r == l) || (l.compareTo(r) == 0);
+        return (l == null) ? (r == null) : (r != null) && ((r == l) || (l.compareTo(r) == 0));
     }
 
     public static boolean equal(final Object l, final Object r) {
-        return (l == null) ? (r == null) : (l == r) || l.equals(r);
+        return (l == null) ? (r == null) : (r != null) && ((l == r) || l.equals(r));
     }
 
     public enum ComparisonResult {
@@ -1329,7 +1526,7 @@ public class Indolently {
     }
 
     public static <K, V> SMap<K, V> map(final Map<? extends K, ? extends V> map) {
-        return new SMapImpl<K, V>().pushAll(optional(map));
+        return new SMapImpl<K, V>().pushAll(opt(map));
     }
 
     public static <K, V> SMap<K, V> map() {
@@ -2062,6 +2259,10 @@ public class Indolently {
 
     public static <T extends CharSequence> Predicate<T> empty() {
         return empty(itself());
+    }
+
+    public static Predicate<Optional<?>> present() {
+        return Optional::isPresent;
     }
 
     public static <T extends CharSequence> Predicate<T> blank() {

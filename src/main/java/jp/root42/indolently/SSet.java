@@ -155,9 +155,14 @@ public interface SSet<T>
         return rslt;
     }
 
-    @SuppressWarnings("javadoc")
-    default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return Indolently.list(this.iterator().flatten(f));
+    /**
+     * Flatten this set.
+     *
+     * @param f value generator
+     * @return newly constructed flatten set
+     */
+    default <R> SSet<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+        return Indolently.set(this.iterator().flatten(f));
     }
 
     /**

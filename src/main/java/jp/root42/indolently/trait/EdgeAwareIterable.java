@@ -37,30 +37,49 @@ public interface EdgeAwareIterable<T>
     }
 
     /**
+     * get first element which satisfy the condition.
+     *
+     * @param f condition
+     * @return first element as optional representation
+     * @throws NullPointerException if the value which satisfy the condition is null
+     */
+    default Optional<T> head(final Predicate<? super T> f) {
+
+        for (final T val : this) {
+            if (f.test(val)) {
+                return Optional.of(val);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
      * get first element if exists, otherwise return alternative value.
      *
      * @param other alternative value.
      * @return first element or alternative value
      */
     default T head(final Supplier<? extends T> other) {
-        return this.head(x -> true).orElseGet(other);
+        return this.head(x -> true, other);
     }
 
     /**
-     * get first element which satisfy the condition.
+     * get first element which satisfy the condition, otherwise return alternative value.
      *
      * @param f condition
-     * @return first element as optional representation
+     * @param other alternative value.
+     * @return first element or alternative value
      */
-    default Optional<T> head(final Predicate<? super T> f) {
+    default T head(final Predicate<? super T> f, final Supplier<? extends T> other) {
 
         for (final T val : this) {
             if (f.test(val)) {
-                return Optional.ofNullable(val);
+                return val;
             }
         }
 
-        return Optional.empty();
+        return other.get();
     }
 
     /**
@@ -74,20 +93,11 @@ public interface EdgeAwareIterable<T>
     }
 
     /**
-     * get last element if exists, otherwise return alternative value.
-     *
-     * @param other alternative value.
-     * @return last element or alternative value
-     */
-    default T last(final Supplier<? extends T> other) {
-        return this.last(x -> true).orElseGet(other);
-    }
-
-    /**
      * get last element which satisfy the condition.
      *
      * @param f condition
      * @return last element as optional representation
+     * @throws NullPointerException if the value which satisfy the condition is null
      */
     default Optional<T> last(final Predicate<? super T> f) {
 
@@ -95,10 +105,42 @@ public interface EdgeAwareIterable<T>
 
         for (final T val : this) {
             if (f.test(val)) {
-                rslt = Optional.ofNullable(val);
+                rslt = Optional.of(val);
             }
         }
 
         return rslt;
+    }
+
+    /**
+     * get last element if exists, otherwise return alternative value.
+     *
+     * @param other alternative value.
+     * @return last element or alternative value
+     */
+    default T last(final Supplier<? extends T> other) {
+        return this.last(x -> true, other);
+    }
+
+    /**
+     * get last element which satisfy the condition, otherwise return alternative value.
+     *
+     * @param f condition
+     * @param other alternative value
+     * @return last element or alternative value
+     */
+    default T last(final Predicate<? super T> f, final Supplier<? extends T> other) {
+
+        boolean found = false;
+        T rslt = null;
+
+        for (final T val : this) {
+            if (f.test(val)) {
+                found = true;
+                rslt = val;
+            }
+        }
+
+        return found ? rslt : other.get();
     }
 }

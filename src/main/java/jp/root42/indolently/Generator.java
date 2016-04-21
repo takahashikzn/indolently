@@ -70,12 +70,12 @@ public interface Generator<T>
             public boolean hasNext() {
                 if (this.stopped) {
                     return false;
-                } else if (this.cur != null) {
+                } else if (!isNull(this.cur)) {
                     return true;
                 }
 
                 try {
-                    this.cur = optional(next.apply(env));
+                    this.cur = opt(next.apply(env));
                     return true;
                 } catch (@SuppressWarnings("unused") final Break s) {
                     this.stopped = true;

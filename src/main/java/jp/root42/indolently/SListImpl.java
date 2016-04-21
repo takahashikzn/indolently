@@ -88,9 +88,15 @@ class SListImpl<T>
     public List<T> subList(final int from, final int to) {
 
         final int actFrom = Indolently.idx(this, from);
-        final int actTo = Indolently.idx(this, to);
 
-        return this.store.subList(actFrom, ((from < 0) && (actTo == 0)) ? this.size() : actTo);
+        final int actTo;
+        if ((from < 0) && (to == 0)) {
+            actTo = this.size();
+        } else {
+            actTo = Indolently.idx(this, to);
+        }
+
+        return this.store.subList(actFrom, actTo);
     }
 
     @Override
