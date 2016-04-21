@@ -21,6 +21,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -570,17 +571,33 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>char</code>.
+     * Create an iterator of <code>char</code>.
      *
      * @param cs character sequence
-     * @return char list
+     * @return char iterator
      */
-    public static SList<Character> chars(final CharSequence cs) {
-        final SList<Character> list = list();
-        for (int i = 0; i < cs.length(); i++) {
-            list.add(cs.charAt(i));
-        }
-        return list;
+    public static SIter<Character> chars(final CharSequence cs) {
+
+        return wrap(new Iterator<Character>() {
+
+            private final int len = cs.length();
+
+            private int pos;
+
+            @Override
+            public boolean hasNext() {
+                return this.pos < this.len;
+            }
+
+            @Override
+            public Character next() {
+                try {
+                    return cs.charAt(this.pos++);
+                } catch (final IndexOutOfBoundsException e) {
+                    throw (NoSuchElementException) new NoSuchElementException().initCause(e);
+                }
+            }
+        });
     }
 
     /**
