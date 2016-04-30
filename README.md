@@ -173,27 +173,17 @@ int tarai20 = function(
     // Function declaration/initialization section.
     // Inline function expression requires extra type information
     // to do type inference.
-    (Function<Trio<Integer, Integer, Integer>, Integer> self) -> {
-        System.out.println("initialized!");
-    },
+    (Function3<Integer, Integer, Integer, Integer> self) ->
+        System.out.println("initialized!"),
 
     // function body section
-    (self, v) -> {
-
-        final int x = v.fst;
-        final int y = v.snd;
-        final int z = v.trd;
-
-        if (y < x) {
-            return self.apply(
-                tuple(
-                    self.apply(tuple(x - 1, y, z)),
-                    self.apply(tuple(y - 1, z, x)),
-                    self.apply(tuple(z - 1, x, y))));
-        } else {
-            return y;
-        }
-    }
+    (self, x, y, z) ->
+        (y < x)
+            ? self.apply(
+                self.apply(x - 1, y, z),
+                self.apply(y - 1, z, x),
+                self.apply(z - 1, x, y))
+            : y
 ).memoize().apply(tuple(20, 6, 0));
 
 

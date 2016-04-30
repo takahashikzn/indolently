@@ -23,8 +23,8 @@ import java.util.function.Supplier;
 import net.jodah.typetools.TypeResolver;
 
 import jp.root42.indolently.function.Expression;
-import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.Function3;
+import jp.root42.indolently.function.Statement;
 
 import static jp.root42.indolently.Indolently.*;
 

@@ -44,7 +44,7 @@
     <dependency org="org.hamcrest" name="hamcrest-library" rev="1.3" conf="test->master(*)" />
     <dependency org="org.assertj" name="assertj-core" rev="3.4.1" conf="test->master(*)" />
     <dependency org="org.mockito" name="mockito-core" rev="2.0.52-beta" conf="test->master(*)" />
-    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.3.18" conf="test->master(*)" />
+    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.3.19" conf="test->master(*)" />
     <dependency org="org.objenesis" name="objenesis" rev="2.2" conf="test->master(*)" />
     <dependency org="pl.pragmatists" name="JUnitParams" rev="1.0.5" conf="test->master(*)" />
 
