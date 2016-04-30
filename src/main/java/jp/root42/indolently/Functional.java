@@ -361,8 +361,9 @@ public class Functional {
         return f;
     }
 
-    public static <X0, X1> BiPredicate<? super X0, ? super X1> predicate2Of(
-        final BiPredicate<? super X0, ? super X1> f) {
+    public static <
+        X0,
+        X1> BiPredicate<? super X0, ? super X1> predicate2Of(final BiPredicate<? super X0, ? super X1> f) {
         return f;
     }
 
