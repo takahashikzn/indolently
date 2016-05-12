@@ -101,15 +101,15 @@ public interface EdgeAwareIterable<T>
      */
     default Optional<T> last(final Predicate<? super T> f) {
 
-        Optional<T> rslt = Optional.empty();
+        T rslt = null;
 
         for (final T val : this) {
             if (f.test(val)) {
-                rslt = Optional.of(val);
+                rslt = val;
             }
         }
 
-        return rslt;
+        return Optional.ofNullable(rslt);
     }
 
     /**

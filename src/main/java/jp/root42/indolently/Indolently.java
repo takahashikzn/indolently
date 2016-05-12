@@ -2283,7 +2283,7 @@ public class Indolently {
     }
 
     public static <T extends CharSequence> Predicate<T> blank() {
-        return empty(itself());
+        return blank(itself());
     }
 
     public static <T> Predicate<T> nil() {

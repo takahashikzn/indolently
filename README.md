@@ -184,7 +184,7 @@ int tarai20 = function(
                 self.apply(y - 1, z, x),
                 self.apply(z - 1, x, y))
             : y
-).memoize().apply(tuple(20, 6, 0));
+).memoize().apply(20, 6, 0);
 
 
 // fibonacci function
