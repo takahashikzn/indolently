@@ -114,20 +114,21 @@ public interface SIter<T>
 
             @Override
             public boolean hasNext() {
-                if (!Indolently.isNull(this.cur)) {
-                    return true;
-                } else if (!SIter.this.hasNext()) {
-                    return false;
+
+                while (true) {
+                    if (!Indolently.isNull(this.cur)) {
+                        return true;
+                    } else if (!SIter.this.hasNext()) {
+                        return false;
+                    }
+
+                    final T val = SIter.this.next();
+
+                    if (f.test(val)) {
+                        this.cur = Optional.ofNullable(val);
+                        return true;
+                    }
                 }
-
-                final T val = SIter.this.next();
-
-                if (f.test(val)) {
-                    this.cur = Optional.ofNullable(val);
-                    return true;
-                }
-
-                return this.hasNext();
             }
 
             @Override
