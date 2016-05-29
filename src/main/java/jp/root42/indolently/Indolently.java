@@ -2234,13 +2234,13 @@ public class Indolently {
         return asis;
     }
 
-    private static final Predicate<?> vrai = fixed(true);
+    private static final Predicate<?> vrai = x -> true;
 
     public static <T> Predicate<T> vrai() {
         return cast(vrai);
     }
 
-    private static final Predicate<?> faux = fixed(false);
+    private static final Predicate<?> faux = x -> false;
 
     public static <T> Predicate<T> faux() {
         return cast(faux);
