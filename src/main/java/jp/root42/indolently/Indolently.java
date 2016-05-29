@@ -2214,8 +2214,10 @@ public class Indolently {
 
     // CHECKSTYLE:ON
 
+    private static final Function<?, ?> itself = x -> x;
+
     public static <T> Function<T, T> itself() {
-        return x -> x;
+        return cast(itself);
     }
 
     public static <T, S> Function<T, S> fixed(final S val) {
@@ -2226,16 +2228,22 @@ public class Indolently {
         return x -> val;
     }
 
+    private static final Predicate<Boolean> asis = x -> x;
+
     public static Predicate<Boolean> asis() {
-        return x -> x;
+        return asis;
     }
+
+    private static final Predicate<?> vrai = fixed(true);
 
     public static <T> Predicate<T> vrai() {
-        return fixed(true);
+        return cast(vrai);
     }
 
+    private static final Predicate<?> faux = fixed(false);
+
     public static <T> Predicate<T> faux() {
-        return fixed(false);
+        return cast(faux);
     }
 
     public static <T> Predicate<T> not(final Predicate<T> f) {
@@ -2298,8 +2306,10 @@ public class Indolently {
         return empty(itself());
     }
 
+    private static final Predicate<Optional<?>> present = Optional::isPresent;
+
     public static Predicate<Optional<?>> present() {
-        return Optional::isPresent;
+        return present;
     }
 
     public static <T extends CharSequence> Predicate<T> blank() {
