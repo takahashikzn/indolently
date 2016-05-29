@@ -2218,6 +2218,22 @@ public class Indolently {
         return x -> x;
     }
 
+    public static <T, S> Function<T, S> fixed(final S val) {
+        return x -> val;
+    }
+
+    public static <T> Predicate<T> fixed(final boolean val) {
+        return x -> val;
+    }
+
+    public static Predicate<Boolean> asis() {
+        return x -> x;
+    }
+
+    public static <T> Predicate<T> echt() {
+        return fixed(true);
+    }
+
     public static <T> Predicate<T> not(final Predicate<T> f) {
         return f.negate();
     }
