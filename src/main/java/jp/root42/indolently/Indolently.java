@@ -2225,7 +2225,7 @@ public class Indolently {
     }
 
     public static <T> Predicate<T> fixed(final boolean val) {
-        return x -> val;
+        return val ? vrai() : faux();
     }
 
     private static final Predicate<Boolean> asis = x -> x;
