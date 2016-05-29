@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static jp.root42.indolently.Indolently.*;
+
 
 /**
  * @param <T> -
@@ -33,7 +35,7 @@ public interface EdgeAwareIterable<T>
      * @throws NoSuchElementException if empty
      */
     default T head() {
-        return this.head(x -> true).get();
+        return this.head(vrai()).get();
     }
 
     /**

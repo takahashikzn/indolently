@@ -37,8 +37,8 @@ public class MatchableTest {
         assertTrue(map("123", 1, "456", 2).keys().some(x -> x.matches("\\d+")));
         assertFalse(map("123", 1, "456", 2).keys().some(x -> x.matches("[A-Za-z]+")));
 
-        assertFalse(map().keys().some(x -> true));
-        assertFalse(map().keys().some(x -> false));
+        assertFalse(map().keys().some(vrai()));
+        assertFalse(map().keys().some(faux()));
     }
 
     /**
@@ -51,8 +51,8 @@ public class MatchableTest {
         assertFalse(map("123", 1, "456", 2).keys().every(x -> x.matches("[A-Za-z]+")));
         assertFalse(map("123", 1, "abc", 2).keys().every(x -> x.matches("[A-Za-z]+")));
 
-        assertTrue(map().keys().every(x -> true));
-        assertTrue(map().keys().every(x -> false));
+        assertTrue(map().keys().every(vrai()));
+        assertTrue(map().keys().every(faux()));
     }
 
     /**
@@ -65,7 +65,7 @@ public class MatchableTest {
         assertTrue(map("123", 1, "456", 2).keys().none(x -> x.matches("[A-Za-z]+")));
         assertFalse(map("123", 1, "abc", 2).keys().none(x -> x.matches("[A-Za-z]+")));
 
-        assertTrue(map().keys().none(x -> true));
-        assertTrue(map().keys().none(x -> false));
+        assertTrue(map().keys().none(vrai()));
+        assertTrue(map().keys().none(faux()));
     }
 }

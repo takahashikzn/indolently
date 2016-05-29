@@ -484,7 +484,7 @@ public class Expressive {
         Match.IntroCase<C> when(Predicate<? super C> pred);
 
         default Match.IntroCase<C> when(final boolean pred) {
-            return this.when(x -> pred);
+            return this.when(fixed(pred));
         }
 
         default Match.IntroCase<C> when(final Supplier<? extends C> pred) {
@@ -531,7 +531,7 @@ public class Expressive {
             }
 
             default Match.Case<C, T> when(final boolean when) {
-                return this.when(x -> when);
+                return this.when(fixed(when));
             }
 
             default Match.Case<C, T> when(final BooleanSupplier when) {

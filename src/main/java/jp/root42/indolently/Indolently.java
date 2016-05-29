@@ -2230,8 +2230,12 @@ public class Indolently {
         return x -> x;
     }
 
-    public static <T> Predicate<T> echt() {
+    public static <T> Predicate<T> vrai() {
         return fixed(true);
+    }
+
+    public static <T> Predicate<T> faux() {
+        return fixed(false);
     }
 
     public static <T> Predicate<T> not(final Predicate<T> f) {
