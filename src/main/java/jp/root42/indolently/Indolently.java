@@ -2302,8 +2302,10 @@ public class Indolently {
         return gele(itself(), l, u);
     }
 
+    private static final Predicate<? extends CharSequence> empty = empty(itself());
+
     public static <T extends CharSequence> Predicate<T> empty() {
-        return empty(itself());
+        return cast(empty);
     }
 
     private static final Predicate<Optional<?>> present = Optional::isPresent;
@@ -2312,12 +2314,16 @@ public class Indolently {
         return present;
     }
 
+    private static final Predicate<? extends CharSequence> blank = blank(itself());
+
     public static <T extends CharSequence> Predicate<T> blank() {
-        return blank(itself());
+        return cast(blank);
     }
 
+    private static final Predicate<?> nil = nil(itself());
+
     public static <T> Predicate<T> nil() {
-        return nil(itself());
+        return cast(nil);
     }
 
     public static <T> Predicate<T> isa(final Class<?> cls) {
