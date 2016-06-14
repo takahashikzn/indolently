@@ -89,7 +89,7 @@ public interface SList<T>
 
         final int i = Indolently.idx(this, index);
 
-        return (i < this.size()) ? Indolently.opt(this.get(i)) : Optional.empty();
+        return (0 <= i) && (i < this.size()) ? Indolently.opt(this.get(i)) : Optional.empty();
     }
 
     /**

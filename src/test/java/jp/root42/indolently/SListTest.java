@@ -32,6 +32,19 @@ import static org.junit.Assert.*;
 public class SListTest {
 
     /**
+     * Test of {@link SList#opt(int)}.
+     */
+    @Test
+    public void opt() {
+
+        assertThat(list().opt(0)).isEmpty();
+        assertThat(list('a').opt(0)).contains('a');
+        assertThat(list('a').opt(1)).isEmpty();
+        assertThat(list('a').opt(-1)).contains('a');
+        assertThat(list('a').opt(-2)).isEmpty();
+    }
+
+    /**
      * Test of {@link SList#group(Function)}.
      */
     @Test
