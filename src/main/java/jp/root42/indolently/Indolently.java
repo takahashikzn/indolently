@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import jp.root42.indolently.bridge.ObjFactory;
@@ -2393,6 +2394,14 @@ public class Indolently {
 
     public static <X, T extends CharSequence> Predicate<X> blank(final Function<X, ? extends T> f) {
         return x -> blank(f.apply(x));
+    }
+
+    public static <T extends CharSequence> Predicate<T> regex(final String regex) {
+        return regex(Pattern.compile(regex));
+    }
+
+    public static <T extends CharSequence> Predicate<T> regex(final Pattern regex) {
+        return x -> regex.matcher(x).matches();
     }
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {
