@@ -25,24 +25,22 @@ public class Regexive {
     protected Regexive() {}
 
     /**
-     * create matcher instance.
+     * create pattern instance.
      *
      * @param pattern pattern string
-     * @param text target string
-     * @return enhanced Matcher instance
+     * @return enhanced Pattern instance
      */
-    public static SMatcher regex(final String pattern, final String text) {
-        return regex(Pattern.compile(pattern), text);
+    public static SPtrn regex(final String pattern) {
+        return regex(Pattern.compile(pattern));
     }
 
     /**
-     * create matcher instance.
+     * create pattern instance.
      *
      * @param pattern pattern object
-     * @param text target string
-     * @return enhanced Matcher instance
+     * @return enhanced Pattern instance
      */
-    public static SMatcher regex(final Pattern pattern, final String text) {
-        return new SMatcherImpl(pattern.matcher(text), text);
+    public static SPtrn regex(final Pattern pattern) {
+        return new SPtrnImpl(pattern);
     }
 }

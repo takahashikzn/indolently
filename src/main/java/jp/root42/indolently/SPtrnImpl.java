@@ -1,4 +1,4 @@
-// Copyright 2014 takahashikzn
+// Copyright 2016 takahashikzn
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,29 +13,25 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.util.regex.Matcher;
-
-import jp.root42.indolently.bridge.RegexMatcherDelegate;
+import java.util.regex.Pattern;
 
 
 /**
- * Implementation of {@link SMatcher}.
+ * {@link SPtrn} implementation.
  *
  * @author takahashikzn
  */
-final class SMatcherImpl
-    extends RegexMatcherDelegate
-    implements SMatcher {
+final class SPtrnImpl
+    implements SPtrn {
 
-    private final String text;
+    private final Pattern pattern;
 
-    public SMatcherImpl(final Matcher matcher, final CharSequence text) {
-        super(matcher);
-        this.text = text.toString();
+    SPtrnImpl(final Pattern pattern) {
+        this.pattern = pattern;
     }
 
     @Override
-    public String text() {
-        return this.text;
+    public Pattern ptrn() {
+        return this.pattern;
     }
 }

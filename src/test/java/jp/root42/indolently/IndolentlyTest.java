@@ -850,4 +850,16 @@ public class IndolentlyTest {
         assertThat(uniq(list(1, 2, 3, 1, 2, 4), (x, y) -> x == y)).isEqualTo(list(1, 2, 3, 4));
         assertThat(uniq(list(1, 2, 3, -1, -2, 4), (x, y) -> Math.abs(x) == Math.abs(y))).isEqualTo(list(1, 2, 3, 4));
     }
+
+    /**
+     * {@link Indolently#re(String)}
+     */
+    @Test
+    public void testRe() {
+
+        assertThat(re("`d+").test("")).isFalse();
+        assertThat(re("`d+").test("123")).isTrue();
+        assertThat(re("`d+").test("123")).isTrue();
+        assertThat(re("`d+").test("abc")).isFalse();
+    }
 }

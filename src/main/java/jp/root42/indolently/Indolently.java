@@ -2396,12 +2396,16 @@ public class Indolently {
         return x -> blank(f.apply(x));
     }
 
-    public static <T extends CharSequence> Predicate<T> regex(final String regex) {
-        return regex(Pattern.compile(regex));
+    public static SPtrn re(final String regex) {
+        return re(regex, "`");
     }
 
-    public static <T extends CharSequence> Predicate<T> regex(final Pattern regex) {
-        return x -> regex.matcher(x).matches();
+    public static SPtrn re(final String regex, final String escape) {
+        return re(Pattern.compile(regex.replaceAll(escape, "\\\\")));
+    }
+
+    public static SPtrn re(final Pattern regex) {
+        return Regexive.regex(regex);
     }
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {

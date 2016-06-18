@@ -31,10 +31,10 @@ public class SMatcherTest {
     @Test
     public void testRegex() {
 
-        assertThat(list(regex("\\w+", "foo.bar.baz"))) //
+        assertThat(list(regex("\\w+").matcher("foo.bar.baz"))) //
             .isEqualTo(list("foo", "bar", "baz"));
 
-        assertThat(list(regex("\\d+", "abc"))) //
+        assertThat(list(regex("\\d+").matcher("abc"))) //
             .isEqualTo(list());
     }
 }
