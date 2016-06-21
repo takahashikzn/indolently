@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 
@@ -33,5 +34,26 @@ final class SPtrnImpl
     @Override
     public Pattern ptrn() {
         return this.pattern;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof SPtrn)) {
+            return false;
+        }
+
+        return this.ptrn().equals(((SPtrn) o).ptrn());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getClass(), this.pattern);
+    }
+
+    @Override
+    public String toString() {
+        return this.pattern.toString();
     }
 }
