@@ -151,7 +151,7 @@ public class Duo<F, S>
             return false;
         }
 
-        final Duo<?, ?> that = (Duo<?, ?>) o;
+        final Duo<?, ?> that = cast(o);
 
         return equiv(this.fst, that.fst) && equiv(this.snd, that.snd);
     }

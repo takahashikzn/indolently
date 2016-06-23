@@ -209,7 +209,7 @@ public interface SIter<T>
 
             @Override
             public R next() {
-                return this.hasNext() ? this.cur.next() : Expressive.raise(() -> new NoSuchElementException());
+                return this.hasNext() ? this.cur.next() : Expressive.raise(NoSuchElementException::new);
             }
         };
     }

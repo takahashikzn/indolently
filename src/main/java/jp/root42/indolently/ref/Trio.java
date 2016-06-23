@@ -263,7 +263,7 @@ public class Trio<F, S, T>
             return false;
         }
 
-        final Trio<?, ?, ?> that = (Trio<?, ?, ?>) o;
+        final Trio<?, ?, ?> that = cast(o);
 
         return equiv(this.fst, that.fst) && equiv(this.snd, that.snd) && equiv(this.trd, that.trd);
     }
