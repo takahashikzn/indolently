@@ -1028,7 +1028,7 @@ public class Indolently {
 
     @SafeVarargs
     public static <T> T choose(final Supplier<? extends T>... suppliers) {
-        return choose(null, suppliers);
+        return choose((T) null, suppliers);
     }
 
     @SafeVarargs
