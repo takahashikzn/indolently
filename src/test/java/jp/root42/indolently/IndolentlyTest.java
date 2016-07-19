@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -861,5 +862,18 @@ public class IndolentlyTest {
         assertThat(re("`d+").test("123")).isTrue();
         assertThat(re("`d+").test("123")).isTrue();
         assertThat(re("`d+").test("abc")).isFalse();
+    }
+
+    /**
+     * {@link Indolently#not(java.util.function.Predicate)}
+     */
+    @Test
+    public void testNot() {
+
+        assertThat(nil()).isSameAs(nil());
+        assertThat(nil().test(null)).isTrue();
+        assertThat(not(nil())).accepts(0);
+        assertThat(not((final Integer x) -> x == 0)).accepts(1);
+        assertThat(not(not(nil()))).isSameAs(nil());
     }
 }

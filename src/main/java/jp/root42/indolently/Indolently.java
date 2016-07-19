@@ -2247,8 +2247,18 @@ public class Indolently {
         return cast(faux);
     }
 
+    private static final Predicate<?> nil = x -> x == null;
+
+    public static <T> Predicate<T> nil() {
+        return cast(nil);
+    }
+
+    private static final Predicate<?> nonnil = x -> x != null;
+
     public static <T> Predicate<T> not(final Predicate<T> f) {
-        return f.negate();
+        return (f == nil) ? cast(nonnil) //
+            : (f == nonnil) ? cast(nil) //
+                : f.negate();
     }
 
     @SafeVarargs
@@ -2319,12 +2329,6 @@ public class Indolently {
 
     public static <T extends CharSequence> Predicate<T> blank() {
         return cast(blank);
-    }
-
-    private static final Predicate<?> nil = nil(itself());
-
-    public static <T> Predicate<T> nil() {
-        return cast(nil);
     }
 
     public static <T> Predicate<T> isa(final Class<?> cls) {
