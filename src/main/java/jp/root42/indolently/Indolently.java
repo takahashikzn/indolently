@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -2439,5 +2440,27 @@ public class Indolently {
 
     public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) {
         return x -> val.contains(f.apply(x));
+    }
+
+    private static final Consumer<?> nop = x -> {};
+
+    /**
+     * Do nothing Consumer.
+     *
+     * @return do nothing Consumer
+     */
+    public static <T> Consumer<T> nop() {
+        return cast(nop);
+    }
+
+    private static final BiConsumer<?, ?> noop = (x, y) -> {};
+
+    /**
+     * Do nothing Consumer.
+     *
+     * @return do nothing Consumer
+     */
+    public static <X, Y> BiConsumer<X, Y> noop() {
+        return cast(noop);
     }
 }
