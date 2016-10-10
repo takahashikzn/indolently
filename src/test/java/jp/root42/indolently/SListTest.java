@@ -173,6 +173,12 @@ public class SListTest {
         assertThat(list(1, 2, 3).slice(4)).isEqualTo(list());
         assertThat(list(1, 2, 3).slice(0, 4)).isEqualTo(list(1, 2, 3));
         assertThat(list(1, 2, 3).slice(2, 1)).isEqualTo(list());
+        assertThat(list().slice(0, 0)).isEqualTo(list());
+        assertThat(list().slice(0, 1)).isEqualTo(list());
+        assertThat(list().slice(1, 1)).isEqualTo(list());
+        assertThat(list(1).slice(1, 1)).isEqualTo(list());
+        assertThat(list().slice(0, -1)).isEqualTo(list());
+        assertThat(list(1).slice(0, -1)).isEqualTo(list());
         assertThat(Iterative.range(1, 10).list().slice(-5, 0)).isEqualTo(list(6, 7, 8, 9, 10));
 
         final SList<Integer> original = list(1, 2, 3);
