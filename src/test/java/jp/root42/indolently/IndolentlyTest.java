@@ -692,8 +692,7 @@ public class IndolentlyTest {
         final SMap<String, Object> actualNestedMap = map( //
             "int", 1 //
             , "string", "abc" //
-            , "level1",
-            map( //
+            , "level1", map( //
                 "level2", map( //
                     "level3", listOf(map("level4", 42))))).freeze();
 

@@ -2314,6 +2314,12 @@ public class Indolently {
         return gele(itself(), l, u);
     }
 
+    private static final Predicate<? extends Iterable<?>> hollow = x -> empty(x);
+
+    public static <X extends Iterable<T>, T> Predicate<X> hollow() {
+        return cast(hollow);
+    }
+
     private static final Predicate<? extends CharSequence> empty = empty(itself());
 
     public static <T extends CharSequence> Predicate<T> empty() {
