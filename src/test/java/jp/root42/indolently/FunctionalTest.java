@@ -75,7 +75,7 @@ public class FunctionalTest {
 
         final Function<Integer, Integer> fib = function( //
             (final Function<Integer, Integer> self) -> {
-                self.apply(1); // check no stackoverflow
+                assertThat(self.apply(1)).isEqualTo(1); // check no stackoverflow
                 initCount.val++;
             }, (self, x) -> //
             (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
