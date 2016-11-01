@@ -25,8 +25,7 @@ import jp.root42.indolently.Expressive;
  * @author takahashikzn
  */
 @FunctionalInterface
-public interface Expression<T>
-    extends Supplier<T> {
+public interface Expression<T> {
 
     /**
      * evaluate this expression.
@@ -36,12 +35,26 @@ public interface Expression<T>
      */
     T eval() throws Exception;
 
-    @Override
+    /**
+     * evaluate this expression.
+     *
+     * @return evaluation result
+     * @throws RuntimeException if anything wrong.
+     */
     default T get() {
         try {
             return this.eval();
         } catch (final Exception e) {
             return Expressive.raise(e);
         }
+    }
+
+    /**
+     * adapt this expression to {@link Supplier} interface.
+     *
+     * @return Supplier instance
+     */
+    default Supplier<T> asSupplier() {
+        return this::get;
     }
 }
