@@ -99,9 +99,7 @@ public interface Reducible<T> {
      * @see #mapred(Function, BiFunction)
      */
     default Optional<T> reduce(final Function3<Integer, ? super T, ? super T, ? extends T> f) {
-
-        // "x -> x" lambda literal occurs compilation error on OracleJDK compiler
-        return this.mapred(Function.identity(), f);
+        return this.mapred(x -> x, f);
     }
 
     /**
