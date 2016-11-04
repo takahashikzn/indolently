@@ -159,7 +159,7 @@ int sumOfRange(final int from, final int to) {
 }
 
 // equivalent to range(-2, 5).reduce((l, r) -> l + r).get() => 12
-Systme.out.println(sumOfRange(-2, 5));
+System.out.println(sumOfRange(-2, 5));
 ```
 
 
