@@ -220,6 +220,34 @@ public class ExpressiveTest {
      * {@link Expressive#match(Object)}
      */
     @Test
+    public void testMatchType2() {
+
+        final Function<Foo, String> f = //
+            ctx -> match(ctx) //
+                .type((final Bar x) -> "BAR!!") //
+                .type((final Baz x) -> "BAZ!!") //
+                .none("FOO!!");
+
+        assertThat(f.apply(new Foo())).isEqualTo("FOO!!");
+        assertThat(f.apply(new Bar())).isEqualTo("BAR!!");
+        assertThat(f.apply(new Baz())).isEqualTo("BAZ!!");
+    }
+
+    @SuppressWarnings("javadoc")
+    public static class Foo {}
+
+    @SuppressWarnings("javadoc")
+    public static class Bar
+        extends Foo {}
+
+    @SuppressWarnings("javadoc")
+    public static class Baz
+        extends Foo {}
+
+    /**
+     * {@link Expressive#match(Object)}
+     */
+    @Test
     public void testMatchConst() {
 
         final Function<Integer, String> f = //
