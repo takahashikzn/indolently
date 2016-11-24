@@ -793,44 +793,32 @@ public class Indolently {
         });
     }
 
-    public static <K, V> SMap<K, V> freeze(final Map<? extends K, ? extends V> map) {
-
-        @SuppressWarnings("unchecked")
-        final SMap<K, V> rslt = $(Collections.unmodifiableMap($(map).map(freezer())));
-
-        return rslt;
-    }
-
-    public static <T> SSet<T> freeze(final Set<? extends T> elems) {
-
-        @SuppressWarnings("unchecked")
-        final SSet<T> rslt = $(Collections.unmodifiableSet($(elems).map(freezer())));
-
-        return rslt;
-    }
-
-    public static <T> SList<T> freeze(final List<? extends T> elems) {
-
-        @SuppressWarnings("unchecked")
-        final SList<T> rslt = $(Collections.unmodifiableList($(elems).map(freezer())));
-
-        return rslt;
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static Function freezer() {
+    private static final Function freezer = x -> {
+        if (x instanceof List) {
+            return freeze((List) x);
+        } else if (x instanceof Set) {
+            return freeze((Set) x);
+        } else if (x instanceof Map) {
+            return freeze((Map) x);
+        } else {
+            return x;
+        }
+    };
 
-        return x -> {
-            if (x instanceof List) {
-                return freeze((List) x);
-            } else if (x instanceof Set) {
-                return freeze((Set) x);
-            } else if (x instanceof Map) {
-                return freeze((Map) x);
-            } else {
-                return x;
-            }
-        };
+    @SuppressWarnings("unchecked")
+    public static <K, V> SMap<K, V> freeze(final Map<? extends K, ? extends V> map) {
+        return $(Collections.unmodifiableMap($(map).map(freezer)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> SSet<T> freeze(final Set<? extends T> elems) {
+        return $(Collections.unmodifiableSet($(elems).map(freezer)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> SList<T> freeze(final List<? extends T> elems) {
+        return $(Collections.unmodifiableList($(elems).map(freezer)));
     }
 
     /**
