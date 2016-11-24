@@ -198,14 +198,12 @@ final SFunc<Integer, Integer> fib = func(
 final Function<Integer, Integer> memoFib = fib.memoize();
 
 // print list of first 42nd fibonacci numbers
-System.out.println(
-    range(0, 42)
+range(0, 42)
     .mapred(
         list(),
         (rem, val) -> rem.push(memoFib.apply(val))
     )
-    .get()
-);
+    .ifPresent(System.out::println);
 ```
 
 See JUnit testcase for more details.
