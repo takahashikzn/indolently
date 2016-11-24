@@ -249,12 +249,12 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
     @Override
     default SStream<T> stream() {
-        return Indolently.wrap(Collection.super.stream());
+        return Indolently.$(Collection.super.stream());
     }
 
     @Override
     default SStream<T> parallelStream() {
-        return Indolently.wrap(Collection.super.parallelStream());
+        return Indolently.$(Collection.super.parallelStream());
     }
 
     /**

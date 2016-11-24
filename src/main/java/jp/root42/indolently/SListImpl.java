@@ -55,7 +55,7 @@ class SListImpl<T>
 
     @Override
     public SIter<T> iterator() {
-        return Indolently.wrap(this.store.iterator());
+        return Indolently.$(this.store.iterator());
     }
 
     // keep original order

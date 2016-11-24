@@ -580,7 +580,7 @@ public class Indolently {
      */
     public static SIter<Character> chars(final CharSequence cs) {
 
-        return wrap(new Iterator<Character>() {
+        return $(new Iterator<Character>() {
 
             private final int len = cs.length();
 
@@ -745,8 +745,7 @@ public class Indolently {
     }
 
     public static <K, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map, final Comparator<? super K> comp) {
-        return wrap(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator")))
-            .pushAll(map);
+        return $(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(map);
     }
 
     public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
@@ -760,8 +759,7 @@ public class Indolently {
     }
 
     public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
-        return wrap(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator")))
-            .pushAll(elems);
+        return $(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(elems);
     }
 
     public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
@@ -786,7 +784,7 @@ public class Indolently {
 
     public static <T> SList<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
 
-        return wrap(elems).reduce(list(), (ret, x) -> {
+        return $(elems).reduce(list(), (ret, x) -> {
             if (ret.isEmpty() || !ret.some(y -> f.test(x, y))) {
                 ret.add(x);
             }
@@ -798,7 +796,7 @@ public class Indolently {
     public static <K, V> SMap<K, V> freeze(final Map<? extends K, ? extends V> map) {
 
         @SuppressWarnings("unchecked")
-        final SMap<K, V> rslt = wrap(Collections.unmodifiableMap(wrap(map).map(freezer())));
+        final SMap<K, V> rslt = $(Collections.unmodifiableMap($(map).map(freezer())));
 
         return rslt;
     }
@@ -806,7 +804,7 @@ public class Indolently {
     public static <T> SSet<T> freeze(final Set<? extends T> elems) {
 
         @SuppressWarnings("unchecked")
-        final SSet<T> rslt = wrap(Collections.unmodifiableSet(wrap(elems).map(freezer())));
+        final SSet<T> rslt = $(Collections.unmodifiableSet($(elems).map(freezer())));
 
         return rslt;
     }
@@ -814,7 +812,7 @@ public class Indolently {
     public static <T> SList<T> freeze(final List<? extends T> elems) {
 
         @SuppressWarnings("unchecked")
-        final SList<T> rslt = wrap(Collections.unmodifiableList(wrap(elems).map(freezer())));
+        final SList<T> rslt = $(Collections.unmodifiableList($(elems).map(freezer())));
 
         return rslt;
     }
@@ -1565,6 +1563,18 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link Indolently#wrap(SList)}.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     * @deprecated this is meaningless method call.
+     */
+    @Deprecated
+    public static <T> SList<T> $(final SList<T> x) {
+        return wrap(x);
+    }
+
+    /**
      * Just for producing compilation warning.
      *
      * @param x any wrapped one
@@ -1577,6 +1587,18 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link Indolently#wrap(SSet)}.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     * @deprecated this is meaningless method call.
+     */
+    @Deprecated
+    public static <T> SSet<T> $(final SSet<T> x) {
+        return wrap(x);
+    }
+
+    /**
      * Just for producing compilation warning.
      *
      * @param x any wrapped one
@@ -1586,6 +1608,18 @@ public class Indolently {
     @Deprecated
     public static <K, V> SMap<K, V> wrap(final SMap<K, V> x) {
         return x;
+    }
+
+    /**
+     * An alias of {@link Indolently#wrap(SMap)}.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     * @deprecated this is meaningless method call.
+     */
+    @Deprecated
+    public static <K, V> SMap<K, V> $(final SMap<K, V> x) {
+        return wrap(x);
     }
 
     /**
@@ -1637,6 +1671,16 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link Indolently#wrap(Map)}.
+     *
+     * @param map map to wrap
+     * @return wrapped map
+     */
+    public static <K, V> SMap<K, V> $(final Map<K, V> map) {
+        return wrap(map);
+    }
+
+    /**
      * Wrap a list.
      *
      * @param list list to wrap
@@ -1646,6 +1690,16 @@ public class Indolently {
         return (list == null) ? null //
             : (list instanceof SList) ? (SList<T>) list //
                 : new SListImpl<>(list);
+    }
+
+    /**
+     * An alias of {@link Indolently#wrap(List)}.
+     *
+     * @param list list to wrap
+     * @return wrapped list
+     */
+    public static <T> SList<T> $(final List<T> list) {
+        return wrap(list);
     }
 
     /**
@@ -1661,6 +1715,16 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link Indolently#wrap(Set)}.
+     *
+     * @param set set to wrap
+     * @return wrapped set
+     */
+    public static <T> SSet<T> $(final Set<T> set) {
+        return wrap(set);
+    }
+
+    /**
      * Wrap a map.
      *
      * @param map map to wrap
@@ -1669,7 +1733,19 @@ public class Indolently {
      * @return wrapped map
      */
     public static <K, V> SMap<K, V> wrap(final Map<K, V> map, final K key, final V val) {
-        return wrap(Objects.requireNonNull(map, "map")).push(key, val);
+        return $(Objects.requireNonNull(map, "map")).push(key, val);
+    }
+
+    /**
+     * An alias of {@link Indolently#wrap(Map, Object, Object)}.
+     *
+     * @param map map to wrap
+     * @param key key to put
+     * @param val value to put
+     * @return wrapped map
+     */
+    public static <K, V> SMap<K, V> $(final Map<K, V> map, final K key, final V val) {
+        return wrap(map, key, val);
     }
 
     /**
@@ -1681,7 +1757,19 @@ public class Indolently {
      */
     @SafeVarargs
     public static <T> SList<T> wrap(final List<T> list, final T... elems) {
-        return wrap(Objects.requireNonNull(list, "list")).pushAll(list(elems));
+        return $(Objects.requireNonNull(list, "list")).pushAll(list(elems));
+    }
+
+    /**
+     * An alias of {@link Indolently#wrap(List, Object...)}.
+     *
+     * @param list list to wrap
+     * @param elems elements to add
+     * @return wrapped list
+     */
+    @SafeVarargs
+    public static <T> SList<T> $(final List<T> list, final T... elems) {
+        return wrap(list, elems);
     }
 
     /**
@@ -1693,7 +1781,19 @@ public class Indolently {
      */
     @SafeVarargs
     public static <T> SSet<T> wrap(final Set<T> set, final T... elems) {
-        return wrap(Objects.requireNonNull(set, "set")).pushAll(list(elems));
+        return $(Objects.requireNonNull(set, "set")).pushAll(list(elems));
+    }
+
+    /**
+     * An alias of {@link Indolently#wrap(Set, Object...)}.
+     *
+     * @param set set to wrap
+     * @param elems elements to add
+     * @return wrapped set
+     */
+    @SafeVarargs
+    public static <T> SSet<T> $(final Set<T> set, final T... elems) {
+        return wrap(set, elems);
     }
 
     /**
@@ -1733,6 +1833,16 @@ public class Indolently {
     }
 
     /**
+     * An alias of {@link Indolently#wrap(Iterator)}.
+     *
+     * @param iter iterator to wrap
+     * @return wrapped iterator
+     */
+    public static <T> SIter<T> $(final Iterator<? extends T> iter) {
+        return wrap(iter);
+    }
+
+    /**
      * Wrap a stream.
      *
      * @param stream stream to wrap
@@ -1742,6 +1852,16 @@ public class Indolently {
         return (stream == null) ? null //
             : (stream instanceof SStream) ? (SStream<T>) stream //
                 : new SStreamImpl<>(stream);
+    }
+
+    /**
+     * An alias of {@link Indolently#wrap(Stream)}.
+     *
+     * @param stream stream to wrap
+     * @return wrapped stream
+     */
+    public static <T> SStream<T> $(final Stream<T> stream) {
+        return wrap(stream);
     }
 
     public static <K, V> SMap<K, V> map(final K key, final V val) {

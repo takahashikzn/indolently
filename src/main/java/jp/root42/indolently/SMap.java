@@ -70,13 +70,13 @@ public interface SMap<K, V>
 
     /**
      * Wrap a map.
-     * This method is an alias of {@link Indolently#wrap(Map)}.
+     * This method is an alias of {@link Indolently#$(Map)}.
      *
      * @param map map to wrap
      * @return wrapped map
      */
     public static <K, V> SMap<K, V> of(final Map<K, V> map) {
-        return Indolently.wrap(map);
+        return Indolently.$(map);
     }
 
     /**

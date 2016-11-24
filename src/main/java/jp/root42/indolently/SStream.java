@@ -44,7 +44,7 @@ public interface SStream<T>
 
     @Override
     default SStream<T> each(final Consumer<? super T> f) {
-        return Indolently.wrap(this.peek(f));
+        return Indolently.$(this.peek(f));
     }
 
     @Override

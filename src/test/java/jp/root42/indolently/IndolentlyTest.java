@@ -469,7 +469,7 @@ public class IndolentlyTest {
     @Test
     public void testSortMap() {
 
-        final SMap<Integer, Integer> map = wrap(new LinkedHashMap<>(), 1, 1).push(3, 3).push(2, 2);
+        final SMap<Integer, Integer> map = $(new LinkedHashMap<>(), 1, 1).push(3, 3).push(2, 2);
 
         assertThat(list(map.keySet())) //
             .isEqualTo(list(1, 3, 2));
@@ -477,8 +477,8 @@ public class IndolentlyTest {
         assertThat(list(sort(map).keySet())) //
             .isEqualTo(list(1, 2, 3));
 
-        assertThat(list(
-            sort(wrap(new LinkedHashMap<>(), new SortKey(3), "a").push(new SortKey(1), "b").push(new SortKey(2), "c"),
+        assertThat(
+            list(sort($(new LinkedHashMap<>(), new SortKey(3), "a").push(new SortKey(1), "b").push(new SortKey(2), "c"),
                 x -> x.val).keySet()).map(x -> x.val)) //
                     .isEqualTo(list(1, 2, 3));
     }

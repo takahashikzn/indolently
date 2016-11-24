@@ -53,13 +53,13 @@ public interface SList<T>
 
     /**
      * Wrap a list.
-     * This method is an alias of {@link Indolently#wrap(List)}.
+     * This method is an alias of {@link Indolently#$(List)}.
      *
      * @param list list to wrap
      * @return wrapped list
      */
     public static <T> SList<T> of(final List<T> list) {
-        return Indolently.wrap(list);
+        return Indolently.$(list);
     }
 
     /**

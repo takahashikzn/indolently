@@ -171,7 +171,7 @@ public interface SIter<T>
      * @see Collection#stream()
      */
     default SStream<T> stream() {
-        return Indolently.wrap(StreamSupport.stream(this.spliterator(), false));
+        return Indolently.$(StreamSupport.stream(this.spliterator(), false));
     }
 
     /**
@@ -181,12 +181,12 @@ public interface SIter<T>
      * @see Collection#parallelStream()
      */
     default SStream<T> parallelStream() {
-        return Indolently.wrap(StreamSupport.stream(this.spliterator(), true));
+        return Indolently.$(StreamSupport.stream(this.spliterator(), true));
     }
 
     @SuppressWarnings("javadoc")
     default <R> SIter<R> aggregate(final Function<? super Iterable<? extends T>, ? extends Iterable<? extends R>> f) {
-        return Indolently.wrap(f.apply(this).iterator());
+        return Indolently.$(f.apply(this).iterator());
     }
 
     @SuppressWarnings("javadoc")

@@ -616,7 +616,7 @@ public class Expressive {
 
     private static <C, T> Match.Case<C, T> toUnresolvedCase(final C ctx, final Predicate<? super C> condition) {
 
-        final Predicate<? super C> pred = Functional.wrap(condition).memoize();
+        final Predicate<? super C> pred = Functional.$(condition).memoize();
 
         return then -> new Match.Then<C, T>() {
 

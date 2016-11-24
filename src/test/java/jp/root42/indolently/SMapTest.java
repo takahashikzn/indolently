@@ -39,7 +39,7 @@ public class SMapTest {
         when(entryIter.hasNext()).thenReturn(true, false);
         when(entryIter.next()).thenReturn(mock(Entry.class));
 
-        final SIter<SEntry<String, String>> testee = Indolently.wrap(data).iterator();
+        final SIter<SEntry<String, String>> testee = Indolently.$(data).iterator();
 
         verify(entryIter, times(0)).hasNext();
 

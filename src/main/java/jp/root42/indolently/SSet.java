@@ -44,13 +44,13 @@ public interface SSet<T>
 
     /**
      * Wrap a set.
-     * This method is an alias of {@link Indolently#wrap(Set)}.
+     * This method is an alias of {@link Indolently#$(Set)}.
      *
      * @param set set to wrap
      * @return wrapped set
      */
     public static <T> SSet<T> of(final Set<T> set) {
-        return Indolently.wrap(set);
+        return Indolently.$(set);
     }
 
     /**
