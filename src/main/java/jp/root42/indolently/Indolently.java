@@ -1611,6 +1611,30 @@ public class Indolently {
     }
 
     /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     * @deprecated this is meaningless method call.
+     */
+    @Deprecated
+    public static <T> SIter<T> $(final SIter<T> x) {
+        return x;
+    }
+
+    /**
+     * Just for producing compilation warning.
+     *
+     * @param x any wrapped one
+     * @return argument itself
+     * @deprecated this is meaningless method call.
+     */
+    @Deprecated
+    public static <T> SStream<T> $(final SStream<T> x) {
+        return x;
+    }
+
+    /**
      * Wrap a map.
      *
      * @param map map to wrap
