@@ -1642,7 +1642,7 @@ public class Indolently {
      */
     public static <K, V> SMap<K, V> $(final Map<K, V> map) {
         return (map == null) ? null //
-            : (map instanceof SMap) ? (SMap<K, V>) map //
+            : (map instanceof SMap) ? cast(map) //
                 : new SMapImpl<>(map);
     }
 
@@ -1654,7 +1654,7 @@ public class Indolently {
      */
     public static <T> SList<T> $(final List<T> list) {
         return (list == null) ? null //
-            : (list instanceof SList) ? (SList<T>) list //
+            : (list instanceof SList) ? cast(list)//
                 : new SListImpl<>(list);
     }
 
@@ -1666,7 +1666,7 @@ public class Indolently {
      */
     public static <T> SSet<T> $(final Set<T> set) {
         return (set == null) ? null //
-            : (set instanceof SSet) ? (SSet<T>) set //
+            : (set instanceof SSet) ? cast(set) //
                 : new SSetImpl<>(set);
     }
 
@@ -1718,9 +1718,7 @@ public class Indolently {
         }
 
         if (iter instanceof SIter) {
-            @SuppressWarnings("unchecked")
-            final SIter<T> i = (SIter<T>) iter;
-            return i;
+            return cast(iter);
         }
 
         return new SIter<T>() {
@@ -1750,7 +1748,7 @@ public class Indolently {
      */
     public static <T> SStream<T> $(final Stream<T> stream) {
         return (stream == null) ? null //
-            : (stream instanceof SStream) ? (SStream<T>) stream //
+            : (stream instanceof SStream) ? cast(stream) //
                 : new SStreamImpl<>(stream);
     }
 
