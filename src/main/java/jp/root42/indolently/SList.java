@@ -119,7 +119,7 @@ public interface SList<T>
      * @return a set constructed from this instance.
      */
     default SSet<T> set() {
-        return Indolently.wrap(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
+        return Indolently.$(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
     }
 
     /**
@@ -241,7 +241,7 @@ public interface SList<T>
             return Indolently.list();
         }
 
-        return Indolently.wrap(this.subList(from, toIndex));
+        return Indolently.$(this.subList(from, toIndex));
     }
 
     /**
@@ -318,7 +318,7 @@ public interface SList<T>
     @Override
     default <K> SMap<K, SList<T>> group(final Function<? super T, ? extends K> fkey) {
 
-        return this.reduce(Indolently.wrap(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
+        return this.reduce(Indolently.$(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
 
             final K key = fkey.apply(y);
 

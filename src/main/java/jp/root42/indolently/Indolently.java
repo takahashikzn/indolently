@@ -1546,36 +1546,12 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> SList<T> wrap(final SList<T> x) {
-        return x;
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(SList)}.
-     *
-     * @param x any wrapped one
-     * @return argument itself
-     * @deprecated this is meaningless method call.
-     */
-    @Deprecated
     public static <T> SList<T> $(final SList<T> x) {
-        return wrap(x);
+        return x;
     }
 
     /**
      * Just for producing compilation warning.
-     *
-     * @param x any wrapped one
-     * @return argument itself
-     * @deprecated this is meaningless method call.
-     */
-    @Deprecated
-    public static <T> SSet<T> wrap(final SSet<T> x) {
-        return x;
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(SSet)}.
      *
      * @param x any wrapped one
      * @return argument itself
@@ -1583,7 +1559,7 @@ public class Indolently {
      */
     @Deprecated
     public static <T> SSet<T> $(final SSet<T> x) {
-        return wrap(x);
+        return x;
     }
 
     /**
@@ -1594,20 +1570,8 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <K, V> SMap<K, V> wrap(final SMap<K, V> x) {
-        return x;
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(SMap)}.
-     *
-     * @param x any wrapped one
-     * @return argument itself
-     * @deprecated this is meaningless method call.
-     */
-    @Deprecated
     public static <K, V> SMap<K, V> $(final SMap<K, V> x) {
-        return wrap(x);
+        return x;
     }
 
     /**
@@ -1652,20 +1616,10 @@ public class Indolently {
      * @param map map to wrap
      * @return wrapped map
      */
-    public static <K, V> SMap<K, V> wrap(final Map<K, V> map) {
+    public static <K, V> SMap<K, V> $(final Map<K, V> map) {
         return (map == null) ? null //
             : (map instanceof SMap) ? (SMap<K, V>) map //
                 : new SMapImpl<>(map);
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(Map)}.
-     *
-     * @param map map to wrap
-     * @return wrapped map
-     */
-    public static <K, V> SMap<K, V> $(final Map<K, V> map) {
-        return wrap(map);
     }
 
     /**
@@ -1674,20 +1628,10 @@ public class Indolently {
      * @param list list to wrap
      * @return wrapped list
      */
-    public static <T> SList<T> wrap(final List<T> list) {
+    public static <T> SList<T> $(final List<T> list) {
         return (list == null) ? null //
             : (list instanceof SList) ? (SList<T>) list //
                 : new SListImpl<>(list);
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(List)}.
-     *
-     * @param list list to wrap
-     * @return wrapped list
-     */
-    public static <T> SList<T> $(final List<T> list) {
-        return wrap(list);
     }
 
     /**
@@ -1696,20 +1640,10 @@ public class Indolently {
      * @param set set to wrap
      * @return wrapped set
      */
-    public static <T> SSet<T> wrap(final Set<T> set) {
+    public static <T> SSet<T> $(final Set<T> set) {
         return (set == null) ? null //
             : (set instanceof SSet) ? (SSet<T>) set //
                 : new SSetImpl<>(set);
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(Set)}.
-     *
-     * @param set set to wrap
-     * @return wrapped set
-     */
-    public static <T> SSet<T> $(final Set<T> set) {
-        return wrap(set);
     }
 
     /**
@@ -1720,20 +1654,8 @@ public class Indolently {
      * @param val value to put
      * @return wrapped map
      */
-    public static <K, V> SMap<K, V> wrap(final Map<K, V> map, final K key, final V val) {
-        return $(Objects.requireNonNull(map, "map")).push(key, val);
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(Map, Object, Object)}.
-     *
-     * @param map map to wrap
-     * @param key key to put
-     * @param val value to put
-     * @return wrapped map
-     */
     public static <K, V> SMap<K, V> $(final Map<K, V> map, final K key, final V val) {
-        return wrap(map, key, val);
+        return $(Objects.requireNonNull(map, "map")).push(key, val);
     }
 
     /**
@@ -1744,20 +1666,8 @@ public class Indolently {
      * @return wrapped list
      */
     @SafeVarargs
-    public static <T> SList<T> wrap(final List<T> list, final T... elems) {
-        return $(Objects.requireNonNull(list, "list")).pushAll(list(elems));
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(List, Object...)}.
-     *
-     * @param list list to wrap
-     * @param elems elements to add
-     * @return wrapped list
-     */
-    @SafeVarargs
     public static <T> SList<T> $(final List<T> list, final T... elems) {
-        return wrap(list, elems);
+        return $(Objects.requireNonNull(list, "list")).pushAll(list(elems));
     }
 
     /**
@@ -1768,20 +1678,8 @@ public class Indolently {
      * @return wrapped set
      */
     @SafeVarargs
-    public static <T> SSet<T> wrap(final Set<T> set, final T... elems) {
-        return $(Objects.requireNonNull(set, "set")).pushAll(list(elems));
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(Set, Object...)}.
-     *
-     * @param set set to wrap
-     * @param elems elements to add
-     * @return wrapped set
-     */
-    @SafeVarargs
     public static <T> SSet<T> $(final Set<T> set, final T... elems) {
-        return wrap(set, elems);
+        return $(Objects.requireNonNull(set, "set")).pushAll(list(elems));
     }
 
     /**
@@ -1790,7 +1688,7 @@ public class Indolently {
      * @param iter iterator to wrap
      * @return wrapped iterator
      */
-    public static <T> SIter<T> wrap(final Iterator<? extends T> iter) {
+    public static <T> SIter<T> $(final Iterator<? extends T> iter) {
         if (iter == null) {
             return null;
         }
@@ -1821,35 +1719,15 @@ public class Indolently {
     }
 
     /**
-     * An alias of {@link Indolently#wrap(Iterator)}.
-     *
-     * @param iter iterator to wrap
-     * @return wrapped iterator
-     */
-    public static <T> SIter<T> $(final Iterator<? extends T> iter) {
-        return wrap(iter);
-    }
-
-    /**
      * Wrap a stream.
      *
      * @param stream stream to wrap
      * @return wrapped stream
      */
-    public static <T> SStream<T> wrap(final Stream<T> stream) {
+    public static <T> SStream<T> $(final Stream<T> stream) {
         return (stream == null) ? null //
             : (stream instanceof SStream) ? (SStream<T>) stream //
                 : new SStreamImpl<>(stream);
-    }
-
-    /**
-     * An alias of {@link Indolently#wrap(Stream)}.
-     *
-     * @param stream stream to wrap
-     * @return wrapped stream
-     */
-    public static <T> SStream<T> $(final Stream<T> stream) {
-        return wrap(stream);
     }
 
     public static <K, V> SMap<K, V> map(final K key, final V val) {

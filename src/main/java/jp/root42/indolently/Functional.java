@@ -161,12 +161,8 @@ public class Functional {
         });
     }
 
-    public static <T> SSuppl<T> wrap(final Supplier<? extends T> suppl) {
-        return suppl(self -> {}, self -> suppl.get());
-    }
-
     public static <T> SSuppl<T> $(final Supplier<? extends T> suppl) {
-        return wrap(suppl);
+        return suppl(self -> {}, self -> suppl.get());
     }
 
     public static <T> SSuppl<T> suppl(final Consumer<? super Supplier<T>> init,
@@ -191,12 +187,8 @@ public class Functional {
         });
     }
 
-    public static <X, Y> SFunc<X, Y> wrap(final Function<? super X, ? extends Y> func) {
-        return func(self -> {}, (self, x) -> func.apply(x));
-    }
-
     public static <X, Y> SFunc<X, Y> $(final Function<? super X, ? extends Y> func) {
-        return wrap(func);
+        return func(self -> {}, (self, x) -> func.apply(x));
     }
 
     public static <X, Y> SFunc<X, Y> func(final Consumer<? super Function<X, Y>> init,
@@ -222,12 +214,8 @@ public class Functional {
         });
     }
 
-    public static <X0, X1, Y> SFunc2<X0, X1, Y> wrap(final BiFunction<? super X0, ? super X1, ? extends Y> func) {
-        return func2(self -> {}, (self, x0, x1) -> func.apply(x0, x1));
-    }
-
     public static <X0, X1, Y> SFunc2<X0, X1, Y> $(final BiFunction<? super X0, ? super X1, ? extends Y> func) {
-        return wrap(func);
+        return func2(self -> {}, (self, x0, x1) -> func.apply(x0, x1));
     }
 
     public static <X0, X1, Y> SFunc2<X0, X1, Y> func2(final Consumer<? super BiFunction<X0, X1, Y>> init,
@@ -276,12 +264,8 @@ public class Functional {
         });
     }
 
-    public static <X> SPred<X> wrap(final Predicate<? super X> pred) {
-        return pred(self -> {}, (self, x) -> pred.test(x));
-    }
-
     public static <X> SPred<X> $(final Predicate<? super X> pred) {
-        return wrap(pred);
+        return pred(self -> {}, (self, x) -> pred.test(x));
     }
 
     public static <X> SPred<X> pred(final Consumer<? super Predicate<X>> init,
@@ -307,12 +291,8 @@ public class Functional {
         });
     }
 
-    public static <X0, X1> SPred2<X0, X1> wrap(final BiPredicate<X0, X1> pred) {
-        return pred2(self -> {}, (self, x0, x1) -> pred.test(x0, x1));
-    }
-
     public static <X0, X1> SPred2<X0, X1> $(final BiPredicate<X0, X1> pred) {
-        return wrap(pred);
+        return pred2(self -> {}, (self, x0, x1) -> pred.test(x0, x1));
     }
 
     public static <X0, X1> SPred2<X0, X1> pred2(final Consumer<? super BiPredicate<X0, X1>> init,

@@ -297,7 +297,7 @@ public interface SMap<K, V>
 
     @Override
     default SIter<SEntry<K, V>> iterator() {
-        return Indolently.wrap(this.entrySet().iterator()).map(SEntry<K, V>::new);
+        return Indolently.$(this.entrySet().iterator()).map(SEntry<K, V>::new);
     }
 
     /**
