@@ -87,7 +87,11 @@ class SListImpl<T>
     @Override
     public List<T> subList(final int from, final int to) {
 
-        final int actFrom = Indolently.idx(this, from);
+        int actFrom = Indolently.idx(this, from);
+
+        if (actFrom < 0) {
+            actFrom = 0;
+        }
 
         final int actTo;
         if ((from < 0) && (to == 0)) {

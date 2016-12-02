@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -200,16 +201,56 @@ public class SListTest {
         assertThat(list(1, 2, 3).narrow(-3)).isEqualTo(list(1, 2, 3));
         assertThat(list(1, 2, 3).narrow(-3, -1)).isEqualTo(list(1, 2));
         assertThat(list(1, 2, 3).narrow(-3, 0)).isEqualTo(list(1, 2, 3));
+        assertThat(list(1, 2, 3).narrow(-4, 0)).isEqualTo(list(1, 2, 3));
         assertThat(list(1, 2, 3).narrow(3)).isEqualTo(list());
         assertThat(list(1, 2, 3).narrow(4)).isEqualTo(list());
         assertThat(list(1, 2, 3).narrow(0, 4)).isEqualTo(list(1, 2, 3));
         assertThat(list(1, 2, 3).narrow(2, 1)).isEqualTo(list());
         assertThat(Iterative.range(1, 10).list().narrow(-5, 0)).isEqualTo(list(6, 7, 8, 9, 10));
+        assertThat(list().narrow(-1, 0)).isEqualTo(list());
 
         final SList<Integer> original = list(1, 2, 3);
         final SList<Integer> sliced = original.narrow(0, 2);
         sliced.add(4);
         assertThat(original).isEqualTo(list(1, 2, 4, 3));
         assertThat(sliced).isEqualTo(list(1, 2, 4));
+    }
+
+    /**
+     * Test of {@link SList#startsWith(Collection)}
+     */
+    @Test
+    public void startsWith() {
+        assertThat(list(1, 2, 3).startsWith(null)).isFalse();
+        assertThat(list(1, 2, 3).startsWith(list())).isTrue();
+        assertThat(list().startsWith(list())).isTrue();
+        assertThat(list().startsWith(list(1))).isFalse();
+
+        assertThat(list(1, 2, 3).startsWith(list(1))).isTrue();
+        assertThat(list(1, 2, 3).startsWith(list(1, 2))).isTrue();
+        assertThat(list(1, 2, 3).startsWith(list(1, 2, 3))).isTrue();
+        assertThat(list(1, 2, 3).startsWith(list(1, 2, 3, 4))).isFalse();
+
+        assertThat(list(1, 2, 3).startsWith(list(2))).isFalse();
+        assertThat(list(1, 2, 3).startsWith(list(2, 3, 4))).isFalse();
+    }
+
+    /**
+     * Test of {@link SList#endsWith(Collection)}
+     */
+    @Test
+    public void endsWith() {
+        assertThat(list(1, 2, 3).endsWith(null)).isFalse();
+        assertThat(list(1, 2, 3).endsWith(list())).isTrue();
+        assertThat(list().endsWith(list())).isTrue();
+        assertThat(list().endsWith(list(1))).isFalse();
+
+        assertThat(list(1, 2, 3).endsWith(list(3))).isTrue();
+        assertThat(list(1, 2, 3).endsWith(list(2, 3))).isTrue();
+        assertThat(list(1, 2, 3).endsWith(list(1, 2, 3))).isTrue();
+        assertThat(list(1, 2, 3).endsWith(list(1, 2, 3, 4))).isFalse();
+
+        assertThat(list(1, 2, 3).endsWith(list(2))).isFalse();
+        assertThat(list(1, 2, 3).endsWith(list(2, 3, 4))).isFalse();
     }
 }

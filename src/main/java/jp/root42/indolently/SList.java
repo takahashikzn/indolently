@@ -230,7 +230,12 @@ public interface SList<T>
      */
     default SList<T> narrow(final int from, final int to) {
 
-        final int fromIndex = Indolently.idx(this, from);
+        int fromIndex = Indolently.idx(this, from);
+
+        if (fromIndex < 0) {
+            fromIndex = 0;
+        }
+
         int toIndex = Indolently.idx(this, to);
 
         if (((from < 0) && (toIndex == 0)) || (this.size() < toIndex)) {
@@ -398,5 +403,25 @@ public interface SList<T>
      */
     default SList<T> map(final int idx, final Function<? super T, ? extends T> f) {
         return this.clone().update(idx, f);
+    }
+
+    /**
+     * Test this list starts with specified elements or not.
+     *
+     * @param col elements
+     * @return {@code true} when this list starts with specified elements
+     */
+    default boolean startsWith(final Collection<T> col) {
+        return (col != null) && this.narrow(0, col.size()).equals(col);
+    }
+
+    /**
+     * Test this list ends with specified elements or not.
+     *
+     * @param col elements
+     * @return {@code true} when this list ends with specified elements
+     */
+    default boolean endsWith(final Collection<T> col) {
+        return (col != null) && this.narrow(-col.size(), 0).equals(col);
     }
 }
