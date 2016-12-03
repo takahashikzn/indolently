@@ -123,6 +123,16 @@ public interface SList<T>
     }
 
     /**
+     * convert this list to sorted{@link SSet}.
+     *
+     * @param comp a {@link Comparator}
+     * @return a set constructed from this instance.
+     */
+    default SSet<T> set(final Comparator<T> comp) {
+        return Indolently.$(ObjFactory.getInstance().<T> newSortedSet(comp)).pushAll(this);
+    }
+
+    /**
      * insert value at specified index then return this instance.
      *
      * @param idx insertion position.
