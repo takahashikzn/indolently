@@ -888,6 +888,8 @@ public class IndolentlyTest {
         assertThat(compare(list(1, 2, 3), list(1, 2, 3))).isEqualTo(Indolently.ComparisonResult.EQUAL);
         assertThat(compare(list(1, 2, 3), list(1, 2, 3, 4))).isEqualTo(Indolently.ComparisonResult.SMALL);
         assertThat(compare(list(1, 2, 3), list())).isEqualTo(Indolently.ComparisonResult.LARGE);
-        assertThat(compare(list(), list())).isEqualTo(Indolently.ComparisonResult.EQUAL);
+
+        // We have to use 'new ArrayList<Long>()' instead of 'list()' to avoid JDK's compilation error
+        assertThat(compare(new ArrayList<Long>(), list())).isEqualTo(Indolently.ComparisonResult.EQUAL);
     }
 }
