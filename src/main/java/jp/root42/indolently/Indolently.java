@@ -1474,10 +1474,17 @@ public class Indolently {
 
     public static <T extends Comparable<T>> ComparisonResult compare(final Iterable<T> l, final Iterable<T> r) {
 
-        final Iterator<T> li = l.iterator();
-        final Iterator<T> ri = r.iterator();
+        boolean lnext = false;
+        boolean rnext = false;
 
-        while (li.hasNext() && ri.hasNext()) {
+        for (final Iterator<T> li = l.iterator(), ri = r.iterator();;) {
+
+            lnext = li.hasNext();
+            rnext = ri.hasNext();
+
+            if (!lnext || !rnext) {
+                break;
+            }
 
             final ComparisonResult rslt = compare(li.next(), ri.next());
 
@@ -1486,9 +1493,27 @@ public class Indolently {
             }
         }
 
-        return li.hasNext() ? ComparisonResult.LARGE //
-            : ri.hasNext() ? ComparisonResult.SMALL //
+        return lnext ? ComparisonResult.LARGE //
+            : rnext ? ComparisonResult.SMALL //
                 : ComparisonResult.EQUAL;
+    }
+
+    public static <T extends Comparable<T>> ComparisonResult compare(final List<T> l, final List<T> r) {
+
+        final int lsize = l.size();
+        final int rsize = r.size();
+        final int len = Math.min(lsize, rsize);
+
+        for (int i = 0; i < len; i++) {
+
+            final ComparisonResult rslt = compare(l.get(i), r.get(i));
+
+            if (rslt != ComparisonResult.EQUAL) {
+                return rslt;
+            }
+        }
+
+        return compare(lsize, rsize);
     }
 
     @TypeUnsafe
