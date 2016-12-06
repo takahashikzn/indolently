@@ -1474,28 +1474,25 @@ public class Indolently {
 
     public static <T extends Comparable<T>> ComparisonResult compare(final Iterable<T> l, final Iterable<T> r) {
 
-        boolean lnext = false;
-        boolean rnext = false;
+        if ((l instanceof List) && (r instanceof List)) {
+            return compare((List<T>) l, (List<T>) r);
+        }
 
         for (final Iterator<T> li = l.iterator(), ri = r.iterator();;) {
 
-            lnext = li.hasNext();
-            rnext = ri.hasNext();
+            final boolean moreL = li.hasNext();
+            final boolean moreR = ri.hasNext();
 
-            if (!lnext || !rnext) {
-                break;
-            }
+            if (moreL && moreR) {
+                final ComparisonResult rslt = compare(li.next(), ri.next());
 
-            final ComparisonResult rslt = compare(li.next(), ri.next());
-
-            if (rslt != ComparisonResult.EQUAL) {
-                return rslt;
+                if (rslt != ComparisonResult.EQUAL) {
+                    return rslt;
+                }
+            } else {
+                return compare(moreL ? 1 : 0, moreR ? 1 : 0);
             }
         }
-
-        return lnext ? ComparisonResult.LARGE //
-            : rnext ? ComparisonResult.SMALL //
-                : ComparisonResult.EQUAL;
     }
 
     public static <T extends Comparable<T>> ComparisonResult compare(final List<T> l, final List<T> r) {
