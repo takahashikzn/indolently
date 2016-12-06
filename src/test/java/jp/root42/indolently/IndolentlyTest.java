@@ -875,4 +875,19 @@ public class IndolentlyTest {
         assertThat(not((final Integer x) -> x == 0)).accepts(1);
         assertThat(not(not(nil()))).isSameAs(nil());
     }
+
+    /**
+     * {@link Indolently#compare(Iterable, Iterable)}
+     */
+    @Test
+    public void testCompareIterable() {
+
+        assertThat(compare(list(1, 2, 3), list(1, 2))).isEqualTo(Indolently.ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3), list(1, 3))).isEqualTo(Indolently.ComparisonResult.SMALL);
+        assertThat(compare(list(1, 2, 3), list(1, 1))).isEqualTo(Indolently.ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3), list(1, 2, 3))).isEqualTo(Indolently.ComparisonResult.EQUAL);
+        assertThat(compare(list(1, 2, 3), list(1, 2, 3, 4))).isEqualTo(Indolently.ComparisonResult.SMALL);
+        assertThat(compare(list(1, 2, 3), list())).isEqualTo(Indolently.ComparisonResult.LARGE);
+        assertThat(compare(list(), list())).isEqualTo(Indolently.ComparisonResult.EQUAL);
+    }
 }

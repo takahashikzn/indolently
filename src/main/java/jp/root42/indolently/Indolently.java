@@ -1472,6 +1472,25 @@ public class Indolently {
         }
     }
 
+    public static <T extends Comparable<T>> ComparisonResult compare(final Iterable<T> l, final Iterable<T> r) {
+
+        final Iterator<T> li = l.iterator();
+        final Iterator<T> ri = r.iterator();
+
+        while (li.hasNext() && ri.hasNext()) {
+
+            final ComparisonResult rslt = compare(li.next(), ri.next());
+
+            if (rslt != ComparisonResult.EQUAL) {
+                return rslt;
+            }
+        }
+
+        return li.hasNext() ? ComparisonResult.LARGE //
+            : ri.hasNext() ? ComparisonResult.SMALL //
+                : ComparisonResult.EQUAL;
+    }
+
     @TypeUnsafe
     public static <T> boolean equiv(final T l, final T r) {
 
