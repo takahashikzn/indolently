@@ -95,7 +95,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value of body expression
      */
-    public static <R> R eval(final Expression<? extends R> expr) {
+    public static <R> R eval(final Expression<R> expr) {
         return expr.get();
     }
 
