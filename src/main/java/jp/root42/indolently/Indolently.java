@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -2309,6 +2310,24 @@ public class Indolently {
         return (f == nil) ? cast(nonnil) //
             : (f == nonnil) ? cast(nil) //
                 : f.negate();
+    }
+
+    @SafeVarargs
+    public static BooleanSupplier and(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
+
+        final SList<BooleanSupplier> preds =
+            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+
+        return () -> preds.every(BooleanSupplier::getAsBoolean);
+    }
+
+    @SafeVarargs
+    public static BooleanSupplier or(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
+
+        final SList<BooleanSupplier> preds =
+            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+
+        return () -> preds.some(BooleanSupplier::getAsBoolean);
     }
 
     @SafeVarargs
