@@ -2315,39 +2315,47 @@ public class Indolently {
     @SafeVarargs
     public static BooleanSupplier and(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
-        final SList<BooleanSupplier> preds =
-            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+        return () -> {
+            final SList<BooleanSupplier> preds =
+                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-        return () -> preds.every(BooleanSupplier::getAsBoolean);
+            return preds.every(BooleanSupplier::getAsBoolean);
+        };
     }
 
     @SafeVarargs
     public static BooleanSupplier or(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
-        final SList<BooleanSupplier> preds =
-            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+        return () -> {
+            final SList<BooleanSupplier> preds =
+                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-        return () -> preds.some(BooleanSupplier::getAsBoolean);
+            return preds.some(BooleanSupplier::getAsBoolean);
+        };
     }
 
     @SafeVarargs
     public static <T> Predicate<T> and(final Predicate<? super T> x0, final Predicate<? super T> x1,
         final Predicate<? super T>... x2) {
 
-        final SList<Predicate<? super T>> preds =
-            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+        return y -> {
+            final SList<Predicate<? super T>> preds =
+                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-        return y -> preds.every(z -> z.test(y));
+            return preds.every(z -> z.test(y));
+        };
     }
 
     @SafeVarargs
     public static <T> Predicate<T> or(final Predicate<? super T> x0, final Predicate<? super T> x1,
         final Predicate<? super T>... x2) {
 
-        final SList<Predicate<? super T>> preds =
-            cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+        return y -> {
+            final SList<Predicate<? super T>> preds =
+                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-        return y -> preds.some(z -> z.test(y));
+            return preds.some(z -> z.test(y));
+        };
     }
 
     public static <T extends Comparable<T>> Predicate<T> lt(final T r) {
