@@ -983,6 +983,14 @@ public class Indolently {
         return (ary == null) || (ary.length == 0);
     }
 
+    public static String join(final CharSequence... ary) {
+        return join(list(ary), null);
+    }
+
+    public static String join(final String[] ary, final String sep) {
+        return join(list(ary), sep);
+    }
+
     public static String join(final Iterable<? extends CharSequence> col) {
         return join(col, null);
     }
