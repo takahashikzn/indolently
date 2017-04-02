@@ -48,22 +48,22 @@ public class SPred<T>
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x argument to bind
      * @return curried function
      */
-    public SBoolSuppl curry(final T x) {
-        return this.curry(() -> x);
+    public SBoolSuppl bind(final T x) {
+        return this.bind(() -> x);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x argument to bind
      * @return curried function
      */
-    public SBoolSuppl curry(final Supplier<? extends T> x) {
+    public SBoolSuppl bind(final Supplier<? extends T> x) {
         return new SBoolSuppl(self -> this.test(x.get()));
     }
 

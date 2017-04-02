@@ -49,45 +49,45 @@ public class SFunc2<T, U, R>
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x argument to bind
      * @return curried function
      */
-    public SFunc<U, R> curry(final T x) {
-        return this.curry(() -> x);
+    public SFunc<U, R> bind(final T x) {
+        return this.bind(() -> x);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x argument to bind
      * @return curried function
      */
-    public SFunc<U, R> curry(final Supplier<? extends T> x) {
+    public SFunc<U, R> bind(final Supplier<? extends T> x) {
         return new SFunc<>((self, y) -> this.apply(x.get(), y));
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x 1st argument to bind
      * @param y 2nd argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final T x, final U y) {
-        return this.curry(() -> x, () -> y);
+    public SSuppl<R> bind(final T x, final U y) {
+        return this.bind(() -> x, () -> y);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x 1st argument to bind
      * @param y 2nd argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final Supplier<? extends T> x, final Supplier<? extends U> y) {
-        return this.curry(x).curry(y);
+    public SSuppl<R> bind(final Supplier<? extends T> x, final Supplier<? extends U> y) {
+        return this.bind(x).bind(y);
     }
 
     /**

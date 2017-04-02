@@ -50,70 +50,70 @@ public class SFunc3<X0, X1, X2, Y>
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 argument to bind
      * @return curried function
      */
-    public SFunc2<X1, X2, Y> curry(final X0 x0) {
-        return this.curry(() -> x0);
+    public SFunc2<X1, X2, Y> bind(final X0 x0) {
+        return this.bind(() -> x0);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 argument to bind
      * @return curried function
      */
-    public SFunc2<X1, X2, Y> curry(final Supplier<? extends X0> x0) {
+    public SFunc2<X1, X2, Y> bind(final Supplier<? extends X0> x0) {
         return new SFunc2<>((self, y, z) -> this.apply(x0.get(), y, z));
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 1st argument to bind
      * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SFunc<X2, Y> curry(final X0 x0, final X1 x1) {
-        return this.curry(() -> x0, () -> x1);
+    public SFunc<X2, Y> bind(final X0 x0, final X1 x1) {
+        return this.bind(() -> x0, () -> x1);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 1st argument to bind
      * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SFunc<X2, Y> curry(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1) {
-        return this.curry(x0).curry(x1);
+    public SFunc<X2, Y> bind(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1) {
+        return this.bind(x0).bind(x1);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x 1st argument to bind
      * @param y 2nd argument to bind
      * @param z 3rd argument to bind
      * @return curried function
      */
-    public SSuppl<Y> curry(final X0 x, final X1 y, final X2 z) {
-        return this.curry(() -> x, () -> y, () -> z);
+    public SSuppl<Y> bind(final X0 x, final X1 y, final X2 z) {
+        return this.bind(() -> x, () -> y, () -> z);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 1st argument to bind
      * @param x1 2nd argument to bind
      * @param x2 3rd argument to bind
      * @return curried function
      */
-    public SSuppl<Y> curry(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1,
+    public SSuppl<Y> bind(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1,
         final Supplier<? extends X2> x2) {
-        return this.curry(x0).curry(x1).curry(x2);
+        return this.bind(x0).bind(x1).bind(x2);
     }
 
     /**

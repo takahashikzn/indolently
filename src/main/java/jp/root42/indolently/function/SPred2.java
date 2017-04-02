@@ -48,45 +48,45 @@ public class SPred2<X0, X1>
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 argument to bind
      * @return curried function
      */
-    public SPred<X1> curry(final X0 x0) {
-        return this.curry(() -> x0);
+    public SPred<X1> bind(final X0 x0) {
+        return this.bind(() -> x0);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 argument to bind
      * @return curried function
      */
-    public SPred<X1> curry(final Supplier<? extends X0> x0) {
+    public SPred<X1> bind(final Supplier<? extends X0> x0) {
         return new SPred<>((self, x1) -> this.test(x0.get(), x1));
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 1st argument to bind
      * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SBoolSuppl curry(final X0 x0, final X1 x1) {
-        return this.curry(() -> x0, () -> x1);
+    public SBoolSuppl bind(final X0 x0, final X1 x1) {
+        return this.bind(() -> x0, () -> x1);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x0 1st argument to bind
      * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SBoolSuppl curry(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1) {
-        return this.curry(x0).curry(x1);
+    public SBoolSuppl bind(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1) {
+        return this.bind(x0).bind(x1);
     }
 
     /**

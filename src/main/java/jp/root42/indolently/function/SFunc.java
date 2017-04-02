@@ -49,22 +49,22 @@ public class SFunc<X, R>
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final X x) {
-        return this.curry(() -> x);
+    public SSuppl<R> bind(final X x) {
+        return this.bind(() -> x);
     }
 
     /**
-     * currying this function.
+     * bind parameter to this function.
      *
      * @param x argument to bind
      * @return curried function
      */
-    public SSuppl<R> curry(final Supplier<? extends X> x) {
+    public SSuppl<R> bind(final Supplier<? extends X> x) {
         return new SSuppl<>(self -> this.apply(x.get()));
     }
 

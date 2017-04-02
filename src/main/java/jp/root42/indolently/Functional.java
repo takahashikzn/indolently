@@ -51,35 +51,35 @@ public class Functional {
 
     protected Functional() {}
 
-    public static <X, Y> Supplier<Y> curry(final Function<? super X, ? extends Y> f, final X x) {
+    public static <X, Y> Supplier<Y> bind(final Function<? super X, ? extends Y> f, final X x) {
         return () -> f.apply(x);
     }
 
-    public static <X0, X1, R> Function<X1, R> curry(final BiFunction<? super X0, ? super X1, ? extends R> f,
+    public static <X0, X1, R> Function<X1, R> bind(final BiFunction<? super X0, ? super X1, ? extends R> f,
         final X0 x0) {
         return x1 -> f.apply(x0, x1);
     }
 
-    public static <X0, X1, X2, Y> BiFunction<X1, X2, Y> curry(
+    public static <X0, X1, X2, Y> BiFunction<X1, X2, Y> bind(
         final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f, final X0 x0) {
         return (x2, x3) -> f.apply(x0, x2, x3);
     }
 
-    public static <X> BooleanSupplier curry(final Predicate<? super X> f, final X x) {
+    public static <X> BooleanSupplier bind(final Predicate<? super X> f, final X x) {
         return () -> f.test(x);
     }
 
-    public static <X0, X1> Predicate<X1> curry(final BiPredicate<? super X0, ? super X1> f, final X0 x0) {
+    public static <X0, X1> Predicate<X1> bind(final BiPredicate<? super X0, ? super X1> f, final X0 x0) {
         return x1 -> f.test(x0, x1);
     }
 
-    public static <X0, X1, X2> BiPredicate<X1, X2> curry(final Predicate3<? super X0, ? super X1, ? super X2> f,
+    public static <X0, X1, X2> BiPredicate<X1, X2> bind(final Predicate3<? super X0, ? super X1, ? super X2> f,
         final X0 x0) {
         return (x1, x2) -> f.test(x0, x1, x2);
     }
 
     public static <T> Supplier<T> memoize(final Supplier<? extends T> f) {
-        return curry(memoize((Function<Object, T>) x -> f.get()), null);
+        return bind(memoize((Function<Object, T>) x -> f.get()), null);
     }
 
     public static <X, Y> Function<X, Y> memoize(final Function<? super X, ? extends Y> f) {
