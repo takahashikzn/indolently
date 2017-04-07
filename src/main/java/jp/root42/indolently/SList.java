@@ -434,4 +434,24 @@ public interface SList<T>
     default boolean endsWith(final Collection<T> col) {
         return (col != null) && this.narrow(-col.size(), 0).equals(col);
     }
+
+    /**
+     * Find first index of the element which satisfies given predication.
+     *
+     * @param f predication
+     * @return found index otherwise {@code -1} if no element found
+     */
+    default int indexOf(final Predicate<T> f) {
+        return this.head(f).map(x -> this.indexOf(x)).orElse(-1);
+    }
+
+    /**
+     * Find last index of the element which satisfies given predication.
+     *
+     * @param f predication
+     * @return found index otherwise {@code -1} if no element found
+     */
+    default int lastIndexOf(final Predicate<T> f) {
+        return this.last(f).map(x -> this.indexOf(x)).orElse(-1);
+    }
 }
