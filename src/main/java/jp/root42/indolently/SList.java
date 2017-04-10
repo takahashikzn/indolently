@@ -134,7 +134,7 @@ public interface SList<T>
     }
 
     /**
-     * insert value at specified index then return this instance.
+     * insert value at given index then return this instance.
      *
      * @param idx insertion position.
      * negative index also acceptable. for example, {@code slist.push(-1, "x")} means
@@ -149,7 +149,7 @@ public interface SList<T>
     }
 
     /**
-     * insert all values at specified index then return this instance.
+     * insert all values at given index then return this instance.
      *
      * @param idx insertion position.
      * negative index also acceptable. for example, {@code slist.pushAll(-1, list("x", "y"))} means
@@ -170,7 +170,7 @@ public interface SList<T>
     }
 
     /**
-     * insert value at specified index then return this instance only if value exists.
+     * insert value at given index then return this instance only if value exists.
      * otherwise, do nothing.
      *
      * @param idx insertion position.
@@ -185,7 +185,7 @@ public interface SList<T>
     }
 
     /**
-     * insert all values at specified index then return this instance only if values exist.
+     * insert all values at given index then return this instance only if values exist.
      * otherwise, do nothing.
      *
      * @param idx insertion position.
@@ -417,20 +417,20 @@ public interface SList<T>
     }
 
     /**
-     * Test this list starts with specified elements or not.
+     * Test this list starts with given elements or not.
      *
      * @param col elements
-     * @return {@code true} when this list starts with specified elements
+     * @return {@code true} when this list starts with given elements
      */
     default boolean startsWith(final Collection<T> col) {
         return (col != null) && this.narrow(0, col.size()).equals(col);
     }
 
     /**
-     * Test this list ends with specified elements or not.
+     * Test this list ends with given elements or not.
      *
      * @param col elements
-     * @return {@code true} when this list ends with specified elements
+     * @return {@code true} when this list ends with given elements
      */
     default boolean endsWith(final Collection<T> col) {
         return (col != null) && this.narrow(-col.size(), 0).equals(col);
@@ -443,7 +443,7 @@ public interface SList<T>
      * @return found index
      */
     default OptionalInt indexOf(final Predicate<T> f) {
-        return this.head(f).map(x -> OptionalInt.of(this.indexOf(x))).orElseGet(OptionalInt::empty);
+        return this.head(f).map(this::indexOf).map(OptionalInt::of).orElseGet(OptionalInt::empty);
     }
 
     /**
@@ -453,6 +453,6 @@ public interface SList<T>
      * @return found index
      */
     default OptionalInt lastIndexOf(final Predicate<T> f) {
-        return this.last(f).map(x -> OptionalInt.of(this.lastIndexOf(x))).orElseGet(OptionalInt::empty);
+        return this.last(f).map(this::lastIndexOf).map(OptionalInt::of).orElseGet(OptionalInt::empty);
     }
 }
