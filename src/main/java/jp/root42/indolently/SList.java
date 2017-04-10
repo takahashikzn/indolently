@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -439,19 +440,19 @@ public interface SList<T>
      * Find first index of the element which satisfies given predication.
      *
      * @param f predication
-     * @return found index otherwise {@code -1} if no element found
+     * @return found index
      */
-    default int indexOf(final Predicate<T> f) {
-        return this.head(f).map(x -> this.indexOf(x)).orElse(-1);
+    default OptionalInt indexOf(final Predicate<T> f) {
+        return this.head(f).map(x -> OptionalInt.of(this.indexOf(x))).orElseGet(OptionalInt::empty);
     }
 
     /**
      * Find last index of the element which satisfies given predication.
      *
      * @param f predication
-     * @return found index otherwise {@code -1} if no element found
+     * @return found index
      */
-    default int lastIndexOf(final Predicate<T> f) {
-        return this.last(f).map(x -> this.indexOf(x)).orElse(-1);
+    default OptionalInt lastIndexOf(final Predicate<T> f) {
+        return this.last(f).map(x -> OptionalInt.of(this.lastIndexOf(x))).orElseGet(OptionalInt::empty);
     }
 }
