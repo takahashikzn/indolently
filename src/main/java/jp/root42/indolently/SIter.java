@@ -108,6 +108,7 @@ public interface SIter<T>
     @Override
     default SIter<T> filter(final Predicate<? super T> f) {
 
+        //noinspection IteratorHasNextCallsIteratorNext
         return new SIter<T>() {
 
             private Optional<T> cur;
@@ -184,15 +185,14 @@ public interface SIter<T>
         return Indolently.$(StreamSupport.stream(this.spliterator(), true));
     }
 
-    @SuppressWarnings("javadoc")
     default <R> SIter<R> aggregate(final Function<? super Iterable<? extends T>, ? extends Iterable<? extends R>> f) {
         return Indolently.$(f.apply(this).iterator());
     }
 
-    @SuppressWarnings("javadoc")
     default <R> SIter<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         Objects.requireNonNull(f);
 
+        //noinspection IteratorHasNextCallsIteratorNext
         return new SIter<R>() {
 
             private Iterator<? extends R> cur = Iterative.iterator();

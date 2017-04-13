@@ -21,6 +21,7 @@ import java.util.function.LongSupplier;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class LongRef
     extends AbstractRef<Long, LongRef>
     implements NumberRef<Long, LongRef>, Comparable<LongRef>, LongSupplier, LongConsumer {
@@ -28,6 +29,7 @@ public class LongRef
     private static final long serialVersionUID = -5582550853171233363L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile long val; // NOPMD
 
     /**

@@ -109,6 +109,12 @@ class SListImpl<T>
     }
 
     @Override
+    public int hashCode() {
+        return this.store.hashCode();
+    }
+
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
+    @Override
     public boolean equals(final Object o) {
         return (this == o) || this.store.equals(o);
     }

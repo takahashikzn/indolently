@@ -23,6 +23,7 @@ public class Ref<T>
     private static final long serialVersionUID = 2548417883489580934L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile T val; // NOPMD
 
     /**

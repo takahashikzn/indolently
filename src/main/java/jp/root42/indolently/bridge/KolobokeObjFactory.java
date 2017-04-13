@@ -39,9 +39,10 @@ final class KolobokeObjFactory
     }
 
     private static boolean isPresent(final String fqcn) {
+        //noinspection UnusedCatchParameter
         try {
             return Class.forName(fqcn) != null;
-        } catch (@SuppressWarnings("unused") final ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             return false;
         }
     }

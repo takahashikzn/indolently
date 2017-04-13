@@ -17,6 +17,7 @@ package jp.root42.indolently.ref;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class FloatRef
     extends AbstractRef<Float, FloatRef>
     implements NumberRef<Float, FloatRef>, Comparable<FloatRef> {
@@ -24,6 +25,7 @@ public class FloatRef
     private static final long serialVersionUID = -6479571510369831870L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile float val; // NOPMD
 
     /**

@@ -28,8 +28,11 @@ import java.util.Set;
 public interface Freezable<SELF extends Freezable<SELF>> {
 
     /**
-     * construct freezed new {@link Collections#unmodifiableList(List) List} / {@link Collections#unmodifiableMap(Map)
-     * Map} / {@link Collections#unmodifiableSet(Set) Set} instance.
+     * construct freezed new
+     * {@link Collections#unmodifiableList(List) List} /
+     * {@link Collections#unmodifiableMap(Map) Map} /
+     * {@link Collections#unmodifiableSet(Set) Set}
+     * instance.
      * Circular structure is not supported yet.
      *
      * @return freezed new instance

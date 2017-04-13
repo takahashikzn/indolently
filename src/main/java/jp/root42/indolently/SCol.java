@@ -140,6 +140,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default SELF delete(final Iterable<? extends T> values) {
 
         // optimization
+        @SuppressWarnings("unchecked")
         final Collection<? extends T> vals =
             (values instanceof Collection) ? (Collection<? extends T>) values : list(values);
 

@@ -32,9 +32,10 @@ public abstract class ObjFactory {
     private static volatile ObjFactory instance;
 
     static {
+        //noinspection UnusedCatchParameter
         try {
             instance = new KolobokeObjFactory();
-        } catch (@SuppressWarnings("unused") final UnsupportedOperationException e) {
+        } catch (final UnsupportedOperationException e) {
             instance = new JdkObjFactory();
         }
     }

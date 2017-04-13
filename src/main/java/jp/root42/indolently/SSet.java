@@ -35,9 +35,9 @@ public interface SSet<T>
      * Clone this instance.
      *
      * @return clone of this instance
-     * @see Object#clone()
      * @see Cloneable
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     default SSet<T> clone() {
         return Indolently.set((Iterable<T>) this);
     }
@@ -49,13 +49,11 @@ public interface SSet<T>
      * @param set set to wrap
      * @return wrapped set
      */
-    public static <T> SSet<T> of(final Set<T> set) {
+    static <T> SSet<T> of(final Set<T> set) {
         return Indolently.$(set);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @see Indolently#freeze(Set)
      */
     @Override
@@ -126,7 +124,7 @@ public interface SSet<T>
     /**
      * compute union of set.
      *
-     * @param values
+     * @param values values
      * @return newly constructed set as a computed union
      */
     default SSet<T> union(final Iterable<? extends T> values) {
@@ -136,7 +134,7 @@ public interface SSet<T>
     /**
      * compute intersection of set.
      *
-     * @param values
+     * @param values values
      * @return newly constructed set as a computed intersection.
      */
     default SSet<T> intersect(final Iterable<? extends T> values) {
@@ -146,13 +144,12 @@ public interface SSet<T>
     /**
      * compute difference of set.
      *
-     * @param values
+     * @param values values
      * @return newly constructed set as a computed difference.
      */
+    @SuppressWarnings("unchecked")
     default SSet<T> diff(final Iterable<? extends T> values) {
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        final SSet<T> rslt = this.clone().delete(values).union(Indolently.set(values).delete((Set) this));
-        return rslt;
+        return this.clone().delete(values).union(Indolently.set(values).delete((Set) this));
     }
 
     /**

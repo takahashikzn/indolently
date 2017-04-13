@@ -18,12 +18,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressive.RaisedException;
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.IntRef;
-
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,9 +36,6 @@ import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
-
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 
 
 /**
@@ -205,7 +202,7 @@ public class ExpressiveTest {
 
         final Function<Number, String> f = //
             ctx -> match(ctx) //
-                .type((final Long x) -> "long: " + x.longValue()) //
+                .type((final Long x) -> "long: " + x) //
                 .when(x -> x.intValue() < 0).then(x -> "negative: " + x) //
                 .when(Double.class).then(x -> "double: " + x.doubleValue()) //
                 .none(x -> "num: " + x.doubleValue());
@@ -233,14 +230,11 @@ public class ExpressiveTest {
         assertThat(f.apply(new Baz())).isEqualTo("BAZ!!");
     }
 
-    @SuppressWarnings("javadoc")
     public static class Foo {}
 
-    @SuppressWarnings("javadoc")
     public static class Bar
         extends Foo {}
 
-    @SuppressWarnings("javadoc")
     public static class Baz
         extends Foo {}
 
@@ -269,6 +263,7 @@ public class ExpressiveTest {
     @Test
     public void testMatchFatal() {
 
+        //noinspection ErrorNotRethrown
         try {
             match(1) //
                 .when(eq(1)) //
@@ -284,6 +279,7 @@ public class ExpressiveTest {
     @Test
     public void testWhenFatal() {
 
+        //noinspection ErrorNotRethrown
         try {
             when(false).then("NG").fatal("OK");
         } catch (final AssertionError e) {
@@ -307,9 +303,8 @@ public class ExpressiveTest {
             .fatal()).isEqualTo("OK");
     }
 
-    @SuppressWarnings("javadoc")
     public enum EnumOfTestMatch {
-        FOO, BAR, BAZ;
+        FOO, BAR, BAZ
     }
 
     /**
@@ -377,7 +372,7 @@ public class ExpressiveTest {
                     .none(() -> ref.val == from),
                 ref -> when(from < to) //
                     .then(() -> ref.getThen(self -> self.val += step)) //
-                    .none(() -> prog1(ref::get, () -> ref.val -= step)) //
+                    .none(() -> prog1(ref, () -> ref.val -= step)) //
             ) //
         )) //
             .isEqualTo(expected);
@@ -390,7 +385,7 @@ public class ExpressiveTest {
                     .none(() -> ref.val == from),
                 ref -> when(from < to) //
                     .then(() -> ref.getThen(self -> self.val += step)) //
-                    .none(() -> prog1(ref::get, () -> ref.val -= step)) //
+                    .none(() -> prog1(ref, () -> ref.val -= step)) //
             ) //
         ).reduce((l, r) -> l + r)) //
             .isEqualTo(list(expected).reduce((l, r) -> l + r));

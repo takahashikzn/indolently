@@ -39,7 +39,6 @@ import java.util.stream.Stream;
  * @param <T> type of value
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 public class StreamDelegate<T>
     extends ObjDelegate<Stream<T>>
     implements Stream<T> {

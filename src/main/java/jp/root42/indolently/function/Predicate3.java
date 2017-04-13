@@ -19,7 +19,6 @@ import java.util.Objects;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 @FunctionalInterface
 public interface Predicate3<T, U, V> {
 
@@ -27,15 +26,15 @@ public interface Predicate3<T, U, V> {
 
     default Predicate3<T, U, V> and(final Predicate3<? super T, ? super U, ? super V> other) {
         Objects.requireNonNull(other);
-        return (t, u, v) -> test(t, u, v) && other.test(t, u, v);
+        return (t, u, v) -> this.test(t, u, v) && other.test(t, u, v);
     }
 
     default Predicate3<T, U, V> negate() {
-        return (t, u, v) -> !test(t, u, v);
+        return (t, u, v) -> !this.test(t, u, v);
     }
 
     default Predicate3<T, U, V> or(final Predicate3<? super T, ? super U, ? super V> other) {
         Objects.requireNonNull(other);
-        return (t, u, v) -> test(t, u, v) || other.test(t, u, v);
+        return (t, u, v) -> this.test(t, u, v) || other.test(t, u, v);
     }
 }

@@ -37,9 +37,11 @@ public class Duo<F, S>
     private static final long serialVersionUID = 4058877644750960140L;
 
     /** first element */
+    @SuppressWarnings("PublicField")
     public volatile F fst; // NOPMD
 
     /** second element */
+    @SuppressWarnings("PublicField")
     public volatile S snd; // NOPMD
 
     @Destructive

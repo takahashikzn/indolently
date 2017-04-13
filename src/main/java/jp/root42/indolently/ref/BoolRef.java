@@ -23,6 +23,7 @@ import jp.root42.indolently.function.Statement;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class BoolRef
     extends AbstractRef<Boolean, BoolRef>
     implements Comparable<BoolRef>, BooleanSupplier {
@@ -30,6 +31,7 @@ public class BoolRef
     private static final long serialVersionUID = 8087914133902951131L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile boolean val; // NOPMD
 
     /**

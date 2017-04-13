@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE build.xml>
+<!DOCTYPE project>
 <!--
   Copyright 2014 takahashikzn
 
@@ -18,7 +18,7 @@
 <!--
   @author takahashikzn
 -->
-<project name="indolently" default="test" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+<project name="indolently" default="test" basedir=".">
 
   <target name="clean">
     <delete dir="target/" />

@@ -21,6 +21,7 @@ abstract class ObjDelegate<T> {
 
     protected abstract T getDelegate();
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(final Object o) {
         return (o == this) || this.getDelegate().equals(o);

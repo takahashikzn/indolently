@@ -55,7 +55,7 @@ public interface Statement {
         Objects.requireNonNull(after);
 
         return () -> {
-            execute();
+            this.execute();
             after.execute();
         };
     }

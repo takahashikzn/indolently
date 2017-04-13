@@ -22,7 +22,6 @@ import java.util.ListIterator;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 public class ListDelegate<T>
     extends ObjDelegate<List<T>>
     implements List<T> {
@@ -59,6 +58,7 @@ public class ListDelegate<T>
 
     @Override
     public <S> S[] toArray(final S[] a) {
+        //noinspection SuspiciousToArrayCall
         return this.getDelegate().toArray(a);
     }
 

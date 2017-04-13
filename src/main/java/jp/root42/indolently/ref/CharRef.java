@@ -17,6 +17,7 @@ package jp.root42.indolently.ref;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class CharRef
     extends AbstractRef<Character, CharRef>
     implements Comparable<CharRef> {
@@ -24,6 +25,7 @@ public class CharRef
     private static final long serialVersionUID = 6739224434382670429L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile char val; // NOPMD
 
     /**

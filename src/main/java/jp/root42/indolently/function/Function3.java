@@ -21,13 +21,12 @@ import java.util.function.Function;
  * @author takahashikzn
  */
 @FunctionalInterface
-@SuppressWarnings("javadoc")
 public interface Function3<X0, X1, X2, Y> {
 
     Y apply(X0 x0, X1 x1, X2 x2);
 
     default <Z> Function3<X0, X1, X2, Z> andThen(final Function<? super Y, ? extends Z> after) {
         Objects.requireNonNull(after);
-        return (x0, x2, x3) -> after.apply(apply(x0, x2, x3));
+        return (x0, x2, x3) -> after.apply(this.apply(x0, x2, x3));
     }
 }

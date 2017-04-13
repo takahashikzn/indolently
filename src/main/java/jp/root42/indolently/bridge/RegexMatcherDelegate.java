@@ -47,6 +47,11 @@ public class RegexMatcherDelegate
     }
 
     @Override
+    public int hashCode() {
+        return this.getDelegate().hashCode();
+    }
+
+    @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;

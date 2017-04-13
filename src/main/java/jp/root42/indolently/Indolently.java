@@ -56,7 +56,6 @@ import jp.root42.indolently.ref.ValueReference;
  *
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 public class Indolently {
 
     /** non private for subtyping. */
@@ -154,7 +153,7 @@ public class Indolently {
      * @return primitive value
      */
     public static boolean unbox(final Boolean x) {
-        return (x == null) ? false : x;
+        return (x != null) && x;
     }
 
     public static <T> T fatal() {
@@ -392,9 +391,7 @@ public class Indolently {
         final SList<T> list = new SListImpl<>();
 
         if (elems != null) {
-            for (final T v : elems) {
-                list.add(v);
-            }
+            Collections.addAll(list, elems);
         }
 
         return list;
@@ -429,7 +426,7 @@ public class Indolently {
         final SList<? extends T> list = list(elems);
 
         // pseudo typing. actually this type wouldn't be T[].
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({ "unchecked", "SuspiciousArrayCast" })
         final T[] pseudoTyped = (T[]) list.tail().toArray();
 
         return array(list.head(), pseudoTyped);
@@ -465,7 +462,7 @@ public class Indolently {
      * @param <V> type of value
      * @param type array type
      * @param first first element
-     * @param elems rest elements
+     * @param rest rest elements
      * @return typed array
      */
     @SafeVarargs
@@ -494,7 +491,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new Object[] { ... }</code>.
+     * The shortcut notation of {@code new Object[] { ... }}.
      *
      * @param elems elements of array
      * @return {@link Object} array
@@ -504,7 +501,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new char[] { ... }</code>.
+     * The shortcut notation of {@code new char[] { ... }}.
      *
      * @param elems elements of array
      * @return char array
@@ -514,7 +511,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new int[] { ... }</code>.
+     * The shortcut notation of {@code new int[] { ... }}.
      *
      * @param elems elements of array
      * @return int array
@@ -524,7 +521,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new long[] { ... }</code>.
+     * The shortcut notation of {@code new long[] { ... }}.
      *
      * @param elems elements of array
      * @return long array
@@ -534,7 +531,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new float[] { ... }</code>.
+     * The shortcut notation of {@code new float[] { ... }}.
      *
      * @param elems elements of array
      * @return float array
@@ -544,7 +541,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new byte[] { ... }</code>.
+     * The shortcut notation of {@code new byte[] { ... }}.
      *
      * @param elems elements of array
      * @return byte array
@@ -554,7 +551,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new double[] { ... }</code>.
+     * The shortcut notation of {@code new double[] { ... }}.
      *
      * @param elems elements of array
      * @return double array
@@ -564,7 +561,7 @@ public class Indolently {
     }
 
     /**
-     * The shortcut notation of <code>new boolean[] { ... }</code>.
+     * The shortcut notation of {@code new boolean[] { ... }}.
      *
      * @param elems elements of array
      * @return boolean array
@@ -574,7 +571,7 @@ public class Indolently {
     }
 
     /**
-     * Create an iterator of <code>char</code>.
+     * Create an iterator of {@code char}.
      *
      * @param cs character sequence
      * @return char iterator
@@ -594,6 +591,7 @@ public class Indolently {
 
             @Override
             public Character next() {
+                //noinspection ProhibitedExceptionCaught
                 try {
                     return cs.charAt(this.pos++);
                 } catch (final IndexOutOfBoundsException e) {
@@ -604,7 +602,7 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>char</code>.
+     * Create a list of {@code char}.
      *
      * @param elems elements of array
      * @return char list
@@ -618,7 +616,7 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>int</code>.
+     * Create a list of {@code int}.
      *
      * @param elems elements of array
      * @return int list
@@ -632,7 +630,7 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>long</code>.
+     * Create a list of {@code long}.
      *
      * @param elems elements of array
      * @return long list
@@ -646,7 +644,7 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>float</code>.
+     * Create a list of {@code float}.
      *
      * @param elems elements of array
      * @return float list
@@ -660,7 +658,7 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>short</code>.
+     * Create a list of {@code short}.
      *
      * @param elems elements of array
      * @return short list
@@ -674,7 +672,7 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>double</code>.
+     * Create a list of {@code double}.
      *
      * @param elems elements of array
      * @return double list
@@ -688,7 +686,7 @@ public class Indolently {
     }
 
     /**
-     * Create a list of <code>boolean</code>.
+     * Create a list of {@code boolean}.
      *
      * @param elems elements of array
      * @return boolean list
@@ -742,7 +740,7 @@ public class Indolently {
     public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<? extends K, ? extends V> map,
         final Function<? super K, ? extends S> f) {
 
-        return sort(map, (l, r) -> f.apply(l).compareTo(f.apply(r)));
+        return sort(map, Comparator.comparing(f::apply));
     }
 
     public static <K, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map, final Comparator<? super K> comp) {
@@ -756,7 +754,7 @@ public class Indolently {
     public static <T, S extends Comparable<S>> SSet<T> sort(final Set<? extends T> elems,
         final Function<? super T, ? extends S> f) {
 
-        return sort(elems, (l, r) -> f.apply(l).compareTo(f.apply(r)));
+        return sort(elems, Comparator.comparing(f::apply));
     }
 
     public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
@@ -770,12 +768,12 @@ public class Indolently {
     public static <T, S extends Comparable<S>> SList<T> sort(final List<? extends T> elems,
         final Function<? super T, ? extends S> f) {
 
-        return sort(elems, (l, r) -> f.apply(l).compareTo(f.apply(r)));
+        return sort(elems, Comparator.comparing(f::apply));
     }
 
     public static <T> SList<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {
         final SList<T> rslt = list(elems);
-        Collections.sort(rslt, Objects.requireNonNull(comp, "comparator"));
+        rslt.sort(Objects.requireNonNull(comp, "comparator"));
         return rslt;
     }
 
@@ -794,7 +792,6 @@ public class Indolently {
         });
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static final Function freezer = x -> {
         if (x instanceof List) {
             return freeze((List) x);
@@ -1002,7 +999,7 @@ public class Indolently {
             final StringBuilder sb = new StringBuilder();
             final String s = optional(sep, "");
 
-            for (final Iterator<? extends CharSequence> i = x.iterator(); i.hasNext();) {
+            for (final Iterator<? extends CharSequence> i = x.iterator(); i.hasNext(); ) {
                 sb.append(i.next());
 
                 if (i.hasNext()) {
@@ -1024,6 +1021,7 @@ public class Indolently {
 
     @SafeVarargs
     public static <T> T choose(final Supplier<? extends T>... suppliers) {
+        //noinspection RedundantCast
         return choose((T) null, suppliers);
     }
 
@@ -1050,7 +1048,6 @@ public class Indolently {
      * Test that the lower is less than upper.
      * i.e. this method tests {@code l < r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1063,7 +1060,6 @@ public class Indolently {
      * Test that the lower is less equal than upper.
      * i.e. this method tests {@code l <= r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1076,7 +1072,6 @@ public class Indolently {
      * Test that the lower is greater than upper.
      * i.e. this method tests {@code l > r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1089,7 +1084,6 @@ public class Indolently {
      * Test that the lower is greater equal than upper.
      * i.e. this method tests {@code l >= r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1102,7 +1096,6 @@ public class Indolently {
      * Test that the lower is less than upper.
      * i.e. this method tests {@code l < r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1115,7 +1108,6 @@ public class Indolently {
      * Test that the lower is less equal than upper.
      * i.e. this method tests {@code l <= r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1128,7 +1120,6 @@ public class Indolently {
      * Test that the lower is greater than upper.
      * i.e. this method tests {@code l > r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1141,7 +1132,6 @@ public class Indolently {
      * Test that the lower is greater equal than upper.
      * i.e. this method tests {@code l >= r}.
      *
-     * @param <T> value type
      * @param l left side value
      * @param r right side value
      * @return test result
@@ -1451,7 +1441,7 @@ public class Indolently {
 
         public final int sign;
 
-        private ComparisonResult(final int sign) {
+        ComparisonResult(final int sign) {
             this.sign = sign;
         }
 
@@ -1487,7 +1477,7 @@ public class Indolently {
             return compare((List<T>) l, (List<T>) r);
         }
 
-        for (final Iterator<T> li = l.iterator(), ri = r.iterator();;) {
+        for (final Iterator<T> li = l.iterator(), ri = r.iterator(); ; ) {
 
             final boolean moreL = li.hasNext();
             final boolean moreR = ri.hasNext();
@@ -1564,19 +1554,19 @@ public class Indolently {
         return list(values).reduce((l, r) -> min(l, r));
     }
 
-    public static Class<?> typed(@SuppressWarnings("rawtypes") final Class cls) {
+    public static Class<?> typed(final Class cls) {
         return cls;
     }
 
-    public static Map<?, ?> typed(@SuppressWarnings("rawtypes") final Map raw) {
+    public static Map<?, ?> typed(final Map raw) {
         return raw;
     }
 
-    public static List<?> typed(@SuppressWarnings("rawtypes") final List raw) {
+    public static List<?> typed(final List raw) {
         return raw;
     }
 
-    public static Set<?> typed(@SuppressWarnings("rawtypes") final Set raw) {
+    public static Set<?> typed(final Set raw) {
         return raw;
     }
 
@@ -1802,20 +1792,14 @@ public class Indolently {
                 : new SStreamImpl<>(stream);
     }
 
+    @SuppressWarnings("unchecked")
     public static <K, V> SMap<K, V> map(final K key, final V val) {
-
-        @SuppressWarnings("unchecked")
-        final SMap<K, V> map = (SMap<K, V>) map().push(key, val);
-
-        return map;
+        return (SMap<K, V>) map().push(key, val);
     }
 
+    @SuppressWarnings("unchecked")
     public static <K, V> SMap<K, V> map(final K key, final Optional<? extends V> val) {
-
-        @SuppressWarnings("unchecked")
-        final SMap<K, V> map = (SMap<K, V>) map().push(key, val);
-
-        return map;
+        return (SMap<K, V>) map().push(key, val);
     }
 
     /**
@@ -2038,8 +2022,8 @@ public class Indolently {
         final V v7, final K k8, final V v8, final K k9, final V v9, final K k10, final V v10, final K k11,
         final V v11) {
 
-        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10).push(k11,
-            v11);
+        return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10)
+            .push(k11, v11);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -2149,7 +2133,7 @@ public class Indolently {
 
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8, k9, v9, k10, v10, k11, v11,
             k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, k20, v20, k21, v21)
-                .push(k22, v22);
+            .push(k22, v22);
     }
 
     public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2,
@@ -2320,7 +2304,6 @@ public class Indolently {
                 : f.negate();
     }
 
-    @SafeVarargs
     public static BooleanSupplier and(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
         return () -> {
@@ -2331,7 +2314,6 @@ public class Indolently {
         };
     }
 
-    @SafeVarargs
     public static BooleanSupplier or(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
         return () -> {

@@ -20,6 +20,7 @@ import jp.root42.indolently.Indolently;
  * @param <T> value type
  * @author takahashikzn
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class CmpRef<T extends Comparable<T>>
     extends Ref<T>
     implements Comparable<ValueReference<? extends T, ? extends ValueReference<? extends T, ?>>> {

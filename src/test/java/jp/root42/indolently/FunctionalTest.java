@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -22,7 +23,7 @@ import jp.root42.indolently.function.SFunc;
 import jp.root42.indolently.function.SFunc3;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.Trio;
-
+import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,8 +33,6 @@ import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
-
-import junitparams.JUnitParamsRunner;
 
 
 /**
@@ -62,7 +61,7 @@ public class FunctionalTest {
             }).apply(z, z - 1)) //
             .map(x -> "" + x) //
             .list()) //
-                .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
+            .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
     }
 
     /**
@@ -78,7 +77,7 @@ public class FunctionalTest {
                 assertThat(self.apply(1)).isEqualTo(1); // check no stackoverflow
                 initCount.val++;
             }, (self, x) -> //
-            (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
+                (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
 
         final SList<Integer> fibonacciNums =
             list(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711,
@@ -88,7 +87,8 @@ public class FunctionalTest {
         assertThat(initCount.val).isEqualTo(0);
 
         assertThat(range(1, 10).each(x -> {
-            assertThat(range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val)))).isEqualTo(fibonacciNums);
+            assertThat((List<Object>) range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val))))
+                .isEqualTo(fibonacciNums);
             assertThat(initCount.val).isEqualTo(1);
         }).last()).isEqualTo(10);
     }

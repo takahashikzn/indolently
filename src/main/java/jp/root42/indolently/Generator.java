@@ -53,7 +53,6 @@ public interface Generator<T>
      * constructor.
      *
      * @param env iteration environment
-     * @param hasNext {@link Iterator#hasNext()} implementation
      * @param next {@link Iterator#next()} implementation
      * @return a instance of this class.
      */
@@ -74,10 +73,11 @@ public interface Generator<T>
                     return true;
                 }
 
+                //noinspection UnusedCatchParameter
                 try {
                     this.cur = opt(next.apply(env));
                     return true;
-                } catch (@SuppressWarnings("unused") final Break s) {
+                } catch (final Break s) {
                     this.stopped = true;
                     return false;
                 }

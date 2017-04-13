@@ -20,11 +20,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.jodah.typetools.TypeResolver;
-
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.function.Statement;
+import net.jodah.typetools.TypeResolver;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -37,7 +36,6 @@ public class Expressive {
     /** non private for subtyping. */
     protected Expressive() {}
 
-    @SuppressWarnings("javadoc")
     public static class RaisedException
         extends RuntimeException {
 
@@ -195,28 +193,11 @@ public class Expressive {
      *
      * @param <T> the type of expression
      * @param first evaluation result of this expression
-     * @param form evaluation target form. argument is evaluation result of {@code first}.
-     * @return first expression evaluation result
-     */
-    public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T> form) {
-        return prog1Internal(first, form);
-    }
-
-    /**
-     * evaluate following forms then return evaluation result of first expressions.
-     *
-     * @param <T> the type of expression
-     * @param first evaluation result of this expression
      * @param forms evaluation target forms. argument is evaluation result of {@code first}.
      * @return first expression evaluation result
      */
     @SafeVarargs
     public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
-        return prog1Internal(first, forms);
-    }
-
-    @SafeVarargs
-    private static <T> T prog1Internal(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
         final T val = first.get();
 
@@ -300,14 +281,14 @@ public class Expressive {
     /**
      * if-then-else expression.
      *
-     * @see Expressive#when(BooleanSupplier)
      * @author takahashikzn
+     * @see Expressive#when(BooleanSupplier)
      */
     public interface When {
 
         /**
          * The value expression treated as the return value of the entire expression if the just before conditional
-         * expression evaluated as <code>true</code>.
+         * expression evaluated as {@code true}.
          *
          * @param <T> the type of entire expression
          * @param then value expression
@@ -317,7 +298,7 @@ public class Expressive {
 
         /**
          * The value treated as the return value of the entire expression if the just before conditional expression
-         * evaluated as <code>true</code>.
+         * evaluated as {@code true}.
          *
          * @param <T> the type of entire expression
          * @param then a value
@@ -339,7 +320,7 @@ public class Expressive {
              * Returns the value of entire expression. This is terminal operation.
              *
              * @param none value expression evaluated if and only if all conditional expression evaluated as
-             * <code>false</code>.
+             * {@code false}.
              * @return the return value of the entire expression
              */
             T none(Supplier<? extends T> none);
@@ -390,7 +371,7 @@ public class Expressive {
     }
 
     /**
-     * A shortcut of <code>when(() -> pred)</code>.
+     * A shortcut of {@code when(() -> pred)}.
      *
      * @param pred constant conditional value
      * @return 'when' object
@@ -401,26 +382,25 @@ public class Expressive {
 
     /**
      * if-then-else expression.
-     * <p>
-     * <h3>Example</h3>
      *
-     * <pre>
-     * <code>
+     * <div>
+     * Example
+     *
+     * {@code
      * int x = ...;
      *
      * String evenOrOdd = Expressive
-     *     .when(() -> x % 2 == 0).then(() -> "even")
-     *     .when(() -> x % 2 != 0).then(() -> "odd")
-     *     .none(() -> "This is terminal operation but never called in this example.");
+     * .when(() -> x % 2 == 0).then(() -> "even")
+     * .when(() -> x % 2 != 0).then(() -> "odd")
+     * .none(() -> "This is terminal operation but never called in this example.");
      *
      * // constants are acceptable
      * String simplerEvenOrOdd = Expressive
-     *     .when(x % 2 == 0).then("even")
-     *     .when(x % 2 != 0).then("odd")
-     *     .none("This is terminal operation but never called in this example.");
-     * </code>
-     * </pre>
-     * </p>
+     * .when(x % 2 == 0).then("even")
+     * .when(x % 2 != 0).then("odd")
+     * .none("This is terminal operation but never called in this example.");
+     * }
+     * </div>
      *
      * @param pred first condition
      * @return 'when' object
@@ -478,7 +458,6 @@ public class Expressive {
         return cast(TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0]);
     }
 
-    @SuppressWarnings("javadoc")
     public interface Match<C> {
 
         Match.IntroCase<C> when(Predicate<? super C> pred);
@@ -577,7 +556,6 @@ public class Expressive {
         }
     }
 
-    @SuppressWarnings("javadoc")
     public static <C> Match<C> match(final C ctx) {
 
         return pred -> new Match.IntroCase<C>() {

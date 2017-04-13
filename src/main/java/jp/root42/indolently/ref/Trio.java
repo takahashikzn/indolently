@@ -38,12 +38,15 @@ public class Trio<F, S, T>
     private static final long serialVersionUID = 1387913510813532191L;
 
     /** first element */
+    @SuppressWarnings("PublicField")
     public volatile F fst; // NOPMD
 
     /** second element */
+    @SuppressWarnings("PublicField")
     public volatile S snd; // NOPMD
 
     /** third element */
+    @SuppressWarnings("PublicField")
     public volatile T trd; // NOPMD
 
     @Destructive

@@ -37,7 +37,7 @@ public class SIterTest {
         assertThat(range(1, 2).filter(x -> x > 0).hasNext()).isTrue();
         assertThat(range(1, 100000).filter(x -> x < 0).hasNext()).isFalse();
 
-        for (final Iterator<Integer> i = range(1, 100000).filter(x -> x > 0); i.hasNext();) {
+        for (final Iterator<Integer> i = range(1, 100000).filter(x -> x > 0); i.hasNext(); ) {
             assertThat(i.next()).isGreaterThan(0);
         }
     }

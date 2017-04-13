@@ -80,24 +80,22 @@ public class Iterative {
     /**
      * Create iterator which simulates <a
      * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
-     * <p>
+     *
+     * <div>
      * Example
      *
-     * <pre>
-     * <code>
+     * {@code
      * // print timestamp every 10 seconds forever.
      * generator(System::currentTimeMillis).forEach(
-     *     consumerOf((final Long x) -&gt; System.out.println(Instant.ofEpochMilli(x))).andThen(x -&gt; {
+     *     consumerOf((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
      *         try {
      *             Thread.sleep(10000);
      *         } catch (final InterruptedException e) {
      *             Generator.breaks(); // stop generator gently
      *     }
      * }   ));
-     * </code>
-     * </pre>
-     *
-     * </p>
+     * }
+     * </div>
      *
      * @param <T> value type
      * @param f value generating function
@@ -113,23 +111,23 @@ public class Iterative {
     /**
      * Create iterator which simulates <a
      * href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">generator</a> function.
-     * <p>
+     *
+     * <div>
      * Example
      *
-     * <pre>
-     * <code>
+     * {@code
      * // print timestamp every 10 seconds forever.
      * generator(
      *     list(),
-     *     env -&gt; {
+     *     env -> {
      *         final long now = System.currentTimeMillis();
      *         env.push(now);
      *         return now;
      *     })
-     *     .forEach(consumerOf((final Long x) -&gt; {
+     *     .forEach(consumerOf((final Long x) -> {
      *         System.out.println(Instant.ofEpochMilli(x));
      *     })
-     *     .andThen(x -&gt; {
+     *     .andThen(x -> {
      *         try {
      *             Thread.sleep(10000);
      *         } catch (final InterruptedException e) {
@@ -137,10 +135,8 @@ public class Iterative {
      *         }
      *     }
      * ));
-     * </code>
-     * </pre>
-     *
-     * </p>
+     * }
+     * </div>
      *
      * @param <E> environment type
      * @param <T> value type
@@ -181,7 +177,7 @@ public class Iterative {
      */
     public static <T> SIter<T> iterator(final BooleanSupplier hasNext, final Supplier<? extends T> next) {
 
-        return iterator((Object) null, x -> hasNext.getAsBoolean(), x -> next.get());
+        return iterator(null, x -> hasNext.getAsBoolean(), x -> next.get());
     }
 
     /**
@@ -203,14 +199,16 @@ public class Iterative {
 
     /**
      * Generate integer iterator.
-     * <p>
+     *
+     * <div>
      * Examples
+     *
      * <ul>
      * <li>{@code range(1, 3).list()} -&gt; {@code [1, 2, 3]}</li>
      * <li>{@code range(3, 1).list()} -&gt; {@code [3, 2, 1]}</li>
      * <li>{@code range(-3, 1).list()} -&gt; {@code [-3, -2, -1, 0, 1]}</li>
      * </ul>
-     * </p>
+     * </div>
      *
      * @param from the value start from (inclusive).
      * @param to the value end to (inclusive).
@@ -222,12 +220,14 @@ public class Iterative {
 
     /**
      * Generate integer iterator.
-     * <p>
+     *
+     * <div>
      * Examples
+     *
      * <ul>
      * <li>{@code range(1, 6, 2).list()} -&gt; {@code [1, 3, 5]}</li>
      * </ul>
-     * </p>
+     * </div>
      *
      * @param from the value start from (inclusive).
      * @param to the value end to (inclusive).
@@ -235,19 +235,22 @@ public class Iterative {
      * @return integer iterator.
      */
     public static SIter<Integer> range(final int from, final int to, final int step) {
+        //noinspection UnnecessaryExplicitNumericCast
         return range((long) from, (long) to, step).map(x -> x.intValue());
     }
 
     /**
      * Generate long iterator.
-     * <p>
+     *
+     * <div>
      * Examples
+     *
      * <ul>
      * <li>{@code range(1, 3).list()} -&gt; {@code [1, 2, 3]}</li>
      * <li>{@code range(3, 1).list()} -&gt; {@code [3, 2, 1]}</li>
      * <li>{@code range(-3, 1).list()} -&gt; {@code [-3, -2, -1, 0, 1]}</li>
      * </ul>
-     * </p>
+     * </div>
      *
      * @param from the value start from (inclusive).
      * @param to the value end to (inclusive).
@@ -259,12 +262,14 @@ public class Iterative {
 
     /**
      * Generate long iterator.
-     * <p>
+     *
+     * <div>
      * Examples
+     *
      * <ul>
      * <li>{@code range(1, 6, 2).list()} -&gt; {@code [1, 3, 5]}</li>
      * </ul>
-     * </p>
+     * </div>
      *
      * @param from the value start from (inclusive).
      * @param to the value end to (inclusive).

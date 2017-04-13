@@ -61,9 +61,9 @@ public interface SMap<K, V>
      * Clone this instance.
      *
      * @return clone of this instance
-     * @see Object#clone()
      * @see Cloneable
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     default SMap<K, V> clone() {
         return Indolently.<K, V> map().pushAll(this);
     }
@@ -75,13 +75,11 @@ public interface SMap<K, V>
      * @param map map to wrap
      * @return wrapped map
      */
-    public static <K, V> SMap<K, V> of(final Map<K, V> map) {
+    static <K, V> SMap<K, V> of(final Map<K, V> map) {
         return Indolently.$(map);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @see Indolently#freeze(Map)
      */
     @Override
@@ -210,15 +208,18 @@ public interface SMap<K, V>
      * @param <V> value type
      * @author takahashikzn.
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
     class SEntry<K, V>
         implements Map.Entry<K, V> {
 
         private final Entry<K, V> e;
 
         /** key of this entry. */
+        @SuppressWarnings("PublicField")
         public final K key;
 
         /** value of this entry. */
+        @SuppressWarnings("PublicField")
         public final V val;
 
         /**
@@ -248,6 +249,7 @@ public interface SMap<K, V>
          *
          * @throws UnsupportedOperationException always thrown
          */
+        @SuppressWarnings("DeprecatedIsStillUsed")
         @Deprecated
         @Override
         public final V setValue(final V value) throws UnsupportedOperationException {
@@ -273,6 +275,7 @@ public interface SMap<K, V>
             return this.e.hashCode();
         }
 
+        @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
         @Override
         public boolean equals(final Object o) {
             return this.e.equals(o);
@@ -292,12 +295,12 @@ public interface SMap<K, V>
      * @return entries
      */
     default SSet<SEntry<K, V>> entries() {
-        return Indolently.set(this.entrySet()).map(SEntry<K, V>::new);
+        return Indolently.set(this.entrySet()).map(x -> new SEntry<>(x));
     }
 
     @Override
     default SIter<SEntry<K, V>> iterator() {
-        return Indolently.$(this.entrySet().iterator()).map(SEntry<K, V>::new);
+        return Indolently.$(this.entrySet().iterator()).map(SEntry::new);
     }
 
     /**
@@ -505,7 +508,6 @@ public interface SMap<K, V>
     /**
      * Replace value of the key if exists.
      *
-     * @param key key of map
      * @param f function
      * @return {@code this} instance
      */

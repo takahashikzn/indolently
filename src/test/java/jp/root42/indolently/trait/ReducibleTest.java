@@ -16,7 +16,6 @@ package jp.root42.indolently.trait;
 import java.util.function.BiFunction;
 
 import jp.root42.indolently.Indolently;
-
 import org.junit.Test;
 
 import static jp.root42.indolently.Indolently.*;

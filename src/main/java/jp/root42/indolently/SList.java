@@ -45,9 +45,9 @@ public interface SList<T>
      * Clone this instance.
      *
      * @return clone of this instance
-     * @see Object#clone()
      * @see Cloneable
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     default SList<T> clone() {
         return Indolently.list((Iterable<T>) this);
     }
@@ -59,13 +59,11 @@ public interface SList<T>
      * @param list list to wrap
      * @return wrapped list
      */
-    public static <T> SList<T> of(final List<T> list) {
+    static <T> SList<T> of(final List<T> list) {
         return Indolently.$(list);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @see Indolently#freeze(List)
      */
     @Override
@@ -130,7 +128,7 @@ public interface SList<T>
      * @return a set constructed from this instance.
      */
     default SSet<T> set(final Comparator<T> comp) {
-        return Indolently.$(ObjFactory.getInstance().<T> newSortedSet(comp)).pushAll(this);
+        return Indolently.$(ObjFactory.getInstance().newSortedSet(comp)).pushAll(this);
     }
 
     /**
@@ -161,6 +159,7 @@ public interface SList<T>
     default SList<T> pushAll(final int idx, final Iterable<? extends T> values) {
 
         // optimization
+        @SuppressWarnings("unchecked")
         final Collection<? extends T> vals =
             (values instanceof Collection) ? (Collection<? extends T>) values : Indolently.list(values);
 
@@ -353,12 +352,10 @@ public interface SList<T>
         return Indolently.sort(this, comp);
     }
 
-    @SuppressWarnings("javadoc")
     default SList<T> uniq() {
         return Indolently.uniq(this);
     }
 
-    @SuppressWarnings("javadoc")
     default SList<T> uniq(final BiPredicate<? super T, ? super T> f) {
         return Indolently.uniq(this, f);
     }
@@ -367,7 +364,6 @@ public interface SList<T>
      * Replace value at the position if exists.
      *
      * @param idx index of the element
-     * @param f function
      * @param val replacement value
      * @return {@code this} instance
      */

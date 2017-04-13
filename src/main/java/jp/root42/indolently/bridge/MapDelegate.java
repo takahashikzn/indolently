@@ -21,7 +21,6 @@ import java.util.Set;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 public class MapDelegate<K, V>
     extends ObjDelegate<Map<K, V>>
     implements Map<K, V> {

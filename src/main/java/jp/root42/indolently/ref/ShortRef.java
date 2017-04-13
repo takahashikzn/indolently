@@ -17,6 +17,7 @@ package jp.root42.indolently.ref;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class ShortRef
     extends AbstractRef<Short, ShortRef>
     implements NumberRef<Short, ShortRef>, Comparable<ShortRef> {
@@ -24,6 +25,7 @@ public class ShortRef
     private static final long serialVersionUID = -6819998391641172785L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile short val; // NOPMD
 
     /**

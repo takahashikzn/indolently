@@ -19,7 +19,8 @@ import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.IntRef;
-
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,16 +33,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
 
 /**
  * A test class for {@link Iterative}.
  *
  * @author takahashikzn
  */
-@SuppressWarnings("unused")
 @RunWith(JUnitParamsRunner.class)
 public class IterativeTest {
 
@@ -64,7 +61,7 @@ public class IterativeTest {
         try {
             g.next();
             fail();
-        } catch (final NoSuchElementException e) {
+        } catch (final NoSuchElementException ignored) {
             assert true;
         }
     }
@@ -80,8 +77,8 @@ public class IterativeTest {
         generator(//
             ref(1), //
             env -> (10 < env.val) ? breaks() : env.val++) //
-                .forEach(consumerOf((final Integer x) -> ints.add(x)) //
-                    .andThen(x -> {}));
+            .forEach(consumerOf((final Integer x) -> ints.add(x)) //
+                .andThen(x -> {}));
 
         assertThat(ints.reduce((x, y) -> x + y).get()).isEqualTo(55);
     }
@@ -99,11 +96,11 @@ public class IterativeTest {
                 ints.get(pos.val), //
                 ints.opt(++pos.val) //
                     .orElseGet(() -> Generator.breaks()))).list()) //
-                        .isEqualTo(list( //
-                            tuple(1, 2) //
-                            , tuple(2, 3) //
-                            , tuple(3, 4) //
-                            , tuple(4, 5)));
+            .isEqualTo(list( //
+                tuple(1, 2) //
+                , tuple(2, 3) //
+                , tuple(3, 4) //
+                , tuple(4, 5)));
     }
 
     /**
@@ -116,7 +113,7 @@ public class IterativeTest {
             generator( //
                 ref(1), //
                 env -> (10 < env.val) ? breaks() : env.val++)) //
-                    .forEach(consumerOf((final Integer x) -> {}));
+            .forEach(consumerOf((final Integer x) -> {}));
     }
 
     /**
@@ -151,7 +148,7 @@ public class IterativeTest {
         try {
             g.next();
             fail();
-        } catch (final NoSuchElementException e) {
+        } catch (final NoSuchElementException ignored) {
             assert true;
         }
     }
@@ -174,7 +171,7 @@ public class IterativeTest {
         try {
             i.next();
             fail();
-        } catch (final NoSuchElementException e) {
+        } catch (final NoSuchElementException ignored) {
             assert true;
         }
     }

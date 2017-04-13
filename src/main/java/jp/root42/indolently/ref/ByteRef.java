@@ -17,6 +17,7 @@ package jp.root42.indolently.ref;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class ByteRef
     extends AbstractRef<Byte, ByteRef>
     implements NumberRef<Byte, ByteRef>, Comparable<ByteRef> {
@@ -24,6 +25,7 @@ public class ByteRef
     private static final long serialVersionUID = -6479571510369831870L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile byte val; // NOPMD
 
     /**

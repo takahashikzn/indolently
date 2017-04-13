@@ -21,6 +21,7 @@ import java.util.function.IntSupplier;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class IntRef
     extends AbstractRef<Integer, IntRef>
     implements NumberRef<Integer, IntRef>, Comparable<IntRef>, IntSupplier, IntConsumer {
@@ -28,6 +29,7 @@ public class IntRef
     private static final long serialVersionUID = -5827553121494604722L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile int val; // NOPMD
 
     /**

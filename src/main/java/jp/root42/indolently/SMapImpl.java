@@ -33,7 +33,7 @@ final class SMapImpl<K, V>
 
     private static final long serialVersionUID = 8705188807596442213L;
 
-    private Map<K, V> store;
+    private final Map<K, V> store;
 
     public SMapImpl() {
         this(ObjFactory.getInstance().newMap());

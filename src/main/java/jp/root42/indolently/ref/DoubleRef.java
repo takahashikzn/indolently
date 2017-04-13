@@ -21,6 +21,7 @@ import java.util.function.DoubleSupplier;
  * @author takahashikzn
  * @version $Id$
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public class DoubleRef
     extends AbstractRef<Double, DoubleRef>
     implements NumberRef<Double, DoubleRef>, Comparable<DoubleRef>, DoubleSupplier, DoubleConsumer {
@@ -28,6 +29,7 @@ public class DoubleRef
     private static final long serialVersionUID = -3198217652103277386L;
 
     /** the value. */
+    @SuppressWarnings("PublicField")
     public volatile double val; // NOPMD
 
     /**

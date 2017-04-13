@@ -21,7 +21,6 @@ import java.util.Set;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 public class SetDelegate<T>
     extends ObjDelegate<Set<T>>
     implements Set<T> {
@@ -58,6 +57,7 @@ public class SetDelegate<T>
 
     @Override
     public <S> S[] toArray(final S[] a) {
+        //noinspection SuspiciousToArrayCall
         return this.getDelegate().toArray(a);
     }
 

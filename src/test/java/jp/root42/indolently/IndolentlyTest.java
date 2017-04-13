@@ -26,7 +26,8 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 
 import jp.root42.indolently.trait.Freezable;
-
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,16 +39,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
 
 /**
  * A test class for {@link Indolently}.
  *
  * @author takahashikzn
  */
-@SuppressWarnings("unused")
 @RunWith(JUnitParamsRunner.class)
 public class IndolentlyTest {
 
@@ -287,15 +284,19 @@ public class IndolentlyTest {
 
         if (type == String.class) {
 
+            //noinspection SuspiciousArrayCast
             assertThat(empty((CharSequence[]) args)).isEqualTo(expected);
         } else if (type == Optional.class) {
 
+            //noinspection SuspiciousArrayCast
             assertThat(empty((Optional[]) args)).isEqualTo(expected);
         } else if (type == Iterable.class) {
 
+            //noinspection SuspiciousArrayCast
             assertThat(empty((Iterable<?>[]) args)).isEqualTo(expected);
         } else if (type == Map.class) {
 
+            //noinspection SuspiciousArrayCast
             assertThat(empty((Map<?, ?>[]) args)).isEqualTo(expected);
         } else {
 
@@ -337,7 +338,8 @@ public class IndolentlyTest {
             oarray("empty optional", true, arrayOf(Optional.empty()), Optional.class), //
             oarray("empty optionals", true, arrayOf(Optional.empty(), Optional.empty()), Optional.class), //
             oarray("non empty optional only", false, arrayOf(Optional.of("a")), Optional.class), //
-            oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class), //
+            oarray("empty and non empty optionals", false, arrayOf(Optional.of("a"), Optional.empty()), Optional.class),
+            //
             oarray("non empty optionals only", false, arrayOf(Optional.of("a"), Optional.of("b")), Optional.class));
     }
 
@@ -394,6 +396,7 @@ public class IndolentlyTest {
 
     static List<Object[]> parametersForTestEqual() {
 
+        //noinspection RedundantStringConstructorCall
         return list( //
             oarray(true, "a", "a"), //
             oarray(true, "a", new String("a")), //
@@ -480,7 +483,7 @@ public class IndolentlyTest {
         assertThat(
             list(sort($(new LinkedHashMap<>(), new SortKey(3), "a").push(new SortKey(1), "b").push(new SortKey(2), "c"),
                 x -> x.val).keySet()).map(x -> x.val)) //
-                    .isEqualTo(list(1, 2, 3));
+            .isEqualTo(list(1, 2, 3));
     }
 
     /**
@@ -733,21 +736,21 @@ public class IndolentlyTest {
         try {
             frozen.put("level1.1", map("level2.1", listOf(set(43))));
             fail();
-        } catch (final UnsupportedOperationException e) {
+        } catch (final UnsupportedOperationException ignored) {
             assert true;
         }
 
         try {
             frozen.get("level1").put("level2.1", listOf(set(43)));
             fail();
-        } catch (final UnsupportedOperationException e) {
+        } catch (final UnsupportedOperationException ignored) {
             assert true;
         }
 
         try {
             frozen.get("level1").get("level2").get(0).add(43);
             fail();
-        } catch (final UnsupportedOperationException e) {
+        } catch (final UnsupportedOperationException ignored) {
             assert true;
         }
     }
@@ -771,14 +774,14 @@ public class IndolentlyTest {
         try {
             list0.add(new Object());
             fail();
-        } catch (final UnsupportedOperationException e) {
+        } catch (final UnsupportedOperationException ignored) {
             assert true;
         }
 
         try {
             list1.add(new Object());
             fail();
-        } catch (final UnsupportedOperationException e) {
+        } catch (final UnsupportedOperationException ignored) {
             assert true;
         }
     }
@@ -808,7 +811,8 @@ public class IndolentlyTest {
         return Arrays.asList( //
             new Object[] { "int set", new HashSet<>(Arrays.asList(1, 2, 3)), new Object[] { 1, 2, 3 } }, //
             new Object[] { "compound typed set", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a" } }, //
-            new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } }, //
+            new Object[] { "duplicated elemement", new HashSet<>(Arrays.asList(1, "a")), new Object[] { 1, "a", 1 } },
+            //
             new Object[] { "empty set", new HashSet<>(), new Object[] {} });
     }
 
@@ -822,11 +826,11 @@ public class IndolentlyTest {
             "9", 9, "10", 10, "11", 11, "12", 12, "13", 13, "14", 14, "15", 15, "16", 16, "17", 17, "18", 18, "19", 19,
             "20", 20, "21", 21, "22", 22, "23", 23, "24", 24, "25", 25, "26", 26, "27", 27, "28", 28, "29", 29, "30",
             30, "31", 31)) //
-                .hasSize(32) //
-                .containsKey("0") //
-                .containsValue(0) //
-                .containsKey("31") //
-                .containsValue(31);
+            .hasSize(32) //
+            .containsKey("0") //
+            .containsValue(0) //
+            .containsKey("31") //
+            .containsValue(31);
     }
 
     /**
@@ -847,7 +851,7 @@ public class IndolentlyTest {
     @Test
     public void testUniq() {
 
-        assertThat(uniq(list(1, 2, 3, 1, 2, 4), (x, y) -> x == y)).isEqualTo(list(1, 2, 3, 4));
+        assertThat(uniq(list(1, 2, 3, 1, 2, 4), (x, y) -> x.equals(y))).isEqualTo(list(1, 2, 3, 4));
         assertThat(uniq(list(1, 2, 3, -1, -2, 4), (x, y) -> Math.abs(x) == Math.abs(y))).isEqualTo(list(1, 2, 3, 4));
     }
 

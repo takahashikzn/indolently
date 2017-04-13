@@ -46,7 +46,6 @@ import static jp.root42.indolently.Indolently.*;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 public class Functional {
 
     protected Functional() {}
@@ -99,8 +98,7 @@ public class Functional {
     public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> memoize(
         final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) {
 
-        final Function4<X0, X1, X2, String, Y> g =
-            memoize((Function4<X0, X1, X2, String, Y>) (x0, x1, x2, x3) -> f.apply(x0, x1, x2));
+        final Function4<X0, X1, X2, String, Y> g = memoize((x0, x1, x2, x3) -> f.apply(x0, x1, x2));
 
         return (x0, x1, x2) -> g.apply(x0, x1, x2, "");
     }

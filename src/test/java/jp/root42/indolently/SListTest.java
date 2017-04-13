@@ -23,8 +23,7 @@ import org.junit.Test;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 
 /**
@@ -51,7 +50,7 @@ public class SListTest {
     @Test
     public void group() {
 
-        assertThat(prog1(() -> list( //
+        final SMap<String, SList<Bean1>> group = list( //
             prog1(Bean1::new, x -> {
                 x.key = "key1";
                 x.bean2 = prog1(Bean2::new, y -> y.val = 1);
@@ -72,12 +71,17 @@ public class SListTest {
                 x.key = "key2";
                 x.bean2 = prog1(Bean2::new, y -> y.val = 16);
             })) //
-                .group(x -> x.key),
-            x -> assertEquals(x.map(y -> y.map(z -> z.bean2.val)),
-                map("key1", list(1, 8), "key2", list(2, 16), "key3", list(4)))) //
-                    .vals() //
-                    .map(x -> x.map(y -> y.bean2.val) //
-                        .reduce(0, (y, z) -> y + z)) //
+            .group(x -> x.key);
+
+        assertThat((Object) map( //
+            "key1", list(1, 8), //
+            "key2", list(2, 16), //
+            "key3", list(4))).isEqualTo(group.map(y -> y.map(z -> z.bean2.val)));
+
+        assertThat(group //
+            .vals() //
+            .map(x -> x.map(y -> y.bean2.val) //
+                .reduce(0, (y, z) -> y + z)) //
         ) //
             .isEqualTo(list(9, 18, 4));
     }
@@ -139,21 +143,22 @@ public class SListTest {
         try {
             list(1, 2, 3).subList(4);
             Assert.fail();
-        } catch (@SuppressWarnings("unused") final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException ignored) {
             assert true;
         }
 
+        //noinspection ProhibitedExceptionCaught
         try {
             list(1, 2, 3).subList(0, 4);
             Assert.fail();
-        } catch (@SuppressWarnings("unused") final IndexOutOfBoundsException e) {
+        } catch (final IndexOutOfBoundsException ignored) {
             assert true;
         }
 
         try {
             list(1, 2, 3).subList(2, 1);
             Assert.fail();
-        } catch (@SuppressWarnings("unused") final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException ignored) {
             assert true;
         }
     }

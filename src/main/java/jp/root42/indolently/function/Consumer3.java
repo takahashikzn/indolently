@@ -19,7 +19,6 @@ import java.util.Objects;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("javadoc")
 @FunctionalInterface
 public interface Consumer3<X0, X1, X2> {
 
