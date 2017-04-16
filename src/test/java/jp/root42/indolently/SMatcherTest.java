@@ -13,10 +13,11 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import org.junit.Test;
-
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Regexive.*;
+
+import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.*;
 
 

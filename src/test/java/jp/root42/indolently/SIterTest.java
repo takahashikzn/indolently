@@ -15,9 +15,10 @@ package jp.root42.indolently;
 
 import java.util.Iterator;
 
+import static jp.root42.indolently.Iterative.*;
+
 import org.junit.Test;
 
-import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.*;
 
 

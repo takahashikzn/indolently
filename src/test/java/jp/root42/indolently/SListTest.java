@@ -18,11 +18,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Indolently.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 
-import static jp.root42.indolently.Expressive.*;
-import static jp.root42.indolently.Indolently.*;
 import static org.assertj.core.api.Assertions.*;
 
 

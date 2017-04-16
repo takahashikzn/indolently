@@ -22,17 +22,19 @@ import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.IntRef;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Indolently.in;
 import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Iterative.*;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;

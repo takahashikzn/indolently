@@ -26,15 +26,17 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 
 import jp.root42.indolently.trait.Freezable;
+
+import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.not;
+import static jp.root42.indolently.Iterative.*;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Indolently.not;
-import static jp.root42.indolently.Iterative.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.junit.Assert.fail;

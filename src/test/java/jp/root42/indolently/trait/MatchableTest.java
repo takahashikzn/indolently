@@ -15,9 +15,10 @@ package jp.root42.indolently.trait;
 
 import java.util.function.Predicate;
 
+import static jp.root42.indolently.Indolently.*;
+
 import org.junit.Test;
 
-import static jp.root42.indolently.Indolently.*;
 import static org.junit.Assert.*;
 
 
