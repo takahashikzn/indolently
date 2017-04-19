@@ -130,7 +130,7 @@ public class FunctionalTest {
                         tuple( //
                             self.apply(tuple(x - 1, y, z)), //
                             self.apply(tuple(y - 1, z, x)), //
-                            self.apply(tuple(z - 1, x, y)))))
+                            self.apply(tuple(z - 1, x, y))))) //
                     .none(y);
             }).memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
     }
@@ -152,7 +152,7 @@ public class FunctionalTest {
                     tuple( //
                         self.apply(tuple(x - 1, y, z)), //
                         self.apply(tuple(y - 1, z, x)), //
-                        self.apply(tuple(z - 1, x, y)))))
+                        self.apply(tuple(z - 1, x, y))))) //
                 .none(y);
         });
 
@@ -174,8 +174,7 @@ public class FunctionalTest {
                 .then(() -> (int) self.apply( //
                     self.apply(x - 1, y, z), //
                     self.apply(y - 1, z, x), //
-                    self.apply(z - 1, x, y)))
-                .none(y)).memoize().apply(20, 6, 0)).isEqualTo(20);
+                    self.apply(z - 1, x, y))).none(y)).memoize().apply(20, 6, 0)).isEqualTo(20);
     }
 
     /**
@@ -193,8 +192,7 @@ public class FunctionalTest {
                 .then(() -> (int) self.apply( //
                     self.apply(x - 1, y, z), //
                     self.apply(y - 1, z, x), //
-                    self.apply(z - 1, x, y)))
-                .none(y));
+                    self.apply(z - 1, x, y))).none(y));
 
         assertThat(tarai.memoize().apply(20, 6, 0)).isEqualTo(20);
     }

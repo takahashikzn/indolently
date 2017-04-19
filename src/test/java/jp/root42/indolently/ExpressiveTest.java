@@ -371,7 +371,7 @@ public class ExpressiveTest {
                 ref(from), //
                 ref -> when(from < to).then(() -> ref.val <= to) //
                     .when(to < from).then(() -> to <= ref.val) //
-                    .none(() -> ref.val == from),
+                    .none(() -> ref.val == from), //
                 ref -> when(from < to) //
                     .then(() -> ref.getThen(self -> self.val += step)) //
                     .none(() -> prog1(ref, () -> ref.val -= step)) //
@@ -384,7 +384,7 @@ public class ExpressiveTest {
                 ref(from), //
                 ref -> when(from < to).then(() -> ref.val <= to) //
                     .when(to < from).then(() -> to <= ref.val) //
-                    .none(() -> ref.val == from),
+                    .none(() -> ref.val == from), //
                 ref -> when(from < to) //
                     .then(() -> ref.getThen(self -> self.val += step)) //
                     .none(() -> prog1(ref, () -> ref.val -= step)) //

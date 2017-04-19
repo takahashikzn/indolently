@@ -482,8 +482,8 @@ public class IndolentlyTest {
         assertThat(list(sort(map).keySet())) //
             .isEqualTo(list(1, 2, 3));
 
-        assertThat(
-            list(sort($(new LinkedHashMap<>(), new SortKey(3), "a").push(new SortKey(1), "b").push(new SortKey(2), "c"),
+        assertThat(list(
+            sort($(new LinkedHashMap<>(), new SortKey(3), "a").push(new SortKey(1), "b").push(new SortKey(2), "c"),
                 x -> x.val).keySet()).map(x -> x.val)) //
             .isEqualTo(list(1, 2, 3));
     }
@@ -824,10 +824,11 @@ public class IndolentlyTest {
     @Test
     public void testMap() {
 
-        assertThat((Map<String, Integer>) map("0", 0, "1", 1, "2", 2, "3", 3, "4", 4, "5", 5, "6", 6, "7", 7, "8", 8,
-            "9", 9, "10", 10, "11", 11, "12", 12, "13", 13, "14", 14, "15", 15, "16", 16, "17", 17, "18", 18, "19", 19,
-            "20", 20, "21", 21, "22", 22, "23", 23, "24", 24, "25", 25, "26", 26, "27", 27, "28", 28, "29", 29, "30",
-            30, "31", 31)) //
+        assertThat(
+            (Map<String, Integer>) map("0", 0, "1", 1, "2", 2, "3", 3, "4", 4, "5", 5, "6", 6, "7", 7, "8", 8, "9", 9,
+                "10", 10, "11", 11, "12", 12, "13", 13, "14", 14, "15", 15, "16", 16, "17", 17, "18", 18, "19", 19,
+                "20", 20, "21", 21, "22", 22, "23", 23, "24", 24, "25", 25, "26", 26, "27", 27, "28", 28, "29", 29,
+                "30", 30, "31", 31)) //
             .hasSize(32) //
             .containsKey("0") //
             .containsValue(0) //
