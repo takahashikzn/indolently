@@ -331,13 +331,13 @@ public class Expressive {
              * @param when a condition
              * @return 'case' object as an 'else-if' expression.
              */
-            When.Case<T> when(BooleanSupplier when);
+            Case<T> when(BooleanSupplier when);
 
             default T none(final T none) {
                 return this.none(() -> none);
             }
 
-            default When.Case<T> when(final boolean when) {
+            default Case<T> when(final boolean when) {
                 return this.when(() -> when);
             }
 
@@ -362,9 +362,9 @@ public class Expressive {
          */
         interface Case<T> {
 
-            When.Then<T> then(Supplier<? extends T> then);
+            Then<T> then(Supplier<? extends T> then);
 
-            default When.Then<T> then(final T then) {
+            default Then<T> then(final T then) {
                 return this.then(() -> then);
             }
         }
@@ -460,21 +460,21 @@ public class Expressive {
 
     public interface Match<C> {
 
-        Match.IntroCase<C> when(Predicate<? super C> pred);
+        IntroCase<C> when(Predicate<? super C> pred);
 
-        default Match.IntroCase<C> when(final boolean pred) {
+        default IntroCase<C> when(final boolean pred) {
             return this.when(fixed(pred));
         }
 
-        default Match.IntroCase<C> when(final Supplier<? extends C> pred) {
+        default IntroCase<C> when(final Supplier<? extends C> pred) {
             return this.when(x -> Indolently.equal(x, pred.get()));
         }
 
-        default Match.IntroCase<C> when(final Class<?> type) {
+        default IntroCase<C> when(final Class<?> type) {
             return this.when(x -> type.isInstance(x));
         }
 
-        default <SC extends C, T> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
+        default <SC extends C, T> Then<C, T> type(final Function<SC, ? extends T> then) {
 
             return eval(argTypeOf(then),
                 argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
@@ -482,13 +482,13 @@ public class Expressive {
 
         interface IntroCase<C> {
 
-            <T> Match.Then<C, T> then(Function<? super C, ? extends T> then);
+            <T> Then<C, T> then(Function<? super C, ? extends T> then);
 
-            default <T> Match.Then<C, T> then(final T then) {
+            default <T> Then<C, T> then(final T then) {
                 return this.then(() -> then);
             }
 
-            default <T> Match.Then<C, T> then(final Supplier<? extends T> then) {
+            default <T> Then<C, T> then(final Supplier<? extends T> then) {
                 return this.then(x -> then.get());
             }
         }
@@ -497,27 +497,27 @@ public class Expressive {
 
             T none(Function<? super C, ? extends T> none);
 
-            Match.Case<C, T> when(Predicate<? super C> when);
+            Case<C, T> when(Predicate<? super C> when);
 
-            default Match.Case<C, T> when(final Class<?> type) {
+            default Case<C, T> when(final Class<?> type) {
                 return this.when(x -> type.isInstance(x));
             }
 
-            default <SC extends C> Match.Then<C, T> type(final Function<SC, ? extends T> then) {
+            default <SC extends C> Then<C, T> type(final Function<SC, ? extends T> then) {
 
                 return eval(argTypeOf(then),
                     argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
             }
 
-            default Match.Case<C, T> when(final boolean when) {
+            default Case<C, T> when(final boolean when) {
                 return this.when(fixed(when));
             }
 
-            default Match.Case<C, T> when(final BooleanSupplier when) {
+            default Case<C, T> when(final BooleanSupplier when) {
                 return this.when(x -> when.getAsBoolean());
             }
 
-            default Match.Case<C, T> when(final Supplier<? extends C> pred) {
+            default Case<C, T> when(final Supplier<? extends C> pred) {
                 return this.when(x -> Indolently.equal(x, pred.get()));
             }
 
@@ -544,13 +544,13 @@ public class Expressive {
 
         interface Case<C, T> {
 
-            Match.Then<C, T> then(Function<? super C, ? extends T> then);
+            Then<C, T> then(Function<? super C, ? extends T> then);
 
-            default Match.Then<C, T> then(final T then) {
+            default Then<C, T> then(final T then) {
                 return this.then(() -> then);
             }
 
-            default Match.Then<C, T> then(final Supplier<? extends T> then) {
+            default Then<C, T> then(final Supplier<? extends T> then) {
                 return this.then(x -> then.get());
             }
         }

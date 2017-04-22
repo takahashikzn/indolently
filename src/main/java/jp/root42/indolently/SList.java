@@ -49,7 +49,7 @@ public interface SList<T>
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
     default SList<T> clone() {
-        return Indolently.list((Iterable<T>) this);
+        return list((Iterable<T>) this);
     }
 
     /**
@@ -60,7 +60,7 @@ public interface SList<T>
      * @return wrapped list
      */
     static <T> SList<T> of(final List<T> list) {
-        return Indolently.$(list);
+        return $(list);
     }
 
     /**
@@ -86,7 +86,7 @@ public interface SList<T>
      */
     default Optional<T> opt(final int index) {
 
-        final int i = Indolently.idx(this, index);
+        final int i = idx(this, index);
 
         return (0 <= i) && (i < this.size()) ? Indolently.opt(this.get(i)) : Optional.empty();
     }
@@ -98,12 +98,12 @@ public interface SList<T>
      * @return sub list
      */
     default List<T> subList(final int from) {
-        return this.subList(Indolently.idx(this, from), this.size());
+        return this.subList(idx(this, from), this.size());
     }
 
     @Override
     default SList<T> tail() {
-        return (this.size() <= 1) ? Indolently.list() : Indolently.list(this.subList(1));
+        return (this.size() <= 1) ? list() : list(this.subList(1));
     }
 
     // for optimization
@@ -118,7 +118,7 @@ public interface SList<T>
      * @return a set constructed from this instance.
      */
     default SSet<T> set() {
-        return Indolently.$(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
+        return $(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
     }
 
     /**
@@ -128,7 +128,7 @@ public interface SList<T>
      * @return a set constructed from this instance.
      */
     default SSet<T> set(final Comparator<T> comp) {
-        return Indolently.$(ObjFactory.getInstance().newSortedSet(comp)).pushAll(this);
+        return $(ObjFactory.getInstance().newSortedSet(comp)).pushAll(this);
     }
 
     /**
@@ -142,7 +142,7 @@ public interface SList<T>
      */
     @Destructive
     default SList<T> push(final int idx, final T value) {
-        this.add(Indolently.idx(this, idx), value);
+        this.add(idx(this, idx), value);
         return this;
     }
 
@@ -161,9 +161,9 @@ public interface SList<T>
         // optimization
         @SuppressWarnings("unchecked")
         final Collection<? extends T> vals =
-            (values instanceof Collection) ? (Collection<? extends T>) values : Indolently.list(values);
+            (values instanceof Collection) ? (Collection<? extends T>) values : list(values);
 
-        this.addAll(Indolently.idx(this, idx), vals);
+        this.addAll(idx(this, idx), vals);
 
         return this;
     }
@@ -180,7 +180,7 @@ public interface SList<T>
      */
     @Destructive
     default SList<T> push(final int idx, final Optional<? extends T> value) {
-        return Indolently.empty(value) ? this : this.push(idx, value.get());
+        return empty(value) ? this : this.push(idx, value.get());
     }
 
     /**
@@ -195,7 +195,7 @@ public interface SList<T>
      */
     @Destructive
     default SList<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
-        return Indolently.empty(values) ? this : this.pushAll(idx, values.get());
+        return empty(values) ? this : this.pushAll(idx, values.get());
     }
 
     /**
@@ -240,23 +240,23 @@ public interface SList<T>
      */
     default SList<T> narrow(final int from, final int to) {
 
-        int fromIndex = Indolently.idx(this, from);
+        int fromIndex = idx(this, from);
 
         if (fromIndex < 0) {
             fromIndex = 0;
         }
 
-        int toIndex = Indolently.idx(this, to);
+        int toIndex = idx(this, to);
 
         if (((from < 0) && (toIndex == 0)) || (this.size() < toIndex)) {
             toIndex = this.size();
         }
 
         if (toIndex < fromIndex) {
-            return Indolently.list();
+            return list();
         }
 
-        return Indolently.$(this.subList(from, toIndex));
+        return $(this.subList(from, toIndex));
     }
 
     /**
@@ -267,7 +267,7 @@ public interface SList<T>
      * @return newly constructed list which contains converted values
      */
     default <R> SList<R> map(final Function<? super T, ? extends R> f) {
-        return this.reduce(Indolently.list(), (x, y) -> x.push(f.apply(y)));
+        return this.reduce(list(), (x, y) -> x.push(f.apply(y)));
     }
 
     /**
@@ -286,7 +286,7 @@ public interface SList<T>
 
     @Override
     default SList<T> filter(final Predicate<? super T> f) {
-        return this.reduce(Indolently.list(), (x, y) -> f.test(y) ? x.push(y) : x);
+        return this.reduce(list(), (x, y) -> f.test(y) ? x.push(y) : x);
     }
 
     /**
@@ -307,7 +307,7 @@ public interface SList<T>
      * @return newly constructed flatten list
      */
     default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return Indolently.list(this.iterator().flatten(f));
+        return list(this.iterator().flatten(f));
     }
 
     /**
@@ -327,18 +327,18 @@ public interface SList<T>
      * @return {@code this} instance or other
      */
     default SList<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
-        return Indolently.nonEmpty(this).orElseGet(() -> Indolently.list(other.get()));
+        return nonEmpty(this).orElseGet(() -> list(other.get()));
     }
 
     @Override
     default <K> SMap<K, SList<T>> group(final Function<? super T, ? extends K> fkey) {
 
-        return this.reduce(Indolently.$(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
+        return this.reduce($(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
 
             final K key = fkey.apply(y);
 
             if (!x.containsKey(key)) {
-                x.put(key, Indolently.list());
+                x.put(key, list());
             }
 
             x.get(key).add(y);
@@ -381,7 +381,7 @@ public interface SList<T>
      */
     @Destructive
     default SList<T> update(final int idx, final Function<? super T, ? extends T> f) {
-        this.opt(idx).ifPresent(x -> this.set(Indolently.idx(this, idx), f.apply(x)));
+        this.opt(idx).ifPresent(x -> this.set(idx(this, idx), f.apply(x)));
         return this;
     }
 

@@ -114,7 +114,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     @Destructive
     default SELF push(final Optional<? extends T> value) {
-        return Indolently.empty(value) ? this.identity() : this.push(value.get());
+        return empty(value) ? this.identity() : this.push(value.get());
     }
 
     /**
@@ -126,7 +126,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     @Destructive
     default SELF pushAll(final Optional<? extends Iterable<? extends T>> values) {
-        return Indolently.empty(values) ? this.identity() : this.pushAll(values.get());
+        return empty(values) ? this.identity() : this.pushAll(values.get());
     }
 
     /**
@@ -270,7 +270,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default <K, V> SMap<K, V> mapmap(final Function<? super T, ? extends K> fkey,
         final Function<? super T, ? extends V> fval) {
 
-        return this.reduce(Indolently.map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
+        return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
     }
 
     /**

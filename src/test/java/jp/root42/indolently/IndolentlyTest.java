@@ -889,15 +889,15 @@ public class IndolentlyTest {
     @Test
     public void testCompareList() {
 
-        assertThat(compare(list(1, 2, 3), list(1, 2))).isEqualTo(Indolently.ComparisonResult.LARGE);
-        assertThat(compare(list(1, 2, 3), list(1, 3))).isEqualTo(Indolently.ComparisonResult.SMALL);
-        assertThat(compare(list(1, 2, 3), list(1, 1))).isEqualTo(Indolently.ComparisonResult.LARGE);
-        assertThat(compare(list(1, 2, 3), list(1, 2, 3))).isEqualTo(Indolently.ComparisonResult.EQUAL);
-        assertThat(compare(list(1, 2, 3), list(1, 2, 3, 4))).isEqualTo(Indolently.ComparisonResult.SMALL);
-        assertThat(compare(list(1, 2, 3), list())).isEqualTo(Indolently.ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3), list(1, 2))).isEqualTo(ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3), list(1, 3))).isEqualTo(ComparisonResult.SMALL);
+        assertThat(compare(list(1, 2, 3), list(1, 1))).isEqualTo(ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3), list(1, 2, 3))).isEqualTo(ComparisonResult.EQUAL);
+        assertThat(compare(list(1, 2, 3), list(1, 2, 3, 4))).isEqualTo(ComparisonResult.SMALL);
+        assertThat(compare(list(1, 2, 3), list())).isEqualTo(ComparisonResult.LARGE);
 
         // We have to use 'new ArrayList<Long>()' instead of 'list()' to avoid JDK's compilation error
-        assertThat(compare(new ArrayList<Long>(), list())).isEqualTo(Indolently.ComparisonResult.EQUAL);
+        assertThat(compare(new ArrayList<Long>(), list())).isEqualTo(ComparisonResult.EQUAL);
     }
 
     /**
@@ -906,14 +906,14 @@ public class IndolentlyTest {
     @Test
     public void testCompareIterable() {
 
-        assertThat(compare(list(1, 2, 3).set(), list(1, 2))).isEqualTo(Indolently.ComparisonResult.LARGE);
-        assertThat(compare(list(1, 2, 3).set(), list(1, 3))).isEqualTo(Indolently.ComparisonResult.SMALL);
-        assertThat(compare(list(1, 2, 3).set(), list(1, 1))).isEqualTo(Indolently.ComparisonResult.LARGE);
-        assertThat(compare(list(1, 2, 3).set(), list(1, 2, 3))).isEqualTo(Indolently.ComparisonResult.EQUAL);
-        assertThat(compare(list(1, 2, 3).set(), list(1, 2, 3, 4))).isEqualTo(Indolently.ComparisonResult.SMALL);
-        assertThat(compare(list(1, 2, 3).set(), list())).isEqualTo(Indolently.ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3).set(), list(1, 2))).isEqualTo(ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3).set(), list(1, 3))).isEqualTo(ComparisonResult.SMALL);
+        assertThat(compare(list(1, 2, 3).set(), list(1, 1))).isEqualTo(ComparisonResult.LARGE);
+        assertThat(compare(list(1, 2, 3).set(), list(1, 2, 3))).isEqualTo(ComparisonResult.EQUAL);
+        assertThat(compare(list(1, 2, 3).set(), list(1, 2, 3, 4))).isEqualTo(ComparisonResult.SMALL);
+        assertThat(compare(list(1, 2, 3).set(), list())).isEqualTo(ComparisonResult.LARGE);
 
         // We have to use 'new HashSet<Long>()' instead of 'set()' to avoid JDK's compilation error
-        assertThat(compare(new HashSet<Long>(), list())).isEqualTo(Indolently.ComparisonResult.EQUAL);
+        assertThat(compare(new HashSet<Long>(), list())).isEqualTo(ComparisonResult.EQUAL);
     }
 }

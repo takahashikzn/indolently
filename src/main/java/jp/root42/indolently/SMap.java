@@ -201,7 +201,7 @@ public interface SMap<K, V>
     }
 
     /**
-     * Extended {@link java.util.Map.Entry} class for indolent person.
+     * Extended {@link Map.Entry} class for indolent person.
      * The name is came from "Sugared Entry".
      *
      * @param <K> key type

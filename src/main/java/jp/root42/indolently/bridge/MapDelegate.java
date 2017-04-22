@@ -86,7 +86,7 @@ public class MapDelegate<K, V>
     }
 
     @Override
-    public Set<java.util.Map.Entry<K, V>> entrySet() {
+    public Set<Map.Entry<K, V>> entrySet() {
         return this.getDelegate().entrySet();
     }
 }

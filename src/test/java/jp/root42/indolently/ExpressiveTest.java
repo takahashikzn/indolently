@@ -31,7 +31,6 @@ import static jp.root42.indolently.Iterative.*;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -57,7 +56,7 @@ public class ExpressiveTest {
         final RaiseTestException e = new RaiseTestException();
 
         try {
-            Assert.fail(eval(() -> raise(e)));
+            fail(eval(() -> raise(e)));
         } catch (final RaisedException err) {
             assertThat(err.getCause()).isSameAs(e);
         }
@@ -75,7 +74,7 @@ public class ExpressiveTest {
     @Test(expected = RaiseTestRuntimeException.class)
     public void testRaiseRuntimeException() {
 
-        Assert.fail(eval(() -> raise(new RaiseTestRuntimeException())));
+        fail(eval(() -> raise(new RaiseTestRuntimeException())));
     }
 
     private static final class RaiseTestRuntimeException
@@ -90,7 +89,7 @@ public class ExpressiveTest {
     @Test(expected = RaiseTestError.class)
     public void testRaiseError() {
 
-        Assert.fail(eval(() -> raise(new RaiseTestError())));
+        fail(eval(() -> raise(new RaiseTestError())));
     }
 
     private static final class RaiseTestError
@@ -403,7 +402,7 @@ public class ExpressiveTest {
     }
 
     /**
-     * {@link Expressive.Match.IntroCase#raise(Supplier)}
+     * {@link Match.IntroCase#raise(Supplier)}
      */
     @Test
     public void testSwitchOfFailure() {

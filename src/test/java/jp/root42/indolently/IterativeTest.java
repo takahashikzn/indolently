@@ -97,7 +97,7 @@ public class IterativeTest {
             (final IntRef pos) -> tuple( //
                 ints.get(pos.val), //
                 ints.opt(++pos.val) //
-                    .orElseGet(() -> Generator.breaks()))).list()) //
+                    .orElseGet(() -> breaks()))).list()) //
             .isEqualTo(list( //
                 tuple(1, 2) //
                 , tuple(2, 3) //
