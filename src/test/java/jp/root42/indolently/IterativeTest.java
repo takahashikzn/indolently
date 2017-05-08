@@ -213,6 +213,16 @@ public class IterativeTest {
     public void testRange(final String desc, final List<Integer> expected, final int from, final int to,
         final int step) {
 
+        // SIter.each returns just a 'tapped' iterator.
+        range(from, to, step).each(x -> fatal());
+
+        final List<Integer> actual = list();
+
+        range(from, to, step).each(x -> actual.add(x)).list();
+
+        assertThat(actual).as(desc) //
+            .isEqualTo(expected);
+
         assertThat(range(from, to, step).list()).as(desc) //
             .isEqualTo(expected);
     }
