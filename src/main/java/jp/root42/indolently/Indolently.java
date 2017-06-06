@@ -2412,6 +2412,10 @@ public class Indolently {
         return assignable(itself(), cls);
     }
 
+    public static <T> Predicate<T> same(final T val) {
+        return x -> (x == val);
+    }
+
     public static <T> Predicate<T> eq(final T val) {
         return eq(itself(), val);
     }
