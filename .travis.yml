@@ -6,10 +6,10 @@ addons:
   apt:
     packages:
       - oracle-java8-installer
+      - ant-optional
 
 jdk:
   - oraclejdk8
 
 before_install: ant prepare-ivy
 install: ant setup
-script: ant -lib /home/travis/.ant/lib -lib /usr/share/ant/lib test
