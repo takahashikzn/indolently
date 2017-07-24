@@ -11,4 +11,4 @@ jdk:
   - oraclejdk8
 
 before_install: ant prepare-ivy
-install: ant setup
+install: ant -lib /home/travis/.ant/lib -lib /usr/share/ant/lib setup

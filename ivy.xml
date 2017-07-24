@@ -46,9 +46,6 @@
     <dependency org="org.objenesis" name="objenesis" rev="2.6" conf="test->master(*)" />
     <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.0" conf="test->master(*)" />
 
-    <dependency org="org.apache.ant" name="ant-junit" rev="1.10.1" conf="test->master(*)" />
-    <dependency org="org.apache.ant" name="ant-junit4" rev="1.10.1" conf="test->master(*)" />
-
   </dependencies>
 
 </ivy-module>
