@@ -109,6 +109,7 @@ public interface SList<T>
     // for optimization
     @Override
     default T last() {
+        //noinspection ConstantConditions
         return this.get(-1);
     }
 

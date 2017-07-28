@@ -59,7 +59,6 @@ public interface Generator<T>
     static <E, T> Generator<T> of(final E env, final Function<? super E, ? extends T> next) {
         Objects.requireNonNull(next);
 
-        //noinspection unchecked
         return new Generator<T>() {
 
             private boolean stopped; // NOPMD
@@ -84,6 +83,7 @@ public interface Generator<T>
                 }
             }
 
+            @SuppressWarnings("OptionalAssignedToNull")
             @Override
             public T next() {
                 if (!this.hasNext()) {

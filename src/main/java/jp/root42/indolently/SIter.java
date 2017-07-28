@@ -78,7 +78,6 @@ public interface SIter<T>
 
         Objects.requireNonNull(next);
 
-        //noinspection unchecked
         return new SIter<T>() {
 
             @Override
@@ -140,6 +139,7 @@ public interface SIter<T>
                 }
 
                 final T val = this.cur.get();
+                //noinspection OptionalAssignedToNull
                 this.cur = null;
                 return val;
             }
@@ -193,7 +193,7 @@ public interface SIter<T>
     default <R> SIter<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         Objects.requireNonNull(f);
 
-        //noinspection IteratorHasNextCallsIteratorNext,unchecked
+        // noinspection IteratorHasNextCallsIteratorNext
         return new SIter<R>() {
 
             private Iterator<? extends R> cur = Iterative.iterator();
