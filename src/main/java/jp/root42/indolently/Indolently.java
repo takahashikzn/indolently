@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -2578,5 +2579,25 @@ public class Indolently {
      */
     public static <X, Y> BiConsumer<X, Y> noop() {
         return cast(noop);
+    }
+
+    public static BiFunction<Number, Number, Integer> sum() {
+        return sum(0);
+    }
+
+    public static BiFunction<Number, Number, Integer> sum(final int z) {
+        return (x, y) -> x.intValue() + y.intValue() + z;
+    }
+
+    public static BiFunction<Number, Number, Long> sum(final long z) {
+        return (x, y) -> x.longValue() + y.longValue() + z;
+    }
+
+    public static BiFunction<Number, Number, Float> sum(final float z) {
+        return (x, y) -> x.floatValue() + y.floatValue() + z;
+    }
+
+    public static BiFunction<Number, Number, Double> sum(final double z) {
+        return (x, y) -> x.doubleValue() + y.doubleValue() + z;
     }
 }
