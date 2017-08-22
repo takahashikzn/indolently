@@ -50,6 +50,7 @@
   <target name="make" depends="setup" description="make">
     <loadfile srcfile="build/make.js" property="make.js" />
     <script language="javascript">
+      var param = { test: !project.getProperty('skipTest') };
       eval(project.getProperty('ari.js')).run(project.getProperty('make.js'));
     </script>
   </target>
@@ -72,7 +73,9 @@
   <target name="runtest" description="run test">
     <loadfile srcfile="build/test.js" property="test.js" />
     <script language="javascript">
-      eval(project.getProperty('ari.js')).run(project.getProperty('test.js'));
+      if (!project.getProperty('skipTest')) {
+          eval(project.getProperty('ari.js')).run(project.getProperty('test.js'));
+      }
     </script>
   </target>
 
