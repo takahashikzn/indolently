@@ -201,11 +201,19 @@ public interface SIter<T>
             @Override
             public boolean hasNext() {
 
-                if (!this.cur.hasNext() && SIter.this.hasNext()) {
-                    this.cur = f.apply(SIter.this.next()).iterator();
+                if (this.cur.hasNext()) {
+                    return true;
                 }
 
-                return this.cur.hasNext();
+                while (SIter.this.hasNext()) {
+                    this.cur = f.apply(SIter.this.next()).iterator();
+
+                    if (this.cur.hasNext()) {
+                        return true;
+                    }
+                }
+
+                return false;
             }
 
             @Override
