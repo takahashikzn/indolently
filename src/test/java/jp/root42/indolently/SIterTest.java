@@ -54,8 +54,10 @@ public class SIterTest {
     public void flatten() {
 
         assertThat(list(list(1), list(2, 3), list(4)).flatten(itself())).isEqualTo(list(1, 2, 3, 4));
-        assertThat(list(list(1), list(), list(2, 3), list(), list(), list(4)).flatten(itself()))
-            .isEqualTo(list(1, 2, 3, 4));
+
+        final SList<SList<Integer>> list = list(list(1), list(), list(2, 3), list(), list(), list(4));
+        assertThat(list.flatten(itself())).isEqualTo(list(1, 2, 3, 4));
+
         assertThat($(new ArrayList<List<Integer>>()).flatten(itself())).isEqualTo(list());
     }
 }

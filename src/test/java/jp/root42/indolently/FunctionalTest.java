@@ -51,8 +51,8 @@ public class FunctionalTest {
     @Test
     public void testListComprehension() {
 
-        assertThat(range(2, 10)
-            .filter(z -> function((final BiFunction<Integer, Integer, Boolean> self) -> {}, (self, x, y) -> {
+        assertThat(
+            range(2, 10).filter(z -> func2((final BiFunction<Integer, Integer, Boolean> self) -> {}, (self, x, y) -> {
                 if (y <= 1) {
                     return true;
                 } else if ((x % y) == 0) {
@@ -61,8 +61,8 @@ public class FunctionalTest {
                     return self.apply(x, y - 1);
                 }
             }).apply(z, z - 1)) //
-            .map(x -> "" + x) //
-            .list()) //
+                .map(x -> "" + x) //
+                .list()) //
             .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
     }
 
@@ -74,7 +74,7 @@ public class FunctionalTest {
 
         final IntRef initCount = ref(0);
 
-        final Function<Integer, Integer> fib = function( //
+        final Function<Integer, Integer> fib = func( //
             (final Function<Integer, Integer> self) -> {
                 assertThat(self.apply(1)).isEqualTo(1); // check no stackoverflow
                 initCount.val++;
@@ -117,7 +117,7 @@ public class FunctionalTest {
     @Test
     public void testFunction2() {
 
-        assertThat(function( //
+        assertThat(func( //
             (final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {}, // function decl
             (self, v) -> { // function body
 
