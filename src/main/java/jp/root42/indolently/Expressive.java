@@ -196,6 +196,7 @@ public class Expressive {
      * @param forms evaluation target forms. argument is evaluation result of {@code first}.
      * @return first expression evaluation result
      */
+    @SuppressWarnings("varargs")
     @SafeVarargs
     public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
@@ -268,6 +269,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
+    @SuppressWarnings("try")
     public static <T extends AutoCloseable, R> R evalWith(final Supplier<? extends T> res,
         final Function<? super T, ? extends R> expr) {
 
@@ -414,7 +416,7 @@ public class Expressive {
             @Override
             public <T> When.Then<T> then(final Supplier<? extends T> then) {
 
-                return new When.Then<T>() {
+                return new When.Then<>() {
 
                     @Override
                     public T none(final Supplier<? extends T> none) {
@@ -436,7 +438,7 @@ public class Expressive {
 
     private static <T> When.Case<T> toWhenCase(final Match.Case<?, T> theCase) {
 
-        return then -> new When.Then<T>() {
+        return then -> new When.Then<>() {
 
             @Override
             public T none(final Supplier<? extends T> none) {
@@ -450,10 +452,12 @@ public class Expressive {
         };
     }
 
+    @SuppressWarnings("overloads")
     private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
         return cast(TypeResolver.resolveRawArguments(Function.class, f.getClass())[0]);
     }
 
+    @SuppressWarnings("overloads")
     private static <T> Class<T> argTypeOf(final Consumer<T> f) {
         return cast(TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0]);
     }
@@ -558,7 +562,7 @@ public class Expressive {
 
     public static <C> Match<C> match(final C ctx) {
 
-        return pred -> new Match.IntroCase<C>() {
+        return pred -> new Match.IntroCase<>() {
 
             @Override
             public <T> Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
@@ -569,14 +573,14 @@ public class Expressive {
 
     private static <C, T> Match.Case<C, T> toResolvedCase(final T value) {
 
-        return new Match.Case<C, T>() {
+        return new Match.Case<>() {
 
             @Override
             public Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
 
                 final Match.Case<C, T> self = this;
 
-                return new Match.Then<C, T>() {
+                return new Match.Then<>() {
 
                     @Override
                     public T none(final Function<? super C, ? extends T> none) {
@@ -596,7 +600,7 @@ public class Expressive {
 
         final Predicate<? super C> pred = Functional.$(condition).memoize();
 
-        return then -> new Match.Then<C, T>() {
+        return then -> new Match.Then<>() {
 
             @Override
             public T none(final Function<? super C, ? extends T> none) {
