@@ -1780,7 +1780,7 @@ public class Indolently {
             return cast(iter);
         }
 
-        return new SIter<>() {
+        return new SIter<T>() {
 
             @Override
             public boolean hasNext() {

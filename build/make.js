@@ -34,8 +34,8 @@ targets.forEach(function(x) {
         dir: x.destdir
     }).task('javac', {
         encoding: 'UTF-8',
-        source: 1.8,
-        target: 1.8,
+        source: 8,
+        target: 8,
         debug: true,
         srcdir: x.srcdir,
         destdir: x.destdir,

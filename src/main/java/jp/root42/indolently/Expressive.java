@@ -416,7 +416,7 @@ public class Expressive {
             @Override
             public <T> When.Then<T> then(final Supplier<? extends T> then) {
 
-                return new When.Then<>() {
+                return new When.Then<T>() {
 
                     @Override
                     public T none(final Supplier<? extends T> none) {
@@ -438,7 +438,7 @@ public class Expressive {
 
     private static <T> When.Case<T> toWhenCase(final Match.Case<?, T> theCase) {
 
-        return then -> new When.Then<>() {
+        return then -> new When.Then<T>() {
 
             @Override
             public T none(final Supplier<? extends T> none) {
@@ -562,7 +562,7 @@ public class Expressive {
 
     public static <C> Match<C> match(final C ctx) {
 
-        return pred -> new Match.IntroCase<>() {
+        return pred -> new Match.IntroCase<C>() {
 
             @Override
             public <T> Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
@@ -573,14 +573,14 @@ public class Expressive {
 
     private static <C, T> Match.Case<C, T> toResolvedCase(final T value) {
 
-        return new Match.Case<>() {
+        return new Match.Case<C, T>() {
 
             @Override
             public Match.Then<C, T> then(final Function<? super C, ? extends T> then) {
 
                 final Match.Case<C, T> self = this;
 
-                return new Match.Then<>() {
+                return new Match.Then<C, T>() {
 
                     @Override
                     public T none(final Function<? super C, ? extends T> none) {
@@ -600,7 +600,7 @@ public class Expressive {
 
         final Predicate<? super C> pred = Functional.$(condition).memoize();
 
-        return then -> new Match.Then<>() {
+        return then -> new Match.Then<C, T>() {
 
             @Override
             public T none(final Function<? super C, ? extends T> none) {
