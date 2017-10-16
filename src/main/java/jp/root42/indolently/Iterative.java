@@ -158,7 +158,7 @@ public class Iterative {
      * @param values lazy evaluated values which {@link Iterator#next} returns
      * @return iterator as {@link SIter}
      */
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     @SafeVarargs
     public static <T> SIter<T> iterator(final Supplier<? extends T>... values) {
 

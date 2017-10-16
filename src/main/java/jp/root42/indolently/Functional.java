@@ -46,7 +46,7 @@ import static jp.root42.indolently.Indolently.*;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings("overloads")
+@SuppressWarnings({ "overloads", "RedundantSuppression" })
 public class Functional {
 
     protected Functional() {}

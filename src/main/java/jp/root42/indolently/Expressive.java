@@ -196,7 +196,7 @@ public class Expressive {
      * @param forms evaluation target forms. argument is evaluation result of {@code first}.
      * @return first expression evaluation result
      */
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     @SafeVarargs
     public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
@@ -269,7 +269,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    @SuppressWarnings("try")
+    @SuppressWarnings({ "try", "RedundantSuppression" })
     public static <T extends AutoCloseable, R> R evalWith(final Supplier<? extends T> res,
         final Function<? super T, ? extends R> expr) {
 
@@ -452,12 +452,12 @@ public class Expressive {
         };
     }
 
-    @SuppressWarnings("overloads")
+    @SuppressWarnings({ "overloads", "RedundantSuppression" })
     private static <T> Class<T> argTypeOf(final Function<T, ?> f) {
         return cast(TypeResolver.resolveRawArguments(Function.class, f.getClass())[0]);
     }
 
-    @SuppressWarnings("overloads")
+    @SuppressWarnings({ "overloads", "RedundantSuppression" })
     private static <T> Class<T> argTypeOf(final Consumer<T> f) {
         return cast(TypeResolver.resolveRawArguments(Consumer.class, f.getClass())[0]);
     }

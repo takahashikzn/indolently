@@ -301,7 +301,7 @@ public class Indolently {
      * @return Optional representation of value
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> Optional<T> opt(final T value, final Consumer<? super T>... consumers) {
         final Optional<T> opt = opt(value);
         list(consumers).each(f -> opt.ifPresent(f));
@@ -354,7 +354,7 @@ public class Indolently {
      * @see #list(Object...)
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> SList<T> listOf(final T... elems) {
         return list(elems);
     }
@@ -389,7 +389,7 @@ public class Indolently {
      * @return new list
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> SList<T> list(final T... elems) {
 
         final SList<T> list = new SListImpl<>();
@@ -402,7 +402,7 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <V, T extends Predicate<V>> Optional<T> find(final V cond, final T... preds) {
 
         for (final T p : preds) {
@@ -448,7 +448,7 @@ public class Indolently {
      * @throws IllegalArgumentException first element is null..
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> T[] array(final T first, final T... rest) {
         if (first == null) {
             throw new IllegalArgumentException("can't infer empty array type");
@@ -472,7 +472,7 @@ public class Indolently {
      * @return typed array
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T, V extends T> T[] array(final Class<T> type, final V first, final V... rest) {
 
         if (first == null) {
@@ -493,7 +493,7 @@ public class Indolently {
      * @return {@link Object} array
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> T[] arrayOf(final T... elems) {
         return elems;
     }
@@ -725,13 +725,13 @@ public class Indolently {
      * @see #set(Object...)
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> SSet<T> setOf(final T... elems) {
         return set(elems);
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> SSet<T> set(final T... elems) {
 
         final SSet<T> set = new SSetImpl<>();
@@ -1022,7 +1022,7 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> T choose(final T... elems) {
 
         return list(elems) //
@@ -1031,14 +1031,14 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> T choose(final Supplier<? extends T>... suppliers) {
         //noinspection RedundantCast
         return choose((T) null, suppliers);
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> T choose(final T initial, final Supplier<? extends T>... suppliers) {
 
         if (initial != null) {
@@ -1432,7 +1432,7 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T extends Comparable<T>> boolean equal(final T l, final T r, final T... rest) {
         return list(r).pushAll(list(rest)).every(x -> equal(l, x));
     }
@@ -1538,7 +1538,7 @@ public class Indolently {
 
     @TypeUnsafe
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> boolean equiv(final T l, final T r, final T... rest) {
         return list(r).pushAll(list(rest)).every(x -> equiv(l, x));
     }
@@ -1552,13 +1552,13 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T extends Comparable<T>> T max(final T first, final T second, final T... rest) {
         return max(list(rest)).map(x -> max(x, max(first, second))).orElseGet(() -> max(first, second));
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T extends Comparable<T>> T min(final T first, final T second, final T... rest) {
         return min(list(rest)).map(x -> min(x, min(first, second))).orElseGet(() -> min(first, second));
     }
@@ -1747,7 +1747,7 @@ public class Indolently {
      * @return wrapped list
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> SList<T> $(final List<T> list, final T... elems) {
         return $(Objects.requireNonNull(list, "list")).pushAll(list(elems));
     }
@@ -1760,7 +1760,7 @@ public class Indolently {
      * @return wrapped set
      */
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> SSet<T> $(final Set<T> set, final T... elems) {
         return $(Objects.requireNonNull(set, "set")).pushAll(list(elems));
     }
@@ -2384,7 +2384,7 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> Predicate<T> and(final Predicate<? super T> x0, final Predicate<? super T> x1,
         final Predicate<? super T>... x2) {
 
@@ -2397,7 +2397,7 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> Predicate<T> or(final Predicate<? super T> x0, final Predicate<? super T> x1,
         final Predicate<? super T>... x2) {
 
@@ -2490,7 +2490,7 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> Predicate<T> in(final T... val) {
         return in(itself(), val);
     }
@@ -2574,7 +2574,7 @@ public class Indolently {
     }
 
     @SafeVarargs
-    @SuppressWarnings("varargs")
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final T... val) {
         return in(f, list(val));
     }
