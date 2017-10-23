@@ -360,6 +360,20 @@ public class Indolently {
     }
 
     /**
+     * Just an alias of {@link #list(Object...)} but not overloaded one.
+     * If compiler fail to do type inference on {@link #list(Object...)} with no argument, for example such a
+     * {@code let(list(), x -> x.add("foo"))}, you can use this method instead of.
+     *
+     * @param <T> type of value
+     * @param type type
+     * @return new list
+     * @see #list(Object...)
+     */
+    public static <T> SList<T> newList(final Class<T> type) {
+        return list();
+    }
+
+    /**
      * construct new list which contains specified elements.
      *
      * @param <T> type of value
@@ -720,6 +734,7 @@ public class Indolently {
      * If compiler fail to do type inference on {@link #set(Object...)}, for example such a
      * {@code Set<List<Integer>> nested = set(list(42))}, you can use this method instead of.
      *
+     * @param <T> type of value
      * @param elems elements of set
      * @return new set
      * @see #set(Object...)
@@ -728,6 +743,20 @@ public class Indolently {
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> SSet<T> setOf(final T... elems) {
         return set(elems);
+    }
+
+    /**
+     * Just an alias of {@link #set(Object...)} but not overloaded one.
+     * If compiler fail to do type inference on {@link #set(Object...)}, for example such a
+     * {@code let(set(), x -> x.add("foo"))}, you can use this method instead of.
+     *
+     * @param <T> type of value
+     * @param type type
+     * @return new set
+     * @see #set(Object...)
+     */
+    public static <T> SSet<T> newSet(final Class<T> type) {
+        return set();
     }
 
     @SafeVarargs
@@ -1809,6 +1838,11 @@ public class Indolently {
         return (stream == null) ? null //
             : (stream instanceof SStream) ? cast(stream) //
                 : new SStreamImpl<>(stream);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <K, V> SMap<K, V> newMap(final Class<K> keyType, final Class<V> valType) {
+        return (SMap<K, V>) map();
     }
 
     @SuppressWarnings("unchecked")
