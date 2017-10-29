@@ -1019,6 +1019,132 @@ public class Indolently {
         return (ary == null) || (ary.length == 0);
     }
 
+    public static boolean contains(final Object[] ary, final Object val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final Object x : ary) {
+            if (Objects.equals(x, val)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final byte[] ary, final byte val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final byte x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final int[] ary, final int val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final int x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final long[] ary, final long val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final long x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final short[] ary, final short val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final short x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final float[] ary, final float val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final float x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final double[] ary, final double val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final double x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final boolean[] ary, final boolean val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final boolean x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean contains(final char[] ary, final char val) {
+        if (empty(ary)) {
+            return false;
+        }
+
+        for (final char x : ary) {
+            if (x == val) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static String join(final CharSequence... ary) {
         return join(list(ary), null);
     }
