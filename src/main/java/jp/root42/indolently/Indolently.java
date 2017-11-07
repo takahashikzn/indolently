@@ -1556,6 +1556,10 @@ public class Indolently {
         return gele(l, m, u);
     }
 
+    public static boolean equal(final long l, final long r) {
+        return l == r;
+    }
+
     public static boolean equal(final long l, final long r, final long... rest) {
 
         if (l != r) {
@@ -1569,6 +1573,10 @@ public class Indolently {
         }
 
         return true;
+    }
+
+    public static boolean equal(final double l, final double r) {
+        return Double.compare(l, r) == 0;
     }
 
     public static boolean equal(final double l, final double r, final double... rest) {
