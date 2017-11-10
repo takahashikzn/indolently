@@ -1095,7 +1095,7 @@ public class Indolently {
         }
 
         for (final float x : ary) {
-            if (x == val) {
+            if (equal(x, val)) {
                 return true;
             }
         }
@@ -1109,7 +1109,7 @@ public class Indolently {
         }
 
         for (final double x : ary) {
-            if (x == val) {
+            if (equal(x, val)) {
                 return true;
             }
         }
