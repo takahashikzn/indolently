@@ -593,6 +593,23 @@ public class Indolently {
     }
 
     /**
+     * The shortcut notation of {@code new byte[] { (byte) 0xFF, ... }}.
+     *
+     * @param elems elements of array
+     * @return int array
+     */
+    public static byte[] bytes(final int... elems) {
+
+        final byte[] ret = new byte[elems.length];
+
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = (byte) elems[i];
+        }
+
+        return ret;
+    }
+
+    /**
      * Create an iterator of {@code char}.
      *
      * @param cs character sequence
