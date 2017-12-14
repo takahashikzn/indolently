@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -78,5 +80,51 @@ public interface SPtrn
      */
     default SList<String> split(final CharSequence cs, final int limit) {
         return Indolently.list(this.ptrn().split(cs, limit));
+    }
+
+    /**
+     * delegate for {@link Matcher#replaceAll(String)}
+     *
+     * @param cs the string to replace
+     * @param replacement replacement string
+     * @return replaced string
+     */
+    default String replaceAll(final CharSequence cs, final String replacement) {
+        return this.matcher(cs).replaceAll(replacement);
+    }
+
+    /**
+     * delegate for {@link Matcher#replaceFirst(String)}
+     *
+     * @param cs the string to replace
+     * @param replacement replacement string
+     * @return replaced string
+     */
+    default String replaceFirst(final CharSequence cs, final String replacement) {
+        return this.matcher(cs).replaceFirst(replacement);
+    }
+
+    /**
+     * delegate for {@link SMatcher#replace(Function)}
+     *
+     * @param cs the string to replace
+     * @param f replace operator
+     * @return replaced string
+     * @see #replaceAll(String)
+     */
+    default String replace(final CharSequence cs, final Function<String, String> f) {
+        return this.matcher(cs).replace(f);
+    }
+
+    /**
+     * delegate for {@link SMatcher#replace(BiFunction)}
+     *
+     * @param cs the string to replace
+     * @param f replace operator
+     * @return replaced string
+     * @see #replaceAll(String)
+     */
+    default String replace(final CharSequence cs, final BiFunction<? super SMatcher, String, String> f) {
+        return this.matcher(cs).replace(f);
     }
 }
