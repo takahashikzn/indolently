@@ -5,11 +5,11 @@ dist: trusty
 addons:
   apt:
     packages:
-      - oracle-java8-installer
+      - oracle-java9-installer
       - ant-optional
 
 jdk:
-  - oraclejdk8
+  - oraclejdk9
 
 before_install: ant prepare-ivy
 install: ant setup
