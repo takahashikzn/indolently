@@ -28,191 +28,136 @@ public interface RegexMatcher
 
     /**
      * delegate for {@link Matcher#pattern()}
-     *
-     * @return -
      */
     Pattern pattern();
 
     /**
      * delegate for {@link Matcher#toMatchResult()}
-     *
-     * @return -
      */
     MatchResult toMatchResult();
 
     /**
      * delegate for {@link Matcher#usePattern(Pattern)}
-     *
-     * @param newPattern -
-     * @return -
      */
-    Matcher usePattern(final Pattern newPattern);
+    Matcher usePattern(Pattern newPattern);
 
     /**
      * delegate for {@link Matcher#reset()}
-     *
-     * @return -
      */
     Matcher reset();
 
     /**
      * delegate for {@link Matcher#reset(CharSequence)}
-     *
-     * @param input -
-     * @return -
      */
-    Matcher reset(final CharSequence input);
+    Matcher reset(CharSequence input);
 
     /**
      * delegate for {@link Matcher#start(String)}
-     *
-     * @param name -
-     * @return -
      */
-    int start(final String name);
+    int start(String name);
 
     /**
      * delegate for {@link Matcher#end(String)}
-     *
-     * @param name -
-     * @return -
      */
-    int end(final String name);
+    int end(String name);
 
     /**
      * delegate for {@link Matcher#group(String)}
-     *
-     * @param name -
-     * @return -
      */
-    String group(final String name);
+    String group(String name);
 
     /**
      * delegate for {@link Matcher#matches()}
-     *
-     * @return -
      */
     boolean matches();
 
     /**
      * delegate for {@link Matcher#find()}
-     *
-     * @return -
      */
     boolean find();
 
     /**
      * delegate for {@link Matcher#find(int)}
-     *
-     * @param start -
-     * @return -
      */
-    boolean find(final int start);
+    boolean find(int start);
 
     /**
      * delegate for {@link Matcher#lookingAt()}
-     *
-     * @return -
      */
     boolean lookingAt();
 
     /**
-     * delegate for {@link Matcher#appendReplacement(StringBuffer, String)}
-     *
-     * @param sb -
-     * @param replacement -
-     * @return -
+     * delegate for {@link Matcher#appendReplacement(StringBuilder, String)}
      */
-    Matcher appendReplacement(final StringBuffer sb, final String replacement);
+    Matcher appendReplacement(StringBuilder sb, String replacement);
+
+    /**
+     * delegate for {@link Matcher#appendReplacement(StringBuffer, String)}
+     */
+    Matcher appendReplacement(StringBuffer sb, String replacement);
+
+    /**
+     * delegate for {@link Matcher#appendTail(StringBuilder)}
+     */
+    StringBuilder appendTail(StringBuilder sb);
 
     /**
      * delegate for {@link Matcher#appendTail(StringBuffer)}
-     *
-     * @param sb -
-     * @return -
      */
-    StringBuffer appendTail(final StringBuffer sb);
+    StringBuffer appendTail(StringBuffer sb);
 
     /**
      * delegate for {@link Matcher#replaceAll(String)}
-     *
-     * @param replacement -
-     * @return -
      */
-    String replaceAll(final String replacement);
+    String replaceAll(String replacement);
 
     /**
      * delegate for {@link Matcher#replaceFirst(String)}
-     *
-     * @param replacement -
-     * @return -
      */
-    String replaceFirst(final String replacement);
+    String replaceFirst(String replacement);
 
     /**
      * delegate for {@link Matcher#region(int, int)}
-     *
-     * @param start -
-     * @param end -
-     * @return -
      */
-    Matcher region(final int start, final int end);
+    Matcher region(int start, int end);
 
     /**
      * delegate for {@link Matcher#regionStart()}
-     *
-     * @return -
      */
     int regionStart();
 
     /**
      * delegate for {@link Matcher#regionEnd()}
-     *
-     * @return -
      */
     int regionEnd();
 
     /**
      * delegate for {@link Matcher#hasTransparentBounds()}
-     *
-     * @return -
      */
     boolean hasTransparentBounds();
 
     /**
      * delegate for {@link Matcher#useTransparentBounds(boolean)}
-     *
-     * @param b -
-     * @return -
      */
-    Matcher useTransparentBounds(final boolean b);
+    Matcher useTransparentBounds(boolean b);
 
     /**
      * delegate for {@link Matcher#hasAnchoringBounds()}
-     *
-     * @return -
      */
     boolean hasAnchoringBounds();
 
     /**
      * delegate for {@link Matcher#useAnchoringBounds(boolean)}
-     *
-     * @param b -
-     * @return -
      */
-    Matcher useAnchoringBounds(final boolean b);
+    Matcher useAnchoringBounds(boolean b);
 
     /**
      * delegate for {@link Matcher#hitEnd()}
-     *
-     * @return -
      */
     boolean hitEnd();
 
     /**
      * delegate for {@link Matcher#requireEnd()}
-     *
-     * @return -
      */
     boolean requireEnd();
 }

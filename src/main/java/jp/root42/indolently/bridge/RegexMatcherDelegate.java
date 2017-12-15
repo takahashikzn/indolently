@@ -158,8 +158,18 @@ public class RegexMatcherDelegate
     }
 
     @Override
+    public Matcher appendReplacement(final StringBuilder sb, final String replacement) {
+        return this.getDelegate().appendReplacement(sb, replacement);
+    }
+
+    @Override
     public Matcher appendReplacement(final StringBuffer sb, final String replacement) {
         return this.getDelegate().appendReplacement(sb, replacement);
+    }
+
+    @Override
+    public StringBuilder appendTail(final StringBuilder sb) {
+        return this.getDelegate().appendTail(sb);
     }
 
     @Override
