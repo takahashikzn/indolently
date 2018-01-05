@@ -67,6 +67,15 @@ public class Indolently {
     }
 
     /**
+     * A shortcut of {@code System.currentTimeMillis()}.
+     *
+     * @return current time in milliseconds.
+     */
+    public static long now() {
+        return System.currentTimeMillis();
+    }
+
+    /**
      * Cast the value.
      *
      * @param o the value
