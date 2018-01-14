@@ -290,12 +290,12 @@ public interface SMap<K, V>
     /**
      * Almost same as {@link Map#entrySet()} but returns newly constructed, detached one.
      * Any modification don't effect to this map.
-     * Equivalent to {@code Indolently.set(map.entrySet())}.
+     * Equivalent to {@code Indolently.list(map.entrySet()).set()}.
      *
      * @return entries
      */
     default SSet<SEntry<K, V>> entries() {
-        return Indolently.set(this.entrySet()).map(x -> new SEntry<>(x));
+        return Indolently.list(this.entrySet()).map(x -> new SEntry<>(x)).set();
     }
 
     @Override
