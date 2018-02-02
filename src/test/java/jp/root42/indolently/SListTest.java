@@ -259,4 +259,18 @@ public class SListTest {
         assertThat(list(1, 2, 3).endsWith(list(2))).isFalse();
         assertThat(list(1, 2, 3).endsWith(list(2, 3, 4))).isFalse();
     }
+
+    /**
+     * Test of {@link SList#chunk(int)}
+     */
+    @Test
+    public void chunk() {
+
+        assertThat(list(1, 2, 3).chunk(1)).isEqualTo(listOf(list(1), list(2), list(3)));
+        assertThat(list(1, 2, 3).chunk(2)).isEqualTo(listOf(list(1, 2), list(3)));
+        assertThat(list(1, 2, 3).chunk(3)).isEqualTo(listOf(list(1, 2, 3)));
+        assertThat(list(1, 2, 3).chunk(4)).isEqualTo(listOf(list(1, 2, 3)));
+        assertThat(list(1).chunk(2)).isEqualTo(listOf(list(1)));
+        assertThat(list().chunk(2)).isEmpty();
+    }
 }

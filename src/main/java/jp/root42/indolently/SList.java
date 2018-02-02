@@ -348,6 +348,26 @@ public interface SList<T>
         });
     }
 
+    /**
+     * Split this list into chunks the length of {@code size}.
+     *
+     * @param size chunk size
+     * @return the list of chunks
+     */
+    default SList<SList<T>> chunk(final int size) {
+        if (size < 0) {
+            throw new IllegalArgumentException("size should greater than 0");
+        }
+
+        final SList<SList<T>> ret = list();
+
+        for (int i = 0, max = (int) Math.ceil((double) this.size() / size); i < max; i++) {
+            ret.add(this.slice(i * size, (i + 1) * size));
+        }
+
+        return ret;
+    }
+
     @Override
     default SList<T> sortWith(final Comparator<? super T> comp) {
         return Indolently.sort(this, comp);
