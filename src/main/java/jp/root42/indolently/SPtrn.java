@@ -83,7 +83,7 @@ public interface SPtrn
     }
 
     /**
-     * delegate for {@link Matcher#replaceAll(String)}
+     * delegate for {@link java.util.regex.Matcher#replaceAll(String)}
      *
      * @param cs the string to replace
      * @param replacement replacement string
@@ -94,7 +94,7 @@ public interface SPtrn
     }
 
     /**
-     * delegate for {@link Matcher#replaceFirst(String)}
+     * delegate for {@link java.util.regex.Matcher#replaceFirst(String)}
      *
      * @param cs the string to replace
      * @param replacement replacement string
@@ -110,7 +110,7 @@ public interface SPtrn
      * @param cs the string to replace
      * @param f replace operator
      * @return replaced string
-     * @see #replaceAll(String)
+     * @see java.util.regex.Matcher#replaceAll(String)
      */
     default String replace(final CharSequence cs, final Function<String, String> f) {
         return this.matcher(cs).replace(f);
@@ -122,7 +122,7 @@ public interface SPtrn
      * @param cs the string to replace
      * @param f replace operator
      * @return replaced string
-     * @see #replaceAll(String)
+     * @see java.util.regex.Matcher#replaceAll(String)
      */
     default String replace(final CharSequence cs, final BiFunction<? super SMatcher, String, String> f) {
         return this.matcher(cs).replace(f);

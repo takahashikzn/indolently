@@ -274,7 +274,7 @@ public class Expressive {
         final Function<? super T, ? extends R> expr) {
 
         return eval(() -> {
-            try (T x = res.get()) {
+            try (final T x = res.get()) {
                 return expr.apply(x);
             }
         });
