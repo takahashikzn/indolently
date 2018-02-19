@@ -199,11 +199,11 @@ final Function<Integer, Integer> memoFib = fib.memoize();
 
 // print list of first 42nd fibonacci numbers
 range(0, 42)
-    .mapred(
+    .reduce(
         list(),
         (rem, val) -> rem.push(memoFib.apply(val))
     )
-    .ifPresent(System.out::println);
+    .each(System.out::println);
 ```
 
 See JUnit testcase for more details.
