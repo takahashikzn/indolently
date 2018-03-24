@@ -1171,6 +1171,18 @@ public class Indolently {
         return false;
     }
 
+    public static boolean contains(final CharSequence cs, final char c) {
+
+        return (cs != null) && (0 < cs.length()) //
+            && (cs instanceof String) //
+            ? (0 <= ((String) cs).indexOf(c)) //
+            : (cs instanceof StringBuilder) //
+                ? (0 <= ((StringBuilder) cs).indexOf(String.valueOf(c))) //
+                : (cs instanceof StringBuffer) //
+                    ? (0 <= ((StringBuffer) cs).indexOf(String.valueOf(c))) //
+                    : (0 <= cs.toString().indexOf(c));
+    }
+
     public static String join(final CharSequence... ary) {
         return join(list(ary), null);
     }
