@@ -5,7 +5,7 @@ dist: trusty
 addons:
   apt:
     packages:
-      - oracle-java9-installer
+#      - oracle-java9-installer
       - ant-optional
 
 jdk:
