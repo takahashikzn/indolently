@@ -174,6 +174,22 @@ public class Indolently {
         throw new AssertionError(msg);
     }
 
+    public static <T> T TODO() {
+        throw new UnsupportedOperationException();
+    }
+
+    public static <T> T TODO(final Object msg) {
+        throw new UnsupportedOperationException();
+    }
+
+    public static <T> T FIXME() {
+        throw new UnsupportedOperationException();
+    }
+
+    public static <T> T FIXME(final Object msg) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * An alias of {@link #optionalEmpty(Map)}.
      *
