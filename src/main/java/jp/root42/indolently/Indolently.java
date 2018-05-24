@@ -190,6 +190,14 @@ public class Indolently {
         throw new UnsupportedOperationException();
     }
 
+    public static <T> T UNSUPPORTED() {
+        throw new UnsupportedOperationException();
+    }
+
+    public static <T> T UNSUPPORTED(final Object msg) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * An alias of {@link #optionalEmpty(Map)}.
      *
