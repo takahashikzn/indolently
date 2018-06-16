@@ -47,7 +47,7 @@ public interface EdgeAwareIterable<T>
      */
     default Optional<T> head(final Predicate<? super T> f) {
 
-        for (final T val : this) {
+        for (final T val: this) {
             if (f.test(val)) {
                 return Optional.of(val);
             }
@@ -75,7 +75,7 @@ public interface EdgeAwareIterable<T>
      */
     default T head(final Predicate<? super T> f, final Supplier<? extends T> other) {
 
-        for (final T val : this) {
+        for (final T val: this) {
             if (f.test(val)) {
                 return val;
             }
@@ -105,7 +105,7 @@ public interface EdgeAwareIterable<T>
 
         T rslt = null;
 
-        for (final T val : this) {
+        for (final T val: this) {
             if (f.test(val)) {
                 rslt = val;
             }
@@ -136,7 +136,7 @@ public interface EdgeAwareIterable<T>
         boolean found = false;
         T rslt = null;
 
-        for (final T val : this) {
+        for (final T val: this) {
             if (f.test(val)) {
                 found = true;
                 rslt = val;

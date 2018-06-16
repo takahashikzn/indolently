@@ -199,7 +199,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     @Override
     default SELF each(final Consumer<? super T> f) {
 
-        for (final T val : this) {
+        for (final T val: this) {
             f.accept(val);
         }
 

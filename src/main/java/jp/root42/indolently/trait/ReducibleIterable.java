@@ -54,7 +54,7 @@ public interface ReducibleIterable<T>
         R rem = initial.orElse(null);
 
         int idx = 0;
-        for (final T val : this) {
+        for (final T val: this) {
             rem = f.apply(idx++, rem, val);
         }
 

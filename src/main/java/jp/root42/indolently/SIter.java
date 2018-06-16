@@ -56,7 +56,7 @@ public interface SIter<T>
     @Override
     default boolean some(final Predicate<? super T> f) {
 
-        for (final T val : this) {
+        for (final T val: this) {
             if (f.test(val)) {
                 return true;
             }

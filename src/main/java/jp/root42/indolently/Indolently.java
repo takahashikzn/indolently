@@ -452,7 +452,7 @@ public class Indolently {
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <V, T extends Predicate<V>> Optional<T> find(final V cond, final T... preds) {
 
-        for (final T p : preds) {
+        for (final T p: preds) {
             if (p.test(cond)) {
                 return Optional.of(p);
             }
@@ -681,7 +681,7 @@ public class Indolently {
      */
     public static SList<Character> plist(final char... elems) {
         final SList<Character> list = list();
-        for (final char e : elems) {
+        for (final char e: elems) {
             list.add(e);
         }
         return list;
@@ -695,7 +695,7 @@ public class Indolently {
      */
     public static SList<Integer> plist(final int... elems) {
         final SList<Integer> list = list();
-        for (final int e : elems) {
+        for (final int e: elems) {
             list.add(e);
         }
         return list;
@@ -709,7 +709,7 @@ public class Indolently {
      */
     public static SList<Long> plist(final long... elems) {
         final SList<Long> list = list();
-        for (final long e : elems) {
+        for (final long e: elems) {
             list.add(e);
         }
         return list;
@@ -723,7 +723,7 @@ public class Indolently {
      */
     public static SList<Float> plist(final float... elems) {
         final SList<Float> list = list();
-        for (final float e : elems) {
+        for (final float e: elems) {
             list.add(e);
         }
         return list;
@@ -737,7 +737,7 @@ public class Indolently {
      */
     public static SList<Short> plist(final short... elems) {
         final SList<Short> list = list();
-        for (final short e : elems) {
+        for (final short e: elems) {
             list.add(e);
         }
         return list;
@@ -751,7 +751,7 @@ public class Indolently {
      */
     public static SList<Double> plist(final double... elems) {
         final SList<Double> list = list();
-        for (final double e : elems) {
+        for (final double e: elems) {
             list.add(e);
         }
         return list;
@@ -765,7 +765,7 @@ public class Indolently {
      */
     public static SList<Boolean> plist(final boolean... elems) {
         final SList<Boolean> list = list();
-        for (final boolean e : elems) {
+        for (final boolean e: elems) {
             list.add(e);
         }
         return list;
@@ -1074,7 +1074,7 @@ public class Indolently {
             return false;
         }
 
-        for (final Object x : ary) {
+        for (final Object x: ary) {
             if (Objects.equals(x, val)) {
                 return true;
             }
@@ -1088,7 +1088,7 @@ public class Indolently {
             return false;
         }
 
-        for (final byte x : ary) {
+        for (final byte x: ary) {
             if (x == val) {
                 return true;
             }
@@ -1102,7 +1102,7 @@ public class Indolently {
             return false;
         }
 
-        for (final int x : ary) {
+        for (final int x: ary) {
             if (x == val) {
                 return true;
             }
@@ -1116,7 +1116,7 @@ public class Indolently {
             return false;
         }
 
-        for (final long x : ary) {
+        for (final long x: ary) {
             if (x == val) {
                 return true;
             }
@@ -1130,7 +1130,7 @@ public class Indolently {
             return false;
         }
 
-        for (final short x : ary) {
+        for (final short x: ary) {
             if (x == val) {
                 return true;
             }
@@ -1144,7 +1144,7 @@ public class Indolently {
             return false;
         }
 
-        for (final float x : ary) {
+        for (final float x: ary) {
             if (equal(x, val)) {
                 return true;
             }
@@ -1158,7 +1158,7 @@ public class Indolently {
             return false;
         }
 
-        for (final double x : ary) {
+        for (final double x: ary) {
             if (equal(x, val)) {
                 return true;
             }
@@ -1172,7 +1172,7 @@ public class Indolently {
             return false;
         }
 
-        for (final boolean x : ary) {
+        for (final boolean x: ary) {
             if (x == val) {
                 return true;
             }
@@ -1186,7 +1186,7 @@ public class Indolently {
             return false;
         }
 
-        for (final char x : ary) {
+        for (final char x: ary) {
             if (x == val) {
                 return true;
             }
@@ -1263,7 +1263,7 @@ public class Indolently {
         }
 
         if (suppliers != null) {
-            for (final Supplier<? extends T> s : suppliers) {
+            for (final Supplier<? extends T> s: suppliers) {
                 final T val = s.get();
                 if (val != null) {
                     return val;
@@ -1628,7 +1628,7 @@ public class Indolently {
             return false;
         }
 
-        for (final long x : rest) {
+        for (final long x: rest) {
             if (l != x) {
                 return false;
             }
@@ -1647,7 +1647,7 @@ public class Indolently {
             return false;
         }
 
-        for (final double x : rest) {
+        for (final double x: rest) {
             if (Double.compare(l, x) != 0) {
                 return false;
             }

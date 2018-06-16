@@ -100,7 +100,7 @@ public interface SSet<T>
         final SSet<R> rslt = Indolently.set();
 
         int i = 0;
-        for (final T val : this) {
+        for (final T val: this) {
             rslt.add(f.apply(i++, val));
         }
 
@@ -112,7 +112,7 @@ public interface SSet<T>
 
         final SSet<T> rslt = Indolently.set();
 
-        for (final T val : this) {
+        for (final T val: this) {
             if (f.test(val)) {
                 rslt.add(val);
             }
