@@ -161,6 +161,10 @@ public class Functional {
     }
 
     public static <T> SSuppl<T> $(final Supplier<? extends T> suppl) {
+        return suppl(suppl);
+    }
+
+    public static <T> SSuppl<T> suppl(final Supplier<? extends T> suppl) {
         return suppl(self -> {}, self -> suppl.get());
     }
 
@@ -187,6 +191,10 @@ public class Functional {
     }
 
     public static <X, Y> SFunc<X, Y> $(final Function<? super X, ? extends Y> func) {
+        return func(func);
+    }
+
+    public static <X, Y> SFunc<X, Y> func(final Function<? super X, ? extends Y> func) {
         return func(self -> {}, (self, x) -> func.apply(x));
     }
 
@@ -214,6 +222,10 @@ public class Functional {
     }
 
     public static <X0, X1, Y> SFunc2<X0, X1, Y> $(final BiFunction<? super X0, ? super X1, ? extends Y> func) {
+        return func2(func);
+    }
+
+    public static <X0, X1, Y> SFunc2<X0, X1, Y> func2(final BiFunction<? super X0, ? super X1, ? extends Y> func) {
         return func2(self -> {}, (self, x0, x1) -> func.apply(x0, x1));
     }
 
@@ -264,6 +276,10 @@ public class Functional {
     }
 
     public static <X> SPred<X> $(final Predicate<? super X> pred) {
+        return pred(pred);
+    }
+
+    public static <X> SPred<X> pred(final Predicate<? super X> pred) {
         return pred(self -> {}, (self, x) -> pred.test(x));
     }
 
@@ -291,6 +307,10 @@ public class Functional {
     }
 
     public static <X0, X1> SPred2<X0, X1> $(final BiPredicate<X0, X1> pred) {
+        return pred2(pred);
+    }
+
+    public static <X0, X1> SPred2<X0, X1> pred2(final BiPredicate<X0, X1> pred) {
         return pred2(self -> {}, (self, x0, x1) -> pred.test(x0, x1));
     }
 
