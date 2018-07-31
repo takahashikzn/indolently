@@ -495,7 +495,7 @@ public class Indolently {
      * @throws IllegalArgumentException first element is null..
      */
     @SafeVarargs
-    @SuppressWarnings({ "varargs", "RedundantSuppression" })
+    @SuppressWarnings({ "varargs", "RedundantSuppression", "unchecked" })
     public static <T> T[] array(final T first, final T... rest) {
         if (first == null) {
             throw new IllegalArgumentException("can't infer empty array type");
@@ -505,7 +505,7 @@ public class Indolently {
 
         return list(first) //
             .pushAll(list(rest)) //
-            .toArray(cast(Array.newInstance(first.getClass(), len)));
+            .toArray((T[]) Array.newInstance(first.getClass(), len));
     }
 
     /**
@@ -519,7 +519,7 @@ public class Indolently {
      * @return typed array
      */
     @SafeVarargs
-    @SuppressWarnings({ "varargs", "RedundantSuppression" })
+    @SuppressWarnings({ "varargs", "RedundantSuppression", "unchecked" })
     public static <T, V extends T> T[] array(final Class<T> type, final V first, final V... rest) {
 
         if (first == null) {
@@ -530,7 +530,7 @@ public class Indolently {
 
         return list(first) //
             .pushAll(list(rest)) //
-            .toArray(cast(Array.newInstance(type, len)));
+            .toArray((T[]) Array.newInstance(type, len));
     }
 
     /**
