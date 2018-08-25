@@ -37,7 +37,7 @@ public interface Matchable<T> {
      * @return test result
      */
     default boolean every(final Predicate<? super T> f) {
-        return !this.some(f.negate());
+        return this.none(f.negate());
     }
 
     /**
