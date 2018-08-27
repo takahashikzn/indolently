@@ -226,6 +226,7 @@ public class Expressive {
         return val;
     }
 
+    @FunctionalInterface
     public interface WithBlock<X, Y> {
 
         Y apply(X x) throws IOException;
