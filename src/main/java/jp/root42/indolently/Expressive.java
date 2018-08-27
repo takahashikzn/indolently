@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
@@ -222,6 +224,17 @@ public class Expressive {
         list(forms).each(f -> f.execute());
 
         return val;
+    }
+
+    public interface WithBlock<X, Y> {
+
+        Y apply(X x) throws IOException;
+    }
+
+    public static <T extends Closeable, R> R with(final T res, final WithBlock<T, R> f) throws IOException {
+        try (final T t = res) {
+            return f.apply(t);
+        }
     }
 
     /**
