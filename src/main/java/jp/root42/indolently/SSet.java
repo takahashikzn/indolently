@@ -14,11 +14,16 @@
 package jp.root42.indolently;
 
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.ref.IntRef;
+
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -39,7 +44,7 @@ public interface SSet<T>
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
     default SSet<T> clone() {
-        return Indolently.set((Iterable<T>) this);
+        return set((Iterable<T>) this);
     }
 
     /**
@@ -50,7 +55,7 @@ public interface SSet<T>
      * @return wrapped set
      */
     static <T> SSet<T> of(final Set<T> set) {
-        return Indolently.$(set);
+        return $(set);
     }
 
     /**
@@ -63,7 +68,7 @@ public interface SSet<T>
 
     @Override
     default SSet<T> tail() {
-        return Indolently.set(this.list().tail());
+        return set(this.list().tail());
     }
 
     /**
@@ -97,7 +102,7 @@ public interface SSet<T>
      */
     default <R> SSet<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
 
-        final SSet<R> rslt = Indolently.set();
+        final SSet<R> rslt = set();
 
         int i = 0;
         for (final T val: this) {
@@ -107,10 +112,35 @@ public interface SSet<T>
         return rslt;
     }
 
+    /**
+     * Map operation: map value to another type value.
+     *
+     * @param <R> mapped value type
+     * @param f function
+     * @return newly constructed list which contains converted values
+     */
+    default <R> SSet<R> flatMap(final Function<? super T, Optional<? extends R>> f) {
+        return this.reduce(set(), (x, y) -> x.push(f.apply(y)));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     *
+     * @param <R> mapped value type
+     * @param f function. first argument is element index, second one is element value
+     * @return newly constructed list which contains converted values
+     */
+    default <R> SSet<R> flatMap(final BiFunction<Integer, ? super T, Optional<? extends R>> f) {
+
+        final IntRef i = ref(0);
+
+        return this.flatMap(x -> f.apply(i.val++, x));
+    }
+
     @Override
     default SSet<T> filter(final Predicate<? super T> f) {
 
-        final SSet<T> rslt = Indolently.set();
+        final SSet<T> rslt = set();
 
         for (final T val: this) {
             if (f.test(val)) {
@@ -149,7 +179,7 @@ public interface SSet<T>
      */
     @SuppressWarnings("unchecked")
     default SSet<T> diff(final Iterable<? extends T> values) {
-        return this.clone().delete(values).union(Indolently.set(values).delete((Set) this));
+        return this.clone().delete(values).union(set(values).delete((Set) this));
     }
 
     /**
@@ -159,7 +189,7 @@ public interface SSet<T>
      * @return newly constructed flatten set
      */
     default <R> SSet<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return Indolently.set(this.iterator().flatten(f));
+        return set(this.iterator().flatten(f));
     }
 
     /**
@@ -181,7 +211,7 @@ public interface SSet<T>
     default SSet<T> orElseGet(final Supplier<? extends Set<? extends T>> other) {
 
         if (this.isEmpty()) {
-            return Indolently.set(other.get());
+            return set(other.get());
         } else {
             return this;
         }
@@ -197,6 +227,6 @@ public interface SSet<T>
 
     @Override
     default SSet<T> sortWith(final Comparator<? super T> comp) {
-        return Indolently.sort(this, comp);
+        return sort(this, comp);
     }
 }

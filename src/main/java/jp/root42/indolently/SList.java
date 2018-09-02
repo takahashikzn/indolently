@@ -285,6 +285,31 @@ public interface SList<T>
         return this.map(x -> f.apply(i.val++, x));
     }
 
+    /**
+     * Map operation: map value to another type value.
+     *
+     * @param <R> mapped value type
+     * @param f function
+     * @return newly constructed list which contains converted values
+     */
+    default <R> SList<R> flatMap(final Function<? super T, Optional<? extends R>> f) {
+        return this.reduce(list(), (x, y) -> x.push(f.apply(y)));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     *
+     * @param <R> mapped value type
+     * @param f function. first argument is element index, second one is element value
+     * @return newly constructed list which contains converted values
+     */
+    default <R> SList<R> flatMap(final BiFunction<Integer, ? super T, Optional<? extends R>> f) {
+
+        final IntRef i = ref(0);
+
+        return this.flatMap(x -> f.apply(i.val++, x));
+    }
+
     @Override
     default SList<T> filter(final Predicate<? super T> f) {
         return this.reduce(list(), (x, y) -> f.test(y) ? x.push(y) : x);

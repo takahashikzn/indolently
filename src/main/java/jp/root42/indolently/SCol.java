@@ -274,6 +274,21 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     }
 
     /**
+     * Convert this collection to map.
+     *
+     * @param <K> key type
+     * @param <V> value type
+     * @param fkey a function which convert element to map key
+     * @param fval a function which convert element to map value
+     * @return map instance.
+     */
+    default <K, V> SMap<K, V> flatMapMap(final Function<? super T, ? extends K> fkey,
+        final Function<? super T, Optional<? extends V>> fval) {
+
+        return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
+    }
+
+    /**
      * Just an alias of {@link #contains(Object)}
      *
      * @param val value

@@ -463,6 +463,68 @@ public interface SMap<K, V>
     }
 
     /**
+     * Map operation: map value to another type value.
+     * This operation is constructive.
+     *
+     * @param <R> mapping target type
+     * @param f function
+     * @return new converted map
+     */
+    default <R> SMap<K, R> flatMap(final Function<? super V, Optional<? extends R>> f) {
+        return this.flatMap((k, v) -> f.apply(v));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     * This operation is constructive.
+     *
+     * @param <R> mapping target type
+     * @param f function
+     * @return new converted map
+     */
+    default <R> SMap<K, R> flatMap(final BiFunction<? super K, ? super V, Optional<? extends R>> f) {
+        return this.flatMap((k, v) -> k, (k, v) -> f.apply(k, v));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     * This operation is constructive.
+     *
+     * @param <K2> mapping target type (key)
+     * @param <V2> mapping target type (value)
+     * @param fk function
+     * @param fv function
+     * @return new converted map
+     */
+    default <K2, V2> SMap<K2, V2> flatMap(final Function<? super K, ? extends K2> fk,
+        final Function<? super V, Optional<? extends V2>> fv) {
+
+        return this.flatMap((k, v) -> fk.apply(k), (k, v) -> fv.apply(v));
+    }
+
+    /**
+     * Map operation: map value to another type value.
+     * This operation is constructive.
+     *
+     * @param <K2> mapping target type (key)
+     * @param <V2> mapping target type (value)
+     * @param fk function
+     * @param fv function
+     * @return new converted map
+     */
+    default <K2, V2> SMap<K2, V2> flatMap(final BiFunction<? super K, ? super V, ? extends K2> fk,
+        final BiFunction<? super K, ? super V, Optional<? extends V2>> fv) {
+
+        return this //
+            .entries() //
+            .reduce( //
+                Indolently.map(), //
+                (map, e) -> map.push( //
+                    fk.apply(e.key, e.val), //
+                    fv.apply(e.key, e.val)));
+    }
+
+    /**
      * Just an alias of {@link #containsKey(Object)}
      *
      * @param key key of map
