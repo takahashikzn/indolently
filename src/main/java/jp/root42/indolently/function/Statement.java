@@ -26,6 +26,8 @@ import jp.root42.indolently.Expressive;
 @FunctionalInterface
 public interface Statement {
 
+    Statement NOP = () -> {};
+
     /**
      * Perform this operation.
      *
