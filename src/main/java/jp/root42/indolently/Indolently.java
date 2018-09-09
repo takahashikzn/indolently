@@ -57,6 +57,7 @@ import jp.root42.indolently.ref.ValueReference;
  *
  * @author takahashikzn
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class Indolently {
 
     /** non private for subtyping. */
@@ -980,7 +981,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?>... opt) {
-        return empty((Object[]) opt) || list(opt).every(Indolently::empty);
+        return empty((Object[]) opt) || list(opt).every(x -> empty(x));
     }
 
     /**
@@ -1000,7 +1001,23 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final CharSequence... cs) {
-        return empty((Object[]) cs) || list(cs).every(Indolently::empty);
+        return empty((Object[]) cs) || list(cs).every(x -> empty(x));
+    }
+
+    public static boolean present(final Optional<?> opt) {
+        return !empty(opt);
+    }
+
+    public static boolean presentAny(final Optional<?> x, final Optional<?> y, final Optional<?>... rest) {
+        return present(x) || present(y) || list(rest).some(o -> present(o));
+    }
+
+    public static boolean presentAll(final Optional<?> x, final Optional<?> y, final Optional<?>... rest) {
+        return present(x) && present(y) && list(rest).every(o -> present(o));
+    }
+
+    public static boolean presentNone(final Optional<?> x, final Optional<?> y, final Optional<?>... rest) {
+        return !presentAny(x, y, rest);
     }
 
     /**
