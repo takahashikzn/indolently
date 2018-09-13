@@ -34,7 +34,11 @@ public abstract class ObjFactory {
     static {
         //noinspection UnusedCatchParameter
         try {
-            instance = new KolobokeObjFactory();
+            try {
+                instance = new KolobokeObjFactory();
+            } catch (final UnsupportedOperationException e) {
+                instance = new FastutilObjFactory();
+            }
         } catch (final UnsupportedOperationException e) {
             instance = new JdkObjFactory();
         }
