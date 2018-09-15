@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -651,7 +652,7 @@ public class Indolently {
      */
     public static SIter<Character> chars(final CharSequence cs) {
 
-        return $(new Iterator<Character>() {
+        return $(new Iterator<>() {
 
             private final int len = cs.length();
 
@@ -1239,19 +1240,9 @@ public class Indolently {
     public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
         return optional(col, x -> {
-
-            final StringBuilder sb = new StringBuilder();
-            final String s = optional(sep, "");
-
-            for (final Iterator<? extends CharSequence> i = x.iterator(); i.hasNext(); ) {
-                sb.append(i.next());
-
-                if (i.hasNext()) {
-                    sb.append(s);
-                }
-            }
-
-            return sb.toString();
+            final StringJoiner sj = new StringJoiner(optional(sep, ""));
+            col.forEach(sj::add);
+            return sj.toString();
         }, (String) null);
     }
 
@@ -2022,7 +2013,7 @@ public class Indolently {
             return cast(iter);
         }
 
-        return new SIter<T>() {
+        return new SIter<>() {
 
             @Override
             public boolean hasNext() {

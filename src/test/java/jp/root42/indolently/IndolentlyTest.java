@@ -27,8 +27,8 @@ import java.util.function.BiPredicate;
 
 import jp.root42.indolently.trait.Freezable;
 
-import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Indolently.not;
+import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
 
 import junitparams.JUnitParamsRunner;
@@ -38,8 +38,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 /**
@@ -674,7 +674,7 @@ public class IndolentlyTest {
             .isEqualTo(new HashMap<>());
 
         assertThat((Map<String, String>) map("key", "value")).as("single key/value pair") //
-            .isEqualTo(new HashMap<Object, Object>() {
+            .isEqualTo(new HashMap<>() {
 
                 private static final long serialVersionUID = 2171800138194558313L;
 
@@ -684,7 +684,7 @@ public class IndolentlyTest {
             });
 
         assertThat((Map<String, ?>) map("int", 1, "string", "abc")).as("compound typed map") //
-            .isEqualTo(new HashMap<Object, Object>() {
+            .isEqualTo(new HashMap<>() {
 
                 private static final long serialVersionUID = 6192281449667726402L;
 
@@ -701,7 +701,7 @@ public class IndolentlyTest {
                 "level2", map( //
                     "level3", listOf(map("level4", 42))))).freeze();
 
-        final Map<String, Object> expectedNestedMap = new HashMap<String, Object>() {
+        final Map<String, Object> expectedNestedMap = new HashMap<>() {
 
             private static final long serialVersionUID = 7482761660213570745L;
 
@@ -915,5 +915,17 @@ public class IndolentlyTest {
 
         // We have to use 'new HashSet<Long>()' instead of 'set()' to avoid JDK's compilation error
         assertThat(compare(new HashSet<Long>(), list())).isEqualTo(ComparisonResult.EQUAL);
+    }
+
+    /**
+     * {@link Indolently#join(Iterable, String)}
+     */
+    @Test
+    public void testJoin() {
+
+        assertThat(join("foo", "bar", "baz")).isEqualTo("foobarbaz");
+        assertThat(join(array("foo", "bar", "baz"), ", ")).isEqualTo("foo, bar, baz");
+        assertThat(join(listOf(), ", ")).isEqualTo("");
+        assertThat(join(listOf())).isEqualTo("");
     }
 }
