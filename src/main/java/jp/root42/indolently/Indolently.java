@@ -652,7 +652,7 @@ public class Indolently {
      */
     public static SIter<Character> chars(final CharSequence cs) {
 
-        return $(new Iterator<>() {
+        return $(new Iterator<Character>() {
 
             private final int len = cs.length();
 
