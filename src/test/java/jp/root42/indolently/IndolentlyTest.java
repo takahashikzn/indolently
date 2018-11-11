@@ -674,7 +674,7 @@ public class IndolentlyTest {
             .isEqualTo(new HashMap<>());
 
         assertThat((Map<String, String>) map("key", "value")).as("single key/value pair") //
-            .isEqualTo(new HashMap<>() {
+            .isEqualTo(new HashMap<String, String>() {
 
                 private static final long serialVersionUID = 2171800138194558313L;
 
@@ -684,7 +684,7 @@ public class IndolentlyTest {
             });
 
         assertThat((Map<String, ?>) map("int", 1, "string", "abc")).as("compound typed map") //
-            .isEqualTo(new HashMap<>() {
+            .isEqualTo(new HashMap<String, Object>() {
 
                 private static final long serialVersionUID = 6192281449667726402L;
 
@@ -701,7 +701,7 @@ public class IndolentlyTest {
                 "level2", map( //
                     "level3", listOf(map("level4", 42))))).freeze();
 
-        final Map<String, Object> expectedNestedMap = new HashMap<>() {
+        final Map<String, Object> expectedNestedMap = new HashMap<String, Object>() {
 
             private static final long serialVersionUID = 7482761660213570745L;
 
