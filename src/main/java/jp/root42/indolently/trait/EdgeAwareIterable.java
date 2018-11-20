@@ -74,14 +74,7 @@ public interface EdgeAwareIterable<T>
      * @return first element or alternative value
      */
     default T head(final Predicate<? super T> f, final Supplier<? extends T> other) {
-
-        for (final T val: this) {
-            if (f.test(val)) {
-                return val;
-            }
-        }
-
-        return other.get();
+        return this.head(f).orElseGet(other);
     }
 
     /**
@@ -132,17 +125,6 @@ public interface EdgeAwareIterable<T>
      * @return last element or alternative value
      */
     default T last(final Predicate<? super T> f, final Supplier<? extends T> other) {
-
-        boolean found = false;
-        T rslt = null;
-
-        for (final T val: this) {
-            if (f.test(val)) {
-                found = true;
-                rslt = val;
-            }
-        }
-
-        return found ? rslt : other.get();
+        return this.last(f).orElseGet(other);
     }
 }

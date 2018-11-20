@@ -497,4 +497,18 @@ public interface SList<T>
     default OptionalInt lastIndexOf(final Predicate<T> f) {
         return this.last(f).map(this::lastIndexOf).map(OptionalInt::of).orElseGet(OptionalInt::empty);
     }
+
+    @Override
+    default Optional<T> last(final Predicate<? super T> f) {
+
+        for (int i = this.size() - 1; 0 <= i; i--) {
+            final T val = this.get(i);
+
+            if (f.test(val)) {
+                return Optional.of(val);
+            }
+        }
+
+        return Optional.empty();
+    }
 }
