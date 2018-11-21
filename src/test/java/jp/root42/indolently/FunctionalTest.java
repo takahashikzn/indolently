@@ -25,8 +25,8 @@ import jp.root42.indolently.ref.Trio;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
-import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Indolently.tuple;
+import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
 
 import junitparams.JUnitParamsRunner;

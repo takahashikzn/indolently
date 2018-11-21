@@ -22,8 +22,8 @@ import jp.root42.indolently.ref.IntRef;
 
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Generator.*;
-import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Indolently.tuple;
+import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
 
 import junitparams.JUnitParamsRunner;
@@ -32,8 +32,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 /**
