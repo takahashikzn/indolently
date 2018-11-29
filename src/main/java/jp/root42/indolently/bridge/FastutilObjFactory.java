@@ -13,10 +13,19 @@
 // limitations under the License.
 package jp.root42.indolently.bridge;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectAVLTreeMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectAVLTreeSet;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 
@@ -26,7 +35,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
  * @author takahashikzn
  */
 final class FastutilObjFactory
-    extends JdkObjFactory {
+    extends ObjFactory {
 
     /**
      * @throws UnsupportedOperationException if Koloboke isn't available.
@@ -37,35 +46,38 @@ final class FastutilObjFactory
         }
     }
 
-    private static final class FastutilHashSet<V>
-        extends SerializableSet<V> {
-
-        private static final long serialVersionUID = -4881881384304670668L;
-
-        @Override
-        protected Set<V> newSet() {
-            return new ObjectOpenHashSet<>(INITIAL_CAPACITY);
-        }
+    @Override
+    public <K, V> SortedMap<K, V> newSortedMap(final Comparator<? super K> comp) {
+        return new Object2ObjectAVLTreeMap<>(comp);
     }
 
-    private static final class FastutilHashMap<K, V>
-        extends SerializableMap<K, V> {
+    @Override
+    public <V> SortedSet<V> newSortedSet(final Comparator<? super V> comp) {
+        return new ObjectAVLTreeSet<>(comp);
+    }
 
-        private static final long serialVersionUID = 3578828373651399016L;
+    @Override
+    public <K, V> Map<K, V> newFifoMap() {
+        return new Object2ObjectLinkedOpenHashMap<>();
+    }
 
-        @Override
-        protected Map<K, V> newMap() {
-            return new Object2ObjectOpenHashMap<>(INITIAL_CAPACITY);
-        }
+    @Override
+    public <V> Set<V> newFifoSet() {
+        return new ObjectLinkedOpenHashSet<>();
     }
 
     @Override
     public <K, V> Map<K, V> newMap() {
-        return new FastutilHashMap<>();
+        return new Object2ObjectOpenHashMap<>();
     }
 
     @Override
     public <V> Set<V> newSet() {
-        return new FastutilHashSet<>();
+        return new ObjectOpenHashSet<>();
+    }
+
+    @Override
+    public <V> List<V> newList() {
+        return new ObjectArrayList<>();
     }
 }

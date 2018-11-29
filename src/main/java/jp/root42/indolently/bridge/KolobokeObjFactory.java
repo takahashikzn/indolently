@@ -50,7 +50,7 @@ final class KolobokeObjFactory
 
         @Override
         protected Set<V> newSet() {
-            return HashObjSets.newMutableSet(INITIAL_CAPACITY);
+            return HashObjSets.newMutableSet();
         }
     }
 
@@ -66,7 +66,7 @@ final class KolobokeObjFactory
 
         @Override
         protected Map<K, V> newMap() {
-            return HashObjObjMaps.newMutableMap(INITIAL_CAPACITY);
+            return HashObjObjMaps.newMutableMap();
         }
     }
 

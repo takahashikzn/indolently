@@ -56,16 +56,16 @@ final class EclipseObjFactory
 
     @Override
     public <K, V> Map<K, V> newMap() {
-        return UnifiedMap.newMap(INITIAL_CAPACITY);
+        return UnifiedMap.newMap();
     }
 
     @Override
     public <V> Set<V> newSet() {
-        return UnifiedSet.newSet(INITIAL_CAPACITY);
+        return UnifiedSet.newSet();
     }
 
     @Override
     public <V> List<V> newList() {
-        return new FastList<>(INITIAL_CAPACITY);
+        return new FastList<>();
     }
 }
