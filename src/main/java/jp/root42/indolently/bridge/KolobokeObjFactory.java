@@ -38,15 +38,6 @@ final class KolobokeObjFactory
         }
     }
 
-    private static boolean isPresent(final String fqcn) {
-        //noinspection UnusedCatchParameter
-        try {
-            return Class.forName(fqcn) != null;
-        } catch (final ClassNotFoundException e) {
-            return false;
-        }
-    }
-
     private static final class KolobokeHashSet<V>
         extends SerializableSet<V> {
 

@@ -31,16 +31,34 @@ public abstract class ObjFactory {
 
     private static volatile ObjFactory instance;
 
-    static {
+    static { init(); }
+
+    private static void init() {
+
+        try {
+            instance = new EclipseObjFactory();
+            return;
+        } catch (final UnsupportedOperationException ignored) {}
+
+        try {
+            instance = new FastutilObjFactory();
+            return;
+        } catch (final UnsupportedOperationException ignored) {}
+
+        try {
+            instance = new KolobokeObjFactory();
+            return;
+        } catch (final UnsupportedOperationException ignored) {}
+
+        instance = new JdkObjFactory();
+    }
+
+    static boolean isPresent(final String fqcn) {
         //noinspection UnusedCatchParameter
         try {
-            try {
-                instance = new KolobokeObjFactory();
-            } catch (final UnsupportedOperationException e) {
-                instance = new FastutilObjFactory();
-            }
-        } catch (final UnsupportedOperationException e) {
-            instance = new JdkObjFactory();
+            return Class.forName(fqcn) != null;
+        } catch (final ClassNotFoundException e) {
+            return false;
         }
     }
 
