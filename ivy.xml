@@ -46,11 +46,11 @@
     <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.0.0.M2" conf="compile->master(*)" />
 
     <dependency org="junit" name="junit" rev="4.13-beta-1" conf="test->master(*)" />
-    <dependency org="org.hamcrest" name="hamcrest" rev="2.1-rc1" conf="test->master(*)" />
+    <dependency org="org.hamcrest" name="hamcrest" rev="2.1-rc4" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="test->master(*)" />
     <dependency org="org.assertj" name="assertj-core" rev="3.11.1" conf="test->master(*)" />
     <dependency org="org.mockito" name="mockito-core" rev="2.23.4" conf="test->master(*)" />
-    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.9.5" conf="test->master(*)" />
+    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.9.6" conf="test->master(*)" />
     <dependency org="org.objenesis" name="objenesis" rev="3.0.1" conf="test->master(*)" />
     <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.1" conf="test->master(*)" />
 
