@@ -15,7 +15,6 @@ package jp.root42.indolently;
 
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1248,32 +1247,12 @@ public class Indolently {
         }, (String) null);
     }
 
-    public static byte[] bytes(final String s) {
-        return bytes(s, StandardCharsets.UTF_8);
-    }
-
     public static byte[] bytes(final String s, final Charset cs) {
-        final byte[] bin = s.getBytes(cs);
-
-        if (1024 * 1024 < bin.length) {
-            "".getBytes(cs); // clear StringCoding cache
-        }
-
-        return bin;
-    }
-
-    public static String strign(final byte[] b) {
-        return string(b, StandardCharsets.UTF_8);
+        return s.getBytes(cs);
     }
 
     public static String string(final byte[] b, final Charset cs) {
-        final String s = new String(b, cs);
-
-        if (1024 * 1024 < s.length()) {
-            new String(new byte[0]); // clear StringCoding cache
-        }
-
-        return s;
+        return new String(b, cs);
     }
 
     @SafeVarargs
