@@ -1039,7 +1039,18 @@ public class Indolently {
      * @return test result
      */
     public static boolean blank(final CharSequence cs) {
-        return empty(cs) || cs.chars().allMatch(Character::isWhitespace);
+        if (empty(cs)) {
+            return true;
+        }
+
+        // don't use "cs.chars().allMatch(Character::isWhitespace);" for performance
+        for (int i = 0, M = cs.length(); i < M; i++) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
