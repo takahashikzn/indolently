@@ -40,6 +40,7 @@ import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.Duo;
 
 import static java.util.Objects.*;
+import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -388,5 +389,70 @@ public class Functional {
     public static <X0, X1, X2> Predicate3<? super X0, ? super X1, ? super X2> predicate3Of(
         final Predicate3<? super X0, ? super X1, ? super X2> f) {
         return f;
+    }
+
+    @FunctionalInterface
+    public interface ThrowableFunction<X0, X1> {
+
+        X1 apply(X0 x) throws Exception;
+    }
+
+    public static <X0, X1> Function<X0, X1> adapt(final ThrowableFunction<X0, X1> f) {
+        return x -> {
+            try {
+                return f.apply(x);
+            } catch (final Exception e) {
+                return raise(e);
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public interface ThrowableFunction2<X0, X1, X2> {
+
+        X2 apply(X0 x0, X1 x1) throws Exception;
+    }
+
+    public static <X0, X1, X2> BiFunction<X0, X1, X2> adapt(final ThrowableFunction2<X0, X1, X2> f) {
+        return (x0, x1) -> {
+            try {
+                return f.apply(x0, x1);
+            } catch (final Exception e) {
+                return raise(e);
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public interface ThrowableFunction3<X0, X1, X2, X3> {
+
+        X3 apply(X0 x0, X1 x1, X2 x2) throws Exception;
+    }
+
+    public static <X0, X1, X2, X3> Function3<X0, X1, X2, X3> adapt(final ThrowableFunction3<X0, X1, X2, X3> f) {
+        return (x0, x1, x2) -> {
+            try {
+                return f.apply(x0, x1, x2);
+            } catch (final Exception e) {
+                return raise(e);
+            }
+        };
+    }
+
+    @FunctionalInterface
+    public interface ThrowableFunction4<X0, X1, X2, X3, X4> {
+
+        X4 apply(X0 x0, X1 x1, X2 x2, X3 x3) throws Exception;
+    }
+
+    public static <X0, X1, X2, X3, X4> Function4<X0, X1, X2, X3, X4> adapt(
+        final ThrowableFunction4<X0, X1, X2, X3, X4> f) {
+        return (x0, x1, x2, x3) -> {
+            try {
+                return f.apply(x0, x1, x2, x3);
+            } catch (final Exception e) {
+                return raise(e);
+            }
+        };
     }
 }
