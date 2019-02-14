@@ -2882,4 +2882,16 @@ public class Indolently {
     public static BiFunction<Number, Number, Double> sum(final double z) {
         return (x, y) -> x.doubleValue() + y.doubleValue() + z;
     }
+
+    public static int narrow(final int lower, final int x, final int upper) {
+        return (x <= lower) ? lower : (upper <= x) ? upper : x;
+    }
+
+    public static int narrow(final int lower, final long x, final int upper) {
+        return (int) ((x <= lower) ? lower : (upper <= x) ? upper : x);
+    }
+
+    public static long narrow(final long lower, final long x, final long upper) {
+        return (x <= lower) ? lower : (upper <= x) ? upper : x;
+    }
 }
