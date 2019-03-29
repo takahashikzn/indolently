@@ -89,6 +89,10 @@ public class Indolently {
         return (T) o;
     }
 
+    public static <T> Function<Object, Optional<T>> castTo(final Class<T> type) {
+        return x -> opt(x).filter(type::isInstance).map(type::cast);
+    }
+
     /**
      * null-safe wrapper to primitive conversion.
      *
