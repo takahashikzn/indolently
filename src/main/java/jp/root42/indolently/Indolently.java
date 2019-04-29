@@ -2635,6 +2635,22 @@ public class Indolently {
         };
     }
 
+    public static boolean and(final boolean x0, final boolean x1, final boolean... x2) {
+
+        if (!x0 || !x1) {
+            return false;
+        }
+
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < x2.length; i++) {
+            if (!x2[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static BooleanSupplier or(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
         return () -> {
@@ -2643,6 +2659,22 @@ public class Indolently {
 
             return preds.some(BooleanSupplier::getAsBoolean);
         };
+    }
+
+    public static boolean or(final boolean x0, final boolean x1, final boolean... x2) {
+
+        if (x0 || x1) {
+            return true;
+        }
+
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < x2.length; i++) {
+            if (x2[i]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @SafeVarargs
