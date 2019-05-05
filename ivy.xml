@@ -38,12 +38,12 @@
     <!--
     <dependency org="net.openhft" name="koloboke-impl-jdk8" rev="0.6.8" conf="test->master(*)" />
     -->
-    <dependency org="it.unimi.dsi" name="fastutil" rev="8.2.1" conf="compile->master(*)" />
+    <dependency org="it.unimi.dsi" name="fastutil" rev="8.2.2" conf="compile->master(*)" />
     <dependency org="org.eclipse.collections"
       name="eclipse-collections-api"
-      rev="10.0.0.M2"
+      rev="10.0.0.M3"
       conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.0.0.M2" conf="compile->master(*)" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.0.0.M3" conf="compile->master(*)" />
 
     <dependency org="junit" name="junit" rev="4.13-beta-2" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest" rev="2.1" conf="test->master(*)" />
