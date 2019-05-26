@@ -66,6 +66,6 @@ final class EclipseObjFactory
 
     @Override
     public <V> List<V> newList() {
-        return new FastList<>();
+        return FastList.newList();
     }
 }
