@@ -380,7 +380,7 @@ public interface SList<T>
      * @return the list of chunks
      */
     default SList<SList<T>> chunk(final int size) {
-        if (size < 0) {
+        if (size <= 0) {
             throw new IllegalArgumentException("size should greater than 0");
         }
 
