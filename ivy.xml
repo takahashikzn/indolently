@@ -43,7 +43,7 @@
       name="eclipse-collections-api"
       rev="10.0.0.M3"
       conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.0.0.M3" conf="compile->master(*)" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.0.0" conf="compile->master(*)" />
 
     <dependency org="junit" name="junit" rev="4.13-beta-3" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest" rev="2.1" conf="test->master(*)" />
