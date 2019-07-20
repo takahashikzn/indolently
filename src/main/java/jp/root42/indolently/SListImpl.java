@@ -16,6 +16,7 @@ package jp.root42.indolently;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Predicate;
 
 import jp.root42.indolently.bridge.ListDelegate;
 import jp.root42.indolently.bridge.ObjFactory;
@@ -106,6 +107,20 @@ class SListImpl<T>
     @Override
     public ListIterator<T> listIterator(final int i) {
         return this.store.listIterator(Indolently.idx(this, i));
+    }
+
+    // for optimization
+    @Override
+    public boolean some(final Predicate<? super T> f) {
+
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < this.size(); i++) {
+            if (f.test(this.get(i))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
