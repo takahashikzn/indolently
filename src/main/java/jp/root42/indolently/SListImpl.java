@@ -114,7 +114,7 @@ class SListImpl<T>
     public boolean some(final Predicate<? super T> f) {
 
         //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < this.size(); i++) {
+        for (int i = 0, Z = this.size(); i < Z; i++) {
             if (f.test(this.get(i))) {
                 return true;
             }
