@@ -1,4 +1,4 @@
-// Copyright 2016 takahashikzn
+// Copyright 2019 takahashikzn
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,52 +11,48 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.regex;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
+
+import jp.root42.indolently.SList;
 
 
 /**
- * Enhanced {@link Pattern} object
+ * Enhanced regex pattern object
  *
  * @author takahashikzn.
  */
-public interface SPtrn
+public interface SPtrnBase<P, M extends SMatcher>
     extends Predicate<CharSequence> {
 
     /**
-     * Get {@link Pattern} instance which this object contains.
+     * Get Pattern instance which this object contains.
      *
-     * @return {@link Pattern} instance which this object contains
+     * @return Pattern instance which this object contains
      */
-    Pattern ptrn();
+    P ptrn();
+
+    /**
+     * Create a matcher instance.
+     *
+     * @param cs the string to match
+     * @return created matcher instance
+     */
+    M matcher(CharSequence cs);
 
     /**
      * An shortcut of {@code ptrn.pattern().pattern()}.
      *
      * @return regex string
-     * @see Pattern#pattern()
      */
-    default String pattern() {
-        return this.ptrn().pattern();
-    }
+    String pattern();
 
     @Override
     default boolean test(final CharSequence cs) {
         return this.matcher(cs).matches();
-    }
-
-    /**
-     * Create a {@link SMatcher} instance.
-     *
-     * @param cs the string to match
-     * @return created {@link SMatcher} instance
-     */
-    default SMatcher matcher(final CharSequence cs) {
-        return new SMatcherImpl(this.ptrn().matcher(cs), cs);
     }
 
     /**
@@ -78,9 +74,7 @@ public interface SPtrn
      * @return token list
      * @see Pattern#split(CharSequence, int)
      */
-    default SList<String> split(final CharSequence cs, final int limit) {
-        return Indolently.list(this.ptrn().split(cs, limit));
-    }
+    SList<String> split(CharSequence cs, int limit);
 
     /**
      * delegate for {@link java.util.regex.Matcher#replaceAll(String)}
@@ -105,7 +99,7 @@ public interface SPtrn
     }
 
     /**
-     * delegate for {@link SMatcher#replace(Function)}
+     * replace matched character sequence.
      *
      * @param cs the string to replace
      * @param f replace operator
@@ -117,14 +111,14 @@ public interface SPtrn
     }
 
     /**
-     * delegate for {@link SMatcher#replace(BiFunction)}
+     * replace matched character sequence.
      *
      * @param cs the string to replace
      * @param f replace operator
      * @return replaced string
      * @see java.util.regex.Matcher#replaceAll(String)
      */
-    default String replace(final CharSequence cs, final BiFunction<? super SMatcher, String, String> f) {
+    default String replace(final CharSequence cs, final BiFunction<? super SMatcher<?, ?>, String, String> f) {
         return this.matcher(cs).replace(f);
     }
 }

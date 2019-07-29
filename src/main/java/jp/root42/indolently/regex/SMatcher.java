@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently;
+package jp.root42.indolently.regex;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -20,6 +20,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
+import jp.root42.indolently.Iterative;
+import jp.root42.indolently.SIter;
 import jp.root42.indolently.bridge.RegexMatcher;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.trait.Loopable;
@@ -34,8 +36,8 @@ import static jp.root42.indolently.Indolently.*;
  *
  * @author takahashikzn
  */
-public interface SMatcher
-    extends RegexMatcher, Iterable<String>, Loopable<String, SMatcher> {
+public interface SMatcher<P, M>
+    extends RegexMatcher<P, M>, Iterable<String>, Loopable<String, SMatcher<P, M>> {
 
     @Override
     default SIter<String> iterator() {
@@ -51,7 +53,7 @@ public interface SMatcher
     }
 
     @Override
-    default SMatcher each(final Consumer<? super String> f) {
+    default SMatcher<P, M> each(final Consumer<? super String> f) {
         return this.each((m, s) -> f.accept(s));
     }
 
@@ -80,7 +82,7 @@ public interface SMatcher
      * @return {@code this} instance which is reset
      * @see Matcher#reset()
      */
-    default SMatcher each(final BiConsumer<? super SMatcher, String> f) {
+    default SMatcher<P, M> each(final BiConsumer<? super SMatcher<P, M>, String> f) {
 
         this.iterator().each(x -> f.accept(this, x));
 
@@ -109,7 +111,7 @@ public interface SMatcher
      * @return replaced string
      * @see #replaceAll(String)
      */
-    default String replace(final BiFunction<? super SMatcher, String, String> f) {
+    default String replace(final BiFunction<? super SMatcher<?, ?>, String, String> f) {
         Objects.requireNonNull(f);
 
         final StringBuilder sb = new StringBuilder();

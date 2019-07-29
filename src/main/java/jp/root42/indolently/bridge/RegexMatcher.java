@@ -23,13 +23,13 @@ import java.util.regex.Pattern;
  *
  * @author takahashikzn
  */
-public interface RegexMatcher
+public interface RegexMatcher<P, M>
     extends MatchResult {
 
     /**
      * delegate for {@link Matcher#pattern()}
      */
-    Pattern pattern();
+    P pattern();
 
     /**
      * delegate for {@link Matcher#toMatchResult()}
@@ -39,17 +39,17 @@ public interface RegexMatcher
     /**
      * delegate for {@link Matcher#usePattern(Pattern)}
      */
-    Matcher usePattern(Pattern newPattern);
+    M usePattern(P newPattern);
 
     /**
      * delegate for {@link Matcher#reset()}
      */
-    Matcher reset();
+    M reset();
 
     /**
      * delegate for {@link Matcher#reset(CharSequence)}
      */
-    Matcher reset(CharSequence input);
+    M reset(CharSequence input);
 
     /**
      * delegate for {@link Matcher#start(String)}
@@ -89,12 +89,12 @@ public interface RegexMatcher
     /**
      * delegate for {@link Matcher#appendReplacement(StringBuilder, String)}
      */
-    Matcher appendReplacement(StringBuilder sb, String replacement);
+    M appendReplacement(StringBuilder sb, String replacement);
 
     /**
      * delegate for {@link Matcher#appendReplacement(StringBuffer, String)}
      */
-    Matcher appendReplacement(StringBuffer sb, String replacement);
+    M appendReplacement(StringBuffer sb, String replacement);
 
     /**
      * delegate for {@link Matcher#appendTail(StringBuilder)}
@@ -119,7 +119,7 @@ public interface RegexMatcher
     /**
      * delegate for {@link Matcher#region(int, int)}
      */
-    Matcher region(int start, int end);
+    M region(int start, int end);
 
     /**
      * delegate for {@link Matcher#regionStart()}
@@ -139,7 +139,7 @@ public interface RegexMatcher
     /**
      * delegate for {@link Matcher#useTransparentBounds(boolean)}
      */
-    Matcher useTransparentBounds(boolean b);
+    M useTransparentBounds(boolean b);
 
     /**
      * delegate for {@link Matcher#hasAnchoringBounds()}
@@ -149,7 +149,7 @@ public interface RegexMatcher
     /**
      * delegate for {@link Matcher#useAnchoringBounds(boolean)}
      */
-    Matcher useAnchoringBounds(boolean b);
+    M useAnchoringBounds(boolean b);
 
     /**
      * delegate for {@link Matcher#hitEnd()}

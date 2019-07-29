@@ -13,7 +13,14 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.util.regex.Pattern;
+import java.util.List;
+
+import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.regex.AdaptiveSPtrn;
+import jp.root42.indolently.regex.SPtrn;
+import jp.root42.indolently.regex.SPtrnBase;
+import jp.root42.indolently.regex.SPtrnJDK;
+import jp.root42.indolently.regex.SPtrnRE2;
 
 
 /**
@@ -21,17 +28,54 @@ import java.util.regex.Pattern;
  */
 public class Regexive {
 
+    private static final boolean RE2_AVAIL = ObjFactory.isPresent("com.google.re2j.Pattern");
+
     /** non private for subtyping. */
     protected Regexive() {}
 
     /**
-     * create pattern instance.
+     * create pattern instance using JDK regex library.
      *
      * @param pattern pattern string
      * @return enhanced Pattern instance
      */
     public static SPtrn regex(final String pattern) {
-        return regex(Pattern.compile(pattern));
+
+        final List<SPtrnBase<?, ?>> patterns = Indolently.list();
+
+        if (RE2_AVAIL) {
+            try {
+                patterns.add(regex2(pattern));
+            } catch (final com.google.re2j.PatternSyntaxException ignored) {}
+        }
+
+        patterns.add(regex1(pattern));
+
+        if (patterns.size() == 1) {
+            return new SPtrn(patterns.get(0));
+        } else {
+            return new SPtrn(new AdaptiveSPtrn(patterns));
+        }
+    }
+
+    /**
+     * create pattern instance using JDK regex library.
+     *
+     * @param pattern pattern string
+     * @return enhanced Pattern instance
+     */
+    public static SPtrnJDK regex1(final String pattern) {
+        return regex1(java.util.regex.Pattern.compile(pattern));
+    }
+
+    /**
+     * create pattern instance using RE2J library.
+     *
+     * @param pattern pattern string
+     * @return enhanced Pattern instance
+     */
+    public static SPtrnRE2 regex2(final String pattern) {
+        return regex2(com.google.re2j.Pattern.compile(pattern));
     }
 
     /**
@@ -40,7 +84,17 @@ public class Regexive {
      * @param pattern pattern object
      * @return enhanced Pattern instance
      */
-    public static SPtrn regex(final Pattern pattern) {
-        return new SPtrnImpl(pattern);
+    public static SPtrnJDK regex1(final java.util.regex.Pattern pattern) {
+        return new SPtrnJDK(pattern);
+    }
+
+    /**
+     * create pattern instance.
+     *
+     * @param pattern pattern object
+     * @return enhanced Pattern instance
+     */
+    public static SPtrnRE2 regex2(final com.google.re2j.Pattern pattern) {
+        return new SPtrnRE2(pattern);
     }
 }

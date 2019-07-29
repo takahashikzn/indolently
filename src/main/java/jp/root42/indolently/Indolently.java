@@ -35,7 +35,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import jp.root42.indolently.bridge.ObjFactory;
@@ -52,6 +51,7 @@ import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
 import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
+import jp.root42.indolently.regex.SPtrn;
 
 
 /**
@@ -2838,11 +2838,19 @@ public class Indolently {
     }
 
     public static SPtrn re(final String regex, final String escape) {
-        return re(Pattern.compile(regex.replaceAll(escape, "\\\\")));
+        return new SPtrn(Regexive.regex(regex.replaceAll(escape, "\\\\")));
     }
 
-    public static SPtrn re(final Pattern regex) {
-        return Regexive.regex(regex);
+    public static SPtrn re2(final String regex) {
+        return re2(regex, "`");
+    }
+
+    public static SPtrn re2(final String regex, final String escape) {
+        return new SPtrn(Regexive.regex2(regex.replaceAll(escape, "\\\\")));
+    }
+
+    public static SPtrn re(final java.util.regex.Pattern regex) {
+        return new SPtrn(Regexive.regex1(regex));
     }
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {

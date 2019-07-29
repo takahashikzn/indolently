@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import jp.root42.indolently.regex.SMatcher;
+
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Regexive.*;
 

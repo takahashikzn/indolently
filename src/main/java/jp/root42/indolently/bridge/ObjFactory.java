@@ -53,7 +53,7 @@ public abstract class ObjFactory {
         instance = new JdkObjFactory();
     }
 
-    static boolean isPresent(final String fqcn) {
+    public static boolean isPresent(final String fqcn) {
         //noinspection UnusedCatchParameter
         try {
             return Class.forName(fqcn) != null;
