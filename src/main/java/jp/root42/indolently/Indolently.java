@@ -52,6 +52,8 @@ import jp.root42.indolently.ref.ShortRef;
 import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
 import jp.root42.indolently.regex.SPtrn;
+import jp.root42.indolently.regex.SPtrnJDK;
+import jp.root42.indolently.regex.SPtrnRE2;
 
 
 /**
@@ -2841,16 +2843,24 @@ public class Indolently {
         return new SPtrn(Regexive.regex(regex.replaceAll(escape, "\\\\")));
     }
 
-    public static SPtrn re2(final String regex) {
+    public static SPtrnJDK re1(final String regex) {
+        return re1(regex, "`");
+    }
+
+    public static SPtrnJDK re1(final String regex, final String escape) {
+        return Regexive.regex1(regex.replaceAll(escape, "\\\\"));
+    }
+
+    public static SPtrnRE2 re2(final String regex) {
         return re2(regex, "`");
     }
 
-    public static SPtrn re2(final String regex, final String escape) {
-        return new SPtrn(Regexive.regex2(regex.replaceAll(escape, "\\\\")));
+    public static SPtrnRE2 re2(final String regex, final String escape) {
+        return Regexive.regex2(regex.replaceAll(escape, "\\\\"));
     }
 
-    public static SPtrn re(final java.util.regex.Pattern regex) {
-        return new SPtrn(Regexive.regex1(regex));
+    public static SPtrnJDK re(final java.util.regex.Pattern regex) {
+        return Regexive.regex1(regex);
     }
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {
