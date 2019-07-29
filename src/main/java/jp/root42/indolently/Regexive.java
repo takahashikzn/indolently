@@ -41,7 +41,7 @@ public class Regexive {
      */
     public static SPtrn regex(final String pattern) {
         if (!RE2_AVAIL) {
-            regex1(pattern);
+            return new SPtrn(regex1(pattern));
         }
 
         final List<SPtrnBase<?, ?>> patterns = Indolently.list();
