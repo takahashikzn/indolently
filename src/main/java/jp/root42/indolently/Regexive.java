@@ -40,13 +40,18 @@ public class Regexive {
      * @return enhanced Pattern instance
      */
     public static SPtrn regex(final String pattern) {
+        if (!RE2_AVAIL) {
+            regex1(pattern);
+        }
 
         final List<SPtrnBase<?, ?>> patterns = Indolently.list();
 
-        if (RE2_AVAIL) {
-            try {
-                patterns.add(regex2(pattern));
-            } catch (final com.google.re2j.PatternSyntaxException ignored) {}
+        try {
+            patterns.add(regex2(pattern));
+        } catch (final RuntimeException e) {
+            if (!e.getClass().getName().equals("com.google.re2j.PatternSyntaxException")) {
+                throw e;
+            }
         }
 
         patterns.add(regex1(pattern));
