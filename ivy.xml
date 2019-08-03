@@ -38,7 +38,7 @@
     <!--
     <dependency org="net.openhft" name="koloboke-impl-jdk8" rev="0.6.8" conf="test->master(*)" />
     -->
-    <dependency org="it.unimi.dsi" name="fastutil" rev="8.2.3" conf="compile->master(*)" />
+    <dependency org="it.unimi.dsi" name="fastutil" rev="8.3.0" conf="compile->master(*)" />
     <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="10.0.0" conf="compile->master(*)" />
     <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.0.0" conf="compile->master(*)" />
 
