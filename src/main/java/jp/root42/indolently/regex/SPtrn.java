@@ -41,6 +41,25 @@ public final class SPtrn
     }
 
     @Override
+    public String toString() { return this.pattern.toString(); }
+
+    @Override
+    public int hashCode() { return this.pattern.hashCode(); }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        } else if (!(o instanceof SPtrnBase)) {
+            return false;
+        }
+
+        final SPtrnBase<?, ?> that = this.pattern;
+
+        return this.pattern().equals(that.pattern());
+    }
+
+    @Override
     public Ptrn ptrn() { return this::pattern; }
 
     @Override
