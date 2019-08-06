@@ -2863,6 +2863,24 @@ public class Indolently {
         return Regexive.regex1(regex);
     }
 
+    public static Predicate<CharSequence> rematch(final String regex) {
+        return Regexive.tester(regex);
+    }
+
+    public static Predicate<CharSequence> refind(final String regex) {
+
+        final SPtrn p = re(regex);
+
+        return new Predicate<CharSequence>() {
+
+            @Override
+            public boolean test(final CharSequence x) { return p.matcher(x).find(); }
+
+            @Override
+            public String toString() { return regex; }
+        };
+    }
+
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {
         return x -> f.apply(x) == null;
     }

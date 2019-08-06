@@ -14,7 +14,10 @@
 package jp.root42.indolently;
 
 import java.util.List;
+import java.util.function.Predicate;
 
+import dk.brics.automaton.RegExp;
+import dk.brics.automaton.RunAutomaton;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.regex.AdaptiveSPtrn;
 import jp.root42.indolently.regex.SPtrn;
@@ -29,6 +32,8 @@ import jp.root42.indolently.regex.SPtrnRE2;
 public class Regexive {
 
     private static final boolean RE2_AVAIL = ObjFactory.isPresent("com.google.re2j.Pattern");
+
+    private static final boolean AUTOMATON_AVAIL = ObjFactory.isPresent("dk.brics.automaton.RegExp");
 
     /** non private for subtyping. */
     protected Regexive() {}
@@ -101,5 +106,84 @@ public class Regexive {
      */
     public static SPtrnRE2 regex2(final com.google.re2j.Pattern pattern) {
         return new SPtrnRE2(pattern);
+    }
+
+    /**
+     * create tester instance.
+     *
+     * @param pattern pattern object
+     * @return enhanced Pattern instance
+     */
+    public static Predicate<CharSequence> tester(final String pattern) {
+        if (AUTOMATON_AVAIL) {
+            try {
+                final Predicate<CharSequence> pred = automatonTester(pattern);
+
+                if (pred != null) {
+                    return pred;
+                }
+            } catch (final IllegalArgumentException ignored) {}
+        }
+
+        return regex(pattern);
+    }
+
+    private static final SPtrnJDK JDK_REGEX = regex1(".*(?:" //
+        + "[^\\\\][$^]" //
+        + "|\\(\\?" //
+        + "|\\\\Q" //
+        + "|\\\\E" //
+        + "|\\\\b" //
+        + "|\\\\B" //
+        + "|\\\\G" //
+        + "|\\\\z" //
+        + "|\\\\Z" //
+        + "|\\\\p" //
+        + "|\\\\n" //
+        + "|\\\\k" //
+        + "|&&" //
+        + "|\\?\\?" //
+        + "|\\*\\?" //
+        + "|\\+\\?" //
+        + "|\\{\\d+(?:,(?:\\d+)?)?}\\?" //
+        + ").*");
+
+    private static final String HORIZONTAL_SPACE =
+        regex1("[ \t\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000]").pattern();
+
+    private static final String SPACE = regex1("[ \t\n\u000b\f\r]").pattern();
+
+    private static final String VERTICAL_SPACE = regex1("[\n\u000b\f\r\u0085\u2028\u2029]").pattern();
+
+    private static final String WORD = regex1("[A-Za-z0-9_]").pattern();
+
+    private static final String DIGIT = regex1("[0-9]").pattern();
+
+    private static Predicate<CharSequence> automatonTester(final String pattern) {
+
+        if (JDK_REGEX.test(pattern)) { return null; }
+
+        final var ra = new RunAutomaton(new RegExp(pattern //
+            .replaceAll("(?<!\\\\)\\(\\?:", "(") //
+            .replaceAll("\\\\w", WORD) //
+            .replaceAll("\\\\W", "[^" + WORD + "]") //
+            .replaceAll("\\\\d", DIGIT) //
+            .replaceAll("\\\\D", "[^" + DIGIT + "]") //
+            .replaceAll("\\\\h", HORIZONTAL_SPACE) //
+            .replaceAll("\\\\H", "[^" + HORIZONTAL_SPACE + "]") //
+            .replaceAll("\\\\s", SPACE) //
+            .replaceAll("\\\\S", "[^" + SPACE + "]") //
+            .replaceAll("\\\\v", VERTICAL_SPACE) //
+            .replaceAll("\\\\V", "[^" + VERTICAL_SPACE + "]") //
+        ).toAutomaton());
+
+        return new Predicate<CharSequence>() {
+
+            @Override
+            public boolean test(final CharSequence x) { return ra.run(x.toString()); }
+
+            @Override
+            public String toString() { return pattern; }
+        };
     }
 }

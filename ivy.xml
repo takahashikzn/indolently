@@ -43,6 +43,8 @@
     <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.0.0" conf="compile->master(*)" />
 
     <dependency org="com.google.re2j" name="re2j" rev="1.3" conf="compile->master(*)" />
+    <dependency org="dk.brics" name="automaton" rev="1.12-1" conf="compile->master(*)" />
+    <!--dependency org="com.gliwka.hyperscan" name="hyperscan" rev="0.6.2" conf="compile->master(*)" /-->
 
     <dependency org="junit" name="junit" rev="4.13-beta-3" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest" rev="2.1" conf="test->master(*)" />
