@@ -51,6 +51,7 @@ import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
 import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
+import jp.root42.indolently.regex.RETest;
 import jp.root42.indolently.regex.SPtrn;
 import jp.root42.indolently.regex.SPtrnJDK;
 import jp.root42.indolently.regex.SPtrnRE2;
@@ -2863,22 +2864,13 @@ public class Indolently {
         return Regexive.regex1(regex);
     }
 
-    public static Predicate<CharSequence> rematch(final String regex) {
+    public static RETest rematch(final String regex) {
         return Regexive.tester(regex);
     }
 
-    public static Predicate<CharSequence> refind(final String regex) {
-
+    public static RETest refind(final String regex) {
         final SPtrn p = re(regex);
-
-        return new Predicate<CharSequence>() {
-
-            @Override
-            public boolean test(final CharSequence x) { return p.matcher(x).find(); }
-
-            @Override
-            public String toString() { return regex; }
-        };
+        return RETest.of(x -> p.matcher(x).find(), regex);
     }
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {

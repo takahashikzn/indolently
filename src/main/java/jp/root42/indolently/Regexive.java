@@ -14,12 +14,12 @@
 package jp.root42.indolently;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import dk.brics.automaton.RegExp;
 import dk.brics.automaton.RunAutomaton;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.regex.AdaptiveSPtrn;
+import jp.root42.indolently.regex.RETest;
 import jp.root42.indolently.regex.SPtrn;
 import jp.root42.indolently.regex.SPtrnBase;
 import jp.root42.indolently.regex.SPtrnJDK;
@@ -114,10 +114,10 @@ public class Regexive {
      * @param pattern pattern object
      * @return enhanced Pattern instance
      */
-    public static Predicate<CharSequence> tester(final String pattern) {
+    public static RETest tester(final String pattern) {
         if (AUTOMATON_AVAIL) {
             try {
-                final Predicate<CharSequence> pred = automatonTester(pattern);
+                final RETest pred = automatonTester(pattern);
 
                 if (pred != null) {
                     return pred;
@@ -125,7 +125,7 @@ public class Regexive {
             } catch (final IllegalArgumentException ignored) {}
         }
 
-        return regex(pattern);
+        return RETest.of(regex(pattern));
     }
 
     private static final SPtrnJDK JDK_REGEX = regex1(".*(?:" //
@@ -159,7 +159,7 @@ public class Regexive {
 
     private static final String DIGIT = regex1("[0-9]").pattern();
 
-    private static Predicate<CharSequence> automatonTester(final String pattern) {
+    private static RETest automatonTester(final String pattern) {
 
         if (JDK_REGEX.test(pattern)) { return null; }
 
@@ -177,13 +177,6 @@ public class Regexive {
             .replaceAll("\\\\V", "[^" + VERTICAL_SPACE + "]") //
         ).toAutomaton());
 
-        return new Predicate<CharSequence>() {
-
-            @Override
-            public boolean test(final CharSequence x) { return ra.run(x.toString()); }
-
-            @Override
-            public String toString() { return pattern; }
-        };
+        return RETest.of(x -> ra.run(x.toString()), pattern);
     }
 }

@@ -15,7 +15,6 @@ package jp.root42.indolently.regex;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import jp.root42.indolently.SList;
 
@@ -26,7 +25,7 @@ import jp.root42.indolently.SList;
  * @author takahashikzn.
  */
 public interface SPtrnBase<P, M extends SMatcher>
-    extends Predicate<CharSequence> {
+    extends RETest {
 
     /**
      * Get Pattern instance which this object contains.
