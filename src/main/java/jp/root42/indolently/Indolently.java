@@ -358,7 +358,7 @@ public class Indolently {
      * @return value or default value
      */
     public static <T> T optional(final T value, final T other) {
-        return opt(value).orElse(other);
+        return (value == null) ? other : value;
     }
 
     /**
