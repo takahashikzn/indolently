@@ -226,7 +226,7 @@ public interface SSet<T>
     }
 
     @Override
-    default SSet<T> sortWith(final Comparator<? super T> comp) {
+    default SSet<T> order(final Comparator<? super T> comp) {
         return sort(this, comp);
     }
 }
