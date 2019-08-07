@@ -23,7 +23,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
@@ -214,7 +213,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     default SELF each(final BiConsumer<Integer, ? super T> f) {
 
-        final IntRef i = ref(0);
+        final var i = ref(0);
 
         return this.each(x -> f.accept(i.val++, x));
     }
@@ -222,7 +221,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     @Override
     default boolean some(final Predicate<? super T> f) {
 
-        for (final T x: this) {
+        for (final var x: this) {
             if (f.test(x)) {
                 return true;
             }
@@ -250,7 +249,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     default SELF filter(final BiPredicate<Integer, ? super T> f) {
 
-        final IntRef i = ref(0);
+        final var i = ref(0);
 
         return this.filter(x -> f.test(i.val++, x));
     }

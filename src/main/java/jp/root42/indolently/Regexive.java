@@ -117,7 +117,7 @@ public class Regexive {
     public static RETest tester(final String pattern) {
         if (AUTOMATON_AVAIL) {
             try {
-                final RETest pred = automatonTester(pattern);
+                final var pred = automatonTester(pattern);
 
                 if (pred != null) {
                     return pred;
@@ -166,17 +166,19 @@ public class Regexive {
         final var ra = new RunAutomaton(new RegExp(pattern //
             .replaceAll("(?<!\\\\)\\(\\?:", "(") //
             .replaceAll("\\\\w", WORD) //
-            .replaceAll("\\\\W", "[^" + WORD + "]") //
+            .replaceAll("\\\\W", not(WORD)) //
             .replaceAll("\\\\d", DIGIT) //
-            .replaceAll("\\\\D", "[^" + DIGIT + "]") //
+            .replaceAll("\\\\D", not(DIGIT)) //
             .replaceAll("\\\\h", HORIZONTAL_SPACE) //
-            .replaceAll("\\\\H", "[^" + HORIZONTAL_SPACE + "]") //
+            .replaceAll("\\\\H", not(HORIZONTAL_SPACE)) //
             .replaceAll("\\\\s", SPACE) //
-            .replaceAll("\\\\S", "[^" + SPACE + "]") //
+            .replaceAll("\\\\S", not(SPACE)) //
             .replaceAll("\\\\v", VERTICAL_SPACE) //
-            .replaceAll("\\\\V", "[^" + VERTICAL_SPACE + "]") //
-        ).toAutomaton());
+            .replaceAll("\\\\V", not(VERTICAL_SPACE))) //
+            .toAutomaton());
 
         return RETest.of(x -> ra.run(x.toString()), pattern);
     }
+
+    private static String not(final String word) { return "[^" + word + "]"; }
 }

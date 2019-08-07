@@ -26,7 +26,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.bridge.ObjFactory;
-import jp.root42.indolently.ref.IntRef;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -280,7 +279,7 @@ public interface SList<T>
      */
     default <R> SList<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
 
-        final IntRef i = ref(0);
+        final var i = ref(0);
 
         return this.map(x -> f.apply(i.val++, x));
     }
@@ -305,7 +304,7 @@ public interface SList<T>
      */
     default <R> SList<R> flatMap(final BiFunction<Integer, ? super T, Optional<? extends R>> f) {
 
-        final IntRef i = ref(0);
+        final var i = ref(0);
 
         return this.flatMap(x -> f.apply(i.val++, x));
     }
@@ -361,7 +360,7 @@ public interface SList<T>
 
         return this.reduce($(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
 
-            final K key = fkey.apply(y);
+            final var key = fkey.apply(y);
 
             if (!x.containsKey(key)) {
                 x.put(key, list());
@@ -502,7 +501,7 @@ public interface SList<T>
     default Optional<T> last(final Predicate<? super T> f) {
 
         for (int i = this.size() - 1; 0 <= i; i--) {
-            final T val = this.get(i);
+            final var val = this.get(i);
 
             if (f.test(val)) {
                 return Optional.of(val);

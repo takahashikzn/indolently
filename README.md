@@ -14,14 +14,18 @@ This is also my study of English/GitHub/Java8-Lambda.
 
 # Requirement
 
-Java8. That is all.
+Java11. That is all.
 
 
 # Dependencies
 
 ### Runtime
 * [typetools](http://github.com/jhalterman/typetools)
+* [fastutil](http://fastutil.di.unimi.it/) (Optional)
 * [Koloboke](http://github.com/OpenHFT/Koloboke) (Optional)
+* [Eclipse Collection](http://www.eclipse.org/collections/) (Optional)
+* [RE2](http://github.com/google/re2/) (Optional)
+* [Automaton](http://www.brics.dk/automaton/) (Optional)
 
 ### Test
 * [JUnit](http://junit.org/)

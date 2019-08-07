@@ -84,7 +84,7 @@ public interface ValueReference<T, S extends ValueReference<T, S>>
     default T orAccept(final Expression<? extends T> f) {
 
         return this.opt().orElseGet(() -> {
-            final T val = f.get();
+            final var val = f.get();
             this.accept(val);
             return val;
         });

@@ -123,7 +123,7 @@ public interface SIter<T>
                         return false;
                     }
 
-                    final T val = SIter.this.next();
+                    final var val = SIter.this.next();
 
                     if (f.test(val)) {
                         this.cur = Optional.ofNullable(val);
@@ -138,7 +138,7 @@ public interface SIter<T>
                     throw new NoSuchElementException();
                 }
 
-                final T val = this.cur.get();
+                final var val = this.cur.get();
                 //noinspection OptionalAssignedToNull
                 this.cur = null;
                 return val;

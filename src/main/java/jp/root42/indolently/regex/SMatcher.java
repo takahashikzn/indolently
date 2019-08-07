@@ -114,7 +114,7 @@ public interface SMatcher<P, M>
     default String replace(final BiFunction<? super SMatcher<?, ?>, String, String> f) {
         Objects.requireNonNull(f);
 
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
 
         while (this.find()) {
             this.appendReplacement(sb, f.apply(this, this.group()));

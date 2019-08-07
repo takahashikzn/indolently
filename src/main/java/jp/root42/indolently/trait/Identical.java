@@ -42,7 +42,8 @@ public interface Identical<SELF extends Identical<SELF>> {
      * @return {@code this} instance.
      */
     default SELF identity(final Consumer<? super SELF> f) {
-        final SELF self = Indolently.cast(this);
+        @SuppressWarnings("unchecked")
+        final var self = (SELF) this;
         f.accept(self);
         return self;
     }

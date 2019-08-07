@@ -79,7 +79,7 @@ public class SBoolSuppl
             return false;
         }
 
-        final SBoolSuppl that = (SBoolSuppl) o;
+        final var that = (SBoolSuppl) o;
         return this.body.equals(that.body);
     }
 }

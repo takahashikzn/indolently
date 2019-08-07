@@ -36,7 +36,6 @@ import jp.root42.indolently.function.SPred;
 import jp.root42.indolently.function.SPred2;
 import jp.root42.indolently.function.SSuppl;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.Duo;
 
 import static java.util.Objects.*;
@@ -150,7 +149,7 @@ public class Functional {
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
-        final BoolRef initialized = ref(false);
+        final var initialized = ref(false);
 
         return new SBoolSuppl(self -> {
             synchronized (initialized) {
@@ -180,7 +179,7 @@ public class Functional {
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
-        final BoolRef initialized = ref(false);
+        final var initialized = ref(false);
 
         return new SSuppl<>(self -> {
             synchronized (initialized) {
@@ -211,7 +210,7 @@ public class Functional {
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
-        final BoolRef initialized = ref(false);
+        final var initialized = ref(false);
 
         return new SFunc<>((self, x) -> {
             synchronized (initialized) {
@@ -242,7 +241,7 @@ public class Functional {
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
-        final BoolRef initialized = ref(false);
+        final var initialized = ref(false);
 
         return new SFunc2<>((self, x0, x1) -> {
             synchronized (initialized) {
@@ -265,7 +264,7 @@ public class Functional {
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
-        final BoolRef initialized = ref(false);
+        final var initialized = ref(false);
 
         return new SFunc3<>((self, x0, x1, x2) -> {
             synchronized (initialized) {
@@ -296,7 +295,7 @@ public class Functional {
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
-        final BoolRef initialized = ref(false);
+        final var initialized = ref(false);
 
         return new SPred<>((self, x) -> {
             synchronized (initialized) {
@@ -327,7 +326,7 @@ public class Functional {
         requireNonNull(init, "init");
         requireNonNull(body, "body");
 
-        final BoolRef initialized = ref(false);
+        final var initialized = ref(false);
 
         return new SPred2<>((self, x0, x1) -> {
             synchronized (initialized) {

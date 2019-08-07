@@ -1298,7 +1298,7 @@ public class Indolently {
     public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
         return optional(col, x -> {
-            final StringJoiner sj = new StringJoiner(elv(sep, ""));
+            final var sj = new StringJoiner(elv(sep, ""));
             col.forEach(sj::add);
             return sj.toString();
         }, (String) null);
@@ -1337,8 +1337,8 @@ public class Indolently {
         }
 
         if (suppliers != null) {
-            for (final Supplier<? extends T> s: suppliers) {
-                final T val = s.get();
+            for (final var s: suppliers) {
+                final var val = s.get();
                 if (val != null) {
                     return val;
                 }
@@ -1792,11 +1792,11 @@ public class Indolently {
 
         for (final Iterator<T> li = l.iterator(), ri = r.iterator(); ; ) {
 
-            final boolean moreL = li.hasNext();
-            final boolean moreR = ri.hasNext();
+            final var moreL = li.hasNext();
+            final var moreR = ri.hasNext();
 
             if (moreL && moreR) {
-                final ComparisonResult rslt = compare(li.next(), ri.next());
+                final var rslt = compare(li.next(), ri.next());
 
                 if (rslt != ComparisonResult.EQUAL) {
                     return rslt;
@@ -1815,7 +1815,7 @@ public class Indolently {
 
         for (int i = 0; i < len; i++) {
 
-            final ComparisonResult rslt = compare(l.get(i), r.get(i));
+            final var rslt = compare(l.get(i), r.get(i));
 
             if (rslt != ComparisonResult.EQUAL) {
                 return rslt;
@@ -2908,7 +2908,7 @@ public class Indolently {
     }
 
     public static RETest refind(final String regex) {
-        final SPtrn p = re(regex);
+        final var p = re(regex);
         return RETest.of(x -> p.matcher(x).find(), regex);
     }
 

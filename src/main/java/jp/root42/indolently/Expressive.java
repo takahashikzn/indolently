@@ -202,7 +202,7 @@ public class Expressive {
     @SafeVarargs
     public static <T> T prog1(final Supplier<? extends T> first, final Consumer<? super T>... forms) {
 
-        final T val = first.get();
+        final var val = first.get();
 
         list(forms).each(f -> f.accept(val));
 
@@ -219,7 +219,7 @@ public class Expressive {
      */
     public static <T> T prog1(final Supplier<? extends T> first, final Statement... forms) {
 
-        final T val = first.get();
+        final var val = first.get();
 
         list(forms).each(f -> f.execute());
 
@@ -233,8 +233,8 @@ public class Expressive {
     }
 
     public static <T extends Closeable, R> R with(final T res, final WithBlock<T, R> f) throws IOException {
-        try (final T t = res) {
-            return f.apply(t);
+        try (res) {
+            return f.apply(res);
         }
     }
 

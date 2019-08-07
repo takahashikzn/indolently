@@ -21,8 +21,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.ref.IntRef;
-
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -132,7 +130,7 @@ public interface SSet<T>
      */
     default <R> SSet<R> flatMap(final BiFunction<Integer, ? super T, Optional<? extends R>> f) {
 
-        final IntRef i = ref(0);
+        final var i = ref(0);
 
         return this.flatMap(x -> f.apply(i.val++, x));
     }
@@ -142,7 +140,7 @@ public interface SSet<T>
 
         final SSet<T> rslt = set();
 
-        for (final T val: this) {
+        for (final var val: this) {
             if (f.test(val)) {
                 rslt.add(val);
             }

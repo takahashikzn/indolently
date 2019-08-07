@@ -90,7 +90,7 @@ public interface Generator<T>
                     throw new NoSuchElementException();
                 }
 
-                final T val = this.cur.get();
+                final var val = this.cur.get();
                 this.cur = null;
                 return val;
             }
