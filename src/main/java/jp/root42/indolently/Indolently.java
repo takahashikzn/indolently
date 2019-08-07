@@ -352,14 +352,53 @@ public class Indolently {
     }
 
     /**
-     * A shortcut notation of {@code Optional.ofNullable(value).orElse(other)}.
+     * SQL's coalesce function. The name comes from ELVis operator.
      *
      * @param value value
      * @param other default value
      * @return value or default value
      */
-    public static <T> T optional(final T value, final T other) {
+    public static <T> T elv(final T value, final T other) {
         return (value == null) ? other : value;
+    }
+
+    /**
+     * SQL's coalesce function. The name comes from ELVis operator.
+     *
+     * @param value value
+     * @param other0 default value
+     * @param other1 default value
+     * @return value or default value
+     */
+    public static <T> T elv(final T value, final T other0, final T other1) {
+        return elv(value, elv(other0, other1));
+    }
+
+    /**
+     * SQL's coalesce function. The name comes from ELVis operator.
+     *
+     * @param value value
+     * @param other0 default value
+     * @param other1 default value
+     * @param other2 default value
+     * @return value or default value
+     */
+    public static <T> T elv(final T value, final T other0, final T other1, final T other2) {
+        return elv(value, elv(other0, elv(other1, other2)));
+    }
+
+    /**
+     * SQL's coalesce function. The name comes from ELVis operator.
+     *
+     * @param value value
+     * @param other0 default value
+     * @param other1 default value
+     * @param other2 default value
+     * @param other3 default value
+     * @return value or default value
+     */
+    public static <T> T elv(final T value, final T other0, final T other1, final T other2, final T other3) {
+        return elv(value, elv(other0, elv(other1, elv(other2, other3))));
     }
 
     /**
@@ -1259,7 +1298,7 @@ public class Indolently {
     public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
         return optional(col, x -> {
-            final StringJoiner sj = new StringJoiner(optional(sep, ""));
+            final StringJoiner sj = new StringJoiner(elv(sep, ""));
             col.forEach(sj::add);
             return sj.toString();
         }, (String) null);
