@@ -454,4 +454,20 @@ public class Functional {
             }
         };
     }
+
+    public static <X> Function<X, Boolean> asFunction(final Predicate<X> pred) {
+        return x -> pred.test(x);
+    }
+
+    public static <X0, X1> BiFunction<X0, X1, Boolean> asFunction(final BiPredicate<X0, X1> pred) {
+        return (x0, x1) -> pred.test(x0, x1);
+    }
+
+    public static <X> Predicate<X> asPredicate(final Function<X, Boolean> pred) {
+        return x -> pred.apply(x);
+    }
+
+    public static <X0, X1> BiPredicate<X0, X1> asPredicate(final BiFunction<X0, X1, Boolean> pred) {
+        return (x0, x1) -> pred.apply(x0, x1);
+    }
 }
