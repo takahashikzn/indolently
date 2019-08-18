@@ -51,6 +51,19 @@ public class Functional {
 
     protected Functional() {}
 
+    public static <X, Y> Function<X, Y> unbind(final Supplier<? extends Y> f) {
+        return x -> f.get();
+    }
+
+    public static <X0, X1, R> BiFunction<X0, X1, R> unbind(final Function<? super X1, ? extends R> f) {
+        return (x0, x1) -> f.apply(x1);
+    }
+
+    public static <X0, X1, X2, R> Function3<X0, X1, X2, R> unbind(
+        final BiFunction<? super X1, ? super X2, ? extends R> f) {
+        return (x0, x1, x2) -> f.apply(x1, x2);
+    }
+
     public static <X, Y> Supplier<Y> bind(final Function<? super X, ? extends Y> f, final X x) {
         return () -> f.apply(x);
     }
