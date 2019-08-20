@@ -53,9 +53,8 @@ public final class AdaptiveSPtrn
     }
 
     private void determineFastest() {
-        if ((this.fastest == null) && (this.trial < this.current)) {
+        if (this.fastest == null) {
             this.fastest = this.patterns.get(this.times.indexOf(Collections.min(this.times)));
-            this.times.clear();
         }
     }
 
