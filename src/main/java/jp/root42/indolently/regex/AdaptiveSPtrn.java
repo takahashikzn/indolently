@@ -46,6 +46,11 @@ public final class AdaptiveSPtrn
         this.trial = trial;
     }
 
+    @Override
+    public String toString() {
+        return this.patterns.get(0).pattern();
+    }
+
     private SPtrnBase<?, ?> select() {
         this.determineFastest();
 
@@ -53,7 +58,7 @@ public final class AdaptiveSPtrn
     }
 
     private void determineFastest() {
-        if (this.fastest == null) {
+        if ((this.fastest == null) && (this.trial < this.current)) {
             this.fastest = this.patterns.get(this.times.indexOf(Collections.min(this.times)));
         }
     }
