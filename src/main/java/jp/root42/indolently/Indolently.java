@@ -2875,6 +2875,8 @@ public class Indolently {
         return x -> blank(f.apply(x));
     }
 
+    public static Function<String, SPtrn> re() { return regex -> re(regex); }
+
     public static SPtrn re(final String regex) {
         return re(regex, "`");
     }
@@ -2883,6 +2885,8 @@ public class Indolently {
         return new SPtrn(Regexive.regex(regex.replaceAll(escape, "\\\\")));
     }
 
+    public static Function<String, SPtrnJDK> re1() { return regex -> re1(regex); }
+
     public static SPtrnJDK re1(final String regex) {
         return re1(regex, "`");
     }
@@ -2890,6 +2894,8 @@ public class Indolently {
     public static SPtrnJDK re1(final String regex, final String escape) {
         return Regexive.regex1(regex.replaceAll(escape, "\\\\"));
     }
+
+    public static Function<String, SPtrnRE2> re2() { return regex -> re2(regex); }
 
     public static SPtrnRE2 re2(final String regex) {
         return re2(regex, "`");
@@ -2903,9 +2909,13 @@ public class Indolently {
         return Regexive.regex1(regex);
     }
 
+    public static Function<String, RETest> rematch() { return regex -> rematch(regex); }
+
     public static RETest rematch(final String regex) {
         return Regexive.tester(regex);
     }
+
+    public static Function<String, RETest> refind() { return regex -> refind(regex); }
 
     public static RETest refind(final String regex) {
         final var p = re(regex);
