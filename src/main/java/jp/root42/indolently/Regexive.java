@@ -13,15 +13,11 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.util.List;
-
 import dk.brics.automaton.RegExp;
 import dk.brics.automaton.RunAutomaton;
 import jp.root42.indolently.bridge.ObjFactory;
-import jp.root42.indolently.regex.AdaptiveSPtrn;
 import jp.root42.indolently.regex.RETest;
 import jp.root42.indolently.regex.SPtrn;
-import jp.root42.indolently.regex.SPtrnBase;
 import jp.root42.indolently.regex.SPtrnJDK;
 import jp.root42.indolently.regex.SPtrnRE2;
 
@@ -31,7 +27,7 @@ import jp.root42.indolently.regex.SPtrnRE2;
  */
 public class Regexive {
 
-    private static final boolean RE2_AVAIL = ObjFactory.isPresent("com.google.re2j.Pattern");
+    // private static final boolean RE2_AVAIL = ObjFactory.isPresent("com.google.re2j.Pattern");
 
     private static final boolean AUTOMATON_AVAIL = ObjFactory.isPresent("dk.brics.automaton.RegExp");
 
@@ -44,29 +40,7 @@ public class Regexive {
      * @param pattern pattern string
      * @return enhanced Pattern instance
      */
-    public static SPtrn regex(final String pattern) {
-        if (!RE2_AVAIL) {
-            return new SPtrn(regex1(pattern));
-        }
-
-        final List<SPtrnBase<?, ?>> patterns = Indolently.list();
-
-        try {
-            patterns.add(regex2(pattern));
-        } catch (final RuntimeException e) {
-            if (!e.getClass().getName().equals("com.google.re2j.PatternSyntaxException")) {
-                throw e;
-            }
-        }
-
-        patterns.add(regex1(pattern));
-
-        if (patterns.size() == 1) {
-            return new SPtrn(patterns.get(0));
-        } else {
-            return new SPtrn(new AdaptiveSPtrn(patterns));
-        }
-    }
+    public static SPtrn regex(final String pattern) { return new SPtrn(regex1(pattern)); }
 
     /**
      * create pattern instance using JDK regex library.
