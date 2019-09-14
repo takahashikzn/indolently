@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -50,6 +51,12 @@ import static jp.root42.indolently.Indolently.*;
 public class Functional {
 
     protected Functional() {}
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public static <T> Optional<T> apply(final Optional<T> x, final Optional<T> y,
+        final BiFunction<? super T, ? super T, T> f) {
+        return x.map(x0 -> opt(y.map(y0 -> f.apply(x0, y0)).orElse(x0))).orElse(y);
+    }
 
     public static <X, Y> Function<X, Y> unbound(final Supplier<? extends Y> f) {
         return x -> f.get();
