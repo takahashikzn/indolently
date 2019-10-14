@@ -32,7 +32,10 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.DoublePredicate;
 import java.util.function.Function;
+import java.util.function.IntPredicate;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -2953,6 +2956,12 @@ public class Indolently {
     public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) {
         return x -> val.contains(f.apply(x));
     }
+
+    public static DoublePredicate between(final double l, final double u) { return m -> between(l, m, u); }
+
+    public static LongPredicate between(final long l, final long u) { return m -> between(l, m, u); }
+
+    public static IntPredicate between(final int l, final int u) { return m -> between(l, m, u); }
 
     private static final Consumer<?> nop = x -> {};
 
