@@ -102,10 +102,13 @@ public class Regexive {
         return RETest.of(regex(pattern));
     }
 
-    private static final SPtrnJDK JDK_REGEX = regex1(".*(?:" //
-        + "[^\\\\]\\$" //
-        + "|[^\\\\]\\[\\[" //
-        + "|[^\\\\\\[]\\^" //
+    private static final SPtrnJDK JDK_REGEX = regex1("(?ms).*(?:" //
+        + "[^\\\\]\\$" // unescaped '$'
+
+        + "|[^\\\\]\\[\\[" // unescaped '[['
+        + "|[^\\\\\\[]\\^" // unescaped '^' or negated character class '^'
+        + "|[^\\\\]][\\[\\]]" // unescaped ']]' or ']['
+
         + "|\\(\\?[^:]" //
         + "|\\\\Q" //
         + "|\\\\E" //
@@ -124,6 +127,8 @@ public class Regexive {
         + "|\\{\\d+(?:,(?:\\d+)?)?}\\?" //
         + ").*");
 
+    private static boolean isJDKRegex(final String p) { return JDK_REGEX.test(p); }
+
     private static final String HORIZONTAL_SPACE =
         regex1("[ \t\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000]").pattern();
 
@@ -137,9 +142,7 @@ public class Regexive {
 
     private static RETest automatonTester(final String pattern) {
 
-        if (JDK_REGEX.test(pattern)) { return null; }
-
-        final var ra = new RunAutomaton(new RegExp(pattern //
+        final var pt = pattern //
             .replaceAll("(?<!\\\\)\\(\\?:", "(") //
             .replaceAll("\\\\w", WORD) //
             .replaceAll("\\\\W", not(WORD)) //
@@ -150,8 +153,12 @@ public class Regexive {
             .replaceAll("\\\\s", SPACE) //
             .replaceAll("\\\\S", not(SPACE)) //
             .replaceAll("\\\\v", VERTICAL_SPACE) //
-            .replaceAll("\\\\V", not(VERTICAL_SPACE))) //
-            .toAutomaton());
+            .replaceAll("\\\\V", not(VERTICAL_SPACE));
+
+        if (isJDKRegex(pt)) { return null; }
+
+        final var re = new RegExp(pt);
+        final var ra = new RunAutomaton(re.toAutomaton());
 
         return RETest.of(x -> ra.run(x.toString()), pattern);
     }
