@@ -46,13 +46,13 @@
     <dependency org="dk.brics" name="automaton" rev="1.12-1" conf="compile->master(*)" />
     <!--dependency org="com.gliwka.hyperscan" name="hyperscan" rev="0.6.2" conf="compile->master(*)" /-->
 
-    <dependency org="junit" name="junit" rev="4.13-beta-3" conf="test->master(*)" />
-    <dependency org="org.hamcrest" name="hamcrest" rev="2.2-rc1" conf="test->master(*)" />
+    <dependency org="junit" name="junit" rev="4.13-rc-1" conf="test->master(*)" />
+    <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="test->master(*)" />
-    <dependency org="org.assertj" name="assertj-core" rev="3.13.2" conf="test->master(*)" />
+    <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="test->master(*)" />
     <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="test->master(*)" />
     <dependency org="org.mockito" name="mockito-core" rev="3.1.0" conf="test->master(*)" />
-    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.1" conf="test->master(*)" />
+    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.2" conf="test->master(*)" />
     <dependency org="org.objenesis" name="objenesis" rev="3.1" conf="test->master(*)" />
     <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.1" conf="test->master(*)" />
 
