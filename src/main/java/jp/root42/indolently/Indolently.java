@@ -3016,4 +3016,66 @@ public class Indolently {
     public static long narrow(final long lower, final long x, final long upper) {
         return (x <= lower) ? lower : (upper <= x) ? upper : x;
     }
+
+    public static List<String> split(final String s, final char sep) { return split(s, sep, 0, s.length()); }
+
+    public static List<String> split(final String s, final char sep, int from, int to) {
+        if (from < 0) { from = s.length() + from; }
+        if (to < 0) { to = s.length() + to; }
+        checkSplitRange(s, from, to);
+
+        final var chars = s.toCharArray();
+        final int begin = from;
+        final int end = to;
+
+        final SList<String> ret = list();
+        int cur = begin;
+        for (int i = cur; i < end; i++) {
+            final var c = chars[i];
+
+            if (c == sep) {
+                ret.add(s.substring(cur, i));
+                cur = i + 1;
+            }
+        }
+
+        ret.add(s.substring(cur, end));
+
+        return ret;
+    }
+
+    public static List<String> split(final String s, final String sep) { return split(s, sep, 0, s.length()); }
+
+    public static List<String> split(final String s, final String sep, int from, int to) {
+        final int sl = sep.length();
+        if (sl == 0) { return list(s); }
+        if (sl == 1) { return split(s, sep.charAt(0), from, to); }
+
+        if (from < 0) { from = s.length() + from; }
+        if (to < 0) { to = s.length() + to; }
+        checkSplitRange(s, from, to);
+
+        final int begin = from;
+        final int end = to;
+
+        final SList<String> ret = list();
+        int cur = begin;
+        for (int i = cur; i < end; i++) {
+            if (s.indexOf(sep, cur) == i) {
+                ret.add(s.substring(cur, i));
+                cur = i + sl;
+            }
+        }
+
+        ret.add(s.substring(cur, end));
+
+        return ret;
+    }
+
+    private static void checkSplitRange(final String s, final int from, final int to) {
+        if (to < from) { throw new IllegalArgumentException(String.format("to=%d < from=%d", to, from)); }
+        if (s.length() < from || s.length() < to) {
+            throw new StringIndexOutOfBoundsException(String.format("from=%d, to=%d, len=%d", from, to, s.length()));
+        }
+    }
 }

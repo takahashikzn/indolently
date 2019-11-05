@@ -27,8 +27,12 @@ import java.util.function.BiPredicate;
 
 import jp.root42.indolently.trait.Freezable;
 
+import static jp.root42.indolently.Indolently.array;
+import static jp.root42.indolently.Indolently.list;
+import static jp.root42.indolently.Indolently.map;
 import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Iterative.iterator;
 import static jp.root42.indolently.Iterative.*;
 
 import junitparams.JUnitParamsRunner;
@@ -927,5 +931,34 @@ public class IndolentlyTest {
         assertThat(join(array("foo", "bar", "baz"), ", ")).isEqualTo("foo, bar, baz");
         assertThat(join(listOf(), ", ")).isEqualTo("");
         assertThat(join(listOf())).isEqualTo("");
+    }
+
+    /**
+     * {@link Indolently#split(String, char)}
+     */
+    @Test
+    public void testSplitByChar() {
+
+        assertThat(split("foo,bar,baz", ',')).isEqualTo(list("foo", "bar", "baz"));
+        assertThat(split(",bar,baz", ',')).isEqualTo(list("", "bar", "baz"));
+        assertThat(split("foo,,baz", ',')).isEqualTo(list("foo", "", "baz"));
+        assertThat(split("foo,bar,", ',')).isEqualTo(list("foo", "bar", ""));
+        assertThat(split(",,", ',')).isEqualTo(list("", "", ""));
+        assertThat(split("foo", ',')).isEqualTo(list("foo"));
+    }
+
+    /**
+     * {@link Indolently#split(String, String)}
+     */
+    @Test
+    public void testSplitByString() {
+
+        final var sep = "!?";
+        assertThat(split("foo" + sep + "bar" + sep + "baz", sep)).isEqualTo(list("foo", "bar", "baz"));
+        assertThat(split(sep + "bar" + sep + "baz", sep)).isEqualTo(list("", "bar", "baz"));
+        assertThat(split("foo" + sep + sep + "baz", sep)).isEqualTo(list("foo", "", "baz"));
+        assertThat(split("foo" + sep + "bar" + sep, sep)).isEqualTo(list("foo", "bar", ""));
+        assertThat(split(sep + sep, sep)).isEqualTo(list("", "", ""));
+        assertThat(split("foo", sep)).isEqualTo(list("foo"));
     }
 }
