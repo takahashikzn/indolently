@@ -259,7 +259,7 @@ public interface SList<T>
             return list();
         }
 
-        return $(this.subList(from, toIndex));
+        return this.subList(from, toIndex);
     }
 
     /**
