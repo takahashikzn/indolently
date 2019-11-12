@@ -96,13 +96,16 @@ public interface SList<T>
      * @param from from index. negative index also acceptable.
      * @return sub list
      */
-    default List<T> subList(final int from) {
+    default SList<T> subList(final int from) {
         return this.subList(idx(this, from), this.size());
     }
 
     @Override
+    SList<T> subList(int from, int to);
+
+    @Override
     default SList<T> tail() {
-        return (this.size() <= 1) ? list() : list(this.subList(1));
+        return (this.size() <= 1) ? list() : this.subList(1).clone();
     }
 
     // for optimization

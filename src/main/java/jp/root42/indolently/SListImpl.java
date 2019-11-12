@@ -86,7 +86,7 @@ class SListImpl<T>
     }
 
     @Override
-    public List<T> subList(final int from, final int to) {
+    public SList<T> subList(final int from, final int to) {
 
         int actFrom = Indolently.idx(this, from);
 
@@ -101,7 +101,7 @@ class SListImpl<T>
             actTo = Indolently.idx(this, to);
         }
 
-        return this.store.subList(actFrom, actTo);
+        return Indolently.$(this.store.subList(actFrom, actTo));
     }
 
     @Override

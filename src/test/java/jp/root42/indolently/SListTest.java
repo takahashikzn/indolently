@@ -19,6 +19,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Indolently.list;
+import static jp.root42.indolently.Indolently.map;
 import static jp.root42.indolently.Indolently.*;
 
 import org.junit.Assert;
@@ -162,6 +164,10 @@ public class SListTest {
         } catch (final IllegalArgumentException ignored) {
             assert true;
         }
+
+        final var list = list(1, 2, 3, 4);
+        list.subList(1, 3).clear();
+        assertThat(list).isEqualTo(list(1, 4));
     }
 
     /**
@@ -272,5 +278,7 @@ public class SListTest {
         assertThat(list(1, 2, 3).chunk(4)).isEqualTo(listOf(list(1, 2, 3)));
         assertThat(list(1).chunk(2)).isEqualTo(listOf(list(1)));
         assertThat(list().chunk(2)).isEmpty();
+        assertThat(list(1, 2, 3, 4, 5, 6, 7, 8, 9).subList(3).chunk(2))
+            .isEqualTo(listOf(list(4, 5), list(6, 7), list(8, 9)));
     }
 }
