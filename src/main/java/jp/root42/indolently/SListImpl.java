@@ -37,11 +37,15 @@ class SListImpl<T>
     private final List<T> store;
 
     public SListImpl() {
-        this(ObjFactory.getInstance().newList());
+        this(newList());
     }
 
     public SListImpl(final List<T> store) {
         this.store = store;
+    }
+
+    private static <T> List<T> newList() {
+        return ObjFactory.getInstance().newList();
     }
 
     @Override
@@ -49,9 +53,12 @@ class SListImpl<T>
         return this.store;
     }
 
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public SList<T> clone() {
-        return SList.super.clone();
+        final List<T> newStore = newList();
+        newStore.addAll(this);
+        return new SListImpl<>(newStore);
     }
 
     @Override
