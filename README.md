@@ -4,7 +4,7 @@
 
 # What this is
 
-A Java syntactic sugar library for indolent person.
+A Java syntactic sugar library for indolent guys.
 
 This library was started to provide semi-literal syntactic expression like list/set/map.
 Now there are miscellaneous syntactic sugars like let/eval and more.
