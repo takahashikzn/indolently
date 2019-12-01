@@ -362,15 +362,7 @@ public interface SList<T>
     default <K> SMap<K, SList<T>> group(final Function<? super T, ? extends K> fkey) {
 
         return this.reduce($(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
-
-            final var key = fkey.apply(y);
-
-            if (!x.containsKey(key)) {
-                x.put(key, list());
-            }
-
-            x.get(key).add(y);
-
+            x.computeIfAbsent(fkey.apply(y), z -> list()).add(y);
             return x;
         });
     }
