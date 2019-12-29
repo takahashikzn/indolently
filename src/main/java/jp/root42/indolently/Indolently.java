@@ -2151,6 +2151,16 @@ public class Indolently {
         return new Trio<F, S, T>().fst(fst).snd(snd).trd(trd);
     }
 
+    public static <F, S> Function<Duo<F, S>, F> fst() { return x -> x.fst; }
+
+    public static <F, S> Function<Duo<F, S>, S> snd() { return x -> x.snd; }
+
+    public static <F, S, T> Function<Trio<F, S, T>, F> fst3() { return x -> x.fst; }
+
+    public static <F, S, T> Function<Trio<F, S, T>, S> snd3() { return x -> x.snd; }
+
+    public static <F, S, T> Function<Trio<F, S, T>, T> trd3() { return x -> x.trd; }
+
     /**
      * Convert tuple to list.
      *
