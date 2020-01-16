@@ -59,7 +59,11 @@ public class Regexive {
      * @return enhanced Pattern instance
      */
     public static SPtrnRE2 regex2(final String pattern) {
-        return regex2(com.google.re2j.Pattern.compile(pattern));
+        try {
+            return regex2(com.google.re2j.Pattern.compile(pattern));
+        } catch (final com.google.re2j.PatternSyntaxException e) {
+            throw new java.util.regex.PatternSyntaxException(e.getDescription(), e.getPattern(), e.getIndex());
+        }
     }
 
     /**
