@@ -37,7 +37,7 @@ import jp.root42.indolently.function.SPred;
 import jp.root42.indolently.function.SPred2;
 import jp.root42.indolently.function.SSuppl;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.ref.Duo;
+import jp.root42.indolently.ref.$2;
 
 import static java.util.Objects.*;
 import static jp.root42.indolently.Expressive.*;
@@ -127,7 +127,7 @@ public class Functional {
     public static <X0, X1, X2, X3, Y> Function4<X0, X1, X2, X3, Y> memoize(
         final Function4<? super X0, ? super X1, ? super X2, ? super X3, ? extends Y> f) {
 
-        final Map<Duo<Duo<X0, X1>, Duo<X2, X3>>, Y> memo = map();
+        final Map<$2<$2<X0, X1>, $2<X2, X3>>, Y> memo = map();
 
         return (x0, x1, x2, x3) -> {
             synchronized (memo) {

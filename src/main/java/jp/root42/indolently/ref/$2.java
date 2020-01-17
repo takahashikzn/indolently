@@ -27,28 +27,28 @@ import static jp.root42.indolently.Indolently.*;
 /**
  * Two element tuple.
  *
- * @param <F> 1st element type
- * @param <S> 2nd element type
+ * @param <T1> 1st element type
+ * @param <T2> 2nd element type
  * @author takahashikzn
  */
-public class Duo<F, S>
-    implements Serializable, BiConsumer<F, S>, Supplier<Duo<F, S>>, Consumer<Duo<F, S>> {
+public class $2<T1, T2>
+    implements Serializable, BiConsumer<T1, T2>, Supplier<$2<T1, T2>>, Consumer<$2<T1, T2>> {
 
     private static final long serialVersionUID = 4058877644750960140L;
 
     /** first element */
     @SuppressWarnings("PublicField")
-    public volatile F fst; // NOPMD
+    public volatile T1 _1; // NOPMD
 
     /** second element */
     @SuppressWarnings("PublicField")
-    public volatile S snd; // NOPMD
+    public volatile T2 _2; // NOPMD
 
     @Destructive
     @Override
-    public void accept(final Duo<F, S> that) {
-        this.fst = that.fst;
-        this.snd = that.snd;
+    public void accept(final $2<T1, T2> that) {
+        this._1 = that._1;
+        this._2 = that._2;
     }
 
     /**
@@ -58,33 +58,31 @@ public class Duo<F, S>
      * @return {@code this} instance
      */
     @Destructive
-    public Duo<F, S> set(final Duo<? extends F, ? extends S> that) {
-        return (that == null) ? this.set(null, null) : this.set(that.fst, that.snd);
+    public $2<T1, T2> set(final $2<? extends T1, ? extends T2> that) {
+        return (that == null) ? this.set(null, null) : this.set(that._1, that._2);
     }
 
     /**
      * set elements then return {@code this} instance.
      *
-     * @param fst first element
-     * @param snd second element
+     * @param _1 first element
+     * @param _2 second element
      * @return {@code this} instance
      */
     @Destructive
-    public Duo<F, S> set(final F fst, final S snd) {
-        this.accept(fst, snd);
+    public $2<T1, T2> set(final T1 _1, final T2 _2) {
+        this.accept(_1, _2);
         return this;
     }
 
     @Override
-    public Duo<F, S> get() {
-        return this;
-    }
+    public $2<T1, T2> get() { return this; }
 
     @Destructive
     @Override
-    public void accept(final F fst, final S snd) {
-        this.fst = fst;
-        this.snd = snd;
+    public void accept(final T1 fst, final T2 snd) {
+        this._1 = fst;
+        this._2 = snd;
     }
 
     /**
@@ -92,19 +90,17 @@ public class Duo<F, S>
      *
      * @return 1st element
      */
-    public F fst() {
-        return this.fst;
-    }
+    public T1 _1() { return this._1;}
 
     /**
      * set 1st element
      *
-     * @param fst 1st element
+     * @param _1 1st element
      * @return {@code this}
      */
     @Destructive
-    public Duo<F, S> fst(final F fst) {
-        this.fst = fst;
+    public $2<T1, T2> _1(final T1 _1) {
+        this._1 = _1;
         return this;
     }
 
@@ -113,19 +109,17 @@ public class Duo<F, S>
      *
      * @return 2nd element
      */
-    public S snd() {
-        return this.snd;
-    }
+    public T2 _2() { return this._2; }
 
     /**
      * set 2nd element
      *
-     * @param snd 2st element
+     * @param _2 2st element
      * @return {@code this}
      */
     @Destructive
-    public Duo<F, S> snd(final S snd) {
-        this.snd = snd;
+    public $2<T1, T2> _2(final T2 _2) {
+        this._2 = _2;
         return this;
     }
 
@@ -134,14 +128,10 @@ public class Duo<F, S>
      *
      * @return newly constructed reversed tuple
      */
-    public Duo<S, F> reverse() {
-        return tuple(this.snd, this.fst);
-    }
+    public $2<T2, T1> _21() { return tuple(this._2, this._1);}
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.getClass(), this.fst, this.snd);
-    }
+    public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2);}
 
     @Override
     public boolean equals(final Object o) {
@@ -149,17 +139,15 @@ public class Duo<F, S>
             return false;
         } else if (this == o) {
             return true;
-        } else if (!(o instanceof Duo)) {
+        } else if (!(o instanceof $2)) {
             return false;
         }
 
-        final Duo<?, ?> that = cast(o);
+        final $2<?, ?> that = cast(o);
 
-        return equiv(this.fst, that.fst) && equiv(this.snd, that.snd);
+        return equiv(this._1, that._1) && equiv(this._2, that._2);
     }
 
     @Override
-    public String toString() {
-        return String.format("(%s, %s)", this.fst, this.snd);
-    }
+    public String toString() { return String.format("(%s, %s)", this._1, this._2);}
 }

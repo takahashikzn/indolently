@@ -41,18 +41,18 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.ref.$2;
+import jp.root42.indolently.ref.$3;
 import jp.root42.indolently.ref.BoolRef;
 import jp.root42.indolently.ref.ByteRef;
 import jp.root42.indolently.ref.CharRef;
 import jp.root42.indolently.ref.CmpRef;
 import jp.root42.indolently.ref.DoubleRef;
-import jp.root42.indolently.ref.Duo;
 import jp.root42.indolently.ref.FloatRef;
 import jp.root42.indolently.ref.IntRef;
 import jp.root42.indolently.ref.LongRef;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.ref.ShortRef;
-import jp.root42.indolently.ref.Trio;
 import jp.root42.indolently.ref.ValueReference;
 import jp.root42.indolently.regex.RETest;
 import jp.root42.indolently.regex.SPtrn;
@@ -2135,8 +2135,8 @@ public class Indolently {
      * @param snd 2nd element
      * @return tuple
      */
-    public static <F, S> Duo<F, S> tuple(final F fst, final S snd) {
-        return new Duo<F, S>().fst(fst).snd(snd);
+    public static <F, S> $2<F, S> tuple(final F fst, final S snd) {
+        return new $2<F, S>()._1(fst)._2(snd);
     }
 
     /**
@@ -2147,19 +2147,19 @@ public class Indolently {
      * @param trd 3rd element
      * @return tuple
      */
-    public static <F, S, T> Trio<F, S, T> tuple(final F fst, final S snd, final T trd) {
-        return new Trio<F, S, T>().fst(fst).snd(snd).trd(trd);
+    public static <F, S, T> $3<F, S, T> tuple(final F fst, final S snd, final T trd) {
+        return new $3<F, S, T>()._1(fst)._2(snd)._3(trd);
     }
 
-    public static <F, S> Function<Duo<F, S>, F> fst() { return x -> x.fst; }
+    public static <F, S> Function<$2<F, S>, F> fst() { return x -> x._1; }
 
-    public static <F, S> Function<Duo<F, S>, S> snd() { return x -> x.snd; }
+    public static <F, S> Function<$2<F, S>, S> snd() { return x -> x._2; }
 
-    public static <F, S, T> Function<Trio<F, S, T>, F> fst3() { return x -> x.fst; }
+    public static <F, S, T> Function<$3<F, S, T>, F> fst3() { return x -> x._1; }
 
-    public static <F, S, T> Function<Trio<F, S, T>, S> snd3() { return x -> x.snd; }
+    public static <F, S, T> Function<$3<F, S, T>, S> snd3() { return x -> x._2; }
 
-    public static <F, S, T> Function<Trio<F, S, T>, T> trd3() { return x -> x.trd; }
+    public static <F, S, T> Function<$3<F, S, T>, T> trd3() { return x -> x._3; }
 
     /**
      * Convert tuple to list.
@@ -2167,8 +2167,8 @@ public class Indolently {
      * @param tuple two element tuple
      * @return list of tuple elements
      */
-    public static <T> SList<T> list(final Duo<? extends T, ? extends T> tuple) {
-        return list(tuple.fst, tuple.snd);
+    public static <T> SList<T> list(final $2<? extends T, ? extends T> tuple) {
+        return list(tuple._1, tuple._2);
     }
 
     /**
@@ -2177,8 +2177,8 @@ public class Indolently {
      * @param tuple three element tuple
      * @return list of tuple elements
      */
-    public static <T> SList<T> list(final Trio<? extends T, ? extends T, ? extends T> tuple) {
-        return list(tuple.fst, tuple.snd, tuple.trd);
+    public static <T> SList<T> list(final $3<? extends T, ? extends T, ? extends T> tuple) {
+        return list(tuple._1, tuple._2, tuple._3);
     }
 
     /**

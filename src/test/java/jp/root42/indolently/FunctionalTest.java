@@ -20,11 +20,12 @@ import java.util.function.Function;
 import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.function.SFunc;
 import jp.root42.indolently.function.SFunc3;
+import jp.root42.indolently.ref.$3;
 import jp.root42.indolently.ref.IntRef;
-import jp.root42.indolently.ref.Trio;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
+import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
@@ -116,12 +117,12 @@ public class FunctionalTest {
     public void testFunction2() {
 
         assertThat(func( //
-            (final Function<Trio<Integer, Integer, Integer>, Integer> self) -> {}, // function decl
+            (final Function<$3<Integer, Integer, Integer>, Integer> self) -> {}, // function decl
             (self, v) -> { // function body
 
-                final int x = v.fst;
-                final int y = v.snd;
-                final int z = v.trd;
+                final int x = v._1;
+                final int y = v._2;
+                final int z = v._3;
 
                 return when(() -> (y < x)) //
                     .then(() -> (int) self.apply( //
@@ -139,11 +140,11 @@ public class FunctionalTest {
     @Test
     public void testFunction3() {
 
-        final SFunc<Trio<Integer, Integer, Integer>, Integer> tarai = func(self -> {}, (self, v) -> {
+        final SFunc<$3<Integer, Integer, Integer>, Integer> tarai = func(self -> {}, (self, v) -> {
 
-            final int x = v.fst;
-            final int y = v.snd;
-            final int z = v.trd;
+            final int x = v._1;
+            final int y = v._2;
+            final int z = v._3;
 
             return when(() -> (y < x)) //
                 .then(() -> (int) self.apply( //
