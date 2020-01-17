@@ -13,8 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.util.function.IntConsumer;
-import java.util.function.IntSupplier;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
 
 
 /**
@@ -22,89 +22,75 @@ import java.util.function.IntSupplier;
  * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class IntRef
-    extends AbstractRef<Integer, IntRef>
-    implements NumberRef<Integer, IntRef>, Comparable<IntRef>, IntSupplier, IntConsumer {
+public class $double
+    extends AbstractRef<Double, $double>
+    implements NumberRef<Double, $double>, Comparable<$double>, DoubleSupplier, DoubleConsumer {
 
-    private static final long serialVersionUID = -5827553121494604722L;
+    private static final long serialVersionUID = -3198217652103277386L;
 
     /** the value. */
     @SuppressWarnings("PublicField")
-    public volatile int val; // NOPMD
+    public double $; // NOPMD
 
     /**
      * constructor.
      */
-    protected IntRef() {
-        this(0);
-    }
+    protected $double() { this(0); }
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected IntRef(final int val) {
-        this.val = val;
-    }
+    protected $double(final double $) { this.$ = $; }
 
     @Override
-    public void accept(final Integer val) {
-        this.val = val;
-    }
+    public void accept(final Double $) { this.$ = $; }
 
     /**
      * set value then return this instance.
      *
-     * @param val value
+     * @param $ value
      * @return {@code this}
      */
-    public IntRef set(final int val) {
-        this.val = val;
+    public $double set(final double $) {
+        this.$ = $;
         return this;
     }
 
     @Override
-    public Integer get() {
-        return this.val;
-    }
+    public Double get() { return this.$; }
 
     @Override
-    public int getAsInt() {
-        return this.val;
-    }
+    public void accept(final double $) { this.$ = $; }
 
     @Override
-    public void accept(final int val) {
-        this.val = val;
-    }
+    public double getAsDouble() { return this.$; }
 
     @Override
-    public int compareTo(final IntRef that) {
-        return this.get().compareTo(that.get());
-    }
+    public int compareTo(final $double that) { return this.get().compareTo(that.get()); }
 
     @Override
-    public IntRef add(final Integer val) {
-        this.val += val;
+    public $double add(final Double $) {
+        this.$ += $;
         return this;
     }
 
     @Override
-    public IntRef mul(final Integer val) {
-        this.val *= val;
+    public $double mul(final Double $) {
+        this.$ *= $;
         return this;
     }
 
     @Override
-    public IntRef div(final Integer val) {
-        this.val /= val;
+    public $double div(final Double $) {
+        this.$ /= $;
         return this;
     }
 
     @Override
-    public IntRef negate() {
-        this.val = -this.val;
+    public $double negate() {
+        this.$ = -this.$;
         return this;
     }
 }

@@ -14,59 +14,44 @@
 package jp.root42.indolently.ref;
 
 /**
+ * @param <T> value type
  * @author takahashikzn
- * @version $Id$
  */
-@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class CharRef
-    extends AbstractRef<Character, CharRef>
-    implements Comparable<CharRef> {
+public class $void<T>
+    extends AbstractRef<T, $void<T>> {
 
-    private static final long serialVersionUID = 6739224434382670429L;
+    private static final long serialVersionUID = 2548417883489580934L;
 
     /** the value. */
     @SuppressWarnings("PublicField")
-    public volatile char val; // NOPMD
+    public T $; // NOPMD
 
     /**
      * constructor.
      */
-    protected CharRef() {
-        this((char) 0);
-    }
+    protected $void() { this(null); }
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected CharRef(final char val) {
-        this.val = val;
-    }
+    protected $void(final T $) { this.$ = $; }
 
     @Override
-    public void accept(final Character val) {
-        this.val = val;
-    }
+    public void accept(final T $) { this.$ = $; }
 
     /**
      * set value then return this instance.
      *
-     * @param val value
+     * @param $ value
      * @return {@code this}
      */
-    public CharRef set(final char val) {
-        this.val = val;
+    public $void<T> set(final T $) {
+        this.$ = $;
         return this;
     }
 
     @Override
-    public Character get() {
-        return this.val;
-    }
-
-    @Override
-    public int compareTo(final CharRef that) {
-        return this.get().compareTo(that.get());
-    }
+    public T get() { return this.$; }
 }

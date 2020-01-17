@@ -13,84 +13,84 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
+
+
 /**
  * @author takahashikzn
  * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class ShortRef
-    extends AbstractRef<Short, ShortRef>
-    implements NumberRef<Short, ShortRef>, Comparable<ShortRef> {
+public class $int
+    extends AbstractRef<Integer, $int>
+    implements NumberRef<Integer, $int>, Comparable<$int>, IntSupplier, IntConsumer {
 
-    private static final long serialVersionUID = -6819998391641172785L;
+    private static final long serialVersionUID = -5827553121494604722L;
 
     /** the value. */
     @SuppressWarnings("PublicField")
-    public volatile short val; // NOPMD
+    public int $; // NOPMD
 
     /**
      * constructor.
      */
-    protected ShortRef() {
-        this((short) 0); // NOPMD
-    }
+    protected $int() { this(0); }
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected ShortRef(final short val) { // NOPMD
-        this.val = val;
-    }
+    protected $int(final int $) { this.$ = $; }
 
     @Override
-    public void accept(final Short val) {
-        this.val = val;
-    }
+    public void accept(final Integer $) { this.$ = $; }
 
     /**
      * set value then return this instance.
      *
-     * @param val value
+     * @param $ value
      * @return {@code this}
      */
-    public ShortRef set(final short val) { // NOPMD
-        this.val = val;
+    public $int set(final int $) {
+        this.$ = $;
         return this;
     }
 
     @Override
-    public Short get() {
-        return this.val;
-    }
+    public Integer get() { return this.$; }
 
     @Override
-    public int compareTo(final ShortRef that) {
-        return this.get().compareTo(that.get());
-    }
+    public int getAsInt() { return this.$; }
 
     @Override
-    public ShortRef add(final Short val) {
-        this.val += val;
+    public void accept(final int $) { this.$ = $; }
+
+    @Override
+    public int compareTo(final $int that) { return this.get().compareTo(that.get()); }
+
+    @Override
+    public $int add(final Integer $) {
+        this.$ += $;
         return this;
     }
 
     @Override
-    public ShortRef mul(final Short val) {
-        this.val *= val;
+    public $int mul(final Integer $) {
+        this.$ *= $;
         return this;
     }
 
     @Override
-    public ShortRef div(final Short val) {
-        this.val /= val;
+    public $int div(final Integer $) {
+        this.$ /= $;
         return this;
     }
 
     @Override
-    public ShortRef negate() {
-        this.val = (short) -this.val; // NOPMD
+    public $int negate() {
+        this.$ = -this.$;
         return this;
     }
 }

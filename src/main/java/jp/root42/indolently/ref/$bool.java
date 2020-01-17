@@ -24,62 +24,50 @@ import jp.root42.indolently.function.Statement;
  * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class BoolRef
-    extends AbstractRef<Boolean, BoolRef>
-    implements Comparable<BoolRef>, BooleanSupplier {
+public class $bool
+    extends AbstractRef<Boolean, $bool>
+    implements Comparable<$bool>, BooleanSupplier {
 
     private static final long serialVersionUID = 8087914133902951131L;
 
     /** the value. */
     @SuppressWarnings("PublicField")
-    public volatile boolean val; // NOPMD
+    public boolean $; // NOPMD
 
     /**
      * constructor.
      */
-    protected BoolRef() {
-        this(false);
-    }
+    protected $bool() { this(false); }
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected BoolRef(final boolean val) {
-        this.val = val;
-    }
+    protected $bool(final boolean $) { this.$ = $; }
 
     @Override
-    public void accept(final Boolean val) {
-        this.val = val;
-    }
+    public void accept(final Boolean $) { this.$ = $; }
 
     /**
      * set value then return this instance.
      *
-     * @param val value
+     * @param $ value
      * @return {@code this}
      */
-    public BoolRef set(final boolean val) {
-        this.val = val;
+    public $bool set(final boolean $) {
+        this.$ = $;
         return this;
     }
 
     @Override
-    public Boolean get() {
-        return this.val;
-    }
+    public Boolean get() { return this.$; }
 
     @Override
-    public boolean getAsBoolean() {
-        return this.val;
-    }
+    public boolean getAsBoolean() { return this.$; }
 
     @Override
-    public int compareTo(final BoolRef that) {
-        return this.get().compareTo(that.get());
-    }
+    public int compareTo(final $bool that) { return this.get().compareTo(that.get()); }
 
     /**
      * execute the procedure then negate the value if and only if the condition satisfied.
@@ -87,9 +75,7 @@ public class BoolRef
      * @param cond condition
      * @param f a procedure
      */
-    public void negateIf(final boolean cond, final Statement f) {
-        this.negateIf(x -> x == cond, f);
-    }
+    public void negateIf(final boolean cond, final Statement f) { this.negateIf(x -> x == cond, f); }
 
     /**
      * execute the procedure then negate the value if and only if the condition satisfied.
@@ -99,7 +85,7 @@ public class BoolRef
      */
     public void negateIf(final Predicate<Boolean> cond, final Statement f) {
         this.ifThen(cond, () -> {
-            this.val = !this.val;
+            this.$ = !this.$;
             f.execute();
         });
     }
@@ -110,9 +96,7 @@ public class BoolRef
      * @param cond condition
      * @param f a procedure
      */
-    public void ifThen(final boolean cond, final Statement f) {
-        this.ifThen(x -> x == cond, f);
-    }
+    public void ifThen(final boolean cond, final Statement f) { this.ifThen(x -> x == cond, f); }
 
     /**
      * execute the procedure if and only if the condition satisfied.
@@ -122,7 +106,7 @@ public class BoolRef
      */
     public void ifThen(final Predicate<Boolean> cond, final Statement f) {
         synchronized (this) {
-            if (cond.test(this.val)) {
+            if (cond.test(this.$)) {
                 f.execute();
             }
         }

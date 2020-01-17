@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author takahashikzn
  */
 abstract class AbstractRef<T, S extends AbstractRef<T, S>>
-    implements Serializable, ValueReference<T, S> {
+    implements Serializable, Ref<T, S> {
 
     private static final long serialVersionUID = -1617670706001823922L;
 

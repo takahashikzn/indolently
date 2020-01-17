@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import jp.root42.indolently.Iterative;
 import jp.root42.indolently.SIter;
 import jp.root42.indolently.bridge.RegexMatcher;
-import jp.root42.indolently.ref.Ref;
+import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.trait.Loopable;
 
 import static jp.root42.indolently.Expressive.*;
@@ -42,14 +42,14 @@ public interface SMatcher<P, M>
     @Override
     default SIter<String> iterator() {
 
-        final Ref<Boolean> found = ref();
+        final $void<Boolean> found = ref();
 
         return Iterative.iterator( //
-            () -> opt(found.val) //
-                .orElseGet(() -> found.val = this.find()), //
+            () -> opt(found.$) //
+                .orElseGet(() -> found.$ = this.find()), //
             () -> prog1( //
                 () -> this.group(), //
-                () -> found.val = null));
+                () -> found.$ = null));
     }
 
     @Override

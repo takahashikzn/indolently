@@ -18,79 +18,69 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class FloatRef
-    extends AbstractRef<Float, FloatRef>
-    implements NumberRef<Float, FloatRef>, Comparable<FloatRef> {
+public class $byte
+    extends AbstractRef<Byte, $byte>
+    implements NumberRef<Byte, $byte>, Comparable<$byte> {
 
     private static final long serialVersionUID = -6479571510369831870L;
 
     /** the value. */
     @SuppressWarnings("PublicField")
-    public volatile float val; // NOPMD
+    public byte $; // NOPMD
 
     /**
      * constructor.
      */
-    protected FloatRef() {
-        this(0);
-    }
+    protected $byte() { this((byte) 0); }
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected FloatRef(final float val) {
-        this.val = val;
-    }
+    protected $byte(final byte $) { this.$ = $; }
 
     @Override
-    public void accept(final Float val) {
-        this.val = val;
-    }
+    public void accept(final Byte ＄) { this.$ = ＄; }
 
     /**
      * set value then return this instance.
      *
-     * @param val value
+     * @param ＄ value
      * @return {@code this}
      */
-    public FloatRef set(final float val) {
-        this.val = val;
+    public $byte set(final byte ＄) {
+        this.$ = ＄;
         return this;
     }
 
     @Override
-    public Float get() {
-        return this.val;
-    }
+    public Byte get() { return this.$; }
 
     @Override
-    public int compareTo(final FloatRef that) {
-        return this.get().compareTo(that.get());
-    }
+    public int compareTo(final $byte that) { return this.get().compareTo(that.get()); }
 
     @Override
-    public FloatRef add(final Float val) {
-        this.val += val;
+    public $byte add(final Byte ＄) {
+        this.$ += ＄;
         return this;
     }
 
     @Override
-    public FloatRef mul(final Float val) {
-        this.val *= val;
+    public $byte mul(final Byte ＄) {
+        this.$ *= ＄;
         return this;
     }
 
     @Override
-    public FloatRef div(final Float val) {
-        this.val /= val;
+    public $byte div(final Byte ＄) {
+        this.$ /= ＄;
         return this;
     }
 
     @Override
-    public FloatRef negate() {
-        this.val = -this.val;
+    public $byte negate() {
+        this.$ = (byte) -this.$;
         return this;
     }
 }

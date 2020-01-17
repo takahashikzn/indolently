@@ -22,7 +22,7 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 public interface NumberRef<T extends Number, S extends NumberRef<T, S>>
-    extends ValueReference<T, S> {
+    extends Ref<T, S> {
 
     /**
      * add operation.

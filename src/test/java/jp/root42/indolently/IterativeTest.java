@@ -18,12 +18,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.ref.$int;
 
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Generator.*;
+import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Iterative.iterator;
 import static jp.root42.indolently.Iterative.*;
 
 import junitparams.JUnitParamsRunner;
@@ -50,7 +52,7 @@ public class IterativeTest {
     @Test
     public void testGenerator() {
 
-        final Generator<Integer> g = generator(ref(0), env -> (2 < env.val) ? breaks() : env.val++);
+        final Generator<Integer> g = generator(ref(0), env -> (2 < env.$) ? breaks() : env.$++);
 
         assertThat(g.hasNext()).isTrue();
         assertThat(g.next()).isEqualTo(0);
@@ -78,7 +80,7 @@ public class IterativeTest {
 
         generator(//
             ref(1), //
-            env -> (10 < env.val) ? breaks() : env.val++) //
+            env -> (10 < env.$) ? breaks() : env.$++) //
             .forEach(consumerOf((final Integer x) -> ints.add(x)) //
                 .andThen(x -> {}));
 
@@ -94,9 +96,9 @@ public class IterativeTest {
         final SList<Integer> ints = list(1, 2, 3, 4, 5);
 
         assertThat(generator(ref(0), //
-            (final IntRef pos) -> tuple( //
-                ints.get(pos.val), //
-                ints.opt(++pos.val) //
+            (final $int pos) -> tuple( //
+                ints.get(pos.$), //
+                ints.opt(++pos.$) //
                     .orElseGet(() -> breaks()))).list()) //
             .isEqualTo(list( //
                 tuple(1, 2) //
@@ -114,7 +116,7 @@ public class IterativeTest {
         generator( //
             generator( //
                 ref(1), //
-                env -> (10 < env.val) ? breaks() : env.val++)) //
+                env -> (10 < env.$) ? breaks() : env.$++)) //
             .forEach(consumerOf((final Integer x) -> {}));
     }
 

@@ -98,7 +98,7 @@ public class $3<T1, T2, T3>
      *
      * @return 1st element
      */
-    public T1 _1() { return this._1;}
+    public T1 _1() { return this._1; }
 
     /**
      * set 1st element
@@ -155,9 +155,7 @@ public class $3<T1, T2, T3>
      *
      * @return all combination of two element tuples
      */
-    public $3<$2<T1, T2>, $2<T2, T3>, $2<T1, T3>> _12_23_31() {
-        return tuple(this._12(), this._23(), this._13());
-    }
+    public $3<$2<T1, T2>, $2<T2, T3>, $2<T1, T3>> _12_23_13() { return tuple(this._12(), this._23(), this._13()); }
 
     /**
      * get duo of first and second element.

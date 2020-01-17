@@ -43,17 +43,17 @@ import java.util.stream.Stream;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
-import jp.root42.indolently.ref.BoolRef;
-import jp.root42.indolently.ref.ByteRef;
-import jp.root42.indolently.ref.CharRef;
-import jp.root42.indolently.ref.CmpRef;
-import jp.root42.indolently.ref.DoubleRef;
-import jp.root42.indolently.ref.FloatRef;
-import jp.root42.indolently.ref.IntRef;
-import jp.root42.indolently.ref.LongRef;
+import jp.root42.indolently.ref.$bool;
+import jp.root42.indolently.ref.$byte;
+import jp.root42.indolently.ref.$char;
+import jp.root42.indolently.ref.$double;
+import jp.root42.indolently.ref.$float;
+import jp.root42.indolently.ref.$int;
+import jp.root42.indolently.ref.$long;
+import jp.root42.indolently.ref.$short;
+import jp.root42.indolently.ref.$void;
+import jp.root42.indolently.ref.$voidc;
 import jp.root42.indolently.ref.Ref;
-import jp.root42.indolently.ref.ShortRef;
-import jp.root42.indolently.ref.ValueReference;
 import jp.root42.indolently.regex.RETest;
 import jp.root42.indolently.regex.SPtrn;
 import jp.root42.indolently.regex.SPtrnJDK;
@@ -2187,8 +2187,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static BoolRef ref(final boolean val) {
-        return ValueReference.of(val);
+    public static $bool ref(final boolean val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2197,8 +2197,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static IntRef ref(final int val) {
-        return ValueReference.of(val);
+    public static $int ref(final int val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2207,8 +2207,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static LongRef ref(final long val) {
-        return ValueReference.of(val);
+    public static $long ref(final long val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2217,8 +2217,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static DoubleRef ref(final double val) {
-        return ValueReference.of(val);
+    public static $double ref(final double val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2227,8 +2227,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static FloatRef ref(final float val) {
-        return ValueReference.of(val);
+    public static $float ref(final float val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2237,8 +2237,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static ShortRef ref(final short val) {
-        return ValueReference.of(val);
+    public static $short ref(final short val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2247,8 +2247,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static ByteRef ref(final byte val) {
-        return ValueReference.of(val);
+    public static $byte ref(final byte val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2257,8 +2257,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static CharRef ref(final char val) {
-        return ValueReference.of(val);
+    public static $char ref(final char val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2267,8 +2267,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static <T> Ref<T> ref(final T val) {
-        return ValueReference.of(val);
+    public static <T> $void<T> ref(final T val) {
+        return Ref.of(val);
     }
 
     /**
@@ -2276,8 +2276,8 @@ public class Indolently {
      *
      * @return empty reference
      */
-    public static <T> Ref<T> ref() {
-        return ValueReference.of((T) null);
+    public static <T> $void<T> ref() {
+        return Ref.of((T) null);
     }
 
     /**
@@ -2286,8 +2286,8 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static <T extends Comparable<T>> CmpRef<T> ref(final T val) {
-        return ValueReference.of(val);
+    public static <T extends Comparable<T>> $voidc<T> ref(final T val) {
+        return Ref.of(val);
     }
 
     // CHECKSTYLE:OFF

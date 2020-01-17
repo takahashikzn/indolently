@@ -18,79 +18,69 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class ByteRef
-    extends AbstractRef<Byte, ByteRef>
-    implements NumberRef<Byte, ByteRef>, Comparable<ByteRef> {
+public class $short
+    extends AbstractRef<Short, $short>
+    implements NumberRef<Short, $short>, Comparable<$short> {
 
-    private static final long serialVersionUID = -6479571510369831870L;
+    private static final long serialVersionUID = -6819998391641172785L;
 
     /** the value. */
     @SuppressWarnings("PublicField")
-    public volatile byte val; // NOPMD
+    public short $; // NOPMD
 
     /**
      * constructor.
      */
-    protected ByteRef() {
-        this((byte) 0);
-    }
+    protected $short() { this((short) 0); /* NOPMD*/ }
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected ByteRef(final byte val) {
-        this.val = val;
-    }
+    protected $short(final short $) { /* NOPMD*/this.$ = $; }
 
     @Override
-    public void accept(final Byte val) {
-        this.val = val;
-    }
+    public void accept(final Short $) { this.$ = $; }
 
     /**
      * set value then return this instance.
      *
-     * @param val value
+     * @param $ value
      * @return {@code this}
      */
-    public ByteRef set(final byte val) {
-        this.val = val;
+    public $short set(final short $) { // NOPMD
+        this.$ = $;
         return this;
     }
 
     @Override
-    public Byte get() {
-        return this.val;
-    }
+    public Short get() { return this.$; }
 
     @Override
-    public int compareTo(final ByteRef that) {
-        return this.get().compareTo(that.get());
-    }
+    public int compareTo(final $short that) { return this.get().compareTo(that.get()); }
 
     @Override
-    public ByteRef add(final Byte val) {
-        this.val += val;
+    public $short add(final Short $) {
+        this.$ += $;
         return this;
     }
 
     @Override
-    public ByteRef mul(final Byte val) {
-        this.val *= val;
+    public $short mul(final Short $) {
+        this.$ *= $;
         return this;
     }
 
     @Override
-    public ByteRef div(final Byte val) {
-        this.val /= val;
+    public $short div(final Short $) {
+        this.$ /= $;
         return this;
     }
 
     @Override
-    public ByteRef negate() {
-        this.val = (byte) -this.val;
+    public $short negate() {
+        this.$ = (short) -this.$; // NOPMD
         return this;
     }
 }

@@ -20,14 +20,15 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.function.Expression;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.ref.BoolRef;
-import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.ref.$bool;
+import jp.root42.indolently.ref.$int;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.in;
+import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterative.*;
+import static jp.root42.indolently.Iterative.iterator;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -137,11 +138,11 @@ public class ExpressiveTest {
     @Test
     public void testLet() {
 
-        final BoolRef called = ref(false);
+        final $bool called = ref(false);
 
-        let(() -> called.val = true);
+        let(() -> called.$ = true);
 
-        assertTrue(called.val);
+        assertTrue(called.$);
     }
 
     /**
@@ -169,11 +170,11 @@ public class ExpressiveTest {
     @Test
     public void testLet3() {
 
-        final BoolRef called = ref(false);
+        final $bool called = ref(false);
 
-        let(called, x -> x.val = true);
+        let(called, x -> x.$ = true);
 
-        assertTrue(called.val);
+        assertTrue(called.$);
     }
 
     /**
@@ -331,24 +332,24 @@ public class ExpressiveTest {
     @Test
     public void testWhen() {
 
-        final IntRef i = ref(0);
+        final $int i = ref(0);
 
         final Supplier<String> f = //
-            () -> when(() -> i.val == 1).then(() -> "one") //
-                .when(() -> i.val == 2).then(() -> "two") //
-                .when(() -> i.val == 3).then("three") //
-                .none("" + i.val);
+            () -> when(() -> i.$ == 1).then(() -> "one") //
+                .when(() -> i.$ == 2).then(() -> "two") //
+                .when(() -> i.$ == 3).then("three") //
+                .none("" + i.$);
 
-        i.val = 1;
+        i.$ = 1;
         assertThat(f.get()).isEqualTo("one");
 
-        i.val = 2;
+        i.$ = 2;
         assertThat(f.get()).isEqualTo("two");
 
-        i.val = 3;
+        i.$ = 3;
         assertThat(f.get()).isEqualTo("three");
 
-        i.val = 4;
+        i.$ = 4;
         assertThat(f.get()).isEqualTo("4");
     }
 
@@ -368,12 +369,12 @@ public class ExpressiveTest {
         assertThat(list( //
             iterator( //
                 ref(from), //
-                ref -> when(from < to).then(() -> ref.val <= to) //
-                    .when(to < from).then(() -> to <= ref.val) //
-                    .none(() -> ref.val == from), //
+                ref -> when(from < to).then(() -> ref.$ <= to) //
+                    .when(to < from).then(() -> to <= ref.$) //
+                    .none(() -> ref.$ == from), //
                 ref -> when(from < to) //
-                    .then(() -> ref.getThen(self -> self.val += step)) //
-                    .none(() -> prog1(ref, () -> ref.val -= step)) //
+                    .then(() -> ref.getThen(self -> self.$ += step)) //
+                    .none(() -> prog1(ref, () -> ref.$ -= step)) //
             ) //
         )) //
             .isEqualTo(expected);
@@ -381,12 +382,12 @@ public class ExpressiveTest {
         assertThat(list( //
             iterator( //
                 ref(from), //
-                ref -> when(from < to).then(() -> ref.val <= to) //
-                    .when(to < from).then(() -> to <= ref.val) //
-                    .none(() -> ref.val == from), //
+                ref -> when(from < to).then(() -> ref.$ <= to) //
+                    .when(to < from).then(() -> to <= ref.$) //
+                    .none(() -> ref.$ == from), //
                 ref -> when(from < to) //
-                    .then(() -> ref.getThen(self -> self.val += step)) //
-                    .none(() -> prog1(ref, () -> ref.val -= step)) //
+                    .then(() -> ref.getThen(self -> self.$ += step)) //
+                    .none(() -> prog1(ref, () -> ref.$ -= step)) //
             ) //
         ).reduce((l, r) -> l + r)) //
             .isEqualTo(list(expected).reduce((l, r) -> l + r));

@@ -13,53 +13,156 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import jp.root42.indolently.Indolently;
+import jp.root42.indolently.function.Expression;
+import jp.root42.indolently.trait.Identical;
+
+
 /**
  * @param <T> value type
+ * @param <S> self type
  * @author takahashikzn
  */
-public class Ref<T>
-    extends AbstractRef<T, Ref<T>> {
-
-    private static final long serialVersionUID = 2548417883489580934L;
-
-    /** the value. */
-    @SuppressWarnings("PublicField")
-    public volatile T val; // NOPMD
+public interface Ref<T, S extends Ref<T, S>>
+    extends Supplier<T>, Consumer<T>, Identical<S> {
 
     /**
-     * constructor.
-     */
-    protected Ref() {
-        this(null);
-    }
-
-    /**
-     * constructor.
+     * get value then do something with this instance.
      *
-     * @param val the value.
+     * @param f any operation
+     * @return the value
      */
-    protected Ref(final T val) {
-        this.val = val;
-    }
+    default T getThen(final Consumer<? super S> f) { return this.optThen(f).get(); }
 
-    @Override
-    public void accept(final T val) {
-        this.val = val;
+    /**
+     * get value if exists, then do something with this instance.
+     *
+     * @param f any operation
+     * @return optional representation of the value
+     */
+    default Optional<T> optThen(final Consumer<? super S> f) {
+        final Optional<T> curr = this.opt();
+        f.accept(this.identity());
+        return curr;
     }
 
     /**
-     * set value then return this instance.
+     * do something with this instance, then get value if exists.
      *
-     * @param val value
-     * @return {@code this}
+     * @param f any operation
+     * @return optional representation of the value
      */
-    public Ref<T> set(final T val) {
-        this.val = val;
-        return this;
+    default S init(final Consumer<? super S> f) {
+        if (this.get() == null) {
+            f.accept(this.identity());
+        }
+
+        return this.identity();
     }
 
-    @Override
-    public T get() {
-        return this.val;
+    /**
+     * get value as optional representation.
+     *
+     * @return optional representation of the value
+     */
+    default Optional<T> opt() { return Indolently.opt(this.get()); }
+
+    /**
+     * get value if exists, otherwise use the value from supplier as this reference's value.
+     *
+     * @param f value supplier
+     * @return the value
+     */
+    default T orAccept(final Expression<? extends T> f) {
+
+        return this.opt().orElseGet(() -> {
+            final var val = f.get();
+            this.accept(val);
+            return val;
+        });
     }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $bool of(final boolean val) { return new $bool(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $int of(final int val) { return new $int(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $long of(final long val) { return new $long(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $double of(final double val) { return new $double(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $float of(final float val) { return new $float(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $short of(final short val) { /* NOPMD*/return new $short(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $byte of(final byte val) { return new $byte(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static $char of(final char val) { return new $char(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static <T> $void<T> of(final T val) { return new $void<>(val); }
+
+    /**
+     * create a reference of value.
+     *
+     * @param val initial value
+     * @return reference of value
+     */
+    static <T extends Comparable<T>> $voidc<T> of(final T val) { return new $voidc<>(val); }
 }

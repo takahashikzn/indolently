@@ -21,7 +21,7 @@ import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.function.SFunc;
 import jp.root42.indolently.function.SFunc3;
 import jp.root42.indolently.ref.$3;
-import jp.root42.indolently.ref.IntRef;
+import jp.root42.indolently.ref.$int;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
@@ -72,12 +72,12 @@ public class FunctionalTest {
     @Test
     public void testFunction() {
 
-        final IntRef initCount = ref(0);
+        final $int initCount = ref(0);
 
         final Function<Integer, Integer> fib = func( //
             (final Function<Integer, Integer> self) -> {
                 assertThat(self.apply(1)).isEqualTo(1); // check no stackoverflow
-                initCount.val++;
+                initCount.$++;
             }, (self, x) -> //
                 (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
 
@@ -86,11 +86,11 @@ public class FunctionalTest {
                 28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887,
                 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296).freeze();
 
-        assertThat(initCount.val).isEqualTo(0);
+        assertThat(initCount.$).isEqualTo(0);
 
         assertThat(range(1, 10).each(x -> {
             assertThat(range(0, 42).reduce(list(), (rem, val) -> rem.push(fib.apply(val)))).isEqualTo(fibonacciNums);
-            assertThat(initCount.val).isEqualTo(1);
+            assertThat(initCount.$).isEqualTo(1);
         }).last()).isEqualTo(10);
     }
 

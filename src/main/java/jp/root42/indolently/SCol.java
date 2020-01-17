@@ -215,7 +215,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
         final var i = ref(0);
 
-        return this.each(x -> f.accept(i.val++, x));
+        return this.each(x -> f.accept(i.$++, x));
     }
 
     @Override
@@ -251,7 +251,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
 
         final var i = ref(0);
 
-        return this.filter(x -> f.test(i.val++, x));
+        return this.filter(x -> f.test(i.$++, x));
     }
 
     @Override

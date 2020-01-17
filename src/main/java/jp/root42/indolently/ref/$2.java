@@ -80,9 +80,9 @@ public class $2<T1, T2>
 
     @Destructive
     @Override
-    public void accept(final T1 fst, final T2 snd) {
-        this._1 = fst;
-        this._2 = snd;
+    public void accept(final T1 _1, final T2 _2) {
+        this._1 = _1;
+        this._2 = _2;
     }
 
     /**
@@ -90,7 +90,7 @@ public class $2<T1, T2>
      *
      * @return 1st element
      */
-    public T1 _1() { return this._1;}
+    public T1 _1() { return this._1; }
 
     /**
      * set 1st element
@@ -128,10 +128,10 @@ public class $2<T1, T2>
      *
      * @return newly constructed reversed tuple
      */
-    public $2<T2, T1> _21() { return tuple(this._2, this._1);}
+    public $2<T2, T1> _21() { return tuple(this._2, this._1); }
 
     @Override
-    public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2);}
+    public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2); }
 
     @Override
     public boolean equals(final Object o) {
@@ -149,5 +149,5 @@ public class $2<T1, T2>
     }
 
     @Override
-    public String toString() { return String.format("(%s, %s)", this._1, this._2);}
+    public String toString() { return String.format("(%s, %s)", this._1, this._2); }
 }

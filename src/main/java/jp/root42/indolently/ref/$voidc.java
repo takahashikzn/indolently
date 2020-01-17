@@ -21,40 +21,36 @@ import jp.root42.indolently.Indolently;
  * @author takahashikzn
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class CmpRef<T extends Comparable<T>>
-    extends Ref<T>
-    implements Comparable<ValueReference<? extends T, ? extends ValueReference<? extends T, ?>>> {
+public class $voidc<T extends Comparable<T>>
+    extends $void<T>
+    implements Comparable<Ref<? extends T, ? extends Ref<? extends T, ?>>> {
 
     private static final long serialVersionUID = 8031677453769730996L;
 
     /**
      * constructor.
      */
-    protected CmpRef() {}
+    protected $voidc() {}
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected CmpRef(final T val) {
-        super(val);
-    }
+    protected $voidc(final T $) { super($); }
 
     @Override
-    public int compareTo(final ValueReference<? extends T, ? extends ValueReference<? extends T, ?>> that) {
+    public int compareTo(final Ref<? extends T, ? extends Ref<? extends T, ?>> that) {
         return this.get().compareTo(that.get());
     }
 
     /**
      * test if value is equivalent or not.
      *
-     * @param val value to compare.
+     * @param $ value to compare.
      * @return test result
      */
-    public boolean equiv(final T val) {
-        return Indolently.equiv(this.get(), val);
-    }
+    public boolean equiv(final T $) { return Indolently.equiv(this.get(), $); }
 
     /**
      * compute largest value.
@@ -62,19 +58,15 @@ public class CmpRef<T extends Comparable<T>>
      * @param that comparison target
      * @return largest value.
      */
-    public T max(final ValueReference<? extends T, ?> that) {
-        return Indolently.max(this.get(), that.get());
-    }
+    public T max(final Ref<? extends T, ?> that) { return Indolently.max(this.get(), that.get()); }
 
     /**
      * compute largest value.
      *
-     * @param val comparison target
+     * @param $ comparison target
      * @return largest value.
      */
-    public T max(final T val) {
-        return Indolently.max(this.get(), val);
-    }
+    public T max(final T $) { return Indolently.max(this.get(), $); }
 
     /**
      * compute smallest value.
@@ -82,17 +74,13 @@ public class CmpRef<T extends Comparable<T>>
      * @param that comparison target
      * @return smallest value.
      */
-    public T min(final ValueReference<? extends T, ?> that) {
-        return Indolently.min(this.get(), that.get());
-    }
+    public T min(final Ref<? extends T, ?> that) { return Indolently.min(this.get(), that.get()); }
 
     /**
      * compute smallest value.
      *
-     * @param val comparison target
+     * @param $ comparison target
      * @return smallest value.
      */
-    public T min(final T val) {
-        return Indolently.min(this.get(), val);
-    }
+    public T min(final T $) { return Indolently.min(this.get(), $); }
 }

@@ -22,89 +22,75 @@ import java.util.function.LongSupplier;
  * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class LongRef
-    extends AbstractRef<Long, LongRef>
-    implements NumberRef<Long, LongRef>, Comparable<LongRef>, LongSupplier, LongConsumer {
+public class $long
+    extends AbstractRef<Long, $long>
+    implements NumberRef<Long, $long>, Comparable<$long>, LongSupplier, LongConsumer {
 
     private static final long serialVersionUID = -5582550853171233363L;
 
     /** the value. */
     @SuppressWarnings("PublicField")
-    public volatile long val; // NOPMD
+    public long $; // NOPMD
 
     /**
      * constructor.
      */
-    protected LongRef() {
-        this(0);
-    }
+    protected $long() { this(0); }
 
     /**
      * constructor.
      *
-     * @param val the value.
+     * @param $ the value.
      */
-    protected LongRef(final long val) {
-        this.val = val;
-    }
+    protected $long(final long $) { this.$ = $; }
 
     @Override
-    public void accept(final Long val) {
-        this.val = val;
-    }
+    public void accept(final Long $) { this.$ = $; }
 
     /**
      * set value then return this instance.
      *
-     * @param val value
+     * @param $ value
      * @return {@code this}
      */
-    public LongRef set(final long val) {
-        this.val = val;
+    public $long set(final long $) {
+        this.$ = $;
         return this;
     }
 
     @Override
-    public Long get() {
-        return this.val;
-    }
+    public Long get() { return this.$; }
 
     @Override
-    public void accept(final long val) {
-        this.val = val;
-    }
+    public void accept(final long $) { this.$ = $; }
 
     @Override
-    public long getAsLong() {
-        return this.val;
-    }
+    public long getAsLong() { return this.$; }
 
     @Override
-    public int compareTo(final LongRef that) {
-        return this.get().compareTo(that.get());
-    }
+    public int compareTo(final $long that) { return this.get().compareTo(that.get()); }
 
     @Override
-    public LongRef add(final Long val) {
-        this.val += val;
+    public $long add(final Long $) {
+        this.$ += $;
         return this;
     }
 
     @Override
-    public LongRef mul(final Long val) {
-        this.val *= val;
+    public $long mul(final Long $) {
+        this.$ *= $;
         return this;
     }
 
     @Override
-    public LongRef div(final Long val) {
-        this.val /= val;
+    public $long div(final Long $) {
+        this.$ /= $;
         return this;
     }
 
     @Override
-    public LongRef negate() {
-        this.val = -this.val;
+    public $long negate() {
+        this.$ = -this.$;
         return this;
     }
 }

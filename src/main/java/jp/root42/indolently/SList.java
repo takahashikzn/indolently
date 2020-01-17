@@ -284,7 +284,7 @@ public interface SList<T>
 
         final var i = ref(0);
 
-        return this.map(x -> f.apply(i.val++, x));
+        return this.map(x -> f.apply(i.$++, x));
     }
 
     /**
@@ -309,7 +309,7 @@ public interface SList<T>
 
         final var i = ref(0);
 
-        return this.flatMap(x -> f.apply(i.val++, x));
+        return this.flatMap(x -> f.apply(i.$++, x));
     }
 
     @Override

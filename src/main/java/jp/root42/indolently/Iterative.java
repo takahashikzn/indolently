@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.ref.LongRef;
+import jp.root42.indolently.ref.$long;
 
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Indolently.*;
@@ -237,7 +237,7 @@ public class Iterative {
      */
     public static SIter<Integer> range(final int from, final int to, final int step) {
         //noinspection UnnecessaryExplicitNumericCast
-        return range((long) from, (long) to, step).map(x -> x.intValue());
+        return range(from, to, step).map(x -> x.intValue());
     }
 
     /**
@@ -282,13 +282,13 @@ public class Iterative {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }
 
-        final Predicate<LongRef> pred = //
-            env -> when(from < to).then(() -> env.val <= to) //
-                .when(to < from).then(() -> to <= env.val) //
-                .none(() -> env.val == from);
+        final Predicate<$long> pred = //
+            env -> when(from < to).then(() -> env.$ <= to) //
+                .when(to < from).then(() -> to <= env.$) //
+                .none(() -> env.$ == from);
 
         return iterator(ref(from), pred, env -> match(env) //
-            .when(pred).then(x -> x.getThen(y -> y.val += (from <= to ? step : -step))) //
+            .when(pred).then(x -> x.getThen(y -> y.$ += (from <= to ? step : -step))) //
             .raise(x -> new NoSuchElementException()));
     }
 }
