@@ -68,7 +68,9 @@ public class $double
     public double getAsDouble() { return this.$; }
 
     @Override
-    public int compareTo(final $double that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $double that) { return this.compareTo(that.$); }
+
+    public int compareTo(final double that) { return Double.compare(this.$, that); }
 
     @Override
     public $double add(final Double $) {

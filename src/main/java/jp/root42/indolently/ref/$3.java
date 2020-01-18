@@ -39,15 +39,15 @@ public class $3<T1, T2, T3>
 
     /** first element */
     @SuppressWarnings("PublicField")
-    public volatile T1 _1; // NOPMD
+    public T1 _1; // NOPMD
 
     /** second element */
     @SuppressWarnings("PublicField")
-    public volatile T2 _2; // NOPMD
+    public T2 _2; // NOPMD
 
     /** third element */
     @SuppressWarnings("PublicField")
-    public volatile T3 _3; // NOPMD
+    public T3 _3; // NOPMD
 
     @Destructive
     @Override

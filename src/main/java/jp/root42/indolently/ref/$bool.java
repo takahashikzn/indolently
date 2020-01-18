@@ -67,7 +67,9 @@ public class $bool
     public boolean getAsBoolean() { return this.$; }
 
     @Override
-    public int compareTo(final $bool that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $bool that) { return this.compareTo(that.$); }
+
+    public int compareTo(final boolean that) { return Boolean.compare(this.$, that); }
 
     /**
      * execute the procedure then negate the value if and only if the condition satisfied.

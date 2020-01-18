@@ -68,7 +68,9 @@ public class $long
     public long getAsLong() { return this.$; }
 
     @Override
-    public int compareTo(final $long that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $long that) { return this.compareTo(that.$); }
+
+    public int compareTo(final long that) { return Long.compare(this.$, that); }
 
     @Override
     public $long add(final Long $) {

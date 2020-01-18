@@ -58,7 +58,9 @@ public class $short
     public Short get() { return this.$; }
 
     @Override
-    public int compareTo(final $short that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $short that) { return this.compareTo(that.$); }
+
+    public int compareTo(final short that) { return Short.compare(this.$, that); }
 
     @Override
     public $short add(final Short $) {

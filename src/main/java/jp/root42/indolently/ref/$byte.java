@@ -58,7 +58,9 @@ public class $byte
     public Byte get() { return this.$; }
 
     @Override
-    public int compareTo(final $byte that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $byte that) { return this.compareTo(that.$); }
+
+    public int compareTo(final byte that) { return Byte.compare(this.$, that); }
 
     @Override
     public $byte add(final Byte ＄) {

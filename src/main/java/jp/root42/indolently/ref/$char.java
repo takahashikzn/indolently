@@ -58,5 +58,7 @@ public class $char
     public Character get() { return this.$; }
 
     @Override
-    public int compareTo(final $char that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $char that) { return this.compareTo(that.$); }
+
+    public int compareTo(final char that) { return Character.compare(this.$, that); }
 }

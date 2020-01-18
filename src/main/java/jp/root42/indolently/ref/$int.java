@@ -68,7 +68,9 @@ public class $int
     public void accept(final int $) { this.$ = $; }
 
     @Override
-    public int compareTo(final $int that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $int that) { return this.compareTo(that.$); }
+
+    public int compareTo(final int that) { return Integer.compare(this.$, that); }
 
     @Override
     public $int add(final Integer $) {

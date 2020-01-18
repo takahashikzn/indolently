@@ -38,11 +38,11 @@ public class $2<T1, T2>
 
     /** first element */
     @SuppressWarnings("PublicField")
-    public volatile T1 _1; // NOPMD
+    public T1 _1; // NOPMD
 
     /** second element */
     @SuppressWarnings("PublicField")
-    public volatile T2 _2; // NOPMD
+    public T2 _2; // NOPMD
 
     @Destructive
     @Override

@@ -58,7 +58,9 @@ public class $float
     public Float get() { return this.$; }
 
     @Override
-    public int compareTo(final $float that) { return this.get().compareTo(that.get()); }
+    public int compareTo(final $float that) { return this.compareTo(that.$); }
+
+    public int compareTo(final float that) { return Float.compare(this.$, that); }
 
     @Override
     public $float add(final Float $) {
