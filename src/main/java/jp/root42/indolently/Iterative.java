@@ -236,8 +236,8 @@ public class Iterative {
      * @return integer iterator.
      */
     public static SIter<Integer> range(final int from, final int to, final int step) {
-        //noinspection UnnecessaryExplicitNumericCast
-        return range(from, to, step).map(x -> x.intValue());
+        //noinspection
+        return range((long) from, to, step).map(x -> x.intValue());
     }
 
     /**
