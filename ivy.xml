@@ -39,8 +39,8 @@
     <dependency org="net.openhft" name="koloboke-impl-jdk8" rev="0.6.8" conf="test->master(*)" />
     -->
     <dependency org="it.unimi.dsi" name="fastutil" rev="8.3.0" conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="10.1.0" conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.1.0" conf="compile->master(*)" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="10.2.0.M1" conf="compile->master(*)" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.2.0.M1" conf="compile->master(*)" />
 
     <dependency org="com.google.re2j" name="re2j" rev="1.3" conf="compile->master(*)" />
     <dependency org="dk.brics" name="automaton" rev="1.12-1" conf="compile->master(*)" />
@@ -49,7 +49,7 @@
     <dependency org="junit" name="junit" rev="4.13" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="test->master(*)" />
-    <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="test->master(*)" />
+    <dependency org="org.assertj" name="assertj-core" rev="3.15.0" conf="test->master(*)" />
     <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="test->master(*)" />
     <dependency org="org.mockito" name="mockito-core" rev="3.2.4" conf="test->master(*)" />
     <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.7" conf="test->master(*)" />
