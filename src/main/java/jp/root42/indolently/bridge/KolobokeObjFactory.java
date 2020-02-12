@@ -16,8 +16,8 @@ package jp.root42.indolently.bridge;
 import java.util.Map;
 import java.util.Set;
 
-import net.openhft.koloboke.collect.map.hash.HashObjObjMaps;
-import net.openhft.koloboke.collect.set.hash.HashObjSets;
+import com.koloboke.collect.map.hash.HashObjObjMaps;
+import com.koloboke.collect.set.hash.HashObjSets;
 
 
 /**
