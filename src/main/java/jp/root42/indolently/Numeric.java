@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -29,19 +30,48 @@ public final class Numeric {
     /** non private for subtyping. */
     protected Numeric() {}
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static int asInt(final String s) { return Integer.valueOf(s); }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static long asLong(final String s) { return Long.valueOf(s); }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static short asShort(final String s) { return Short.valueOf(s); }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static byte asByte(final String s) { return Byte.valueOf(s); }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static float asFloat(final String s) { return Float.valueOf(s); }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static double asDouble(final String s) { return Double.valueOf(s); }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     public static boolean asBool(final String s) { return Boolean.valueOf(s); }
+
+    private static <T> Optional<T> parseX(final String s, final Function<String, T> f) {
+        try {
+            return (s == null) ? Optional.empty() : Optional.of(f.apply(s));
+        } catch (final IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<Integer> parseInt(final String s) { return parseX(s, Integer::parseInt); }
+
+    public static Optional<Long> parseLong(final String s) { return parseX(s, Long::parseLong); }
+
+    public static Optional<Short> parseShort(final String s) { return parseX(s, Short::parseShort); }
+
+    public static Optional<Byte> parseByte(final String s) { return parseX(s, Byte::parseByte); }
+
+    public static Optional<Float> parseFloat(final String s) { return parseX(s, Float::parseFloat); }
+
+    public static Optional<Double> parseDouble(final String s) { return parseX(s, Double::parseDouble); }
+
+    public static Optional<Boolean> parseBool(final String s) { return parseX(s, Boolean::parseBoolean); }
 
     // public static char asChar(final String s) { return s.charAt(0); }
 
