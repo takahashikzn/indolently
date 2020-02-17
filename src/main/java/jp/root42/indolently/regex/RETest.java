@@ -18,15 +18,12 @@ import java.util.function.Supplier;
 
 
 /**
- * @author root42 Inc.
- * @version $Id$
+ * @author takahashikzn
  */
 public interface RETest
     extends Predicate<CharSequence> {
 
-    static RETest of(final SPtrnBase<?, ?> ptrn) {
-        return of(ptrn, ptrn.pattern());
-    }
+    static RETest of(final SPtrnBase<?, ?> ptrn) { return of(ptrn, ptrn.pattern()); }
 
     static RETest of(final Predicate<CharSequence> pred, final String pattern) {
         return new RETest() {

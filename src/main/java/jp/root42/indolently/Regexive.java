@@ -14,8 +14,8 @@
 package jp.root42.indolently;
 
 import dk.brics.automaton.RegExp;
-import dk.brics.automaton.RunAutomaton;
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.regex.AutomatonTest;
 import jp.root42.indolently.regex.RETest;
 import jp.root42.indolently.regex.SPtrn;
 import jp.root42.indolently.regex.SPtrnJDK;
@@ -161,10 +161,7 @@ public class Regexive {
 
         if (isJDKRegex(pt)) { return null; }
 
-        final var re = new RegExp(pt);
-        final var ra = new RunAutomaton(re.toAutomaton());
-
-        return RETest.of(x -> ra.run(x.toString()), pattern);
+        return new AutomatonTest(new RegExp(pt), pattern);
     }
 
     private static String not(final String word) { return "[^" + word + "]"; }
