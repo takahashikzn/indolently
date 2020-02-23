@@ -2151,15 +2151,15 @@ public class Indolently {
         return new $3<F, S, T>()._1(fst)._2(snd)._3(trd);
     }
 
-    public static <F, S> Function<$2<F, S>, F> fst() { return x -> x._1; }
+    public static <F, S> Function<$2<F, S>, F> _1() { return x -> x._1; }
 
-    public static <F, S> Function<$2<F, S>, S> snd() { return x -> x._2; }
+    public static <F, S> Function<$2<F, S>, S> _2() { return x -> x._2; }
 
-    public static <F, S, T> Function<$3<F, S, T>, F> fst3() { return x -> x._1; }
+    public static <F, S, T> Function<$3<F, S, T>, F> _1of3() { return x -> x._1; }
 
-    public static <F, S, T> Function<$3<F, S, T>, S> snd3() { return x -> x._2; }
+    public static <F, S, T> Function<$3<F, S, T>, S> _2of3() { return x -> x._2; }
 
-    public static <F, S, T> Function<$3<F, S, T>, T> trd3() { return x -> x._3; }
+    public static <F, S, T> Function<$3<F, S, T>, T> _3of3() { return x -> x._3; }
 
     /**
      * Convert tuple to list.
