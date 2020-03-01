@@ -725,6 +725,14 @@ public class Indolently {
         });
     }
 
+    public static <T> Optional<T> head(final T[] ary) {
+        return empty(ary) ? none() : opt(ary[0]);
+    }
+
+    public static <T> Optional<T> last(final T[] ary) {
+        return empty(ary) ? none() : opt(ary[ary.length - 1]);
+    }
+
     /**
      * Create a list of {@code char}.
      *
