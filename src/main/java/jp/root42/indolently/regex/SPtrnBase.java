@@ -49,10 +49,10 @@ public interface SPtrnBase<P, M extends SMatcher>
      */
     String pattern();
 
+    default boolean found(final CharSequence cs) { return this.matcher(cs).find(); }
+
     @Override
-    default boolean test(final CharSequence cs) {
-        return this.matcher(cs).matches();
-    }
+    default boolean test(final CharSequence cs) { return this.matcher(cs).matches(); }
 
     /**
      * Tokenize string by the regex pattern which this object expresses.
@@ -61,9 +61,7 @@ public interface SPtrnBase<P, M extends SMatcher>
      * @param cs the string to tokenize
      * @return token list
      */
-    default SList<String> split(final CharSequence cs) {
-        return this.split(cs, 0);
-    }
+    default SList<String> split(final CharSequence cs) { return this.split(cs, 0); }
 
     /**
      * Tokenize string by the regex pattern which this object expresses.

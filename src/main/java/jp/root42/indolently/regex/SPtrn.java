@@ -22,7 +22,7 @@ import jp.root42.indolently.SList;
  * @author takahashikzn.
  */
 public final class SPtrn
-    implements SPtrnBase<SPtrn.Ptrn, SMatcher<?, ?>> {
+    implements SPtrnBase<SPtrn.Ptrn, SMatcher> {
 
     public interface Ptrn {
 
@@ -31,9 +31,7 @@ public final class SPtrn
 
     private final SPtrnBase<?, ?> pattern;
 
-    public SPtrn(final SPtrnBase<?, ?> pattern) {
-        this.pattern = pattern;
-    }
+    public SPtrn(final SPtrnBase<?, ?> pattern) { this.pattern = pattern; }
 
     public <T extends SPtrnBase<?, ?>> T unwrap() {
         //noinspection unchecked
@@ -66,9 +64,7 @@ public final class SPtrn
     public SMatcher<?, ?> matcher(final CharSequence cs) { return this.pattern.matcher(cs); }
 
     @Override
-    public boolean test(final CharSequence cs) {
-        return this.pattern.test(cs);
-    }
+    public boolean test(final CharSequence cs) { return this.pattern.test(cs); }
 
     @Override
     public String pattern() { return this.pattern.pattern(); }
