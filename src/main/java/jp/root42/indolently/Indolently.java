@@ -327,6 +327,10 @@ public class Indolently {
         return Optional.empty();
     }
 
+    public static <T> T nullable(final Optional<T> value) {
+        return value.orElse(null);
+    }
+
     /**
      * An alias of {@link Optional#ofNullable(Object)}.
      *
