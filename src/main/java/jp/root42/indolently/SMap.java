@@ -602,8 +602,8 @@ public interface SMap<K, V>
         return this.entries().reduce(Indolently.map(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
     }
 
-    default SMap<K, V> order(final Function<? super K, ? extends Comparable<? super K>> f) {
-        return this.order((x, y) -> f.apply(x).compareTo(y));
+    default <C extends Comparable<? super C>> SMap<K, V> order(final Function<? super K, C> f) {
+        return this.order((x, y) -> f.apply(x).compareTo(f.apply(y)));
     }
 
     default SMap<K, V> order(final Comparator<? super K> comp) {

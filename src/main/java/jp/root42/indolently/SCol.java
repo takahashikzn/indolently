@@ -310,8 +310,8 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      */
     SELF order(Comparator<? super T> comp);
 
-    default SELF order(final Function<? super T, ? extends Comparable<? super T>> comp) {
-        return this.order((x, y) -> comp.apply(x).compareTo(y));
+    default <C extends Comparable<? super C>> SELF order(final Function<? super T, C> f) {
+        return this.order((x, y) -> f.apply(x).compareTo(f.apply(y)));
     }
 
     default String join() { return this.join((String) null); }
