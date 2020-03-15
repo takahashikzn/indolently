@@ -2648,9 +2648,9 @@ public class Indolently {
 
     private static final Function<?, ?> itself = x -> x;
 
-    public static <T> Function<T, T> itself() {
-        return cast(itself);
-    }
+    public static <T> Function<T, T> it() { return itself(); }
+
+    public static <T> Function<T, T> itself() { return cast(itself); }
 
     public static <T, S> Function<T, S> fixed(final S val) {
         return x -> val;
@@ -2771,35 +2771,35 @@ public class Indolently {
     }
 
     public static <T extends Comparable<T>> Predicate<T> lt(final T r) {
-        return lt(itself(), r);
+        return lt(it(), r);
     }
 
     public static <T extends Comparable<T>> Predicate<T> le(final T r) {
-        return le(itself(), r);
+        return le(it(), r);
     }
 
     public static <T extends Comparable<T>> Predicate<T> gt(final T r) {
-        return gt(itself(), r);
+        return gt(it(), r);
     }
 
     public static <T extends Comparable<T>> Predicate<T> ge(final T r) {
-        return ge(itself(), r);
+        return ge(it(), r);
     }
 
     public static <T extends Comparable<T>> Predicate<T> gtlt(final T l, final T u) {
-        return gtlt(itself(), l, u);
+        return gtlt(it(), l, u);
     }
 
     public static <T extends Comparable<T>> Predicate<T> gelt(final T l, final T u) {
-        return gelt(itself(), l, u);
+        return gelt(it(), l, u);
     }
 
     public static <T extends Comparable<T>> Predicate<T> gtle(final T l, final T u) {
-        return gtle(itself(), l, u);
+        return gtle(it(), l, u);
     }
 
     public static <T extends Comparable<T>> Predicate<T> gele(final T l, final T u) {
-        return gele(itself(), l, u);
+        return gele(it(), l, u);
     }
 
     private static final Predicate<? extends Iterable<?>> hollow = x -> empty(x);
@@ -2808,7 +2808,7 @@ public class Indolently {
         return cast(hollow);
     }
 
-    private static final Predicate<? extends CharSequence> empty = empty(itself());
+    private static final Predicate<? extends CharSequence> empty = empty(it());
 
     public static <T extends CharSequence> Predicate<T> empty() {
         return cast(empty);
@@ -2820,18 +2820,18 @@ public class Indolently {
         return present;
     }
 
-    private static final Predicate<? extends CharSequence> blank = blank(itself());
+    private static final Predicate<? extends CharSequence> blank = blank(it());
 
     public static <T extends CharSequence> Predicate<T> blank() {
         return cast(blank);
     }
 
     public static <T> Predicate<T> isa(final Class<?> cls) {
-        return isa(itself(), cls);
+        return isa(it(), cls);
     }
 
     public static Predicate<Class<?>> assignable(final Class<?> cls) {
-        return assignable(itself(), cls);
+        return assignable(it(), cls);
     }
 
     public static <T> Predicate<T> same(final T val) {
@@ -2839,21 +2839,21 @@ public class Indolently {
     }
 
     public static <T> Predicate<T> eq(final T val) {
-        return eq(itself(), val);
+        return eq(it(), val);
     }
 
     public static <T extends Comparable<T>> Predicate<T> eq(final T val) {
-        return eq(itself(), val);
+        return eq(it(), val);
     }
 
     public static <T> Predicate<T> in(final Collection<? extends T> val) {
-        return in(itself(), val);
+        return in(it(), val);
     }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> Predicate<T> in(final T... val) {
-        return in(itself(), val);
+        return in(it(), val);
     }
 
     public static <X, T extends Comparable<T>> Predicate<X> lt(final Function<X, ? extends T> f, final T r) {
