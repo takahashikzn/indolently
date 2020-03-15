@@ -47,9 +47,7 @@ public interface SList<T>
      * @see Cloneable
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    default SList<T> clone() {
-        return list((Iterable<T>) this);
-    }
+    default SList<T> clone() { return list((Iterable<T>) this); }
 
     /**
      * Wrap a list.
@@ -58,23 +56,17 @@ public interface SList<T>
      * @param list list to wrap
      * @return wrapped list
      */
-    static <T> SList<T> of(final List<T> list) {
-        return $(list);
-    }
+    static <T> SList<T> of(final List<T> list) { return $(list); }
 
     /**
      * @see Indolently#freeze(List)
      */
     @Override
-    default SList<T> freeze() {
-        return Indolently.freeze(this);
-    }
+    default SList<T> freeze() { return Indolently.freeze(this); }
 
     // for optimization
     @Override
-    default T head() {
-        return this.get(0);
-    }
+    default T head() { return this.get(0); }
 
     /**
      * Return element at the position if exists.
@@ -96,17 +88,13 @@ public interface SList<T>
      * @param from from index. negative index also acceptable.
      * @return sub list
      */
-    default SList<T> subList(final int from) {
-        return this.subList(idx(this, from), this.size());
-    }
+    default SList<T> subList(final int from) { return this.subList(idx(this, from), this.size()); }
 
     @Override
     SList<T> subList(int from, int to);
 
     @Override
-    default SList<T> tail() {
-        return (this.size() <= 1) ? list() : this.subList(1).clone();
-    }
+    default SList<T> tail() { return (this.size() <= 1) ? list() : this.subList(1).clone(); }
 
     // for optimization
     @Override
@@ -120,9 +108,7 @@ public interface SList<T>
      *
      * @return a set constructed from this instance.
      */
-    default SSet<T> set() {
-        return $(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
-    }
+    default SSet<T> set() { return $(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this); }
 
     /**
      * convert this list to sorted{@link SSet}.
@@ -207,9 +193,7 @@ public interface SList<T>
      * @param from from index (inclusive)
      * @return detached sub list
      */
-    default SList<T> slice(final int from) {
-        return this.narrow(from).clone();
-    }
+    default SList<T> slice(final int from) { return this.narrow(from).clone(); }
 
     /**
      * Almost same as {@link #narrow(int, int)} but returns newly constructed (detached) view.
@@ -218,9 +202,7 @@ public interface SList<T>
      * @param to to index (exclusive)
      * @return detached sub list
      */
-    default SList<T> slice(final int from, final int to) {
-        return this.narrow(from, to).clone();
-    }
+    default SList<T> slice(final int from, final int to) { return this.narrow(from, to).clone(); }
 
     /**
      * Almost same as {@link #subList(int, int)} but never throw {@link IllegalArgumentException} and
@@ -229,9 +211,7 @@ public interface SList<T>
      * @param from from index (inclusive)
      * @return the narrowed view of this list
      */
-    default SList<T> narrow(final int from) {
-        return this.narrow(from, this.size());
-    }
+    default SList<T> narrow(final int from) { return this.narrow(from, this.size()); }
 
     /**
      * Almost same as {@link #subList(int, int)} but never throw {@link IllegalArgumentException} and
@@ -388,16 +368,20 @@ public interface SList<T>
     }
 
     @Override
-    default SList<T> order(final Comparator<? super T> comp) {
-        return Indolently.sort(this, comp);
-    }
+    default SList<T> order(final Comparator<? super T> comp) { return Indolently.sort(this, comp); }
 
-    default SList<T> uniq() {
-        return Indolently.uniq(this);
-    }
+    default SList<T> uniq() { return Indolently.uniq(this); }
 
-    default SList<T> uniq(final BiPredicate<? super T, ? super T> f) {
-        return Indolently.uniq(this, f);
+    default SList<T> uniq(final BiPredicate<? super T, ? super T> f) { return Indolently.uniq(this, f); }
+
+    default String join() { return this.join((String) null); }
+
+    default String join(final String sep) { return this.join(Object::toString, sep); }
+
+    default String join(final Function<T, CharSequence> f) { return this.join(f, null); }
+
+    default String join(final Function<T, CharSequence> f, final String sep) {
+        return Indolently.join(this.map(f), sep);
     }
 
     /**
@@ -408,9 +392,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> update(final int idx, final T val) {
-        return this.update(idx, x -> val);
-    }
+    default SList<T> update(final int idx, final T val) { return this.update(idx, x -> val); }
 
     /**
      * Replace value at the position if exists.
