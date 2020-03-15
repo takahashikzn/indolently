@@ -41,9 +41,7 @@ public interface SSet<T>
      * @see Cloneable
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    default SSet<T> clone() {
-        return set((Iterable<T>) this);
-    }
+    default SSet<T> clone() { return set((Iterable<T>) this); }
 
     /**
      * Wrap a set.
@@ -52,31 +50,23 @@ public interface SSet<T>
      * @param set set to wrap
      * @return wrapped set
      */
-    static <T> SSet<T> of(final Set<T> set) {
-        return $(set);
-    }
+    static <T> SSet<T> of(final Set<T> set) { return $(set); }
 
     /**
      * @see Indolently#freeze(Set)
      */
     @Override
-    default SSet<T> freeze() {
-        return Indolently.freeze(this);
-    }
+    default SSet<T> freeze() { return Indolently.freeze(this); }
 
     @Override
-    default SSet<T> tail() {
-        return set(this.list().tail());
-    }
+    default SSet<T> tail() { return set(this.list().tail()); }
 
     /**
      * convert this set to {@link SList}.
      *
      * @return a list newly constructed from this instance.
      */
-    default SList<T> list() {
-        return Indolently.list(this);
-    }
+    default SList<T> list() { return Indolently.list(this); }
 
     /**
      * Map operation.
@@ -86,9 +76,7 @@ public interface SSet<T>
      * @param f function
      * @return newly constructed set which contains converted values
      */
-    default <R> SSet<R> map(final Function<? super T, ? extends R> f) {
-        return this.map((idx, val) -> f.apply(val));
-    }
+    default <R> SSet<R> map(final Function<? super T, ? extends R> f) { return this.map((idx, val) -> f.apply(val)); }
 
     /**
      * Map operation.
@@ -155,9 +143,7 @@ public interface SSet<T>
      * @param values values
      * @return newly constructed set as a computed union
      */
-    default SSet<T> union(final Iterable<? extends T> values) {
-        return this.clone().pushAll(values);
-    }
+    default SSet<T> union(final Iterable<? extends T> values) { return this.clone().pushAll(values); }
 
     /**
      * compute intersection of set.
@@ -196,9 +182,7 @@ public interface SSet<T>
      * @param other alternative value
      * @return this instance or other
      */
-    default SSet<T> orElse(final Set<? extends T> other) {
-        return this.orElseGet(() -> other);
-    }
+    default SSet<T> orElse(final Set<? extends T> other) { return this.orElseGet(() -> other); }
 
     /**
      * Return this instance if not empty, otherwise return the invocation result of {@code other}.
@@ -224,7 +208,10 @@ public interface SSet<T>
     }
 
     @Override
-    default SSet<T> order(final Comparator<? super T> comp) {
-        return sort(this, comp);
+    default SSet<T> order(final Comparator<? super T> comp) { return sort(this, comp); }
+
+    @Override
+    default String join(final Function<T, CharSequence> f, final String sep) {
+        return Indolently.join(this.map(f), sep);
     }
 }

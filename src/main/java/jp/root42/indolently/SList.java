@@ -370,19 +370,14 @@ public interface SList<T>
     @Override
     default SList<T> order(final Comparator<? super T> comp) { return Indolently.sort(this, comp); }
 
-    default SList<T> uniq() { return Indolently.uniq(this); }
-
-    default SList<T> uniq(final BiPredicate<? super T, ? super T> f) { return Indolently.uniq(this, f); }
-
-    default String join() { return this.join((String) null); }
-
-    default String join(final String sep) { return this.join(Object::toString, sep); }
-
-    default String join(final Function<T, CharSequence> f) { return this.join(f, null); }
-
+    @Override
     default String join(final Function<T, CharSequence> f, final String sep) {
         return Indolently.join(this.map(f), sep);
     }
+
+    default SList<T> uniq() { return Indolently.uniq(this); }
+
+    default SList<T> uniq(final BiPredicate<? super T, ? super T> f) { return Indolently.uniq(this, f); }
 
     /**
      * Replace value at the position if exists.

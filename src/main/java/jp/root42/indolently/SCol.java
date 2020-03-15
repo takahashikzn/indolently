@@ -55,9 +55,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return {@code this} instance
      */
     @Destructive
-    default SELF push(final T value) {
-        return this.push(value, x -> true);
-    }
+    default SELF push(final T value) { return this.push(value, x -> true); }
 
     /**
      * add all values then return this instance.
@@ -66,9 +64,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return {@code this} instance
      */
     @Destructive
-    default SELF pushAll(final Iterable<? extends T> values) {
-        return this.pushAll(() -> values, x -> true);
-    }
+    default SELF pushAll(final Iterable<? extends T> values) { return this.pushAll(() -> values, x -> true); }
 
     /**
      * add value then return this instance only if condition satisfied.
@@ -156,9 +152,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @see #removeAll(Collection)
      */
     @Destructive
-    default SELF delete(final T val) {
-        return this.delete(list(val));
-    }
+    default SELF delete(final T val) { return this.delete(list(val)); }
 
     /**
      * remove values then return this instance.
@@ -168,9 +162,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @see #removeAll(Collection)
      */
     @Destructive
-    default SELF delete(final Predicate<? super T> f) {
-        return this.delete((i, x) -> f.test(x));
-    }
+    default SELF delete(final Predicate<? super T> f) { return this.delete((i, x) -> f.test(x)); }
 
     /**
      * remove values then return this instance.
@@ -180,9 +172,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @see #removeAll(Collection)
      */
     @Destructive
-    default SELF delete(final BiPredicate<Integer, ? super T> f) {
-        return this.delete(this.filter(f));
-    }
+    default SELF delete(final BiPredicate<Integer, ? super T> f) { return this.delete(this.filter(f)); }
 
     @Override
     SIter<T> iterator();
@@ -236,9 +226,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @param f condition
      * @return the number of elements which satisfying condition
      */
-    default int count(final Predicate<? super T> f) {
-        return this.filter(f).size();
-    }
+    default int count(final Predicate<? super T> f) { return this.filter(f).size(); }
 
     /**
      * Filter operation: returns values which satisfying condition.
@@ -255,14 +243,10 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     }
 
     @Override
-    default SStream<T> stream() {
-        return Indolently.$(Collection.super.stream());
-    }
+    default SStream<T> stream() { return Indolently.$(Collection.super.stream()); }
 
     @Override
-    default SStream<T> parallelStream() {
-        return Indolently.$(Collection.super.parallelStream());
-    }
+    default SStream<T> parallelStream() { return Indolently.$(Collection.super.parallelStream()); }
 
     /**
      * Convert this collection to map.
@@ -300,9 +284,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @param val value
      * @return the result of {@link #contains(Object)}
      */
-    default boolean has(final T val) {
-        return this.contains(val);
-    }
+    default boolean has(final T val) { return this.contains(val); }
 
     /**
      * Just an alias of {@link #containsAll(Collection)}
@@ -310,9 +292,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @param vals values
      * @return the result of {@link #containsAll(Collection)}
      */
-    default boolean hasAll(final Collection<? extends T> vals) {
-        return this.containsAll(vals);
-    }
+    default boolean hasAll(final Collection<? extends T> vals) { return this.containsAll(vals); }
 
     /**
      * 'Group By' operation: returns grouped elements as {@link SMap} form.
@@ -329,4 +309,12 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return sorted collection
      */
     SELF order(Comparator<? super T> comp);
+
+    default String join() { return this.join((String) null); }
+
+    default String join(final String sep) { return this.join(Object::toString, sep); }
+
+    default String join(final Function<T, CharSequence> f) { return this.join(f, null); }
+
+    String join(Function<T, CharSequence> f, String sep);
 }
