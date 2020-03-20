@@ -603,7 +603,7 @@ public interface SMap<K, V>
     }
 
     default <C extends Comparable<? super C>> SMap<K, V> order(final Function<? super K, C> f) {
-        return this.order((x, y) -> f.apply(x).compareTo(f.apply(y)));
+        return this.order(Comparator.comparing(f::apply));
     }
 
     default SMap<K, V> order(final Comparator<? super K> comp) {
