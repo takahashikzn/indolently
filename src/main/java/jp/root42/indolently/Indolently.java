@@ -314,22 +314,18 @@ public class Indolently {
      * @param value the value
      * @return Optional representation of value
      */
-    public static <T> Optional<T> nonNull(final T value) {
-        return opt(value);
-    }
+    public static <T> Optional<T> nonNull(final T value) { return opt(value); }
 
     /**
      * An alias of {@link Optional#empty()}.
      *
      * @return Optional representation of nothing
      */
-    public static <T> Optional<T> none() {
-        return Optional.empty();
-    }
+    public static <T> Optional<T> none() { return Optional.empty(); }
 
-    public static <T> T nullable(final Optional<T> value) {
-        return value.orElse(null);
-    }
+    public static <T> T nullable(final Optional<T> value) { return value.orElse(null); }
+
+    public static <T> Function<T, Optional<T>> opt() { return x -> opt(x); }
 
     /**
      * An alias of {@link Optional#ofNullable(Object)}.
@@ -338,9 +334,7 @@ public class Indolently {
      * @param value the value
      * @return Optional representation of value
      */
-    public static <T> Optional<T> opt(final T value) {
-        return Optional.ofNullable(value);
-    }
+    public static <T> Optional<T> opt(final T value) { return Optional.ofNullable(value); }
 
     /**
      * An alias of {@link Optional#ofNullable(Object)}.
