@@ -365,9 +365,7 @@ public class Indolently {
      * @param other default value
      * @return value or default value
      */
-    public static <T> T elv(final T value, final T other) {
-        return (value == null) ? other : value;
-    }
+    public static <T> T elv(final T value, final T other) { return (value == null) ? other : value; }
 
     /**
      * SQL's coalesce function. The name comes from ELVis operator.
@@ -377,9 +375,7 @@ public class Indolently {
      * @param other1 default value
      * @return value or default value
      */
-    public static <T> T elv(final T value, final T other0, final T other1) {
-        return elv(value, elv(other0, other1));
-    }
+    public static <T> T elv(final T value, final T other0, final T other1) { return elv(elv(value, other0), other1); }
 
     /**
      * SQL's coalesce function. The name comes from ELVis operator.
@@ -391,7 +387,7 @@ public class Indolently {
      * @return value or default value
      */
     public static <T> T elv(final T value, final T other0, final T other1, final T other2) {
-        return elv(value, elv(other0, elv(other1, other2)));
+        return elv(elv(value, other0, other1), other2);
     }
 
     /**
@@ -405,8 +401,20 @@ public class Indolently {
      * @return value or default value
      */
     public static <T> T elv(final T value, final T other0, final T other1, final T other2, final T other3) {
-        return elv(value, elv(other0, elv(other1, elv(other2, other3))));
+        return elv(elv(value, other0, other1, other2), other3);
     }
+
+    public static <T> T elv(final T value, final Supplier<T> other) { return (value == null) ? other.get() : value; }
+
+    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1) {
+        return elv(elv(value, other0), other1);
+    }
+
+    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1,
+        final Supplier<T> other2) { return elv(elv(value, other0, other1), other2); }
+
+    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1, final Supplier<T> other2,
+        final Supplier<T> other3) { return elv(elv(value, other0, other1, other2), other3); }
 
     /**
      * A shortcut notation of {@code Optional.ofNullable(value).map(mapper).orElse(other)}.
