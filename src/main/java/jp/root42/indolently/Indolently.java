@@ -3032,31 +3032,21 @@ public class Indolently {
 
     public static IntPredicate between(final int l, final int u) { return m -> between(l, m, u); }
 
-    private static final Consumer<?> nop = x -> {};
+    /**
+     * Do nothing Consumer.
+     *
+     * @return do nothing Consumer
+     */
+    public static <T> Consumer<T> nop() { return x -> {}; }
 
     /**
      * Do nothing Consumer.
      *
      * @return do nothing Consumer
      */
-    public static <T> Consumer<T> nop() {
-        return cast(nop);
-    }
+    public static <X, Y> BiConsumer<X, Y> noop() { return (x, y) -> {}; }
 
-    private static final BiConsumer<?, ?> noop = (x, y) -> {};
-
-    /**
-     * Do nothing Consumer.
-     *
-     * @return do nothing Consumer
-     */
-    public static <X, Y> BiConsumer<X, Y> noop() {
-        return cast(noop);
-    }
-
-    public static BiFunction<Number, Number, Integer> sum() {
-        return sum(0);
-    }
+    public static BiFunction<Number, Number, Integer> sum() { return sum(0); }
 
     public static BiFunction<Number, Number, Integer> sum(final int z) {
         return (x, y) -> x.intValue() + y.intValue() + z;
