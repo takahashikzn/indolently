@@ -16,10 +16,6 @@ package jp.root42.indolently;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
 
 
 /**
@@ -83,11 +79,7 @@ public final class Numeric {
 
     public static Function<String, Integer> asInt() { return Numeric::asInt; }
 
-    public static ToIntFunction<String> toInt() { return Numeric::asInt; }
-
     public static Function<String, Long> asLong() { return Numeric::asLong; }
-
-    public static ToLongFunction<String> toLong() { return Numeric::asLong; }
 
     public static Function<String, Short> asShort() { return Numeric::asShort; }
 
@@ -97,13 +89,21 @@ public final class Numeric {
 
     public static Function<String, Double> asDouble() { return Numeric::asDouble; }
 
-    public static ToDoubleFunction<String> toDouble() { return Numeric::asDouble; }
-
     public static Function<String, Boolean> asBool() { return Numeric::asBool; }
-
-    public static Predicate<String> toBool() { return Numeric::asBool; }
 
     // public static Function<String, Character> toChar() { return x -> asChar(x); }
 
     public static Function<String, BigDecimal> decimal() { return x -> decimal(x); }
+
+    public static Function<Number, Integer> toInt() { return Number::intValue; }
+
+    public static Function<Number, Long> toLong() { return Number::longValue; }
+
+    public static Function<Number, Short> toShort() { return Number::shortValue; }
+
+    public static Function<Number, Byte> toByte() { return Number::byteValue; }
+
+    public static Function<Number, Float> toFloat() { return Number::floatValue; }
+
+    public static Function<Number, Double> toDouble() { return Number::doubleValue; }
 }
