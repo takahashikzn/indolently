@@ -352,50 +352,50 @@ public class Indolently {
         return opt;
     }
 
-    public static <T1, T2, R> Optional<R> $(final Optional<T1> root, final Function<T1, T2> c1,
+    public static <T1, T2, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
         final Function<T2, R> last) {
         return root.map(c1).flatMap(opt()).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, R> Optional<R> $(final Optional<T1> root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, R> last) {
-        return $(root, c1, c2).map(last).flatMap(opt());
+        return opt(root, c1, c2).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, T4, R> Optional<R> $(final Optional<T1> root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, R> last) {
-        return $(root, c1, c2, c3).map(last).flatMap(opt());
+        return opt(root, c1, c2, c3).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, T4, T5, R> Optional<R> $(final Optional<T1> root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, T5, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, R> last) {
-        return $(root, c1, c2, c3, c4).map(last).flatMap(opt());
+        return opt(root, c1, c2, c3, c4).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, T4, T5, T6, R> Optional<R> $(final Optional<T1> root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, T5, T6, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
         final Function<T6, R> last) {
-        return $(root, c1, c2, c3, c4, c5).map(last).flatMap(opt());
+        return opt(root, c1, c2, c3, c4, c5).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, R> Optional<R> $(final T1 root, final Function<T1, T2> c1,
-        final Function<T2, R> last) { return $(opt(root), c1, last); }
+    public static <T1, T2, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
+        final Function<T2, R> last) { return opt(opt(root), c1, last); }
 
-    public static <T1, T2, T3, R> Optional<R> $(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
-        final Function<T3, R> last) { return $(opt(root), c1, c2, last); }
+    public static <T1, T2, T3, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
+        final Function<T3, R> last) { return opt(opt(root), c1, c2, last); }
 
-    public static <T1, T2, T3, T4, R> Optional<R> $(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
-        final Function<T3, T4> c3, final Function<T4, R> last) {
-        return $(opt(root), c1, c2, c3, last);
+    public static <T1, T2, T3, T4, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
+        final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, R> last) {
+        return opt(opt(root), c1, c2, c3, last);
     }
 
-    public static <T1, T2, T3, T4, T5, R> Optional<R> $(final T1 root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, T5, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4,
-        final Function<T5, R> last) { return $(opt(root), c1, c2, c3, c4, last);}
+        final Function<T5, R> last) { return opt(opt(root), c1, c2, c3, c4, last);}
 
-    public static <T1, T2, T3, T4, T5, T6, R> Optional<R> $(final T1 root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, T5, T6, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
-        final Function<T6, R> last) { return $(opt(root), c1, c2, c3, c4, c5, last);}
+        final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last);}
 
     /**
      * SQL's coalesce function. The name comes from ELVis operator.
