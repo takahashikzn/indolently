@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static jp.root42.indolently.Indolently.*;
+
 
 /**
  * @author takahashikzn
@@ -93,7 +95,7 @@ public final class Numeric {
 
     // public static Function<String, Character> toChar() { return x -> asChar(x); }
 
-    public static Function<String, BigDecimal> decimal() { return x -> decimal(x); }
+    public static Function<String, BigDecimal> asDecimal() { return Numeric::decimal; }
 
     public static Function<Number, Integer> toInt() { return Number::intValue; }
 
@@ -106,4 +108,10 @@ public final class Numeric {
     public static Function<Number, Float> toFloat() { return Number::floatValue; }
 
     public static Function<Number, Double> toDouble() { return Number::doubleValue; }
+
+    public static Function<Number, BigDecimal> toDecimal() {
+        return x -> (x instanceof BigDecimal)
+            ? cast(x)
+            : (x instanceof Float || x instanceof Double) ? decimal(x.doubleValue()) : decimal(x.longValue());
+    }
 }
