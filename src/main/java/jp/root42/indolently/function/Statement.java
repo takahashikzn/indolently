@@ -24,7 +24,8 @@ import jp.root42.indolently.Expressive;
  * @author takahashikzn
  */
 @FunctionalInterface
-public interface Statement {
+public interface Statement
+    extends Runnable {
 
     Statement NOP = () -> {};
 
@@ -38,7 +39,8 @@ public interface Statement {
     /**
      * Perform this operation.
      */
-    default void execute() {
+    @Override
+    default void run() {
         try {
             this.exec();
         } catch (final Exception e) {
@@ -57,8 +59,8 @@ public interface Statement {
         Objects.requireNonNull(after);
 
         return () -> {
-            this.execute();
-            after.execute();
+            this.run();
+            after.run();
         };
     }
 }

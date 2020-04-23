@@ -85,7 +85,7 @@ public class Expressive {
      * @param stmt statement body
      */
     public static void let(final Statement stmt) {
-        stmt.execute();
+        stmt.run();
     }
 
     /**
@@ -221,7 +221,7 @@ public class Expressive {
 
         final var val = first.get();
 
-        list(forms).each(f -> f.execute());
+        list(forms).each(f -> f.run());
 
         return val;
     }

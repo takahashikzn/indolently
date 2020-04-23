@@ -88,7 +88,7 @@ public class $bool
     public void negateIf(final Predicate<Boolean> cond, final Statement f) {
         this.ifThen(cond, () -> {
             this.$ = !this.$;
-            f.execute();
+            f.run();
         });
     }
 
@@ -109,7 +109,7 @@ public class $bool
     public void ifThen(final Predicate<Boolean> cond, final Statement f) {
         synchronized (this) {
             if (cond.test(this.$)) {
-                f.execute();
+                f.run();
             }
         }
     }

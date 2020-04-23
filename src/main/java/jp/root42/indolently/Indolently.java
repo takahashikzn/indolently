@@ -41,6 +41,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
 import jp.root42.indolently.ref.$bool;
@@ -3031,6 +3032,13 @@ public class Indolently {
     public static LongPredicate between(final long l, final long u) { return m -> between(l, m, u); }
 
     public static IntPredicate between(final int l, final int u) { return m -> between(l, m, u); }
+
+    /**
+     * Do nothing Statement.
+     *
+     * @return do nothing Statement
+     */
+    public static Statement np() { return Statement.NOP; }
 
     /**
      * Do nothing Consumer.
