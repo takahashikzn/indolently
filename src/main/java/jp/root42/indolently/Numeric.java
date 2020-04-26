@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Iterative.*;
 
 
 /**
@@ -28,26 +29,24 @@ public final class Numeric {
     /** non private for subtyping. */
     protected Numeric() {}
 
-    @SuppressWarnings("UnnecessaryBoxing")
-    public static int asInt(final String s) { return Integer.valueOf(s); }
+    private static final SMap<String, Integer> intCache = range(0, 256).list().mapmap(x -> "" + x, it()).freeze();
 
-    @SuppressWarnings("UnnecessaryBoxing")
-    public static long asLong(final String s) { return Long.valueOf(s); }
+    public static int asInt(final String s) {
+        final var i = intCache.get(s);
+        return (i != null) ? i : Integer.parseInt(s);
+    }
 
-    @SuppressWarnings("UnnecessaryBoxing")
-    public static short asShort(final String s) { return Short.valueOf(s); }
+    public static long asLong(final String s) { return Long.parseLong(s); }
 
-    @SuppressWarnings("UnnecessaryBoxing")
-    public static byte asByte(final String s) { return Byte.valueOf(s); }
+    public static short asShort(final String s) { return Short.parseShort(s); }
 
-    @SuppressWarnings("UnnecessaryBoxing")
-    public static float asFloat(final String s) { return Float.valueOf(s); }
+    public static byte asByte(final String s) { return Byte.parseByte(s); }
 
-    @SuppressWarnings("UnnecessaryBoxing")
-    public static double asDouble(final String s) { return Double.valueOf(s); }
+    public static float asFloat(final String s) { return Float.parseFloat(s); }
 
-    @SuppressWarnings("UnnecessaryBoxing")
-    public static boolean asBool(final String s) { return Boolean.valueOf(s); }
+    public static double asDouble(final String s) { return Double.parseDouble(s); }
+
+    public static boolean asBool(final String s) { return Boolean.parseBoolean(s); }
 
     private static <T> Optional<T> parseX(final String s, final Function<String, T> f) {
         try {
@@ -57,7 +56,10 @@ public final class Numeric {
         }
     }
 
-    public static Optional<Integer> parseInt(final String s) { return parseX(s, Integer::parseInt); }
+    public static Optional<Integer> parseInt(final String s) {
+        final var i = intCache.get(s);
+        return (i != null) ? Optional.of(i) : parseX(s, Integer::parseInt);
+    }
 
     public static Optional<Long> parseLong(final String s) { return parseX(s, Long::parseLong); }
 
