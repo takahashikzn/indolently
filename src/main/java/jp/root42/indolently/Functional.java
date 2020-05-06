@@ -475,6 +475,34 @@ public class Functional {
         };
     }
 
+    public static <X> Supplier<Optional<X>> soften(final Supplier<X> f) {
+        return () -> {
+            try { return opt(f.get()); } //
+            catch (final RuntimeException e) { return none(); }
+        };
+    }
+
+    public static <X0, X1> Function<X0, Optional<X1>> soften(final Function<X0, X1> f) {
+        return x -> {
+            try { return opt(f.apply(x)); } //
+            catch (final RuntimeException e) { return none(); }
+        };
+    }
+
+    public static <X0, X1, X2> BiFunction<X0, X1, Optional<X2>> soften(final BiFunction<X0, X1, X2> f) {
+        return (x0, x1) -> {
+            try { return opt(f.apply(x0, x1)); } //
+            catch (final RuntimeException e) { return none(); }
+        };
+    }
+
+    public static <X0, X1, X2, X3> Function3<X0, X1, X2, Optional<X3>> soften(final Function3<X0, X1, X2, X3> f) {
+        return (x0, x1, x2) -> {
+            try { return opt(f.apply(x0, x1, x2)); } //
+            catch (final RuntimeException e) { return none(); }
+        };
+    }
+
     public static <X> Function<X, Boolean> asFunction(final Predicate<X> pred) {
         return x -> pred.test(x);
     }

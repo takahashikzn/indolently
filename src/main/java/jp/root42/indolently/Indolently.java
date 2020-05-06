@@ -60,6 +60,8 @@ import jp.root42.indolently.regex.SPtrn;
 import jp.root42.indolently.regex.SPtrnJDK;
 import jp.root42.indolently.regex.SPtrnRE2;
 
+import static jp.root42.indolently.Expressive.*;
+
 
 /**
  * The Java Syntactic sugar collection for indolent person (like you).
@@ -3144,5 +3146,30 @@ public class Indolently {
         if (s.length() < from || s.length() < to) {
             throw new StringIndexOutOfBoundsException(String.format("from=%d, to=%d, len=%d", from, to, s.length()));
         }
+    }
+
+    public static <E extends Enum<E>> Optional<E> enumOf(final Class<E> type, final String name) {
+        try { return opt(Enum.valueOf(type, name)); } //
+        catch (final IllegalArgumentException e) { return none(); }
+    }
+
+    public static <E extends Enum<E>> Function<String, Optional<E>> enumOf(final Class<E> type) {
+        return x -> enumOf(type, x);
+    }
+
+    public static <E extends Enum<E>> E[] enumValues(final Class<E> type) {
+        //noinspection unchecked
+        return (E[]) eval(() -> type.getDeclaredMethod("values").invoke(null));
+    }
+
+    public static <E extends Enum<E>> Optional<E> ienumOf(final Class<E> type, final String name) {
+        for (final var e: enumValues(type)) {
+            if (e.name().equalsIgnoreCase(name)) return opt(e);
+        }
+        return none();
+    }
+
+    public static <E extends Enum<E>> Function<String, Optional<E>> ienumOf(final Class<E> type) {
+        return x -> ienumOf(type, x);
     }
 }
