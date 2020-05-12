@@ -13,7 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.regex;
 
-import jp.root42.indolently.SList;
+import jp.root42.indolently.$list;
 
 
 /**
@@ -70,5 +70,5 @@ public final class SPtrn
     public String pattern() { return this.pattern.pattern(); }
 
     @Override
-    public SList<String> split(final CharSequence cs, final int limit) { return this.pattern.split(cs, limit); }
+    public $list<String> split(final CharSequence cs, final int limit) { return this.pattern.split(cs, limit); }
 }

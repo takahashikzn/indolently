@@ -76,7 +76,7 @@ public class IterativeTest {
     @Test
     public void testGeneratorHandleBreak() {
 
-        final SList<Integer> ints = list();
+        final $list<Integer> ints = list();
 
         generator(//
             ref(1), //
@@ -93,7 +93,7 @@ public class IterativeTest {
     @Test
     public void testGeneratorHandleBreak2() {
 
-        final SList<Integer> ints = list(1, 2, 3, 4, 5);
+        final $list<Integer> ints = list(1, 2, 3, 4, 5);
 
         assertThat(generator(ref(0), //
             (final $int pos) -> tuple( //
@@ -186,7 +186,7 @@ public class IterativeTest {
     @Test
     public void testInternalIterators() {
 
-        final SList<Integer> ints = list();
+        final $list<Integer> ints = list();
 
         final Integer actual = range(1, 10).list() //
             .slice(-5, 0) //

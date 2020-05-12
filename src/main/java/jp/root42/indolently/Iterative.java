@@ -40,7 +40,7 @@ public class Iterative {
      * @param from the value start from (inclusive).
      * @return infinite integer sequence.
      */
-    public static SIter<Integer> sequence(final int from) {
+    public static $iter<Integer> sequence(final int from) {
         return sequence(from, 1);
     }
 
@@ -51,7 +51,7 @@ public class Iterative {
      * @param step count stepping
      * @return infinite integer sequence.
      */
-    public static SIter<Integer> sequence(final int from, final int step) {
+    public static $iter<Integer> sequence(final int from, final int step) {
         return range(from, Integer.MAX_VALUE, step);
     }
 
@@ -61,7 +61,7 @@ public class Iterative {
      * @param from the value start from (inclusive).
      * @return infinite integer sequence.
      */
-    public static SIter<Long> sequence(final long from) {
+    public static $iter<Long> sequence(final long from) {
         return sequence(from, 1);
     }
 
@@ -72,7 +72,7 @@ public class Iterative {
      * @param step count stepping
      * @return infinite integer sequence.
      */
-    public static SIter<Long> sequence(final long from, final int step) {
+    public static $iter<Long> sequence(final long from, final int step) {
         return range(from, Long.MAX_VALUE, step);
     }
 
@@ -99,7 +99,7 @@ public class Iterative {
      *
      * @param <T> value type
      * @param f value generating function
-     * @return generator as {@link SIter}
+     * @return generator as {@link $iter}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
     // @formatter:on
@@ -142,7 +142,7 @@ public class Iterative {
      * @param <T> value type
      * @param env iteration environment
      * @param f value generating function
-     * @return generator as {@link SIter}
+     * @return generator as {@link $iter}
      * @see <a href="http://en.wikipedia.org/wiki/Generator_(computer_programming)">Generator_(computer_programming)</a>
      */
     // @formatter:on
@@ -156,11 +156,11 @@ public class Iterative {
      *
      * @param <T> value type
      * @param values lazy evaluated values which {@link Iterator#next} returns
-     * @return iterator as {@link SIter}
+     * @return iterator as {@link $iter}
      */
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     @SafeVarargs
-    public static <T> SIter<T> iterator(final Supplier<? extends T>... values) {
+    public static <T> $iter<T> iterator(final Supplier<? extends T>... values) {
 
         final Iterator<Supplier<? extends T>> i = list(values).iterator();
 
@@ -174,9 +174,9 @@ public class Iterative {
      * @param <T> value type
      * @param hasNext {@link Iterator#hasNext} implementation
      * @param next {@link Iterator#next} implementation
-     * @return iterator as {@link SIter}
+     * @return iterator as {@link $iter}
      */
-    public static <T> SIter<T> iterator(final BooleanSupplier hasNext, final Supplier<? extends T> next) {
+    public static <T> $iter<T> iterator(final BooleanSupplier hasNext, final Supplier<? extends T> next) {
 
         return iterator(null, x -> hasNext.getAsBoolean(), x -> next.get());
     }
@@ -190,12 +190,12 @@ public class Iterative {
      * @param env iteration environment
      * @param hasNext {@link Iterator#hasNext} implementation
      * @param next {@link Iterator#next} implementation
-     * @return iterator as {@link SIter}
+     * @return iterator as {@link $iter}
      */
-    public static <E, T> SIter<T> iterator(final E env, final Predicate<? super E> hasNext,
+    public static <E, T> $iter<T> iterator(final E env, final Predicate<? super E> hasNext,
         final Function<? super E, ? extends T> next) {
 
-        return SIter.of(env, hasNext, next);
+        return $iter.of(env, hasNext, next);
     }
 
     /**
@@ -215,7 +215,7 @@ public class Iterative {
      * @param to the value end to (inclusive).
      * @return integer iterator.
      */
-    public static SIter<Integer> range(final int from, final int to) {
+    public static $iter<Integer> range(final int from, final int to) {
         return range(from, to, 1);
     }
 
@@ -235,7 +235,7 @@ public class Iterative {
      * @param step count stepping
      * @return integer iterator.
      */
-    public static SIter<Integer> range(final int from, final int to, final int step) {
+    public static $iter<Integer> range(final int from, final int to, final int step) {
         //noinspection
         return range((long) from, to, step).map(x -> x.intValue());
     }
@@ -257,7 +257,7 @@ public class Iterative {
      * @param to the value end to (inclusive).
      * @return integer iterator.
      */
-    public static SIter<Long> range(final long from, final long to) {
+    public static $iter<Long> range(final long from, final long to) {
         return range(from, to, 1);
     }
 
@@ -277,7 +277,7 @@ public class Iterative {
      * @param step count stepping
      * @return integer iterator.
      */
-    public static SIter<Long> range(final long from, final long to, final int step) {
+    public static $iter<Long> range(final long from, final long to, final int step) {
         if (step <= 0) {
             throw new IllegalArgumentException(String.format("(step = %d) <= 0", step));
         }

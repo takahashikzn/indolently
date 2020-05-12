@@ -33,39 +33,27 @@ import jp.root42.indolently.trait.ReducibleIterable;
  * @param <T> value type
  * @author takahashikzn
  */
-public interface SStream<T>
-    extends Stream<T>, EdgeAwareIterable<T>, Loopable<T, SStream<T>>, Filterable<T, SStream<T>>, ReducibleIterable<T>,
+public interface $stream<T>
+    extends Stream<T>, EdgeAwareIterable<T>, Loopable<T, $stream<T>>, Filterable<T, $stream<T>>, ReducibleIterable<T>,
     Matchable<T> {
 
     @Override
-    default void forEach(final Consumer<? super T> action) {
-        ReducibleIterable.super.forEach(action);
-    }
+    default void forEach(final Consumer<? super T> action) { ReducibleIterable.super.forEach(action); }
 
     @Override
-    default SStream<T> each(final Consumer<? super T> f) {
-        return Indolently.$(this.peek(f));
-    }
+    default $stream<T> each(final Consumer<? super T> f) { return Indolently.$(this.peek(f)); }
 
     @Override
-    default boolean some(final Predicate<? super T> f) {
-        return this.anyMatch(f);
-    }
+    default boolean some(final Predicate<? super T> f) { return this.anyMatch(f); }
 
     // optimization
     @Override
-    default boolean every(final Predicate<? super T> f) {
-        return this.allMatch(f);
-    }
+    default boolean every(final Predicate<? super T> f) { return this.allMatch(f); }
 
     // optimization
     @Override
-    default boolean none(final Predicate<? super T> f) {
-        return this.noneMatch(f);
-    }
+    default boolean none(final Predicate<? super T> f) { return this.noneMatch(f); }
 
     @Override
-    default Spliterator<T> spliterator() {
-        return Spliterators.spliteratorUnknownSize(this.iterator(), 0);
-    }
+    default Spliterator<T> spliterator() { return Spliterators.spliteratorUnknownSize(this.iterator(), 0); }
 }

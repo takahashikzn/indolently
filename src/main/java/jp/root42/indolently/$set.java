@@ -32,8 +32,8 @@ import static jp.root42.indolently.Indolently.*;
  * @param <T> value type
  * @author takahashikzn
  */
-public interface SSet<T>
-    extends Set<T>, SCol<T, SSet<T>>, Cloneable {
+public interface $set<T>
+    extends Set<T>, $collection<T, $set<T>>, Cloneable {
 
     /**
      * Clone this instance.
@@ -42,7 +42,7 @@ public interface SSet<T>
      * @see Cloneable
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    default SSet<T> clone() { return set((Iterable<T>) this); }
+    default $set<T> clone() { return set((Iterable<T>) this); }
 
     /**
      * Wrap a set.
@@ -51,23 +51,23 @@ public interface SSet<T>
      * @param set set to wrap
      * @return wrapped set
      */
-    static <T> SSet<T> of(final Set<T> set) { return $(set); }
+    static <T> $set<T> of(final Set<T> set) { return $(set); }
 
     /**
      * @see Indolently#freeze(Set)
      */
     @Override
-    default SSet<T> freeze() { return Indolently.freeze(this); }
+    default $set<T> freeze() { return Indolently.freeze(this); }
 
     @Override
-    default SSet<T> tail() { return set(this.list().tail()); }
+    default $set<T> tail() { return set(this.list().tail()); }
 
     /**
-     * convert this set to {@link SList}.
+     * convert this set to {@link $list}.
      *
      * @return a list newly constructed from this instance.
      */
-    default SList<T> list() { return Indolently.list(this); }
+    default $list<T> list() { return Indolently.list(this); }
 
     /**
      * Map operation.
@@ -77,7 +77,7 @@ public interface SSet<T>
      * @param f function
      * @return newly constructed set which contains converted values
      */
-    default <R> SSet<R> map(final Function<? super T, ? extends R> f) { return this.map((idx, val) -> f.apply(val)); }
+    default <R> $set<R> map(final Function<? super T, ? extends R> f) { return this.map((idx, val) -> f.apply(val)); }
 
     /**
      * Map operation.
@@ -87,9 +87,9 @@ public interface SSet<T>
      * @param f function. first argument is loop index.
      * @return newly constructed set which contains converted values
      */
-    default <R> SSet<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
+    default <R> $set<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
 
-        final SSet<R> rslt = set();
+        final $set<R> rslt = set();
 
         int i = 0;
         for (final T val: this) {
@@ -106,7 +106,7 @@ public interface SSet<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> SSet<R> flatMap(final Function<? super T, $<? extends R>> f) {
+    default <R> $set<R> flatMap(final Function<? super T, $<? extends R>> f) {
         return this.reduce(set(), (x, y) -> x.push(f.apply(y)));
     }
 
@@ -117,7 +117,7 @@ public interface SSet<T>
      * @param f function. first argument is element index, second one is element value
      * @return newly constructed list which contains converted values
      */
-    default <R> SSet<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
+    default <R> $set<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
 
         final var i = ref(0);
 
@@ -125,9 +125,9 @@ public interface SSet<T>
     }
 
     @Override
-    default SSet<T> filter(final Predicate<? super T> f) {
+    default $set<T> filter(final Predicate<? super T> f) {
 
-        final SSet<T> rslt = set();
+        final $set<T> rslt = set();
 
         for (final var val: this) {
             if (f.test(val)) {
@@ -144,7 +144,7 @@ public interface SSet<T>
      * @param values values
      * @return newly constructed set as a computed union
      */
-    default SSet<T> union(final Iterable<? extends T> values) { return this.clone().pushAll(values); }
+    default $set<T> union(final Iterable<? extends T> values) { return this.clone().pushAll(values); }
 
     /**
      * compute intersection of set.
@@ -152,7 +152,7 @@ public interface SSet<T>
      * @param values values
      * @return newly constructed set as a computed intersection.
      */
-    default SSet<T> intersect(final Iterable<? extends T> values) {
+    default $set<T> intersect(final Iterable<? extends T> values) {
         return this.union(values).delete(this.diff(values));
     }
 
@@ -163,7 +163,7 @@ public interface SSet<T>
      * @return newly constructed set as a computed difference.
      */
     @SuppressWarnings("unchecked")
-    default SSet<T> diff(final Iterable<? extends T> values) {
+    default $set<T> diff(final Iterable<? extends T> values) {
         return this.clone().delete(values).union(set(values).delete((Set) this));
     }
 
@@ -173,7 +173,7 @@ public interface SSet<T>
      * @param f value generator
      * @return newly constructed flatten set
      */
-    default <R> SSet<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+    default <R> $set<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         return set(this.iterator().flatten(f));
     }
 
@@ -183,7 +183,7 @@ public interface SSet<T>
      * @param other alternative value
      * @return this instance or other
      */
-    default SSet<T> orElse(final Set<? extends T> other) { return this.orElseGet(() -> other); }
+    default $set<T> orElse(final Set<? extends T> other) { return this.orElseGet(() -> other); }
 
     /**
      * Return this instance if not empty, otherwise return the invocation result of {@code other}.
@@ -191,20 +191,20 @@ public interface SSet<T>
      * @param other alternative value supplier
      * @return this instance or other
      */
-    default SSet<T> orElseGet(final Supplier<? extends Set<? extends T>> other) {
+    default $set<T> orElseGet(final Supplier<? extends Set<? extends T>> other) {
         return this.isEmpty() ? set(other.get()) : this;
     }
 
     @Override
-    default <K> SMap<K, SSet<T>> group(final Function<? super T, ? extends K> fkey) {
+    default <K> $map<K, $set<T>> group(final Function<? super T, ? extends K> fkey) {
 
         return Expressive.eval( //
             this.list().group(fkey), //
-            (final SMap<K, SList<T>> grp) -> grp.map((k, v) -> v.set()));
+            (final $map<K, $list<T>> grp) -> grp.map((k, v) -> v.set()));
     }
 
     @Override
-    default SSet<T> order(final Comparator<? super T> comp) { return sort(this, comp); }
+    default $set<T> order(final Comparator<? super T> comp) { return sort(this, comp); }
 
     @Override
     default String join(final Function<T, CharSequence> f, final String sep) {

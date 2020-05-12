@@ -16,7 +16,7 @@ package jp.root42.indolently.regex;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import jp.root42.indolently.SList;
+import jp.root42.indolently.$list;
 
 
 /**
@@ -61,7 +61,7 @@ public interface SPtrnBase<P, M extends SMatcher>
      * @param cs the string to tokenize
      * @return token list
      */
-    default SList<String> split(final CharSequence cs) { return this.split(cs, 0); }
+    default $list<String> split(final CharSequence cs) { return this.split(cs, 0); }
 
     /**
      * Tokenize string by the regex pattern which this object expresses.
@@ -71,7 +71,7 @@ public interface SPtrnBase<P, M extends SMatcher>
      * @return token list
      * @see Pattern#split(CharSequence, int)
      */
-    SList<String> split(CharSequence cs, int limit);
+    $list<String> split(CharSequence cs, int limit);
 
     /**
      * delegate for {@link java.util.regex.Matcher#replaceAll(String)}

@@ -20,8 +20,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
+import jp.root42.indolently.$iter;
 import jp.root42.indolently.Iterative;
-import jp.root42.indolently.SIter;
 import jp.root42.indolently.bridge.RegexMatcher;
 import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.trait.Loopable;
@@ -40,7 +40,7 @@ public interface SMatcher<P, M>
     extends RegexMatcher<P, M>, Iterable<String>, Loopable<String, SMatcher<P, M>> {
 
     @Override
-    default SIter<String> iterator() {
+    default $iter<String> iterator() {
 
         final $void<Boolean> found = ref();
 

@@ -14,34 +14,36 @@
 package jp.root42.indolently;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.Set;
 
-import jp.root42.indolently.bridge.MapDelegate;
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.bridge.SetDelegate;
 
 
 /**
- * Simple implementation of {@link SMap}.
+ * Simple implementation of {@link $set}.
  *
- * @param <K> key type
- * @param <V> value type
+ * @param <T> value type
  * @author takahashikzn
  */
-final class SMapImpl<K, V>
-    extends MapDelegate<K, V>
-    implements SMap<K, V>, Serializable {
+final class $set_impl<T>
+    extends SetDelegate<T>
+    implements $set<T>, Serializable {
 
     private static final long serialVersionUID = 8705188807596442213L;
 
-    private final Map<K, V> store;
+    private final Set<T> store;
 
-    public SMapImpl() { this(ObjFactory.getInstance().newMap()); }
+    public $set_impl() { this(ObjFactory.getInstance().newSet()); }
 
-    public SMapImpl(final Map<K, V> store) { this.store = store; }
-
-    @Override
-    protected Map<K, V> getDelegate() { return this.store; }
+    public $set_impl(final Set<T> store) { this.store = store; }
 
     @Override
-    public SMap<K, V> clone() { return SMap.super.clone(); }
+    protected Set<T> getDelegate() { return this.store; }
+
+    @Override
+    public $set<T> clone() { return $set.super.clone(); }
+
+    @Override
+    public $iter<T> iterator() { return Indolently.$(this.store.iterator()); }
 }

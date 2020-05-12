@@ -16,8 +16,8 @@ package jp.root42.indolently.regex;
 import java.util.Collections;
 import java.util.List;
 
+import jp.root42.indolently.$list;
 import jp.root42.indolently.Indolently;
-import jp.root42.indolently.SList;
 
 
 /**
@@ -95,7 +95,7 @@ public final class AdaptiveSPtrn
     public String pattern() { return this.select().pattern(); }
 
     @Override
-    public SList<String> split(final CharSequence cs, final int limit) {
+    public $list<String> split(final CharSequence cs, final int limit) {
         return this.select().split(cs, limit);
     }
 }

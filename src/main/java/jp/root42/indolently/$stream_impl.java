@@ -26,16 +26,16 @@ import jp.root42.indolently.bridge.StreamDelegate;
  * @param <T> value type
  * @author takahashikzn
  */
-final class SStreamImpl<T>
+final class $stream_impl<T>
     extends StreamDelegate<T>
-    implements SStream<T> {
+    implements $stream<T> {
 
-    public SStreamImpl(final Stream<T> store) {
+    public $stream_impl(final Stream<T> store) {
         super(store);
     }
 
     @Override
-    public SStream<T> filter(final Predicate<? super T> f) {
-        return new SStreamImpl<>(super.filter(f));
+    public $stream<T> filter(final Predicate<? super T> f) {
+        return new $stream_impl<>(super.filter(f));
     }
 }

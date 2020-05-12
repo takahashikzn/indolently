@@ -18,8 +18,8 @@ import java.util.regex.MatchResult;
 
 import com.google.re2j.Matcher;
 import com.google.re2j.Pattern;
+import jp.root42.indolently.$list;
 import jp.root42.indolently.Indolently;
-import jp.root42.indolently.SList;
 
 
 /**
@@ -57,7 +57,7 @@ public final class SPtrnRE2
     }
 
     @Override
-    public SList<String> split(final CharSequence cs, final int limit) {
+    public $list<String> split(final CharSequence cs, final int limit) {
         return Indolently.list(this.ptrn().split(cs.toString(), limit));
     }
 

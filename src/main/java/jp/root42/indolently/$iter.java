@@ -39,8 +39,8 @@ import jp.root42.indolently.trait.ReducibleIterable;
  * @param <T> value type
  * @author takahashikzn
  */
-public interface SIter<T>
-    extends Iterator<T>, Supplier<T>, EdgeAwareIterable<T>, Loopable<T, SIter<T>>, Filterable<T, SIter<T>>,
+public interface $iter<T>
+    extends Iterator<T>, Supplier<T>, EdgeAwareIterable<T>, Loopable<T, $iter<T>>, Filterable<T, $iter<T>>,
     ReducibleIterable<T>, Matchable<T> {
 
     @Override
@@ -67,12 +67,12 @@ public interface SIter<T>
      * @param next {@link Iterator#next()} implementation
      * @return a instance of this class.
      */
-    static <E, T> SIter<T> of(final E env, final Predicate<? super E> hasNext,
+    static <E, T> $iter<T> of(final E env, final Predicate<? super E> hasNext,
         final Function<? super E, ? extends T> next) {
 
         Objects.requireNonNull(next);
 
-        return new SIter<T>() {
+        return new $iter<T>() {
 
             @Override
             public boolean hasNext() { return hasNext.test(env); }
@@ -87,7 +87,7 @@ public interface SIter<T>
     }
 
     @Override
-    default SIter<T> each(final Consumer<? super T> f) {
+    default $iter<T> each(final Consumer<? super T> f) {
 
         return this.map(x -> {
             f.accept(x);
@@ -96,9 +96,9 @@ public interface SIter<T>
     }
 
     @Override
-    default SIter<T> filter(final Predicate<? super T> f) {
+    default $iter<T> filter(final Predicate<? super T> f) {
 
-        return new SIter<T>() {
+        return new $iter<T>() {
 
             private $<T> cur;
 
@@ -107,9 +107,9 @@ public interface SIter<T>
 
                 while (true) {
                     if (!Indolently.isNull(this.cur)) return true;
-                    if (!SIter.this.hasNext()) return false;
+                    if (!$iter.this.hasNext()) return false;
 
-                    final var val = SIter.this.next();
+                    final var val = $iter.this.next();
 
                     if (f.test(val)) {
                         this.cur = $.of(val);
@@ -136,7 +136,7 @@ public interface SIter<T>
      * @param f function
      * @return newly constructed iterator which iterates converted values
      */
-    default <R> SIter<R> map(final Function<? super T, ? extends R> f) {
+    default <R> $iter<R> map(final Function<? super T, ? extends R> f) {
         return of(this, x -> x.hasNext(), x -> f.apply(x.next()));
     }
 
@@ -145,7 +145,7 @@ public interface SIter<T>
      *
      * @return a list
      */
-    default SList<T> list() { return Indolently.list(this); }
+    default $list<T> list() { return Indolently.list(this); }
 
     /**
      * create a {@link Stream} view of this iterator.
@@ -153,7 +153,7 @@ public interface SIter<T>
      * @return {@link Stream} view of this iterator
      * @see Collection#stream()
      */
-    default SStream<T> stream() {
+    default $stream<T> stream() {
         return Indolently.$(StreamSupport.stream(this.spliterator(), false));
     }
 
@@ -163,18 +163,18 @@ public interface SIter<T>
      * @return parallelized {@link Stream} view of this iterator
      * @see Collection#parallelStream()
      */
-    default SStream<T> parallelStream() {
+    default $stream<T> parallelStream() {
         return Indolently.$(StreamSupport.stream(this.spliterator(), true));
     }
 
-    default <R> SIter<R> aggregate(final Function<? super Iterable<? extends T>, ? extends Iterable<? extends R>> f) {
+    default <R> $iter<R> aggregate(final Function<? super Iterable<? extends T>, ? extends Iterable<? extends R>> f) {
         return Indolently.$(f.apply(this).iterator());
     }
 
-    default <R> SIter<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+    default <R> $iter<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         Objects.requireNonNull(f);
 
-        return new SIter<R>() {
+        return new $iter<R>() {
 
             private Iterator<? extends R> cur = Iterative.iterator();
 
@@ -183,8 +183,8 @@ public interface SIter<T>
 
                 if (this.cur.hasNext()) return true;
 
-                while (SIter.this.hasNext()) {
-                    this.cur = f.apply(SIter.this.next()).iterator();
+                while ($iter.this.hasNext()) {
+                    this.cur = f.apply($iter.this.next()).iterator();
 
                     if (this.cur.hasNext()) return true;
                 }

@@ -23,7 +23,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.SMap.SEntry;
+import jp.root42.indolently.$map.SEntry;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
@@ -44,8 +44,8 @@ import static java.util.Objects.*;
  * @param <V> value type
  * @author takahashikzn
  */
-public interface SMap<K, V>
-    extends Map<K, V>, Freezable<SMap<K, V>>, Identical<SMap<K, V>>, Loopable<V, SMap<K, V>>, Filterable<V, SMap<K, V>>,
+public interface $map<K, V>
+    extends Map<K, V>, Freezable<$map<K, V>>, Identical<$map<K, V>>, Loopable<V, $map<K, V>>, Filterable<V, $map<K, V>>,
     EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
 
     /**
@@ -53,7 +53,7 @@ public interface SMap<K, V>
      *
      * @return a new fifo Map instance which containing all entries which this instance contains
      */
-    default SMap<K, V> fifo() {
+    default $map<K, V> fifo() {
         return of(ObjFactory.getInstance().<K, V> newFifoMap()).pushAll(this);
     }
 
@@ -64,7 +64,7 @@ public interface SMap<K, V>
      * @see Cloneable
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    default SMap<K, V> clone() {
+    default $map<K, V> clone() {
         return Indolently.<K, V> map().pushAll(this);
     }
 
@@ -75,7 +75,7 @@ public interface SMap<K, V>
      * @param map map to wrap
      * @return wrapped map
      */
-    static <K, V> SMap<K, V> of(final Map<K, V> map) {
+    static <K, V> $map<K, V> of(final Map<K, V> map) {
         return Indolently.$(map);
     }
 
@@ -83,7 +83,7 @@ public interface SMap<K, V>
      * @see Indolently#freeze(Map)
      */
     @Override
-    default SMap<K, V> freeze() {
+    default $map<K, V> freeze() {
         return Indolently.freeze(this);
     }
 
@@ -95,7 +95,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> push(final K key, final V value) {
+    default $map<K, V> push(final K key, final V value) {
         this.put(key, value);
         return this;
     }
@@ -107,7 +107,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> pushAll(final Map<? extends K, ? extends V> map) {
+    default $map<K, V> pushAll(final Map<? extends K, ? extends V> map) {
         this.putAll(map);
         return this;
     }
@@ -120,8 +120,8 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> pushAll(final Supplier<? extends Map<? extends K, ? extends V>> map,
-        final Predicate<? super SMap<K, V>> cond) {
+    default $map<K, V> pushAll(final Supplier<? extends Map<? extends K, ? extends V>> map,
+        final Predicate<? super $map<K, V>> cond) {
 
         if (cond.test(this)) {
             this.putAll(map.get());
@@ -139,7 +139,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> push(final K key, final $<? extends V> value) {
+    default $map<K, V> push(final K key, final $<? extends V> value) {
         return Indolently.empty(value) ? this : this.push(key, value.get());
     }
 
@@ -151,7 +151,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> pushAll(final $<? extends Map<? extends K, ? extends V>> map) {
+    default $map<K, V> pushAll(final $<? extends Map<? extends K, ? extends V>> map) {
         return Indolently.empty(map) ? this : this.pushAll(map.get());
     }
 
@@ -162,7 +162,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> delete(final Iterable<? extends K> keys) {
+    default $map<K, V> delete(final Iterable<? extends K> keys) {
         this.keySet().removeAll(Indolently.set(keys));
         return this;
     }
@@ -174,7 +174,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> delete(final BiPredicate<? super K, ? super V> f) {
+    default $map<K, V> delete(final BiPredicate<? super K, ? super V> f) {
         return this.delete(this.keys().filter(x -> f.test(x, this.get(x))));
     }
 
@@ -185,7 +185,7 @@ public interface SMap<K, V>
      *
      * @return keys
      */
-    default SSet<K> keys() {
+    default $set<K> keys() {
         return Indolently.set(this.keySet());
     }
 
@@ -196,7 +196,7 @@ public interface SMap<K, V>
      *
      * @return values
      */
-    default SList<V> vals() {
+    default $list<V> vals() {
         return Indolently.list(this.values());
     }
 
@@ -294,12 +294,12 @@ public interface SMap<K, V>
      *
      * @return entries
      */
-    default SSet<SEntry<K, V>> entries() {
+    default $set<SEntry<K, V>> entries() {
         return Indolently.list(this.entrySet()).map(x -> new SEntry<>(x)).set();
     }
 
     @Override
-    default SIter<SEntry<K, V>> iterator() {
+    default $iter<SEntry<K, V>> iterator() {
         return Indolently.$(this.entrySet().iterator()).map(SEntry::new);
     }
 
@@ -310,7 +310,7 @@ public interface SMap<K, V>
      * @param keys keys to extract
      * @return extracted new map
      */
-    default SMap<K, V> slice(final Iterable<? extends K> keys) {
+    default $map<K, V> slice(final Iterable<? extends K> keys) {
         return this.delete(this.keys().delete(keys));
     }
 
@@ -321,7 +321,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Override
-    default SMap<K, V> each(final Consumer<? super V> f) {
+    default $map<K, V> each(final Consumer<? super V> f) {
         return this.each((key, val) -> f.accept(val));
     }
 
@@ -331,7 +331,7 @@ public interface SMap<K, V>
      * @param f function
      * @return {@code this} instance
      */
-    default SMap<K, V> each(final BiConsumer<? super K, ? super V> f) {
+    default $map<K, V> each(final BiConsumer<? super K, ? super V> f) {
         this.forEach(f);
         return this;
     }
@@ -379,7 +379,7 @@ public interface SMap<K, V>
      * @return new filtered map
      */
     @Override
-    default SMap<K, V> filter(final Predicate<? super V> f) {
+    default $map<K, V> filter(final Predicate<? super V> f) {
         return this.filter((key, val) -> f.test(val));
     }
 
@@ -390,7 +390,7 @@ public interface SMap<K, V>
      * @param f condition
      * @return new filtered map
      */
-    default SMap<K, V> filter(final BiPredicate<? super K, ? super V> f) {
+    default $map<K, V> filter(final BiPredicate<? super K, ? super V> f) {
 
         return this //
             .entries() //
@@ -408,7 +408,7 @@ public interface SMap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> SMap<K, R> map(final Function<? super V, ? extends R> f) {
+    default <R> $map<K, R> map(final Function<? super V, ? extends R> f) {
         return this.map((k, v) -> f.apply(v));
     }
 
@@ -420,7 +420,7 @@ public interface SMap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> SMap<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
+    default <R> $map<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
         return this.map((k, v) -> k, (k, v) -> f.apply(k, v));
     }
 
@@ -434,7 +434,7 @@ public interface SMap<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> SMap<K2, V2> map(final Function<? super K, ? extends K2> fk,
+    default <K2, V2> $map<K2, V2> map(final Function<? super K, ? extends K2> fk,
         final Function<? super V, ? extends V2> fv) {
 
         return this.map((k, v) -> fk.apply(k), (k, v) -> fv.apply(v));
@@ -450,7 +450,7 @@ public interface SMap<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> SMap<K2, V2> map(final BiFunction<? super K, ? super V, ? extends K2> fk,
+    default <K2, V2> $map<K2, V2> map(final BiFunction<? super K, ? super V, ? extends K2> fk,
         final BiFunction<? super K, ? super V, ? extends V2> fv) {
 
         return this //
@@ -470,7 +470,7 @@ public interface SMap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> SMap<K, R> flatMap(final Function<? super V, $<? extends R>> f) {
+    default <R> $map<K, R> flatMap(final Function<? super V, $<? extends R>> f) {
         return this.flatMap((k, v) -> f.apply(v));
     }
 
@@ -482,7 +482,7 @@ public interface SMap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> SMap<K, R> flatMap(final BiFunction<? super K, ? super V, $<? extends R>> f) {
+    default <R> $map<K, R> flatMap(final BiFunction<? super K, ? super V, $<? extends R>> f) {
         return this.flatMap((k, v) -> k, (k, v) -> f.apply(k, v));
     }
 
@@ -496,7 +496,7 @@ public interface SMap<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> SMap<K2, V2> flatMap(final Function<? super K, ? extends K2> fk,
+    default <K2, V2> $map<K2, V2> flatMap(final Function<? super K, ? extends K2> fk,
         final Function<? super V, $<? extends V2>> fv) {
 
         return this.flatMap((k, v) -> fk.apply(k), (k, v) -> fv.apply(v));
@@ -512,7 +512,7 @@ public interface SMap<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> SMap<K2, V2> flatMap(final BiFunction<? super K, ? super V, ? extends K2> fk,
+    default <K2, V2> $map<K2, V2> flatMap(final BiFunction<? super K, ? super V, ? extends K2> fk,
         final BiFunction<? super K, ? super V, $<? extends V2>> fv) {
 
         return this //
@@ -550,7 +550,7 @@ public interface SMap<K, V>
      * @param comp comparator
      * @return sorted map
      */
-    default SMap<K, V> sortWith(final Comparator<? super K> comp) {
+    default $map<K, V> sortWith(final Comparator<? super K> comp) {
         return Indolently.sort(this, comp);
     }
 
@@ -562,7 +562,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> update(final K key, final Function<? super V, ? extends V> f) {
+    default $map<K, V> update(final K key, final Function<? super V, ? extends V> f) {
         this.opt(key).ifPresent(val -> this.put(key, f.apply(val)));
         return this;
     }
@@ -574,7 +574,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> update(final BiFunction<? super K, ? super V, ? extends V> f) {
+    default $map<K, V> update(final BiFunction<? super K, ? super V, ? extends V> f) {
         this.replaceAll(f);
         return this;
     }
@@ -586,7 +586,7 @@ public interface SMap<K, V>
      * @param f function
      * @return newly constructed map
      */
-    default SMap<K, V> map(final K key, final Function<? super V, ? extends V> f) {
+    default $map<K, V> map(final K key, final Function<? super V, ? extends V> f) {
         return this.clone().update(key, f);
     }
 
@@ -596,17 +596,17 @@ public interface SMap<K, V>
      * @param f value generator
      * @return newly constructed flatten map
      */
-    default <RK, RV> SMap<RK, RV> flatten(
+    default <RK, RV> $map<RK, RV> flatten(
         final BiFunction<? super K, ? super V, ? extends Map<? extends RK, ? extends RV>> f) {
 
         return this.entries().reduce(Indolently.map(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
     }
 
-    default <C extends Comparable<? super C>> SMap<K, V> order(final Function<? super K, C> f) {
+    default <C extends Comparable<? super C>> $map<K, V> order(final Function<? super K, C> f) {
         return this.order(Comparator.comparing(f::apply));
     }
 
-    default SMap<K, V> order(final Comparator<? super K> comp) {
+    default $map<K, V> order(final Comparator<? super K> comp) {
         return Indolently.$(ObjFactory.getInstance().<K, V> newSortedMap(comp)).pushAll(this);
     }
 }

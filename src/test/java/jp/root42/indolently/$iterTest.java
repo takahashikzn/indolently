@@ -24,17 +24,17 @@ import static jp.root42.indolently.Iterative.*;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
  * @author root42 Inc.
  * @version $Id$
  */
-public class SIterTest {
+public class $iterTest {
 
     /**
-     * test of {@link SIter#filter(java.util.function.Predicate)}
+     * test of {@link $iter#filter(java.util.function.Predicate)}
      */
     @Test
     public void filter() {
@@ -49,14 +49,14 @@ public class SIterTest {
     }
 
     /**
-     * test of {@link SIter#flatten(Function)}
+     * test of {@link $iter#flatten(Function)}
      */
     @Test
     public void flatten() {
 
         assertThat(list(list(1), list(2, 3), list(4)).flatten(it())).isEqualTo(list(1, 2, 3, 4));
 
-        final SList<SList<Integer>> list = list(list(1), list(), list(2, 3), list(), list(), list(4));
+        final $list<$list<Integer>> list = list(list(1), list(), list(2, 3), list(), list(), list(4));
         assertThat(list.flatten(it())).isEqualTo(list(1, 2, 3, 4));
 
         assertThat($(new ArrayList<List<Integer>>()).flatten(it())).isEqualTo(list());

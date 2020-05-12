@@ -9,26 +9,27 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import jp.root42.indolently.SMap.SEntry;
+import jp.root42.indolently.$map.SEntry;
 
+import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.*;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 
 /**
- * Unit test of {@link SMap}.
+ * Unit test of {@link $map}.
  *
  * @author root42 Inc.
  * @version $Id$
  */
-public class SMapTest {
+public class $mapTest {
 
     /**
-     * {@link SMap#iterator()}
+     * {@link $map#iterator()}
      */
     @SuppressWarnings("unchecked")
     @Test
@@ -43,7 +44,7 @@ public class SMapTest {
         when(entryIter.hasNext()).thenReturn(true, false);
         when(entryIter.next()).thenReturn(mock(Entry.class));
 
-        final SIter<SEntry<String, String>> testee = $(data).iterator();
+        final $iter<SEntry<String, String>> testee = $(data).iterator();
 
         verify(entryIter, times(0)).hasNext();
 
@@ -54,7 +55,7 @@ public class SMapTest {
     }
 
     /**
-     * {@link SMap#entries()}
+     * {@link $map#entries()}
      */
     @SuppressWarnings("unchecked")
     @Test
@@ -66,6 +67,6 @@ public class SMapTest {
         map.put("1", "1");
         map.put("0", "0");
 
-        assertThat(new SMapImpl<>(map).entries().list().map(x -> x.key)).isEqualTo(list("3", "2", "1", "0"));
+        assertThat(new $map_impl<>(map).entries().list().map(x -> x.key)).isEqualTo(list("3", "2", "1", "0"));
     }
 }

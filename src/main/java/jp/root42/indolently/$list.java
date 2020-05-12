@@ -37,8 +37,8 @@ import static jp.root42.indolently.Indolently.*;
  * @param <T> value type
  * @author takahashikzn
  */
-public interface SList<T>
-    extends List<T>, SCol<T, SList<T>>, Cloneable {
+public interface $list<T>
+    extends List<T>, $collection<T, $list<T>>, Cloneable {
 
     /**
      * Clone this instance.
@@ -46,7 +46,7 @@ public interface SList<T>
      * @return clone of this instance
      * @see Cloneable
      */
-    default SList<T> clone() { return list((Iterable<T>) this); }
+    default $list<T> clone() { return list((Iterable<T>) this); }
 
     /**
      * Wrap a list.
@@ -55,13 +55,13 @@ public interface SList<T>
      * @param list list to wrap
      * @return wrapped list
      */
-    static <T> SList<T> of(final List<T> list) { return $(list); }
+    static <T> $list<T> of(final List<T> list) { return $(list); }
 
     /**
      * @see Indolently#freeze(List)
      */
     @Override
-    default SList<T> freeze() { return Indolently.freeze(this); }
+    default $list<T> freeze() { return Indolently.freeze(this); }
 
     // for optimization
     @Override
@@ -87,13 +87,13 @@ public interface SList<T>
      * @param from from index. negative index also acceptable.
      * @return sub list
      */
-    default SList<T> subList(final int from) { return this.subList(idx(this, from), this.size()); }
+    default $list<T> subList(final int from) { return this.subList(idx(this, from), this.size()); }
 
     @Override
-    SList<T> subList(int from, int to);
+    $list<T> subList(int from, int to);
 
     @Override
-    default SList<T> tail() { return (this.size() <= 1) ? list() : this.subList(1).clone(); }
+    default $list<T> tail() { return (this.size() <= 1) ? list() : this.subList(1).clone(); }
 
     // for optimization
     @Override
@@ -103,19 +103,19 @@ public interface SList<T>
     }
 
     /**
-     * convert this list to {@link SSet}. original order is reserved.
+     * convert this list to {@link $set}. original order is reserved.
      *
      * @return a set constructed from this instance.
      */
-    default SSet<T> set() { return $(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this); }
+    default $set<T> set() { return $(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this); }
 
     /**
-     * convert this list to sorted{@link SSet}.
+     * convert this list to sorted{@link $set}.
      *
      * @param comp a {@link Comparator}
      * @return a set constructed from this instance.
      */
-    default SSet<T> set(final Comparator<T> comp) {
+    default $set<T> set(final Comparator<T> comp) {
         return $(ObjFactory.getInstance().newSortedSet(comp)).pushAll(this);
     }
 
@@ -129,7 +129,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> push(final int idx, final T value) {
+    default $list<T> push(final int idx, final T value) {
         this.add(idx(this, idx), value);
         return this;
     }
@@ -144,7 +144,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> pushAll(final int idx, final Iterable<? extends T> values) {
+    default $list<T> pushAll(final int idx, final Iterable<? extends T> values) {
 
         // optimization
         @SuppressWarnings("unchecked")
@@ -167,7 +167,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> push(final int idx, final $<? extends T> value) {
+    default $list<T> push(final int idx, final $<? extends T> value) {
         return empty(value) ? this : this.push(idx, value.get());
     }
 
@@ -182,7 +182,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> pushAll(final int idx, final $<? extends Iterable<? extends T>> values) {
+    default $list<T> pushAll(final int idx, final $<? extends Iterable<? extends T>> values) {
         return empty(values) ? this : this.pushAll(idx, values.get());
     }
 
@@ -192,7 +192,7 @@ public interface SList<T>
      * @param from from index (inclusive)
      * @return detached sub list
      */
-    default SList<T> slice(final int from) { return this.narrow(from).clone(); }
+    default $list<T> slice(final int from) { return this.narrow(from).clone(); }
 
     /**
      * Almost same as {@link #narrow(int, int)} but returns newly constructed (detached) view.
@@ -201,7 +201,7 @@ public interface SList<T>
      * @param to to index (exclusive)
      * @return detached sub list
      */
-    default SList<T> slice(final int from, final int to) { return this.narrow(from, to).clone(); }
+    default $list<T> slice(final int from, final int to) { return this.narrow(from, to).clone(); }
 
     /**
      * Almost same as {@link #subList(int, int)} but never throw {@link IllegalArgumentException} and
@@ -210,7 +210,7 @@ public interface SList<T>
      * @param from from index (inclusive)
      * @return the narrowed view of this list
      */
-    default SList<T> narrow(final int from) { return this.narrow(from, this.size()); }
+    default $list<T> narrow(final int from) { return this.narrow(from, this.size()); }
 
     /**
      * Almost same as {@link #subList(int, int)} but never throw {@link IllegalArgumentException} and
@@ -220,7 +220,7 @@ public interface SList<T>
      * @param to to index (exclusive)
      * @return the narrowed view of this list
      */
-    default SList<T> narrow(final int from, final int to) {
+    default $list<T> narrow(final int from, final int to) {
 
         int fromIndex = idx(this, from);
 
@@ -246,7 +246,7 @@ public interface SList<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> SList<R> map(final Function<? super T, ? extends R> f) {
+    default <R> $list<R> map(final Function<? super T, ? extends R> f) {
         return this.reduce(list(), (x, y) -> x.push(f.apply(y)));
     }
 
@@ -257,7 +257,7 @@ public interface SList<T>
      * @param f function. first argument is element index, second one is element value
      * @return newly constructed list which contains converted values
      */
-    default <R> SList<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
+    default <R> $list<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
 
         final var i = ref(0);
 
@@ -271,7 +271,7 @@ public interface SList<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> SList<R> flatMap(final Function<? super T, $<? extends R>> f) {
+    default <R> $list<R> flatMap(final Function<? super T, $<? extends R>> f) {
         return this.reduce(list(), (x, y) -> x.push(f.apply(y)));
     }
 
@@ -282,7 +282,7 @@ public interface SList<T>
      * @param f function. first argument is element index, second one is element value
      * @return newly constructed list which contains converted values
      */
-    default <R> SList<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
+    default <R> $list<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
 
         final var i = ref(0);
 
@@ -290,7 +290,7 @@ public interface SList<T>
     }
 
     @Override
-    default SList<T> filter(final Predicate<? super T> f) {
+    default $list<T> filter(final Predicate<? super T> f) {
         return this.reduce(list(), (x, y) -> f.test(y) ? x.push(y) : x);
     }
 
@@ -299,8 +299,8 @@ public interface SList<T>
      *
      * @return newly constructed reversed list
      */
-    default SList<T> reverse() {
-        final SList<T> rslt = this.clone();
+    default $list<T> reverse() {
+        final $list<T> rslt = this.clone();
         Collections.reverse(rslt);
         return rslt;
     }
@@ -311,7 +311,7 @@ public interface SList<T>
      * @param f value generator
      * @return newly constructed flatten list
      */
-    default <R> SList<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+    default <R> $list<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         return list(this.iterator().flatten(f));
     }
 
@@ -321,7 +321,7 @@ public interface SList<T>
      * @param other alternative value
      * @return this instance or other
      */
-    default SList<T> orElse(final List<? extends T> other) {
+    default $list<T> orElse(final List<? extends T> other) {
         return this.orElseGet(() -> other);
     }
 
@@ -331,12 +331,12 @@ public interface SList<T>
      * @param other alternative value supplier
      * @return {@code this} instance or other
      */
-    default SList<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
+    default $list<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
         return nonEmpty(this).orElseGet(() -> list(other.get()));
     }
 
     @Override
-    default <K> SMap<K, SList<T>> group(final Function<? super T, ? extends K> fkey) {
+    default <K> $map<K, $list<T>> group(final Function<? super T, ? extends K> fkey) {
 
         return this.reduce($(ObjFactory.getInstance().newFifoMap()), (x, y) -> {
             x.computeIfAbsent(fkey.apply(y), z -> list()).add(y);
@@ -350,12 +350,12 @@ public interface SList<T>
      * @param size chunk size
      * @return the list of chunks
      */
-    default SList<SList<T>> chunk(final int size) {
+    default $list<$list<T>> chunk(final int size) {
         if (size <= 0) {
             throw new IllegalArgumentException("size should greater than 0");
         }
 
-        final SList<SList<T>> ret = list();
+        final $list<$list<T>> ret = list();
 
         for (int i = 0, max = (int) Math.ceil((double) this.size() / size); i < max; i++) {
             ret.add(this.slice(i * size, (i + 1) * size));
@@ -365,16 +365,16 @@ public interface SList<T>
     }
 
     @Override
-    default SList<T> order(final Comparator<? super T> comp) { return Indolently.sort(this, comp); }
+    default $list<T> order(final Comparator<? super T> comp) { return Indolently.sort(this, comp); }
 
     @Override
     default String join(final Function<T, CharSequence> f, final String sep) {
         return Indolently.join(this.map(f), sep);
     }
 
-    default SList<T> uniq() { return Indolently.uniq(this); }
+    default $list<T> uniq() { return Indolently.uniq(this); }
 
-    default SList<T> uniq(final BiPredicate<? super T, ? super T> f) { return Indolently.uniq(this, f); }
+    default $list<T> uniq(final BiPredicate<? super T, ? super T> f) { return Indolently.uniq(this, f); }
 
     /**
      * Replace value at the position if exists.
@@ -384,7 +384,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> update(final int idx, final T val) { return this.update(idx, x -> val); }
+    default $list<T> update(final int idx, final T val) { return this.update(idx, x -> val); }
 
     /**
      * Replace value at the position if exists.
@@ -394,7 +394,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> update(final int idx, final Function<? super T, ? extends T> f) {
+    default $list<T> update(final int idx, final Function<? super T, ? extends T> f) {
         this.opt(idx).ifPresent(x -> this.set(idx(this, idx), f.apply(x)));
         return this;
     }
@@ -406,7 +406,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> update(final Function<? super T, ? extends T> f) {
+    default $list<T> update(final Function<? super T, ? extends T> f) {
 
         for (int i = 0; i < this.size(); i++) {
             this.update(i, f);
@@ -422,7 +422,7 @@ public interface SList<T>
      * @param f function
      * @return newly constructed list
      */
-    default SList<T> map(final int idx, final Function<? super T, ? extends T> f) {
+    default $list<T> map(final int idx, final Function<? super T, ? extends T> f) {
         return this.clone().update(idx, f);
     }
 

@@ -19,6 +19,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Indolently.assertThat;
 import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.map;
 import static jp.root42.indolently.Indolently.*;
@@ -26,16 +27,16 @@ import static jp.root42.indolently.Indolently.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
  * @author takahashikzn
  */
-public class SListTest {
+public class $listTest {
 
     /**
-     * Test of {@link SList#opt(int)}.
+     * Test of {@link $list#opt(int)}.
      */
     @Test
     public void opt() {
@@ -48,12 +49,12 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#group(Function)}.
+     * Test of {@link $list#group(Function)}.
      */
     @Test
     public void group() {
 
-        final SMap<String, SList<Bean1>> group = list( //
+        final $map<String, $list<Bean1>> group = list( //
             prog1(Bean1::new, x -> {
                 x.key = "key1";
                 x.bean2 = prog1(Bean2::new, y -> y.val = 1);
@@ -102,7 +103,7 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#flatten(Function)}
+     * Test of {@link $list#flatten(Function)}
      */
     @Test
     public void flatten() {
@@ -112,7 +113,7 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#orElse(List)}
+     * Test of {@link $list#orElse(List)}
      */
     @Test
     public void orElse() {
@@ -121,7 +122,7 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#orElseGet(Supplier)}
+     * Test of {@link $list#orElseGet(Supplier)}
      */
     @Test
     public void orElseGet() {
@@ -130,7 +131,7 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#subList(int, int)}
+     * Test of {@link $list#subList(int, int)}
      */
     @Test
     public void subList() {
@@ -171,7 +172,7 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#slice(int, int)}
+     * Test of {@link $list#slice(int, int)}
      */
     @Test
     public void slice() {
@@ -194,15 +195,15 @@ public class SListTest {
         assertThat(list(1).slice(0, -1)).isEqualTo(list());
         assertThat(Iterative.range(1, 10).list().slice(-5, 0)).isEqualTo(list(6, 7, 8, 9, 10));
 
-        final SList<Integer> original = list(1, 2, 3);
-        final SList<Integer> sliced = original.slice(0, 2);
+        final $list<Integer> original = list(1, 2, 3);
+        final $list<Integer> sliced = original.slice(0, 2);
         sliced.add(4);
         assertThat(original).isEqualTo(list(1, 2, 3));
         assertThat(sliced).isEqualTo(list(1, 2, 4));
     }
 
     /**
-     * Test of {@link SList#narrow(int, int)}
+     * Test of {@link $list#narrow(int, int)}
      */
     @Test
     public void narrow() {
@@ -221,15 +222,15 @@ public class SListTest {
         assertThat(Iterative.range(1, 10).list().narrow(-5, 0)).isEqualTo(list(6, 7, 8, 9, 10));
         assertThat(list().narrow(-1, 0)).isEqualTo(list());
 
-        final SList<Integer> original = list(1, 2, 3);
-        final SList<Integer> sliced = original.narrow(0, 2);
+        final $list<Integer> original = list(1, 2, 3);
+        final $list<Integer> sliced = original.narrow(0, 2);
         sliced.add(4);
         assertThat(original).isEqualTo(list(1, 2, 4, 3));
         assertThat(sliced).isEqualTo(list(1, 2, 4));
     }
 
     /**
-     * Test of {@link SList#startsWith(Collection)}
+     * Test of {@link $list#startsWith(Collection)}
      */
     @Test
     public void startsWith() {
@@ -248,7 +249,7 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#endsWith(Collection)}
+     * Test of {@link $list#endsWith(Collection)}
      */
     @Test
     public void endsWith() {
@@ -267,7 +268,7 @@ public class SListTest {
     }
 
     /**
-     * Test of {@link SList#chunk(int)}
+     * Test of {@link $list#chunk(int)}
      */
     @Test
     public void chunk() {

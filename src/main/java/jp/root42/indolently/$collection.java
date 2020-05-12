@@ -35,16 +35,16 @@ import static jp.root42.indolently.Indolently.*;
 
 
 /**
- * common method definition for {@link SSet} / {@link SList}.
+ * common method definition for {@link $set} / {@link $list}.
  * The name is came from "Sugared Collection".
  *
  * @param <T> value type
  * @param <SELF> self type
  * @author takahashikzn
- * @see SList
- * @see SSet
+ * @see $list
+ * @see $set
  */
-public interface SCol<T, SELF extends SCol<T, SELF>>
+public interface $collection<T, SELF extends $collection<T, SELF>>
     extends Collection<T>, EdgeAwareIterable<T>, ReducibleIterable<T>, Freezable<SELF>, Identical<SELF>,
     Loopable<T, SELF>, Filterable<T, SELF>, Matchable<T> {
 
@@ -175,7 +175,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default SELF delete(final BiPredicate<Integer, ? super T> f) { return this.delete(this.filter(f)); }
 
     @Override
-    SIter<T> iterator();
+    $iter<T> iterator();
 
     /**
      * get rest elements of this collection.
@@ -243,10 +243,10 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     }
 
     @Override
-    default SStream<T> stream() { return Indolently.$(Collection.super.stream()); }
+    default $stream<T> stream() { return Indolently.$(Collection.super.stream()); }
 
     @Override
-    default SStream<T> parallelStream() { return Indolently.$(Collection.super.parallelStream()); }
+    default $stream<T> parallelStream() { return Indolently.$(Collection.super.parallelStream()); }
 
     /**
      * Convert this collection to map.
@@ -257,7 +257,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @param fval a function which convert element to map value
      * @return map instance.
      */
-    default <K, V> SMap<K, V> mapmap(final Function<? super T, ? extends K> fkey,
+    default <K, V> $map<K, V> mapmap(final Function<? super T, ? extends K> fkey,
         final Function<? super T, ? extends V> fval) {
 
         return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
@@ -272,7 +272,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @param fval a function which convert element to map value
      * @return map instance.
      */
-    default <K, V> SMap<K, V> flatMapMap(final Function<? super T, ? extends K> fkey,
+    default <K, V> $map<K, V> flatMapMap(final Function<? super T, ? extends K> fkey,
         final Function<? super T, $<? extends V>> fval) {
 
         return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
@@ -295,12 +295,12 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
     default boolean hasAll(final Collection<? extends T> vals) { return this.containsAll(vals); }
 
     /**
-     * 'Group By' operation: returns grouped elements as {@link SMap} form.
+     * 'Group By' operation: returns grouped elements as {@link $map} form.
      *
      * @param fkey convert element to grouping key
      * @return grouped elements
      */
-    <K> SMap<K, SELF> group(Function<? super T, ? extends K> fkey);
+    <K> $map<K, SELF> group(Function<? super T, ? extends K> fkey);
 
     /**
      * Return newly constructed sorted collection using comparator.

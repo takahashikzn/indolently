@@ -30,7 +30,7 @@ public final class Numeric {
     /** non private for subtyping. */
     protected Numeric() {}
 
-    private static final SMap<String, Integer> intCache = range(0, 256).list().mapmap(x -> "" + x, it()).freeze();
+    private static final $map<String, Integer> intCache = range(0, 256).list().mapmap(x -> "" + x, it()).freeze();
 
     public static int asInt(final String s) {
         switch (s) {

@@ -23,22 +23,22 @@ import jp.root42.indolently.bridge.ObjFactory;
 
 
 /**
- * Simple implementation of {@link SList}.
+ * Simple implementation of {@link $list}.
  *
  * @param <T> value type
  * @author takahashikzn
  */
-class SListImpl<T>
+class $list_impl<T>
     extends ListDelegate<T>
-    implements SList<T>, Serializable {
+    implements $list<T>, Serializable {
 
     private static final long serialVersionUID = 8705188807596442213L;
 
     private final List<T> store;
 
-    public SListImpl() { this(newList()); }
+    public $list_impl() { this(newList()); }
 
-    public SListImpl(final List<T> store) { this.store = store; }
+    public $list_impl(final List<T> store) { this.store = store; }
 
     private static <T> List<T> newList() { return ObjFactory.getInstance().newList(); }
 
@@ -46,18 +46,18 @@ class SListImpl<T>
     protected List<T> getDelegate() { return this.store; }
 
     @Override
-    public SList<T> clone() {
+    public $list<T> clone() {
         final List<T> newStore = newList();
         newStore.addAll(this);
-        return new SListImpl<>(newStore);
+        return new $list_impl<>(newStore);
     }
 
     @Override
-    public SIter<T> iterator() { return Indolently.$(this.store.iterator()); }
+    public $iter<T> iterator() { return Indolently.$(this.store.iterator()); }
 
     // keep original order
     @Override
-    public SSet<T> set() { return new SSetImpl<>(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this); }
+    public $set<T> set() { return new $set_impl<>(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this); }
 
     @Override
     public T set(final int i, final T val) { return this.store.set(Indolently.idx(this, i), val); }
@@ -72,7 +72,7 @@ class SListImpl<T>
     public T get(final int i) { return this.store.get(Indolently.idx(this, i)); }
 
     @Override
-    public SList<T> subList(final int from, final int to) {
+    public $list<T> subList(final int from, final int to) {
 
         int actFrom = Indolently.idx(this, from);
 

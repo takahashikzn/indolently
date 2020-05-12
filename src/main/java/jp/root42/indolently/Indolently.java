@@ -505,7 +505,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> SList<T> listOf(final T... elems) {
+    public static <T> $list<T> listOf(final T... elems) {
         return list(elems);
     }
 
@@ -519,7 +519,7 @@ public class Indolently {
      * @return new list
      * @see #list(Object...)
      */
-    public static <T> SList<T> newList(final Class<T> type) {
+    public static <T> $list<T> newList(final Class<T> type) {
         return list();
     }
 
@@ -530,8 +530,8 @@ public class Indolently {
      * @param elem element of the list
      * @return new list
      */
-    public static <T> SList<T> list(final $<? extends T> elem) {
-        return new SListImpl<T>().push(elem);
+    public static <T> $list<T> list(final $<? extends T> elem) {
+        return new $list_impl<T>().push(elem);
     }
 
     /**
@@ -541,8 +541,8 @@ public class Indolently {
      * @param elems elements of the list
      * @return new list
      */
-    public static <T> SList<T> list(final Iterable<? extends T> elems) {
-        return new SListImpl<T>().pushAll(opt(elems));
+    public static <T> $list<T> list(final Iterable<? extends T> elems) {
+        return new $list_impl<T>().pushAll(opt(elems));
     }
 
     /**
@@ -554,9 +554,9 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> SList<T> list(final T... elems) {
+    public static <T> $list<T> list(final T... elems) {
 
-        final SList<T> list = new SListImpl<>();
+        final $list<T> list = new $list_impl<>();
 
         if (elems != null) {
             Collections.addAll(list, elems);
@@ -592,7 +592,7 @@ public class Indolently {
             throw new IllegalArgumentException("can't infer empty array type");
         }
 
-        final SList<? extends T> list = list(elems);
+        final $list<? extends T> list = list(elems);
 
         // pseudo typing. actually this type wouldn't be T[].
         @SuppressWarnings({ "unchecked", "SuspiciousArrayCast" })
@@ -765,7 +765,7 @@ public class Indolently {
      * @param cs character sequence
      * @return char iterator
      */
-    public static SIter<Character> chars(final CharSequence cs) {
+    public static $iter<Character> chars(final CharSequence cs) {
 
         return $(new Iterator<Character>() {
 
@@ -804,8 +804,8 @@ public class Indolently {
      * @param elems elements of array
      * @return char list
      */
-    public static SList<Character> plist(final char... elems) {
-        final SList<Character> list = list();
+    public static $list<Character> plist(final char... elems) {
+        final $list<Character> list = list();
         for (final char e: elems) {
             list.add(e);
         }
@@ -818,8 +818,8 @@ public class Indolently {
      * @param elems elements of array
      * @return int list
      */
-    public static SList<Integer> plist(final int... elems) {
-        final SList<Integer> list = list();
+    public static $list<Integer> plist(final int... elems) {
+        final $list<Integer> list = list();
         for (final int e: elems) {
             list.add(e);
         }
@@ -832,8 +832,8 @@ public class Indolently {
      * @param elems elements of array
      * @return long list
      */
-    public static SList<Long> plist(final long... elems) {
-        final SList<Long> list = list();
+    public static $list<Long> plist(final long... elems) {
+        final $list<Long> list = list();
         for (final long e: elems) {
             list.add(e);
         }
@@ -846,8 +846,8 @@ public class Indolently {
      * @param elems elements of array
      * @return float list
      */
-    public static SList<Float> plist(final float... elems) {
-        final SList<Float> list = list();
+    public static $list<Float> plist(final float... elems) {
+        final $list<Float> list = list();
         for (final float e: elems) {
             list.add(e);
         }
@@ -860,8 +860,8 @@ public class Indolently {
      * @param elems elements of array
      * @return short list
      */
-    public static SList<Short> plist(final short... elems) {
-        final SList<Short> list = list();
+    public static $list<Short> plist(final short... elems) {
+        final $list<Short> list = list();
         for (final short e: elems) {
             list.add(e);
         }
@@ -874,8 +874,8 @@ public class Indolently {
      * @param elems elements of array
      * @return double list
      */
-    public static SList<Double> plist(final double... elems) {
-        final SList<Double> list = list();
+    public static $list<Double> plist(final double... elems) {
+        final $list<Double> list = list();
         for (final double e: elems) {
             list.add(e);
         }
@@ -888,20 +888,20 @@ public class Indolently {
      * @param elems elements of array
      * @return boolean list
      */
-    public static SList<Boolean> plist(final boolean... elems) {
-        final SList<Boolean> list = list();
+    public static $list<Boolean> plist(final boolean... elems) {
+        final $list<Boolean> list = list();
         for (final boolean e: elems) {
             list.add(e);
         }
         return list;
     }
 
-    public static <T> SSet<T> set(final $<? extends T> elem) {
-        return new SSetImpl<T>().push(elem);
+    public static <T> $set<T> set(final $<? extends T> elem) {
+        return new $set_impl<T>().push(elem);
     }
 
-    public static <T> SSet<T> set(final Iterable<? extends T> elems) {
-        return new SSetImpl<T>().pushAll(opt(elems));
+    public static <T> $set<T> set(final Iterable<? extends T> elems) {
+        return new $set_impl<T>().pushAll(opt(elems));
     }
 
     /**
@@ -916,7 +916,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> SSet<T> setOf(final T... elems) {
+    public static <T> $set<T> setOf(final T... elems) {
         return set(elems);
     }
 
@@ -930,15 +930,15 @@ public class Indolently {
      * @return new set
      * @see #set(Object...)
      */
-    public static <T> SSet<T> newSet(final Class<T> type) {
+    public static <T> $set<T> newSet(final Class<T> type) {
         return set();
     }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> SSet<T> set(final T... elems) {
+    public static <T> $set<T> set(final T... elems) {
 
-        final SSet<T> set = new SSetImpl<>();
+        final $set<T> set = new $set_impl<>();
 
         if (elems != null) {
             set.addAll(list(elems));
@@ -947,55 +947,55 @@ public class Indolently {
         return set;
     }
 
-    public static <K extends Comparable<K>, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map) {
+    public static <K extends Comparable<K>, V> $map<K, V> sort(final Map<? extends K, ? extends V> map) {
         return sort(map, Comparator.naturalOrder());
     }
 
-    public static <K, V, S extends Comparable<S>> SMap<K, V> sort(final Map<? extends K, ? extends V> map,
+    public static <K, V, S extends Comparable<S>> $map<K, V> sort(final Map<? extends K, ? extends V> map,
         final Function<? super K, ? extends S> f) {
 
         return sort(map, Comparator.comparing(f::apply));
     }
 
-    public static <K, V> SMap<K, V> sort(final Map<? extends K, ? extends V> map, final Comparator<? super K> comp) {
+    public static <K, V> $map<K, V> sort(final Map<? extends K, ? extends V> map, final Comparator<? super K> comp) {
         return $(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(map);
     }
 
-    public static <T extends Comparable<T>> SSet<T> sort(final Set<? extends T> elems) {
+    public static <T extends Comparable<T>> $set<T> sort(final Set<? extends T> elems) {
         return sort(elems, Comparator.naturalOrder());
     }
 
-    public static <T, S extends Comparable<S>> SSet<T> sort(final Set<? extends T> elems,
+    public static <T, S extends Comparable<S>> $set<T> sort(final Set<? extends T> elems,
         final Function<? super T, ? extends S> f) {
 
         return sort(elems, Comparator.comparing(f::apply));
     }
 
-    public static <T> SSet<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
+    public static <T> $set<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
         return $(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(elems);
     }
 
-    public static <T extends Comparable<T>> SList<T> sort(final List<? extends T> elems) {
+    public static <T extends Comparable<T>> $list<T> sort(final List<? extends T> elems) {
         return sort(elems, Comparator.naturalOrder());
     }
 
-    public static <T, S extends Comparable<S>> SList<T> sort(final List<? extends T> elems,
+    public static <T, S extends Comparable<S>> $list<T> sort(final List<? extends T> elems,
         final Function<? super T, ? extends S> f) {
 
         return sort(elems, Comparator.comparing(f::apply));
     }
 
-    public static <T> SList<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {
-        final SList<T> rslt = list(elems);
+    public static <T> $list<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {
+        final $list<T> rslt = list(elems);
         rslt.sort(Objects.requireNonNull(comp, "comparator"));
         return rslt;
     }
 
-    public static <T> SList<T> uniq(final List<? extends T> elems) {
+    public static <T> $list<T> uniq(final List<? extends T> elems) {
         return uniq(elems, (x, y) -> equal(x, y));
     }
 
-    public static <T> SList<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
+    public static <T> $list<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
 
         return $(elems).reduce(list(), (ret, x) -> {
             if (ret.isEmpty() || !ret.some(y -> f.test(x, y))) {
@@ -1019,17 +1019,17 @@ public class Indolently {
     };
 
     @SuppressWarnings("unchecked")
-    public static <K, V> SMap<K, V> freeze(final Map<? extends K, ? extends V> map) {
+    public static <K, V> $map<K, V> freeze(final Map<? extends K, ? extends V> map) {
         return $(Collections.unmodifiableMap($(map).map(freezer)));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> SSet<T> freeze(final Set<? extends T> elems) {
+    public static <T> $set<T> freeze(final Set<? extends T> elems) {
         return $(Collections.unmodifiableSet($(elems).map(freezer)));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> SList<T> freeze(final List<? extends T> elems) {
+    public static <T> $list<T> freeze(final List<? extends T> elems) {
         return $(Collections.unmodifiableList($(elems).map(freezer)));
     }
 
@@ -1968,11 +1968,11 @@ public class Indolently {
 
     public static Set<?> typed(final Set raw) { return raw; }
 
-    public static <K, V> SMap<K, V> map(final Map<? extends K, ? extends V> map) {
-        return new SMapImpl<K, V>().pushAll(opt(map));
+    public static <K, V> $map<K, V> map(final Map<? extends K, ? extends V> map) {
+        return new $map_impl<K, V>().pushAll(opt(map));
     }
 
-    public static <K, V> SMap<K, V> map() { return new SMapImpl<>(); }
+    public static <K, V> $map<K, V> map() { return new $map_impl<>(); }
 
     /**
      * Just for producing compilation warning.
@@ -1982,7 +1982,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> SList<T> $(final SList<T> x) {
+    public static <T> $list<T> $(final $list<T> x) {
         return x;
     }
 
@@ -1994,7 +1994,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> SSet<T> $(final SSet<T> x) {
+    public static <T> $set<T> $(final $set<T> x) {
         return x;
     }
 
@@ -2006,7 +2006,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <K, V> SMap<K, V> $(final SMap<K, V> x) {
+    public static <K, V> $map<K, V> $(final $map<K, V> x) {
         return x;
     }
 
@@ -2015,10 +2015,10 @@ public class Indolently {
      *
      * @param x any wrapped one
      * @return clone of the argument
-     * @deprecated Use {@link SList#clone()} instead of to get more intentional.
+     * @deprecated Use {@link $list#clone()} instead of to get more intentional.
      */
     @Deprecated
-    public static <T> SList<T> list(final SList<T> x) {
+    public static <T> $list<T> list(final $list<T> x) {
         return x.clone();
     }
 
@@ -2027,10 +2027,10 @@ public class Indolently {
      *
      * @param x any wrapped one
      * @return clone of the argument
-     * @deprecated Use {@link SSet#clone()} instead of to get more intentional.
+     * @deprecated Use {@link $set#clone()} instead of to get more intentional.
      */
     @Deprecated
-    public static <T> SSet<T> set(final SSet<T> x) {
+    public static <T> $set<T> set(final $set<T> x) {
         return x.clone();
     }
 
@@ -2039,10 +2039,10 @@ public class Indolently {
      *
      * @param x any wrapped one
      * @return clone of the argument
-     * @deprecated Use {@link SMap#clone()} instead of to get more intentional.
+     * @deprecated Use {@link $map#clone()} instead of to get more intentional.
      */
     @Deprecated
-    public static <K, V> SMap<K, V> map(final SMap<K, V> x) {
+    public static <K, V> $map<K, V> map(final $map<K, V> x) {
         return x.clone();
     }
 
@@ -2054,7 +2054,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> SIter<T> $(final SIter<T> x) {
+    public static <T> $iter<T> $(final $iter<T> x) {
         return x;
     }
 
@@ -2066,7 +2066,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> SStream<T> $(final SStream<T> x) {
+    public static <T> $stream<T> $(final $stream<T> x) {
         return x;
     }
 
@@ -2076,10 +2076,10 @@ public class Indolently {
      * @param map map to wrap
      * @return wrapped map
      */
-    public static <K, V> SMap<K, V> $(final Map<K, V> map) {
+    public static <K, V> $map<K, V> $(final Map<K, V> map) {
         return (map == null) ? null //
-            : (map instanceof SMap) ? cast(map) //
-                : new SMapImpl<>(map);
+            : (map instanceof $map) ? cast(map) //
+                : new $map_impl<>(map);
     }
 
     /**
@@ -2088,10 +2088,10 @@ public class Indolently {
      * @param list list to wrap
      * @return wrapped list
      */
-    public static <T> SList<T> $(final List<T> list) {
+    public static <T> $list<T> $(final List<T> list) {
         return (list == null) ? null //
-            : (list instanceof SList) ? cast(list)//
-                : new SListImpl<>(list);
+            : (list instanceof $list) ? cast(list)//
+                : new $list_impl<>(list);
     }
 
     /**
@@ -2100,10 +2100,10 @@ public class Indolently {
      * @param set set to wrap
      * @return wrapped set
      */
-    public static <T> SSet<T> $(final Set<T> set) {
+    public static <T> $set<T> $(final Set<T> set) {
         return (set == null) ? null //
-            : (set instanceof SSet) ? cast(set) //
-                : new SSetImpl<>(set);
+            : (set instanceof $set) ? cast(set) //
+                : new $set_impl<>(set);
     }
 
     /**
@@ -2114,7 +2114,7 @@ public class Indolently {
      * @param val value to put
      * @return wrapped map
      */
-    public static <K, V> SMap<K, V> $(final Map<K, V> map, final K key, final V val) {
+    public static <K, V> $map<K, V> $(final Map<K, V> map, final K key, final V val) {
         return $(Objects.requireNonNull(map, "map")).push(key, val);
     }
 
@@ -2127,7 +2127,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> SList<T> $(final List<T> list, final T... elems) {
+    public static <T> $list<T> $(final List<T> list, final T... elems) {
         return $(Objects.requireNonNull(list, "list")).pushAll(list(elems));
     }
 
@@ -2140,7 +2140,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> SSet<T> $(final Set<T> set, final T... elems) {
+    public static <T> $set<T> $(final Set<T> set, final T... elems) {
         return $(Objects.requireNonNull(set, "set")).pushAll(list(elems));
     }
 
@@ -2150,12 +2150,12 @@ public class Indolently {
      * @param iter iterator to wrap
      * @return wrapped iterator
      */
-    public static <T> SIter<T> $(final Iterator<? extends T> iter) {
+    public static <T> $iter<T> $(final Iterator<? extends T> iter) {
         if (iter == null) return null;
 
-        if (iter instanceof SIter) return cast(iter);
+        if (iter instanceof $iter) return cast(iter);
 
-        return new SIter<T>() {
+        return new $iter<T>() {
 
             @Override
             public boolean hasNext() { return iter.hasNext(); }
@@ -2174,25 +2174,25 @@ public class Indolently {
      * @param stream stream to wrap
      * @return wrapped stream
      */
-    public static <T> SStream<T> $(final Stream<T> stream) {
+    public static <T> $stream<T> $(final Stream<T> stream) {
         return (stream == null) ? null //
-            : (stream instanceof SStream) ? cast(stream) //
-                : new SStreamImpl<>(stream);
+            : (stream instanceof $stream) ? cast(stream) //
+                : new $stream_impl<>(stream);
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> SMap<K, V> newMap(final Class<K> keyType, final Class<V> valType) {
-        return (SMap<K, V>) map();
+    public static <K, V> $map<K, V> newMap(final Class<K> keyType, final Class<V> valType) {
+        return ($map<K, V>) map();
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> SMap<K, V> map(final K key, final V val) {
-        return (SMap<K, V>) map().push(key, val);
+    public static <K, V> $map<K, V> map(final K key, final V val) {
+        return ($map<K, V>) map().push(key, val);
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> SMap<K, V> map(final K key, final $<? extends V> val) {
-        return (SMap<K, V>) map().push(key, val);
+    public static <K, V> $map<K, V> map(final K key, final $<? extends V> val) {
+        return ($map<K, V>) map().push(key, val);
     }
 
     /**
@@ -2234,7 +2234,7 @@ public class Indolently {
      * @param tuple two element tuple
      * @return list of tuple elements
      */
-    public static <T> SList<T> list(final $2<? extends T, ? extends T> tuple) {
+    public static <T> $list<T> list(final $2<? extends T, ? extends T> tuple) {
         return list(tuple._1, tuple._2);
     }
 
@@ -2244,7 +2244,7 @@ public class Indolently {
      * @param tuple three element tuple
      * @return list of tuple elements
      */
-    public static <T> SList<T> list(final $3<? extends T, ? extends T, ? extends T> tuple) {
+    public static <T> $list<T> list(final $3<? extends T, ? extends T, ? extends T> tuple) {
         return list(tuple._1, tuple._2, tuple._3);
     }
 
@@ -2358,58 +2358,58 @@ public class Indolently {
     }
 
     // CHECKSTYLE:OFF
-    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1) {
+    public static <K, V> $map<K, V> map(final K k0, final V v0, final K k1, final V v1) {
         return map(k0, v0).push(k1, v1);
     }
 
-    public static <K, V> SMap<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2) {
+    public static <K, V> $map<K, V> map(final K k0, final V v0, final K k1, final V v1, final K k2, final V v2) {
         return map(k0, v0, k1, v1).push(k2, v2);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3) {
         return map(k0, v0, k1, v1, k2, v2).push(k3, v3);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
         final V v4) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3).push(k4, v4);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
         final V v4, final K k5, final V v5) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4).push(k5, v5);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
         final V v4, final K k5, final V v5, final K k6, final V v6) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5).push(k6, v6);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
         final V v4, final K k5, final V v5, final K k6, final V v6, final K k7, final V v7) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6).push(k7, v7);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
         final V v4, final K k5, final V v5, final K k6, final V v6, final K k7, final V v7, final K k8, final V v8) {
 
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7).push(k8, v8);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
         final V v4, final K k5, final V v5, final K k6, final V v6, final K k7, final V v7, final K k8, final V v8,
         final K k9, final V v9) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8).push(k9, v9);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10) {
@@ -2417,7 +2417,7 @@ public class Indolently {
             .push(k10, v10);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11) {
@@ -2427,7 +2427,7 @@ public class Indolently {
             .push(k11, v11);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2438,7 +2438,7 @@ public class Indolently {
             .push(k12, v12);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2449,7 +2449,7 @@ public class Indolently {
             .push(k13, v13);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2460,7 +2460,7 @@ public class Indolently {
             .push(k14, v14);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2471,7 +2471,7 @@ public class Indolently {
             .push(k15, v15);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2483,7 +2483,7 @@ public class Indolently {
             .push(k16, v16);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2495,7 +2495,7 @@ public class Indolently {
             .push(k17, v17);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2507,7 +2507,7 @@ public class Indolently {
             .push(k18, v18);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2519,7 +2519,7 @@ public class Indolently {
             .push(k19, v19);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2532,7 +2532,7 @@ public class Indolently {
             .push(k20, v20);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2546,7 +2546,7 @@ public class Indolently {
             .push(k21, v21);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2560,7 +2560,7 @@ public class Indolently {
             .push(k22, v22);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2574,7 +2574,7 @@ public class Indolently {
             .push(k23, v23);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2589,7 +2589,7 @@ public class Indolently {
             .push(k24, v24);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2604,7 +2604,7 @@ public class Indolently {
             .push(k25, v25);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2619,7 +2619,7 @@ public class Indolently {
             .push(k26, v26);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2634,7 +2634,7 @@ public class Indolently {
             .push(k27, v27);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2650,7 +2650,7 @@ public class Indolently {
             .push(k28, v28);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2666,7 +2666,7 @@ public class Indolently {
             .push(k29, v29);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2682,7 +2682,7 @@ public class Indolently {
             .push(k30, v30);
     }
 
-    public static <K, V> SMap<K, V> map( //
+    public static <K, V> $map<K, V> map( //
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
@@ -2750,7 +2750,7 @@ public class Indolently {
     public static BooleanSupplier and(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
         return () -> {
-            final SList<BooleanSupplier> preds =
+            final $list<BooleanSupplier> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.every(BooleanSupplier::getAsBoolean);
@@ -2776,7 +2776,7 @@ public class Indolently {
     public static BooleanSupplier or(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
         return () -> {
-            final SList<BooleanSupplier> preds =
+            final $list<BooleanSupplier> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.some(BooleanSupplier::getAsBoolean);
@@ -2805,7 +2805,7 @@ public class Indolently {
         final Predicate<? super T>... x2) {
 
         return y -> {
-            final SList<Predicate<? super T>> preds =
+            final $list<Predicate<? super T>> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.every(z -> z.test(y));
@@ -2818,7 +2818,7 @@ public class Indolently {
         final Predicate<? super T>... x2) {
 
         return y -> {
-            final SList<Predicate<? super T>> preds =
+            final $list<Predicate<? super T>> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.some(z -> z.test(y));
@@ -3064,7 +3064,7 @@ public class Indolently {
         final int begin = from;
         final int end = to;
 
-        final SList<String> ret = list();
+        final $list<String> ret = list();
         int cur = begin;
         for (int i = cur; i < end; i++) {
             final var c = chars[i];
@@ -3094,7 +3094,7 @@ public class Indolently {
         final int begin = from;
         final int end = to;
 
-        final SList<String> ret = list();
+        final $list<String> ret = list();
         int cur = begin;
         for (int i = cur; i < end; i++) {
             if (s.indexOf(sep, cur) == i) {
