@@ -36,24 +36,15 @@ class SListImpl<T>
 
     private final List<T> store;
 
-    public SListImpl() {
-        this(newList());
-    }
+    public SListImpl() { this(newList()); }
 
-    public SListImpl(final List<T> store) {
-        this.store = store;
-    }
+    public SListImpl(final List<T> store) { this.store = store; }
 
-    private static <T> List<T> newList() {
-        return ObjFactory.getInstance().newList();
-    }
+    private static <T> List<T> newList() { return ObjFactory.getInstance().newList(); }
 
     @Override
-    protected List<T> getDelegate() {
-        return this.store;
-    }
+    protected List<T> getDelegate() { return this.store; }
 
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public SList<T> clone() {
         final List<T> newStore = newList();
@@ -62,35 +53,23 @@ class SListImpl<T>
     }
 
     @Override
-    public SIter<T> iterator() {
-        return Indolently.$(this.store.iterator());
-    }
+    public SIter<T> iterator() { return Indolently.$(this.store.iterator()); }
 
     // keep original order
     @Override
-    public SSet<T> set() {
-        return new SSetImpl<>(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this);
-    }
+    public SSet<T> set() { return new SSetImpl<>(ObjFactory.getInstance().<T> newFifoSet()).pushAll(this); }
 
     @Override
-    public T set(final int i, final T val) {
-        return this.store.set(Indolently.idx(this, i), val);
-    }
+    public T set(final int i, final T val) { return this.store.set(Indolently.idx(this, i), val); }
 
     @Override
-    public void add(final int i, final T val) {
-        this.store.add(Indolently.idx(this, i), val);
-    }
+    public void add(final int i, final T val) { this.store.add(Indolently.idx(this, i), val); }
 
     @Override
-    public T remove(final int i) {
-        return this.store.remove(Indolently.idx(this, i));
-    }
+    public T remove(final int i) { return this.store.remove(Indolently.idx(this, i)); }
 
     @Override
-    public T get(final int i) {
-        return this.store.get(Indolently.idx(this, i));
-    }
+    public T get(final int i) { return this.store.get(Indolently.idx(this, i)); }
 
     @Override
     public SList<T> subList(final int from, final int to) {
@@ -112,9 +91,7 @@ class SListImpl<T>
     }
 
     @Override
-    public ListIterator<T> listIterator(final int i) {
-        return this.store.listIterator(Indolently.idx(this, i));
-    }
+    public ListIterator<T> listIterator(final int i) { return this.store.listIterator(Indolently.idx(this, i)); }
 
     // for optimization
     @Override
@@ -122,22 +99,16 @@ class SListImpl<T>
 
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0, Z = this.size(); i < Z; i++) {
-            if (f.test(this.get(i))) {
-                return true;
-            }
+            if (f.test(this.get(i))) return true;
         }
 
         return false;
     }
 
     @Override
-    public int hashCode() {
-        return this.store.hashCode();
-    }
+    public int hashCode() { return this.store.hashCode(); }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
-    public boolean equals(final Object o) {
-        return (this == o) || this.store.equals(o);
-    }
+    public boolean equals(final Object o) { return (this == o) || this.store.equals(o); }
 }

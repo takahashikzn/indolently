@@ -14,7 +14,6 @@
 package jp.root42.indolently;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -37,6 +36,7 @@ import jp.root42.indolently.function.SPred;
 import jp.root42.indolently.function.SPred2;
 import jp.root42.indolently.function.SSuppl;
 import jp.root42.indolently.function.Statement;
+import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 
 import static java.util.Objects.*;
@@ -53,8 +53,7 @@ public class Functional {
     protected Functional() {}
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static <T> Optional<T> apply(final Optional<T> x, final Optional<T> y,
-        final BiFunction<? super T, ? super T, T> f) {
+    public static <T> $<T> apply(final $<T> x, final $<T> y, final BiFunction<? super T, ? super T, T> f) {
         return x.map(x0 -> opt(y.map(y0 -> f.apply(x0, y0)).orElse(x0))).orElse(y);
     }
 
@@ -475,28 +474,28 @@ public class Functional {
         };
     }
 
-    public static <X> Supplier<Optional<X>> soften(final Supplier<X> f) {
+    public static <X> Supplier<$<X>> soften(final Supplier<X> f) {
         return () -> {
             try { return opt(f.get()); } //
             catch (final RuntimeException e) { return none(); }
         };
     }
 
-    public static <X0, X1> Function<X0, Optional<X1>> soften(final Function<X0, X1> f) {
+    public static <X0, X1> Function<X0, $<X1>> soften(final Function<X0, X1> f) {
         return x -> {
             try { return opt(f.apply(x)); } //
             catch (final RuntimeException e) { return none(); }
         };
     }
 
-    public static <X0, X1, X2> BiFunction<X0, X1, Optional<X2>> soften(final BiFunction<X0, X1, X2> f) {
+    public static <X0, X1, X2> BiFunction<X0, X1, $<X2>> soften(final BiFunction<X0, X1, X2> f) {
         return (x0, x1) -> {
             try { return opt(f.apply(x0, x1)); } //
             catch (final RuntimeException e) { return none(); }
         };
     }
 
-    public static <X0, X1, X2, X3> Function3<X0, X1, X2, Optional<X3>> soften(final Function3<X0, X1, X2, X3> f) {
+    public static <X0, X1, X2, X3> Function3<X0, X1, X2, $<X3>> soften(final Function3<X0, X1, X2, X3> f) {
         return (x0, x1, x2) -> {
             try { return opt(f.apply(x0, x1, x2)); } //
             catch (final RuntimeException e) { return none(); }

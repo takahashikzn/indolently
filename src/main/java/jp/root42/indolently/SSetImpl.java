@@ -34,26 +34,16 @@ final class SSetImpl<T>
 
     private final Set<T> store;
 
-    public SSetImpl() {
-        this(ObjFactory.getInstance().newSet());
-    }
+    public SSetImpl() { this(ObjFactory.getInstance().newSet()); }
 
-    public SSetImpl(final Set<T> store) {
-        this.store = store;
-    }
+    public SSetImpl(final Set<T> store) { this.store = store; }
 
     @Override
-    protected Set<T> getDelegate() {
-        return this.store;
-    }
+    protected Set<T> getDelegate() { return this.store; }
 
     @Override
-    public SSet<T> clone() {
-        return SSet.super.clone();
-    }
+    public SSet<T> clone() { return SSet.super.clone(); }
 
     @Override
-    public SIter<T> iterator() {
-        return Indolently.$(this.store.iterator());
-    }
+    public SIter<T> iterator() { return Indolently.$(this.store.iterator()); }
 }

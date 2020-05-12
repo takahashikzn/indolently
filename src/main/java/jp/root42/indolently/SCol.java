@@ -15,7 +15,6 @@ package jp.root42.indolently;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -23,6 +22,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
@@ -108,7 +108,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return {@code this} instance
      */
     @Destructive
-    default SELF push(final Optional<? extends T> value) {
+    default SELF push(final $<? extends T> value) {
         return empty(value) ? this.identity() : this.push(value.get());
     }
 
@@ -120,7 +120,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return {@code this} instance
      */
     @Destructive
-    default SELF pushAll(final Optional<? extends Iterable<? extends T>> values) {
+    default SELF pushAll(final $<? extends Iterable<? extends T>> values) {
         return empty(values) ? this.identity() : this.pushAll(values.get());
     }
 
@@ -273,7 +273,7 @@ public interface SCol<T, SELF extends SCol<T, SELF>>
      * @return map instance.
      */
     default <K, V> SMap<K, V> flatMapMap(final Function<? super T, ? extends K> fkey,
-        final Function<? super T, Optional<? extends V>> fval) {
+        final Function<? super T, $<? extends V>> fval) {
 
         return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
     }

@@ -15,7 +15,6 @@ package jp.root42.indolently;
 
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -26,6 +25,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.SMap.SEntry;
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Freezable;
@@ -139,7 +139,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> push(final K key, final Optional<? extends V> value) {
+    default SMap<K, V> push(final K key, final $<? extends V> value) {
         return Indolently.empty(value) ? this : this.push(key, value.get());
     }
 
@@ -151,7 +151,7 @@ public interface SMap<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default SMap<K, V> pushAll(final Optional<? extends Map<? extends K, ? extends V>> map) {
+    default SMap<K, V> pushAll(final $<? extends Map<? extends K, ? extends V>> map) {
         return Indolently.empty(map) ? this : this.pushAll(map.get());
     }
 
@@ -470,7 +470,7 @@ public interface SMap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> SMap<K, R> flatMap(final Function<? super V, Optional<? extends R>> f) {
+    default <R> SMap<K, R> flatMap(final Function<? super V, $<? extends R>> f) {
         return this.flatMap((k, v) -> f.apply(v));
     }
 
@@ -482,7 +482,7 @@ public interface SMap<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> SMap<K, R> flatMap(final BiFunction<? super K, ? super V, Optional<? extends R>> f) {
+    default <R> SMap<K, R> flatMap(final BiFunction<? super K, ? super V, $<? extends R>> f) {
         return this.flatMap((k, v) -> k, (k, v) -> f.apply(k, v));
     }
 
@@ -497,7 +497,7 @@ public interface SMap<K, V>
      * @return new converted map
      */
     default <K2, V2> SMap<K2, V2> flatMap(final Function<? super K, ? extends K2> fk,
-        final Function<? super V, Optional<? extends V2>> fv) {
+        final Function<? super V, $<? extends V2>> fv) {
 
         return this.flatMap((k, v) -> fk.apply(k), (k, v) -> fv.apply(v));
     }
@@ -513,7 +513,7 @@ public interface SMap<K, V>
      * @return new converted map
      */
     default <K2, V2> SMap<K2, V2> flatMap(final BiFunction<? super K, ? super V, ? extends K2> fk,
-        final BiFunction<? super K, ? super V, Optional<? extends V2>> fv) {
+        final BiFunction<? super K, ? super V, $<? extends V2>> fv) {
 
         return this //
             .entries() //
@@ -540,8 +540,8 @@ public interface SMap<K, V>
      * @param key the key of value
      * @return optional representation of the value
      */
-    default Optional<V> opt(final K key) {
-        return this.containsKey(key) ? Indolently.opt(this.get(key)) : Optional.empty();
+    default $<V> opt(final K key) {
+        return this.containsKey(key) ? Indolently.opt(this.get(key)) : $.empty();
     }
 
     /**

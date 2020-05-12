@@ -14,12 +14,13 @@
 package jp.root42.indolently;
 
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -105,7 +106,7 @@ public interface SSet<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> SSet<R> flatMap(final Function<? super T, Optional<? extends R>> f) {
+    default <R> SSet<R> flatMap(final Function<? super T, $<? extends R>> f) {
         return this.reduce(set(), (x, y) -> x.push(f.apply(y)));
     }
 
@@ -116,7 +117,7 @@ public interface SSet<T>
      * @param f function. first argument is element index, second one is element value
      * @return newly constructed list which contains converted values
      */
-    default <R> SSet<R> flatMap(final BiFunction<Integer, ? super T, Optional<? extends R>> f) {
+    default <R> SSet<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
 
         final var i = ref(0);
 
@@ -191,12 +192,7 @@ public interface SSet<T>
      * @return this instance or other
      */
     default SSet<T> orElseGet(final Supplier<? extends Set<? extends T>> other) {
-
-        if (this.isEmpty()) {
-            return set(other.get());
-        } else {
-            return this;
-        }
+        return this.isEmpty() ? set(other.get()) : this;
     }
 
     @Override

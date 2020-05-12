@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -26,6 +25,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -46,7 +46,6 @@ public interface SList<T>
      * @return clone of this instance
      * @see Cloneable
      */
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
     default SList<T> clone() { return list((Iterable<T>) this); }
 
     /**
@@ -75,11 +74,11 @@ public interface SList<T>
      * @param index index of the element
      * @return the element if exists
      */
-    default Optional<T> opt(final int index) {
+    default $<T> opt(final int index) {
 
         final int i = idx(this, index);
 
-        return (0 <= i) && (i < this.size()) ? Indolently.opt(this.get(i)) : Optional.empty();
+        return (0 <= i) && (i < this.size()) ? Indolently.opt(this.get(i)) : $.empty();
     }
 
     /**
@@ -168,7 +167,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> push(final int idx, final Optional<? extends T> value) {
+    default SList<T> push(final int idx, final $<? extends T> value) {
         return empty(value) ? this : this.push(idx, value.get());
     }
 
@@ -183,7 +182,7 @@ public interface SList<T>
      * @return {@code this} instance
      */
     @Destructive
-    default SList<T> pushAll(final int idx, final Optional<? extends Iterable<? extends T>> values) {
+    default SList<T> pushAll(final int idx, final $<? extends Iterable<? extends T>> values) {
         return empty(values) ? this : this.pushAll(idx, values.get());
     }
 
@@ -235,9 +234,7 @@ public interface SList<T>
             toIndex = this.size();
         }
 
-        if (toIndex < fromIndex) {
-            return list();
-        }
+        if (toIndex < fromIndex) return list();
 
         return this.subList(from, toIndex);
     }
@@ -274,7 +271,7 @@ public interface SList<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> SList<R> flatMap(final Function<? super T, Optional<? extends R>> f) {
+    default <R> SList<R> flatMap(final Function<? super T, $<? extends R>> f) {
         return this.reduce(list(), (x, y) -> x.push(f.apply(y)));
     }
 
@@ -285,7 +282,7 @@ public interface SList<T>
      * @param f function. first argument is element index, second one is element value
      * @return newly constructed list which contains converted values
      */
-    default <R> SList<R> flatMap(final BiFunction<Integer, ? super T, Optional<? extends R>> f) {
+    default <R> SList<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
 
         final var i = ref(0);
 
@@ -470,16 +467,14 @@ public interface SList<T>
     }
 
     @Override
-    default Optional<T> last(final Predicate<? super T> f) {
+    default $<T> last(final Predicate<? super T> f) {
 
         for (int i = this.size() - 1; 0 <= i; i--) {
             final var val = this.get(i);
 
-            if (f.test(val)) {
-                return Optional.of(val);
-            }
+            if (f.test(val)) return $.of(val);
         }
 
-        return Optional.empty();
+        return $.empty();
     }
 }

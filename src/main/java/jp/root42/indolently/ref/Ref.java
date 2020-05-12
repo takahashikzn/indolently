@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -44,8 +43,8 @@ public interface Ref<T, S extends Ref<T, S>>
      * @param f any operation
      * @return optional representation of the value
      */
-    default Optional<T> optThen(final Consumer<? super S> f) {
-        final Optional<T> curr = this.opt();
+    default $<T> optThen(final Consumer<? super S> f) {
+        final var curr = this.opt();
         f.accept(this.identity());
         return curr;
     }
@@ -69,7 +68,7 @@ public interface Ref<T, S extends Ref<T, S>>
      *
      * @return optional representation of the value
      */
-    default Optional<T> opt() { return Indolently.opt(this.get()); }
+    default $<T> opt() { return Indolently.opt(this.get()); }
 
     /**
      * get value if exists, otherwise use the value from supplier as this reference's value.

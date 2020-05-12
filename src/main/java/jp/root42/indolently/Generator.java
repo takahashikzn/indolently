@@ -16,8 +16,9 @@ package jp.root42.indolently;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
+
+import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -34,9 +35,7 @@ public interface Generator<T>
      *
      * @return actually never return any value.
      */
-    static <T> T breaks() {
-        throw new Break();
-    }
+    static <T> T breaks() { throw new Break(); }
 
     /**
      * @author takahashikzn
@@ -63,15 +62,12 @@ public interface Generator<T>
 
             private boolean stopped; // NOPMD
 
-            private Optional<T> cur; // NOPMD
+            private $<T> cur; // NOPMD
 
             @Override
             public boolean hasNext() {
-                if (this.stopped) {
-                    return false;
-                } else if (!isNull(this.cur)) {
-                    return true;
-                }
+                if (this.stopped) return false;
+                if (!isNull(this.cur)) return true;
 
                 //noinspection UnusedCatchParameter
                 try {
@@ -83,12 +79,9 @@ public interface Generator<T>
                 }
             }
 
-            @SuppressWarnings("OptionalAssignedToNull")
             @Override
             public T next() {
-                if (!this.hasNext()) {
-                    throw new NoSuchElementException();
-                }
+                if (!this.hasNext()) throw new NoSuchElementException();
 
                 final var val = this.cur.get();
                 this.cur = null;

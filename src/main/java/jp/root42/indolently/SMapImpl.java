@@ -35,21 +35,13 @@ final class SMapImpl<K, V>
 
     private final Map<K, V> store;
 
-    public SMapImpl() {
-        this(ObjFactory.getInstance().newMap());
-    }
+    public SMapImpl() { this(ObjFactory.getInstance().newMap()); }
 
-    public SMapImpl(final Map<K, V> store) {
-        this.store = store;
-    }
+    public SMapImpl(final Map<K, V> store) { this.store = store; }
 
     @Override
-    protected Map<K, V> getDelegate() {
-        return this.store;
-    }
+    protected Map<K, V> getDelegate() { return this.store; }
 
     @Override
-    public SMap<K, V> clone() {
-        return SMap.super.clone();
-    }
+    public SMap<K, V> clone() { return SMap.super.clone(); }
 }

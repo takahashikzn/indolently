@@ -14,11 +14,11 @@
 package jp.root42.indolently.trait;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import jp.root42.indolently.function.Function3;
+import jp.root42.indolently.ref.$;
 
 
 /**
@@ -48,7 +48,7 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      * @see #mapred(Function, BiFunction)
      */
-    default Optional<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
+    default $<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
         return this.reduce((x, y, z) -> f.apply(y, z));
     }
 
@@ -61,7 +61,7 @@ public interface Reducible<T> {
      * @return result value
      * @throws NoSuchElementException if this collection is empty
      */
-    default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
+    default <R> $<R> mapred(final Function<? super T, ? extends R> fm,
         final BiFunction<? super R, ? super R, ? extends R> fr) {
 
         return this.mapred(fm, (x, y, z) -> fr.apply(y, z));
@@ -77,7 +77,7 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if the result not present
      */
     default <R> R reduce(final R initial, final Function3<Integer, ? super R, ? super T, ? extends R> f) {
-        return this.reduce(Optional.of(initial), f).get();
+        return this.reduce($.of(initial), f).get();
     }
 
     /**
@@ -88,7 +88,7 @@ public interface Reducible<T> {
      * @param f function
      * @return result value
      */
-    <R> Optional<R> reduce(Optional<? extends R> initial, Function3<Integer, ? super R, ? super T, ? extends R> f);
+    <R> $<R> reduce($<? extends R> initial, Function3<Integer, ? super R, ? super T, ? extends R> f);
 
     /**
      * Reduce operation.
@@ -98,7 +98,7 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      * @see #mapred(Function, BiFunction)
      */
-    default Optional<T> reduce(final Function3<Integer, ? super T, ? super T, ? extends T> f) {
+    default $<T> reduce(final Function3<Integer, ? super T, ? super T, ? extends T> f) {
         return this.mapred(x -> x, f);
     }
 
@@ -111,6 +111,5 @@ public interface Reducible<T> {
      * @return result value
      * @throws NoSuchElementException if this collection is empty
      */
-    <R> Optional<R> mapred(Function<? super T, ? extends R> fm,
-        Function3<Integer, ? super R, ? super R, ? extends R> fr);
+    <R> $<R> mapred(Function<? super T, ? extends R> fm, Function3<Integer, ? super R, ? super R, ? extends R> fr);
 }

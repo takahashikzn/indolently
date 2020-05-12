@@ -14,8 +14,9 @@
 package jp.root42.indolently;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.function.Function;
+
+import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
@@ -83,30 +84,30 @@ public final class Numeric {
 
     public static boolean asBool(final String s) { return Boolean.parseBoolean(s); }
 
-    private static <T> Optional<T> parseX(final String s, final Function<String, T> f) {
+    private static <T> $<T> parseX(final String s, final Function<String, T> f) {
         try {
-            return (s == null) ? Optional.empty() : Optional.of(f.apply(s));
+            return (s == null) ? $.empty() : $.of(f.apply(s));
         } catch (final IllegalArgumentException e) {
-            return Optional.empty();
+            return $.empty();
         }
     }
 
-    public static Optional<Integer> parseInt(final String s) {
+    public static $<Integer> parseInt(final String s) {
         final var i = intCache.get(s);
-        return (i != null) ? Optional.of(i) : parseX(s, Integer::parseInt);
+        return (i != null) ? $.of(i) : parseX(s, Integer::parseInt);
     }
 
-    public static Optional<Long> parseLong(final String s) { return parseX(s, Long::parseLong); }
+    public static $<Long> parseLong(final String s) { return parseX(s, Long::parseLong); }
 
-    public static Optional<Short> parseShort(final String s) { return parseX(s, Short::parseShort); }
+    public static $<Short> parseShort(final String s) { return parseX(s, Short::parseShort); }
 
-    public static Optional<Byte> parseByte(final String s) { return parseX(s, Byte::parseByte); }
+    public static $<Byte> parseByte(final String s) { return parseX(s, Byte::parseByte); }
 
-    public static Optional<Float> parseFloat(final String s) { return parseX(s, Float::parseFloat); }
+    public static $<Float> parseFloat(final String s) { return parseX(s, Float::parseFloat); }
 
-    public static Optional<Double> parseDouble(final String s) { return parseX(s, Double::parseDouble); }
+    public static $<Double> parseDouble(final String s) { return parseX(s, Double::parseDouble); }
 
-    public static Optional<Boolean> parseBool(final String s) { return parseX(s, Boolean::parseBoolean); }
+    public static $<Boolean> parseBool(final String s) { return parseX(s, Boolean::parseBoolean); }
 
     // public static char asChar(final String s) { return s.charAt(0); }
 

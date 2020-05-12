@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
+import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.Freezable;
 
 import static jp.root42.indolently.Indolently.array;
@@ -292,6 +293,10 @@ public class IndolentlyTest {
 
             //noinspection SuspiciousArrayCast
             assertThat(empty((CharSequence[]) args)).isEqualTo(expected);
+        } else if (type == $.class) {
+
+            //noinspection SuspiciousArrayCast
+            assertThat(empty(($[]) args)).isEqualTo(expected);
         } else if (type == Optional.class) {
 
             //noinspection SuspiciousArrayCast
@@ -502,8 +507,8 @@ public class IndolentlyTest {
 
         Collections.shuffle(ints);
 
-        assertThat(min(ints)).isEqualTo(Optional.of(1));
-        assertThat(max(ints)).isEqualTo(Optional.of(100));
+        assertThat$(min(ints)).hasValue(1);
+        assertThat$(max(ints)).hasValue(100);
 
         // explicit type annotation is required for OrackeJDK' compiler
         assertThat(min(Indolently.<String> list()).isPresent()).isFalse();

@@ -14,9 +14,10 @@
 package jp.root42.indolently.trait;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -45,15 +46,13 @@ public interface EdgeAwareIterable<T>
      * @return first element as optional representation
      * @throws NullPointerException if the value which satisfy the condition is null
      */
-    default Optional<T> head(final Predicate<? super T> f) {
+    default $<T> head(final Predicate<? super T> f) {
 
         for (final T val: this) {
-            if (f.test(val)) {
-                return Optional.of(val);
-            }
+            if (f.test(val)) return $.of(val);
         }
 
-        return Optional.empty();
+        return $.empty();
     }
 
     /**
@@ -94,7 +93,7 @@ public interface EdgeAwareIterable<T>
      * @return last element as optional representation
      * @throws NullPointerException if the value which satisfy the condition is null
      */
-    default Optional<T> last(final Predicate<? super T> f) {
+    default $<T> last(final Predicate<? super T> f) {
 
         T rslt = null;
 
@@ -104,7 +103,7 @@ public interface EdgeAwareIterable<T>
             }
         }
 
-        return Optional.ofNullable(rslt);
+        return $.of(rslt);
     }
 
     /**

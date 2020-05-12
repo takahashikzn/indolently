@@ -13,11 +13,10 @@
 // limitations under the License.
 package jp.root42.indolently.trait;
 
-import java.util.Iterator;
-import java.util.Optional;
 import java.util.function.Function;
 
 import jp.root42.indolently.function.Function3;
+import jp.root42.indolently.ref.$;
 
 
 /**
@@ -28,14 +27,12 @@ public interface ReducibleIterable<T>
     extends Iterable<T>, Reducible<T> {
 
     @Override
-    default <R> Optional<R> mapred(final Function<? super T, ? extends R> fm,
+    default <R> $<R> mapred(final Function<? super T, ? extends R> fm,
         final Function3<Integer, ? super R, ? super R, ? extends R> fr) {
 
-        final Iterator<T> i = this.iterator();
+        final var i = this.iterator();
 
-        if (!i.hasNext()) {
-            return Optional.empty();
-        }
+        if (!i.hasNext()) return $.empty();
 
         R rem = fm.apply(i.next());
 
@@ -44,20 +41,20 @@ public interface ReducibleIterable<T>
             rem = fr.apply(idx++, rem, fm.apply(i.next()));
         }
 
-        return Optional.ofNullable(rem);
+        return $.of(rem);
     }
 
     @Override
-    default <R> Optional<R> reduce(final Optional<? extends R> initial,
+    default <R> $<R> reduce(final $<? extends R> initial,
         final Function3<Integer, ? super R, ? super T, ? extends R> f) {
 
-        R rem = initial.orElse(null);
+        var rem = initial.orElse(null);
 
         int idx = 0;
         for (final T val: this) {
             rem = f.apply(idx++, rem, val);
         }
 
-        return Optional.ofNullable(rem);
+        return $.of(rem);
     }
 }

@@ -42,6 +42,7 @@ import java.util.stream.Stream;
 
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.function.Statement;
+import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
 import jp.root42.indolently.ref.$bool;
@@ -61,6 +62,9 @@ import jp.root42.indolently.regex.SPtrnJDK;
 import jp.root42.indolently.regex.SPtrnRE2;
 
 import static jp.root42.indolently.Expressive.*;
+
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.OptionalAssert;
 
 
 /**
@@ -98,7 +102,7 @@ public class Indolently {
         return (T) o;
     }
 
-    public static <T> Function<Object, Optional<T>> castTo(final Class<T> type) {
+    public static <T> Function<Object, $<T>> castTo(final Class<T> type) {
         return x -> opt(x).filter(type::isInstance).map(type::cast);
     }
 
@@ -221,7 +225,7 @@ public class Indolently {
      * @param value collection value
      * @return Optional representation of collection
      */
-    public static <T extends Map<?, ?>> Optional<T> nonEmpty(final T value) {
+    public static <T extends Map<?, ?>> $<T> nonEmpty(final T value) {
         return optionalEmpty(value);
     }
 
@@ -234,8 +238,8 @@ public class Indolently {
      * @return Optional representation of collection
      * @see #empty(Map)
      */
-    public static <T extends Map<?, ?>> Optional<T> optionalEmpty(final T value) {
-        return empty(value) ? Optional.empty() : Optional.of(value);
+    public static <T extends Map<?, ?>> $<T> optionalEmpty(final T value) {
+        return empty(value) ? $.empty() : $.of(value);
     }
 
     /**
@@ -245,7 +249,7 @@ public class Indolently {
      * @param value collection value
      * @return Optional representation of collection
      */
-    public static <T extends Iterable<?>> Optional<T> nonEmpty(final T value) {
+    public static <T extends Iterable<?>> $<T> nonEmpty(final T value) {
         return optionalEmpty(value);
     }
 
@@ -258,8 +262,8 @@ public class Indolently {
      * @return Optional representation of collection
      * @see #empty(Iterable)
      */
-    public static <T extends Iterable<?>> Optional<T> optionalEmpty(final T value) {
-        return empty(value) ? Optional.empty() : Optional.of(value);
+    public static <T extends Iterable<?>> $<T> optionalEmpty(final T value) {
+        return empty(value) ? $.empty() : $.of(value);
     }
 
     /**
@@ -269,7 +273,7 @@ public class Indolently {
      * @param value string value
      * @return Optional representation of string
      */
-    public static <T extends CharSequence> Optional<T> nonEmpty(final T value) {
+    public static <T extends CharSequence> $<T> nonEmpty(final T value) {
         return optionalEmpty(value);
     }
 
@@ -282,8 +286,8 @@ public class Indolently {
      * @return Optional representation of string
      * @see #empty(CharSequence)
      */
-    public static <T extends CharSequence> Optional<T> optionalEmpty(final T value) {
-        return empty(value) ? Optional.empty() : Optional.of(value);
+    public static <T extends CharSequence> $<T> optionalEmpty(final T value) {
+        return empty(value) ? $.empty() : $.of(value);
     }
 
     /**
@@ -293,7 +297,7 @@ public class Indolently {
      * @param value string value
      * @return Optional representation of string
      */
-    public static <T extends CharSequence> Optional<T> nonBlank(final T value) {
+    public static <T extends CharSequence> $<T> nonBlank(final T value) {
         return optionalBlank(value);
     }
 
@@ -306,8 +310,8 @@ public class Indolently {
      * @return Optional representation of string
      * @see #blank(CharSequence)
      */
-    public static <T extends CharSequence> Optional<T> optionalBlank(final T value) {
-        return blank(value) ? Optional.empty() : Optional.of(value);
+    public static <T extends CharSequence> $<T> optionalBlank(final T value) {
+        return blank(value) ? $.empty() : $.of(value);
     }
 
     /**
@@ -317,18 +321,25 @@ public class Indolently {
      * @param value the value
      * @return Optional representation of value
      */
-    public static <T> Optional<T> nonNull(final T value) { return opt(value); }
+    public static <T> $<T> nonNull(final T value) { return opt(value); }
+
+    /**
+     * An alias of {@link $#empty()}.
+     *
+     * @return Optional representation of nothing
+     */
+    public static <T> $<T> none() { return $.empty(); }
 
     /**
      * An alias of {@link Optional#empty()}.
      *
      * @return Optional representation of nothing
      */
-    public static <T> Optional<T> none() { return Optional.empty(); }
+    public static <T> Optional<T> none$() { return Optional.empty(); }
 
-    public static <T> T nullable(final Optional<T> value) { return value.orElse(null); }
+    public static <T> T nullable(final $<T> value) { return value.orElse(null); }
 
-    public static <T> Function<T, Optional<T>> opt() { return x -> opt(x); }
+    public static <T> Function<T, $<T>> opt() { return x -> opt(x); }
 
     /**
      * An alias of {@link Optional#ofNullable(Object)}.
@@ -337,7 +348,7 @@ public class Indolently {
      * @param value the value
      * @return Optional representation of value
      */
-    public static <T> Optional<T> opt(final T value) { return Optional.ofNullable(value); }
+    public static <T> $<T> opt(final T value) { return $.of(value); }
 
     /**
      * An alias of {@link Optional#ofNullable(Object)}.
@@ -349,54 +360,54 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> Optional<T> opt(final T value, final Consumer<? super T>... consumers) {
-        final Optional<T> opt = opt(value);
+    public static <T> $<T> opt(final T value, final Consumer<? super T>... consumers) {
+        final $<T> opt = opt(value);
         list(consumers).each(f -> opt.ifPresent(f));
         return opt;
     }
 
-    public static <T1, T2, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
-        final Function<T2, R> last) {
+    public static <T1, T2, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, R> last) {
         return root.map(c1).flatMap(opt()).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
-        final Function<T2, T3> c2, final Function<T3, R> last) {
+    public static <T1, T2, T3, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2,
+        final Function<T3, R> last) {
         return opt(root, c1, c2).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, T4, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
-        final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, R> last) {
+    public static <T1, T2, T3, T4, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2,
+        final Function<T3, T4> c3, final Function<T4, R> last) {
         return opt(root, c1, c2, c3).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, T4, T5, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, T5, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, R> last) {
         return opt(root, c1, c2, c3, c4).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, T3, T4, T5, T6, R> Optional<R> opt(final Optional<T1> root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
         final Function<T6, R> last) {
         return opt(root, c1, c2, c3, c4, c5).map(last).flatMap(opt());
     }
 
-    public static <T1, T2, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
+    public static <T1, T2, R> $<R> opt(final T1 root, final Function<T1, T2> c1,
         final Function<T2, R> last) { return opt(opt(root), c1, last); }
 
-    public static <T1, T2, T3, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
+    public static <T1, T2, T3, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
         final Function<T3, R> last) { return opt(opt(root), c1, c2, last); }
 
-    public static <T1, T2, T3, T4, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
-        final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, R> last) {
+    public static <T1, T2, T3, T4, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
+        final Function<T3, T4> c3, final Function<T4, R> last) {
         return opt(opt(root), c1, c2, c3, last);
     }
 
-    public static <T1, T2, T3, T4, T5, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
-        final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4,
-        final Function<T5, R> last) { return opt(opt(root), c1, c2, c3, c4, last);}
+    public static <T1, T2, T3, T4, T5, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
+        final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, R> last) {
+        return opt(opt(root), c1, c2, c3, c4, last);
+    }
 
-    public static <T1, T2, T3, T4, T5, T6, R> Optional<R> opt(final T1 root, final Function<T1, T2> c1,
+    public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final T1 root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
         final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last);}
 
@@ -519,7 +530,7 @@ public class Indolently {
      * @param elem element of the list
      * @return new list
      */
-    public static <T> SList<T> list(final Optional<? extends T> elem) {
+    public static <T> SList<T> list(final $<? extends T> elem) {
         return new SListImpl<T>().push(elem);
     }
 
@@ -556,15 +567,15 @@ public class Indolently {
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <V, T extends Predicate<V>> Optional<T> find(final V cond, final T... preds) {
+    public static <V, T extends Predicate<V>> $<T> find(final V cond, final T... preds) {
 
         for (final T p: preds) {
             if (p.test(cond)) {
-                return Optional.of(p);
+                return $.of(p);
             }
         }
 
-        return Optional.empty();
+        return $.empty();
     }
 
     /**
@@ -779,11 +790,11 @@ public class Indolently {
         });
     }
 
-    public static <T> Optional<T> head(final T[] ary) {
+    public static <T> $<T> head(final T[] ary) {
         return empty(ary) ? none() : opt(ary[0]);
     }
 
-    public static <T> Optional<T> last(final T[] ary) {
+    public static <T> $<T> last(final T[] ary) {
         return empty(ary) ? none() : opt(ary[ary.length - 1]);
     }
 
@@ -885,7 +896,7 @@ public class Indolently {
         return list;
     }
 
-    public static <T> SSet<T> set(final Optional<? extends T> elem) {
+    public static <T> SSet<T> set(final $<? extends T> elem) {
         return new SSetImpl<T>().push(elem);
     }
 
@@ -1083,9 +1094,23 @@ public class Indolently {
      * @param opt test target
      * @return test result
      */
-    public static boolean empty(final Optional<?> opt) {
-        return isNull(opt) || !opt.isPresent();
-    }
+    public static boolean empty(final $<?> opt) { return isNull(opt) || !opt.isPresent(); }
+
+    /**
+     * test whether the argument is present or not.
+     *
+     * @param opt test target
+     * @return test result
+     */
+    public static boolean empty(final $<?>... opt) { return empty((Object[]) opt) || list(opt).every(x -> empty(x)); }
+
+    /**
+     * test whether the argument is present or not.
+     *
+     * @param opt test target
+     * @return test result
+     */
+    public static boolean empty(final Optional<?> opt) { return isNull(opt) || !opt.isPresent(); }
 
     /**
      * test whether the argument is present or not.
@@ -1117,19 +1142,19 @@ public class Indolently {
         return empty((Object[]) cs) || list(cs).every(x -> empty(x));
     }
 
-    public static boolean present(final Optional<?> opt) {
+    public static boolean present(final $<?> opt) {
         return !empty(opt);
     }
 
-    public static boolean presentAny(final Optional<?> x, final Optional<?> y, final Optional<?>... rest) {
+    public static boolean presentAny(final $<?> x, final $<?> y, final $<?>... rest) {
         return present(x) || present(y) || list(rest).some(o -> present(o));
     }
 
-    public static boolean presentAll(final Optional<?> x, final Optional<?> y, final Optional<?>... rest) {
+    public static boolean presentAll(final $<?> x, final $<?> y, final $<?>... rest) {
         return present(x) && present(y) && list(rest).every(o -> present(o));
     }
 
-    public static boolean presentNone(final Optional<?> x, final Optional<?> y, final Optional<?>... rest) {
+    public static boolean presentNone(final $<?> x, final $<?> y, final $<?>... rest) {
         return !presentAny(x, y, rest);
     }
 
@@ -1927,37 +1952,27 @@ public class Indolently {
         return min(list(rest)).map(x -> min(x, min(first, second))).orElseGet(() -> min(first, second));
     }
 
-    public static <T extends Comparable<T>> Optional<T> max(final Iterable<T> values) {
+    public static <T extends Comparable<T>> $<T> max(final Iterable<T> values) {
         return list(values).reduce((l, r) -> max(l, r));
     }
 
-    public static <T extends Comparable<T>> Optional<T> min(final Iterable<T> values) {
+    public static <T extends Comparable<T>> $<T> min(final Iterable<T> values) {
         return list(values).reduce((l, r) -> min(l, r));
     }
 
-    public static Class<?> typed(final Class cls) {
-        return cls;
-    }
+    public static Class<?> typed(final Class cls) { return cls; }
 
-    public static Map<?, ?> typed(final Map raw) {
-        return raw;
-    }
+    public static Map<?, ?> typed(final Map raw) { return raw; }
 
-    public static List<?> typed(final List raw) {
-        return raw;
-    }
+    public static List<?> typed(final List raw) { return raw; }
 
-    public static Set<?> typed(final Set raw) {
-        return raw;
-    }
+    public static Set<?> typed(final Set raw) { return raw; }
 
     public static <K, V> SMap<K, V> map(final Map<? extends K, ? extends V> map) {
         return new SMapImpl<K, V>().pushAll(opt(map));
     }
 
-    public static <K, V> SMap<K, V> map() {
-        return new SMapImpl<>();
-    }
+    public static <K, V> SMap<K, V> map() { return new SMapImpl<>(); }
 
     /**
      * Just for producing compilation warning.
@@ -2136,30 +2151,20 @@ public class Indolently {
      * @return wrapped iterator
      */
     public static <T> SIter<T> $(final Iterator<? extends T> iter) {
-        if (iter == null) {
-            return null;
-        }
+        if (iter == null) return null;
 
-        if (iter instanceof SIter) {
-            return cast(iter);
-        }
+        if (iter instanceof SIter) return cast(iter);
 
         return new SIter<T>() {
 
             @Override
-            public boolean hasNext() {
-                return iter.hasNext();
-            }
+            public boolean hasNext() { return iter.hasNext(); }
 
             @Override
-            public T next() {
-                return iter.next();
-            }
+            public T next() { return iter.next(); }
 
             @Override
-            public void remove() {
-                iter.remove();
-            }
+            public void remove() { iter.remove(); }
         };
     }
 
@@ -2186,7 +2191,7 @@ public class Indolently {
     }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> SMap<K, V> map(final K key, final Optional<? extends V> val) {
+    public static <K, V> SMap<K, V> map(final K key, final $<? extends V> val) {
         return (SMap<K, V>) map().push(key, val);
     }
 
@@ -2820,91 +2825,53 @@ public class Indolently {
         };
     }
 
-    public static <T extends Comparable<T>> Predicate<T> lt(final T r) {
-        return lt(it(), r);
-    }
+    public static <T extends Comparable<T>> Predicate<T> lt(final T r) { return lt(it(), r); }
 
-    public static <T extends Comparable<T>> Predicate<T> le(final T r) {
-        return le(it(), r);
-    }
+    public static <T extends Comparable<T>> Predicate<T> le(final T r) { return le(it(), r); }
 
-    public static <T extends Comparable<T>> Predicate<T> gt(final T r) {
-        return gt(it(), r);
-    }
+    public static <T extends Comparable<T>> Predicate<T> gt(final T r) { return gt(it(), r); }
 
-    public static <T extends Comparable<T>> Predicate<T> ge(final T r) {
-        return ge(it(), r);
-    }
+    public static <T extends Comparable<T>> Predicate<T> ge(final T r) { return ge(it(), r); }
 
-    public static <T extends Comparable<T>> Predicate<T> gtlt(final T l, final T u) {
-        return gtlt(it(), l, u);
-    }
+    public static <T extends Comparable<T>> Predicate<T> gtlt(final T l, final T u) { return gtlt(it(), l, u); }
 
-    public static <T extends Comparable<T>> Predicate<T> gelt(final T l, final T u) {
-        return gelt(it(), l, u);
-    }
+    public static <T extends Comparable<T>> Predicate<T> gelt(final T l, final T u) { return gelt(it(), l, u); }
 
-    public static <T extends Comparable<T>> Predicate<T> gtle(final T l, final T u) {
-        return gtle(it(), l, u);
-    }
+    public static <T extends Comparable<T>> Predicate<T> gtle(final T l, final T u) { return gtle(it(), l, u); }
 
-    public static <T extends Comparable<T>> Predicate<T> gele(final T l, final T u) {
-        return gele(it(), l, u);
-    }
+    public static <T extends Comparable<T>> Predicate<T> gele(final T l, final T u) { return gele(it(), l, u); }
 
     private static final Predicate<? extends Iterable<?>> hollow = x -> empty(x);
 
-    public static <X extends Iterable<T>, T> Predicate<X> hollow() {
-        return cast(hollow);
-    }
+    public static <X extends Iterable<T>, T> Predicate<X> hollow() { return cast(hollow); }
 
     private static final Predicate<? extends CharSequence> empty = empty(it());
 
-    public static <T extends CharSequence> Predicate<T> empty() {
-        return cast(empty);
-    }
+    public static <T extends CharSequence> Predicate<T> empty() { return cast(empty); }
 
-    private static final Predicate<Optional<?>> present = Optional::isPresent;
+    private static final Predicate<$<?>> present = $::isPresent;
 
-    public static Predicate<Optional<?>> present() {
-        return present;
-    }
+    public static Predicate<$<?>> present() { return present; }
 
     private static final Predicate<? extends CharSequence> blank = blank(it());
 
-    public static <T extends CharSequence> Predicate<T> blank() {
-        return cast(blank);
-    }
+    public static <T extends CharSequence> Predicate<T> blank() { return cast(blank); }
 
-    public static <T> Predicate<T> isa(final Class<?> cls) {
-        return isa(it(), cls);
-    }
+    public static <T> Predicate<T> isa(final Class<?> cls) { return isa(it(), cls); }
 
-    public static Predicate<Class<?>> assignable(final Class<?> cls) {
-        return assignable(it(), cls);
-    }
+    public static Predicate<Class<?>> assignable(final Class<?> cls) { return assignable(it(), cls); }
 
-    public static <T> Predicate<T> same(final T val) {
-        return x -> (x == val);
-    }
+    public static <T> Predicate<T> same(final T val) { return x -> (x == val); }
 
-    public static <T> Predicate<T> eq(final T val) {
-        return eq(it(), val);
-    }
+    public static <T> Predicate<T> eq(final T val) { return eq(it(), val); }
 
-    public static <T extends Comparable<T>> Predicate<T> eq(final T val) {
-        return eq(it(), val);
-    }
+    public static <T extends Comparable<T>> Predicate<T> eq(final T val) { return eq(it(), val); }
 
-    public static <T> Predicate<T> in(final Collection<? extends T> val) {
-        return in(it(), val);
-    }
+    public static <T> Predicate<T> in(final Collection<? extends T> val) { return in(it(), val); }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> Predicate<T> in(final T... val) {
-        return in(it(), val);
-    }
+    public static <T> Predicate<T> in(final T... val) { return in(it(), val); }
 
     public static <X, T extends Comparable<T>> Predicate<X> lt(final Function<X, ? extends T> f, final T r) {
         return l -> lt(f.apply(l), r);
@@ -3148,12 +3115,12 @@ public class Indolently {
         }
     }
 
-    public static <E extends Enum<E>> Optional<E> enumOf(final Class<E> type, final String name) {
+    public static <E extends Enum<E>> $<E> enumOf(final Class<E> type, final String name) {
         try { return opt(Enum.valueOf(type, name)); } //
         catch (final IllegalArgumentException e) { return none(); }
     }
 
-    public static <E extends Enum<E>> Function<String, Optional<E>> enumOf(final Class<E> type) {
+    public static <E extends Enum<E>> Function<String, $<E>> enumOf(final Class<E> type) {
         return x -> enumOf(type, x);
     }
 
@@ -3162,14 +3129,49 @@ public class Indolently {
         return (E[]) eval(() -> type.getDeclaredMethod("values").invoke(null));
     }
 
-    public static <E extends Enum<E>> Optional<E> ienumOf(final Class<E> type, final String name) {
+    public static <E extends Enum<E>> $<E> ienumOf(final Class<E> type, final String name) {
         for (final var e: enumValues(type)) {
             if (e.name().equalsIgnoreCase(name)) return opt(e);
         }
         return none();
     }
 
-    public static <E extends Enum<E>> Function<String, Optional<E>> ienumOf(final Class<E> type) {
+    public static <E extends Enum<E>> Function<String, $<E>> ienumOf(final Class<E> type) {
         return x -> ienumOf(type, x);
+    }
+
+    public static <VALUE> OptionalAssert<VALUE> assertThat(final Optional<VALUE> actual) {
+        return Assertions.assertThat(actual);
+    }
+
+    public static <VALUE> OptionalAssert<VALUE> assertThat(final $<VALUE> actual) { return assertThat$(actual); }
+
+    public static <VALUE> OptionalAssert<VALUE> assertThat$(final $<VALUE> actual) {
+        return new OptionalAssert<>(actual.opt) {
+
+            @SuppressWarnings("rawtypes")
+            @Override
+            public OptionalAssert<VALUE> isEqualTo(final Object expected) {
+                if (expected instanceof $) {
+                    this.objects.assertEqual(this.info, this.actual, (($) expected).opt);
+                } else {
+                    this.objects.assertEqual(this.info, this.actual, expected);
+                }
+
+                return this.myself;
+            }
+
+            @SuppressWarnings("rawtypes")
+            @Override
+            public OptionalAssert<VALUE> isNotEqualTo(final Object other) {
+                if (other instanceof $) {
+                    this.objects.assertNotEqual(this.info, this.actual, (($) other).opt);
+                } else {
+                    this.objects.assertNotEqual(this.info, this.actual, other);
+                }
+
+                return this.myself;
+            }
+        };
     }
 }

@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -25,6 +24,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
 import jp.root42.indolently.trait.Loopable;
@@ -44,22 +44,16 @@ public interface SIter<T>
     ReducibleIterable<T>, Matchable<T> {
 
     @Override
-    default T get() {
-        return this.next();
-    }
+    default T get() { return this.next(); }
 
     @Override
-    default Iterator<T> iterator() {
-        return this;
-    }
+    default Iterator<T> iterator() { return this; }
 
     @Override
     default boolean some(final Predicate<? super T> f) {
 
         for (final T val: this) {
-            if (f.test(val)) {
-                return true;
-            }
+            if (f.test(val)) return true;
         }
 
         return false;
@@ -81,15 +75,11 @@ public interface SIter<T>
         return new SIter<T>() {
 
             @Override
-            public boolean hasNext() {
-                return hasNext.test(env);
-            }
+            public boolean hasNext() { return hasNext.test(env); }
 
             @Override
             public T next() {
-                if (!this.hasNext()) {
-                    throw new NoSuchElementException();
-                }
+                if (!this.hasNext()) throw new NoSuchElementException();
 
                 return next.apply(env);
             }
@@ -108,25 +98,21 @@ public interface SIter<T>
     @Override
     default SIter<T> filter(final Predicate<? super T> f) {
 
-        //noinspection IteratorHasNextCallsIteratorNext
         return new SIter<T>() {
 
-            private Optional<T> cur;
+            private $<T> cur;
 
             @Override
             public boolean hasNext() {
 
                 while (true) {
-                    if (!Indolently.isNull(this.cur)) {
-                        return true;
-                    } else if (!SIter.this.hasNext()) {
-                        return false;
-                    }
+                    if (!Indolently.isNull(this.cur)) return true;
+                    if (!SIter.this.hasNext()) return false;
 
                     final var val = SIter.this.next();
 
                     if (f.test(val)) {
-                        this.cur = Optional.ofNullable(val);
+                        this.cur = $.of(val);
                         return true;
                     }
                 }
@@ -134,12 +120,9 @@ public interface SIter<T>
 
             @Override
             public T next() {
-                if (!this.hasNext()) {
-                    throw new NoSuchElementException();
-                }
+                if (!this.hasNext()) throw new NoSuchElementException();
 
                 final var val = this.cur.get();
-                //noinspection OptionalAssignedToNull
                 this.cur = null;
                 return val;
             }
@@ -162,9 +145,7 @@ public interface SIter<T>
      *
      * @return a list
      */
-    default SList<T> list() {
-        return Indolently.list(this);
-    }
+    default SList<T> list() { return Indolently.list(this); }
 
     /**
      * create a {@link Stream} view of this iterator.
@@ -193,7 +174,6 @@ public interface SIter<T>
     default <R> SIter<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
         Objects.requireNonNull(f);
 
-        // noinspection IteratorHasNextCallsIteratorNext
         return new SIter<R>() {
 
             private Iterator<? extends R> cur = Iterative.iterator();
@@ -201,16 +181,12 @@ public interface SIter<T>
             @Override
             public boolean hasNext() {
 
-                if (this.cur.hasNext()) {
-                    return true;
-                }
+                if (this.cur.hasNext()) return true;
 
                 while (SIter.this.hasNext()) {
                     this.cur = f.apply(SIter.this.next()).iterator();
 
-                    if (this.cur.hasNext()) {
-                        return true;
-                    }
+                    if (this.cur.hasNext()) return true;
                 }
 
                 return false;
