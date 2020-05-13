@@ -19,10 +19,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static jp.root42.indolently.Expressive.*;
-import static jp.root42.indolently.Indolently.assertThat;
 import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.map;
 import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.TestHelper.*;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -41,11 +41,11 @@ public class $listTest {
     @Test
     public void opt() {
 
-        assertThat(list().opt(0)).isEmpty();
-        assertThat(list('a').opt(0)).contains('a');
-        assertThat(list('a').opt(1)).isEmpty();
-        assertThat(list('a').opt(-1)).contains('a');
-        assertThat(list('a').opt(-2)).isEmpty();
+        assertThat$(list().opt(0)).isEmpty();
+        assertThat$(list('a').opt(0)).contains('a');
+        assertThat$(list('a').opt(1)).isEmpty();
+        assertThat$(list('a').opt(-1)).contains('a');
+        assertThat$(list('a').opt(-2)).isEmpty();
     }
 
     /**

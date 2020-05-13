@@ -63,9 +63,6 @@ import jp.root42.indolently.regex.SPtrnRE2;
 
 import static jp.root42.indolently.Expressive.*;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.OptionalAssert;
-
 
 /**
  * The Java Syntactic sugar collection for indolent person (like you).
@@ -3139,39 +3136,5 @@ public class Indolently {
     public static <E extends Enum<E>> Function<String, $<E>> ienumOf(final Class<E> type) {
         return x -> ienumOf(type, x);
     }
-
-    public static <VALUE> OptionalAssert<VALUE> assertThat(final Optional<VALUE> actual) {
-        return Assertions.assertThat(actual);
-    }
-
-    public static <VALUE> OptionalAssert<VALUE> assertThat(final $<VALUE> actual) { return assertThat$(actual); }
-
-    public static <VALUE> OptionalAssert<VALUE> assertThat$(final $<VALUE> actual) {
-        return new OptionalAssert<>(actual.opt) {
-
-            @SuppressWarnings("rawtypes")
-            @Override
-            public OptionalAssert<VALUE> isEqualTo(final Object expected) {
-                if (expected instanceof $) {
-                    this.objects.assertEqual(this.info, this.actual, (($) expected).opt);
-                } else {
-                    this.objects.assertEqual(this.info, this.actual, expected);
-                }
-
-                return this.myself;
-            }
-
-            @SuppressWarnings("rawtypes")
-            @Override
-            public OptionalAssert<VALUE> isNotEqualTo(final Object other) {
-                if (other instanceof $) {
-                    this.objects.assertNotEqual(this.info, this.actual, (($) other).opt);
-                } else {
-                    this.objects.assertNotEqual(this.info, this.actual, other);
-                }
-
-                return this.myself;
-            }
-        };
-    }
 }
+

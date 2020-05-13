@@ -41,7 +41,7 @@ public class $<T>
     public static <T> $<T> of(final T val) { return new $<>(val); }
 
     @SuppressWarnings("OptionalAssignedToNull")
-    public static <T> $<T> of(final Optional<T> val) { return val == null ? none() : new $<>(val); }
+    public static <T> $<T> of(final Optional<? extends T> val) { return val == null ? none() : new $<>(cast(val)); }
 
     private static final $<?> NONE = new $<>(Optional.empty());
 
@@ -82,10 +82,10 @@ public class $<T>
     }
 
     public $<T> otherwise(final Supplier<? extends $<? extends T>> supplier) {
-        return this.present() ? this : of(supplier.get().get());
+        return this.present() ? this : of(supplier.get().opt);
     }
 
-    public $<T> otherwise(final $<? extends T> supplier) { return this.present() ? this : cast(of(supplier.get())); }
+    public $<T> otherwise(final $<? extends T> supplier) { return this.present() ? this : cast(supplier); }
 
     public Stream<T> stream() { return this.opt.stream(); }
 
