@@ -35,6 +35,7 @@ import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.iterator;
 import static jp.root42.indolently.Iterative.*;
+import static jp.root42.indolently.TestHelper.*;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
