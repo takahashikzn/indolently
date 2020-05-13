@@ -239,7 +239,7 @@ public class Indolently {
      * @see #empty(Map)
      */
     public static <T extends Map<?, ?>> $<T> optionalEmpty(final T value) {
-        return empty(value) ? $.empty() : $.of(value);
+        return empty(value) ? $.none() : $.of(value);
     }
 
     /**
@@ -263,7 +263,7 @@ public class Indolently {
      * @see #empty(Iterable)
      */
     public static <T extends Iterable<?>> $<T> optionalEmpty(final T value) {
-        return empty(value) ? $.empty() : $.of(value);
+        return empty(value) ? $.none() : $.of(value);
     }
 
     /**
@@ -287,7 +287,7 @@ public class Indolently {
      * @see #empty(CharSequence)
      */
     public static <T extends CharSequence> $<T> optionalEmpty(final T value) {
-        return empty(value) ? $.empty() : $.of(value);
+        return empty(value) ? $.none() : $.of(value);
     }
 
     /**
@@ -311,7 +311,7 @@ public class Indolently {
      * @see #blank(CharSequence)
      */
     public static <T extends CharSequence> $<T> optionalBlank(final T value) {
-        return blank(value) ? $.empty() : $.of(value);
+        return blank(value) ? $.none() : $.of(value);
     }
 
     /**
@@ -324,11 +324,11 @@ public class Indolently {
     public static <T> $<T> nonNull(final T value) { return opt(value); }
 
     /**
-     * An alias of {@link $#empty()}.
+     * An alias of {@link $#none()}.
      *
      * @return Optional representation of nothing
      */
-    public static <T> $<T> none() { return $.empty(); }
+    public static <T> $<T> none() { return $.none(); }
 
     /**
      * An alias of {@link Optional#empty()}.
@@ -337,7 +337,7 @@ public class Indolently {
      */
     public static <T> Optional<T> none$() { return Optional.empty(); }
 
-    public static <T> T nullable(final $<T> value) { return value.orElse(null); }
+    public static <T> T nullable(final $<T> value) { return value.orNull(); }
 
     public static <T> Function<T, $<T>> opt() { return x -> opt(x); }
 
@@ -362,33 +362,33 @@ public class Indolently {
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> $<T> opt(final T value, final Consumer<? super T>... consumers) {
         final $<T> opt = opt(value);
-        list(consumers).each(f -> opt.ifPresent(f));
+        list(consumers).each(f -> opt.tap(f));
         return opt;
     }
 
     public static <T1, T2, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, R> last) {
-        return root.map(c1).flatMap(opt()).map(last).flatMap(opt());
+        return root.map(c1).fmap(opt()).map(last).fmap(opt());
     }
 
     public static <T1, T2, T3, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2,
         final Function<T3, R> last) {
-        return opt(root, c1, c2).map(last).flatMap(opt());
+        return opt(root, c1, c2).map(last).fmap(opt());
     }
 
     public static <T1, T2, T3, T4, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2,
         final Function<T3, T4> c3, final Function<T4, R> last) {
-        return opt(root, c1, c2, c3).map(last).flatMap(opt());
+        return opt(root, c1, c2, c3).map(last).fmap(opt());
     }
 
     public static <T1, T2, T3, T4, T5, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, R> last) {
-        return opt(root, c1, c2, c3, c4).map(last).flatMap(opt());
+        return opt(root, c1, c2, c3, c4).map(last).fmap(opt());
     }
 
     public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
         final Function<T6, R> last) {
-        return opt(root, c1, c2, c3, c4, c5).map(last).flatMap(opt());
+        return opt(root, c1, c2, c3, c4, c5).map(last).fmap(opt());
     }
 
     public static <T1, T2, R> $<R> opt(final T1 root, final Function<T1, T2> c1,
@@ -478,7 +478,7 @@ public class Indolently {
      * @return mapped value or default value
      */
     public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final S other) {
-        return opt(value).map(mapper).orElse(other);
+        return opt(value).map(mapper).or(other);
     }
 
     /**
@@ -490,7 +490,7 @@ public class Indolently {
      * @return mapped value or default value
      */
     public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final Supplier<S> other) {
-        return opt(value).map(mapper).orElseGet(other);
+        return opt(value).map(mapper).or(other);
     }
 
     /**
@@ -575,7 +575,7 @@ public class Indolently {
             }
         }
 
-        return $.empty();
+        return $.none();
     }
 
     /**
@@ -1094,7 +1094,7 @@ public class Indolently {
      * @param opt test target
      * @return test result
      */
-    public static boolean empty(final $<?> opt) { return isNull(opt) || !opt.isPresent(); }
+    public static boolean empty(final $<?> opt) { return isNull(opt) || !opt.present(); }
 
     /**
      * test whether the argument is present or not.
@@ -1408,7 +1408,7 @@ public class Indolently {
 
         return list(elems) //
             .reduce((rem, val) -> rem != null ? rem : val) //
-            .orElseThrow(() -> new IllegalArgumentException("all elements are null"));
+            .orFail(() -> new IllegalArgumentException("all elements are null"));
     }
 
     @SafeVarargs
@@ -1943,13 +1943,13 @@ public class Indolently {
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T extends Comparable<T>> T max(final T first, final T second, final T... rest) {
-        return max(list(rest)).map(x -> max(x, max(first, second))).orElseGet(() -> max(first, second));
+        return max(list(rest)).map(x -> max(x, max(first, second))).or(() -> max(first, second));
     }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T extends Comparable<T>> T min(final T first, final T second, final T... rest) {
-        return min(list(rest)).map(x -> min(x, min(first, second))).orElseGet(() -> min(first, second));
+        return min(list(rest)).map(x -> min(x, min(first, second))).or(() -> min(first, second));
     }
 
     public static <T extends Comparable<T>> $<T> max(final Iterable<T> values) {
@@ -2849,7 +2849,7 @@ public class Indolently {
 
     public static <T extends CharSequence> Predicate<T> empty() { return cast(empty); }
 
-    private static final Predicate<$<?>> present = $::isPresent;
+    private static final Predicate<$<?>> present = $::present;
 
     public static Predicate<$<?>> present() { return present; }
 

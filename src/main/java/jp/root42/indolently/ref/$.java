@@ -41,11 +41,11 @@ public class $<T>
     public static <T> $<T> of(final T val) { return new $<>(val); }
 
     @SuppressWarnings("OptionalAssignedToNull")
-    public static <T> $<T> of(final Optional<T> val) { return val == null ? empty() : new $<>(val); }
+    public static <T> $<T> of(final Optional<T> val) { return val == null ? none() : new $<>(val); }
 
-    private static final $<?> EMPTY = new $<>(Optional.empty());
+    private static final $<?> NONE = new $<>(Optional.empty());
 
-    public static <T> $<T> empty() { return cast(EMPTY); }
+    public static <T> $<T> none() { return cast(NONE); }
 
     private $(final T val) { this(Optional.ofNullable(val)); }
 
@@ -55,53 +55,53 @@ public class $<T>
     @Override
     public T get() { return this.opt.get(); }
 
-    public boolean isEmpty() { return this.opt.isEmpty(); }
+    public boolean empty() { return this.opt.isEmpty(); }
 
-    public boolean isPresent() { return this.opt.isPresent(); }
+    public boolean present() { return this.opt.isPresent(); }
 
-    public $<T> ifPresent(final Consumer<? super T> action) {
+    public $<T> tap(final Consumer<? super T> action) {
         this.opt.ifPresent(action);
         return this;
     }
 
-    public $<T> ifPresentOrElse(final Consumer<? super T> action, final Runnable emptyAction) {
+    public $<T> tap(final Consumer<? super T> action, final Runnable emptyAction) {
         this.opt.ifPresentOrElse(action, emptyAction);
         return this;
     }
 
     public $<T> filter(final Predicate<? super T> predicate) {
-        return this.opt.filter(predicate).map($::of).orElse(empty());
+        return this.opt.filter(predicate).map($::of).orElse(none());
     }
 
     public <U> $<U> map(final Function<? super T, ? extends U> mapper) {
-        return cast(this.opt.map(mapper).map($::of).orElse(empty()));
+        return cast(this.opt.map(mapper).map($::of).orElse(none()));
     }
 
-    public <U> $<U> flatMap(final Function<? super T, ? extends $<? extends U>> mapper) {
-        return cast(this.opt.flatMap(x -> mapper.apply(x).opt).map($::of).orElse(empty()));
+    public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> mapper) {
+        return cast(this.opt.flatMap(x -> mapper.apply(x).opt).map($::of).orElse(none()));
     }
 
-    public $<T> or$(final Supplier<? extends $<? extends T>> supplier) {
-        return this.isPresent() ? this : of(supplier.get().get());
+    public $<T> otherwise(final Supplier<? extends $<? extends T>> supplier) {
+        return this.present() ? this : of(supplier.get().get());
     }
 
-    public $<T> or(final Supplier<? extends $<? extends T>> supplier) {
-        return this.isPresent() ? this : of(supplier.get().get());
-    }
-
-    public $<T> or$(final $<? extends T> supplier) { return this.isPresent() ? this : cast(of(supplier.get())); }
-
-    public $<T> or(final $<? extends T> supplier) { return this.isPresent() ? this : cast(of(supplier.get())); }
+    public $<T> otherwise(final $<? extends T> supplier) { return this.present() ? this : cast(of(supplier.get())); }
 
     public Stream<T> stream() { return this.opt.stream(); }
 
+    public T or(final T other) { return this.orElse(other); }
+
     public T orElse(final T other) { return this.opt.orElse(other); }
+
+    public T orNull() { return this.orElse(null); }
+
+    public T or(final Supplier<? extends T> supplier) { return this.orElseGet(supplier); }
 
     public T orElseGet(final Supplier<? extends T> supplier) { return this.opt.orElseGet(supplier); }
 
-    public T orElseThrow() { return this.opt.orElseThrow(); }
+    public T orFail() { return this.opt.orElseThrow(); }
 
-    public <X extends Throwable> T orElseThrow(final Supplier<? extends X> exceptionSupplier) throws X {
+    public <X extends Throwable> T orFail(final Supplier<? extends X> exceptionSupplier) throws X {
         return this.opt.orElseThrow(exceptionSupplier);
     }
 

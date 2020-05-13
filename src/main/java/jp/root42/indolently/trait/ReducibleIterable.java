@@ -32,7 +32,7 @@ public interface ReducibleIterable<T>
 
         final var i = this.iterator();
 
-        if (!i.hasNext()) return $.empty();
+        if (!i.hasNext()) return $.none();
 
         R rem = fm.apply(i.next());
 
@@ -48,7 +48,7 @@ public interface ReducibleIterable<T>
     default <R> $<R> reduce(final $<? extends R> initial,
         final Function3<Integer, ? super R, ? super T, ? extends R> f) {
 
-        var rem = initial.orElse(null);
+        var rem = initial.orNull();
 
         int idx = 0;
         for (final T val: this) {

@@ -46,7 +46,7 @@ public interface SMatcher<P, M>
 
         return Iterative.iterator( //
             () -> opt(found.$) //
-                .orElseGet(() -> found.$ = this.find()), //
+                .or(() -> found.$ = this.find()), //
             () -> prog1( //
                 () -> this.group(), //
                 () -> found.$ = null));

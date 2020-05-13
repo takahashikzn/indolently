@@ -541,7 +541,7 @@ public interface $map<K, V>
      * @return optional representation of the value
      */
     default $<V> opt(final K key) {
-        return this.containsKey(key) ? Indolently.opt(this.get(key)) : $.empty();
+        return this.containsKey(key) ? Indolently.opt(this.get(key)) : $.none();
     }
 
     /**
@@ -563,7 +563,7 @@ public interface $map<K, V>
      */
     @Destructive
     default $map<K, V> update(final K key, final Function<? super V, ? extends V> f) {
-        this.opt(key).ifPresent(val -> this.put(key, f.apply(val)));
+        this.opt(key).tap(val -> this.put(key, f.apply(val)));
         return this;
     }
 

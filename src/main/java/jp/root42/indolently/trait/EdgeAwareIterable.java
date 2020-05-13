@@ -52,7 +52,7 @@ public interface EdgeAwareIterable<T>
             if (f.test(val)) return $.of(val);
         }
 
-        return $.empty();
+        return $.none();
     }
 
     /**
@@ -73,7 +73,7 @@ public interface EdgeAwareIterable<T>
      * @return first element or alternative value
      */
     default T head(final Predicate<? super T> f, final Supplier<? extends T> other) {
-        return this.head(f).orElseGet(other);
+        return this.head(f).or(other);
     }
 
     /**
@@ -124,6 +124,6 @@ public interface EdgeAwareIterable<T>
      * @return last element or alternative value
      */
     default T last(final Predicate<? super T> f, final Supplier<? extends T> other) {
-        return this.last(f).orElseGet(other);
+        return this.last(f).or(other);
     }
 }

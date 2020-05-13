@@ -99,7 +99,7 @@ public class IterativeTest {
             (final $int pos) -> tuple( //
                 ints.get(pos.$), //
                 ints.opt(++pos.$) //
-                    .orElseGet(() -> breaks()))).list()) //
+                    .or(() -> breaks()))).list()) //
             .isEqualTo(list( //
                 tuple(1, 2) //
                 , tuple(2, 3) //

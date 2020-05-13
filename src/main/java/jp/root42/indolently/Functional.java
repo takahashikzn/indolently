@@ -54,7 +54,7 @@ public class Functional {
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public static <T> $<T> apply(final $<T> x, final $<T> y, final BiFunction<? super T, ? super T, T> f) {
-        return x.map(x0 -> opt(y.map(y0 -> f.apply(x0, y0)).orElse(x0))).orElse(y);
+        return x.map(x0 -> opt(y.map(y0 -> f.apply(x0, y0)).or(x0))).or(y);
     }
 
     public static <X, Y> Function<X, Y> unbound(final Supplier<? extends Y> f) {

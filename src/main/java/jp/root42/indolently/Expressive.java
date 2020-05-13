@@ -76,7 +76,7 @@ public class Expressive {
             } else {
                 return new RaisedException(e);
             }
-        }).orElseGet(() -> new NullPointerException("supplier returns null: " + f));
+        }).or(() -> new NullPointerException("supplier returns null: " + f));
     }
 
     /**

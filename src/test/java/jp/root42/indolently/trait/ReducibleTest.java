@@ -35,7 +35,7 @@ public class ReducibleTest {
     @Test
     public void reduce() {
 
-        assertThat(Indolently.<String> list().reduce((x, y) -> x + y).isPresent()).isFalse();
+        assertThat(Indolently.<String> list().reduce((x, y) -> x + y).present()).isFalse();
         assertThat(Indolently.<String> list().reduce("0", (x, y) -> x + y)).isEqualTo("0");
 
         assertThat(list("1").reduce((x, y) -> x + y).get()).isEqualTo("1");

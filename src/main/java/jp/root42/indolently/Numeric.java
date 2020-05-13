@@ -86,9 +86,9 @@ public final class Numeric {
 
     private static <T> $<T> parseX(final String s, final Function<String, T> f) {
         try {
-            return (s == null) ? $.empty() : $.of(f.apply(s));
+            return (s == null) ? $.none() : $.of(f.apply(s));
         } catch (final IllegalArgumentException e) {
-            return $.empty();
+            return $.none();
         }
     }
 

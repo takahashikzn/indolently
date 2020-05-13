@@ -78,7 +78,7 @@ public interface $list<T>
 
         final int i = idx(this, index);
 
-        return (0 <= i) && (i < this.size()) ? Indolently.opt(this.get(i)) : $.empty();
+        return (0 <= i) && (i < this.size()) ? Indolently.opt(this.get(i)) : $.none();
     }
 
     /**
@@ -332,7 +332,7 @@ public interface $list<T>
      * @return {@code this} instance or other
      */
     default $list<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
-        return nonEmpty(this).orElseGet(() -> list(other.get()));
+        return nonEmpty(this).or(() -> list(other.get()));
     }
 
     @Override
@@ -395,7 +395,7 @@ public interface $list<T>
      */
     @Destructive
     default $list<T> update(final int idx, final Function<? super T, ? extends T> f) {
-        this.opt(idx).ifPresent(x -> this.set(idx(this, idx), f.apply(x)));
+        this.opt(idx).tap(x -> this.set(idx(this, idx), f.apply(x)));
         return this;
     }
 
@@ -453,7 +453,7 @@ public interface $list<T>
      * @return found index
      */
     default OptionalInt indexOf(final Predicate<T> f) {
-        return this.head(f).map(this::indexOf).map(OptionalInt::of).orElseGet(OptionalInt::empty);
+        return this.head(f).map(this::indexOf).map(OptionalInt::of).or(OptionalInt::empty);
     }
 
     /**
@@ -463,7 +463,7 @@ public interface $list<T>
      * @return found index
      */
     default OptionalInt lastIndexOf(final Predicate<T> f) {
-        return this.last(f).map(this::lastIndexOf).map(OptionalInt::of).orElseGet(OptionalInt::empty);
+        return this.last(f).map(this::lastIndexOf).map(OptionalInt::of).or(OptionalInt::empty);
     }
 
     @Override
@@ -475,6 +475,6 @@ public interface $list<T>
             if (f.test(val)) return $.of(val);
         }
 
-        return $.empty();
+        return $.none();
     }
 }

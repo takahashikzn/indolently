@@ -511,8 +511,8 @@ public class IndolentlyTest {
         assertThat$(max(ints)).hasValue(100);
 
         // explicit type annotation is required for OrackeJDK' compiler
-        assertThat(min(Indolently.<String> list()).isPresent()).isFalse();
-        assertThat(max(Indolently.<String> list()).isPresent()).isFalse();
+        assertThat(min(Indolently.<String> list()).present()).isFalse();
+        assertThat(max(Indolently.<String> list()).present()).isFalse();
     }
 
     /**
