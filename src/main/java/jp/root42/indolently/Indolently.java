@@ -1003,31 +1003,24 @@ public class Indolently {
         });
     }
 
-    private static final Function freezer = x -> {
-        if (x instanceof List) {
-            return freeze((List) x);
-        } else if (x instanceof Set) {
-            return freeze((Set) x);
-        } else if (x instanceof Map) {
-            return freeze((Map) x);
-        } else {
-            return x;
-        }
-    };
+    @SuppressWarnings("rawtypes")
+    private static <T> T freeze0(final T x) {
+        if (x instanceof Map) return cast(freeze((Map) x));
+        if (x instanceof Set) return cast(freeze((Set) x));
+        if (x instanceof List) return cast(freeze((List) x));
+        return x;
+    }
 
-    @SuppressWarnings("unchecked")
     public static <K, V> $map<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        return $(Collections.unmodifiableMap($(map).map(freezer)));
+        return $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> $set<T> freeze(final Set<? extends T> elems) {
-        return $(Collections.unmodifiableSet($(elems).map(freezer)));
+        return $(Collections.unmodifiableSet($(elems).map(Indolently::freeze0)));
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> $list<T> freeze(final List<? extends T> elems) {
-        return $(Collections.unmodifiableList($(elems).map(freezer)));
+        return $(Collections.unmodifiableList($(elems).map(Indolently::freeze0)));
     }
 
     /**
@@ -1037,20 +1030,13 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Iterable<?> i) {
-        if (i == null) {
-            return true;
-        }
+        if (i == null) return true;
 
         // for optimization
-        if (i instanceof Collection) {
-            return ((Collection<?>) i).isEmpty();
-        } else if (i instanceof Map) {
-            return ((Map<?, ?>) i).isEmpty();
-        } else if (i instanceof Iterator<?>) {
-            return !((Iterator<?>) i).hasNext();
-        } else if (i instanceof Enumeration<?>) {
-            return !((Enumeration<?>) i).hasMoreElements();
-        }
+        if (i instanceof Collection) return ((Collection<?>) i).isEmpty();
+        if (i instanceof Map) return ((Map<?, ?>) i).isEmpty();
+        if (i instanceof Iterator<?>) return !((Iterator<?>) i).hasNext();
+        if (i instanceof Enumeration<?>) return !((Enumeration<?>) i).hasMoreElements();
 
         return !i.iterator().hasNext();
     }
@@ -2179,7 +2165,7 @@ public class Indolently {
 
     @SuppressWarnings("unchecked")
     public static <K, V> $map<K, V> newMap(final Class<K> keyType, final Class<V> valType) {
-        return ($map<K, V>) map();
+        return map();
     }
 
     @SuppressWarnings("unchecked")
