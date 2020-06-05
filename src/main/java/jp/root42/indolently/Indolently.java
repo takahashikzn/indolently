@@ -215,6 +215,16 @@ public class Indolently {
         throw new UnsupportedOperationException();
     }
 
+    public static void ASSERT(final boolean flag) { if (!flag) throw new AssertionError(); }
+
+    public static void ASSERT(final boolean flag, final Object msg) {
+        if (!flag) throw new AssertionError("" + msg);
+    }
+
+    public static void ASSERT(final boolean flag, final Supplier<?> msg) {
+        if (!flag) throw new AssertionError("" + msg.get());
+    }
+
     /**
      * An alias of {@link #optionalEmpty(Map)}.
      *
