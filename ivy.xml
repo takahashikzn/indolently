@@ -52,7 +52,7 @@
     <dependency org="org.assertj" name="assertj-core" rev="3.16.1" conf="test->master(*)" />
     <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="test->master(*)" />
     <dependency org="org.mockito" name="mockito-core" rev="3.3.3" conf="test->master(*)" />
-    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.10" conf="test->master(*)" />
+    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.11" conf="test->master(*)" />
     <dependency org="org.objenesis" name="objenesis" rev="3.1" conf="test->master(*)" />
     <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.1" conf="test->master(*)" />
 
