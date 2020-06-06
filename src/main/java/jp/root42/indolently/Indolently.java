@@ -1831,6 +1831,8 @@ public class Indolently {
         return (l == null) ? (r == null) : (r != null) && ((l == r) || l.equals(r));
     }
 
+    public static boolean eql(final Object l, final Object r) { return equal(l, r); }
+
     public enum ComparisonResult {
 
         SMALL(-1), EQUAL(0), LARGE(1);
