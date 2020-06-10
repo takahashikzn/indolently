@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static java.util.Objects.*;
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -49,7 +50,7 @@ public class $<T>
 
     private $(final T val) { this(Optional.ofNullable(val)); }
 
-    private $(final Optional<T> opt) { this.opt = opt; }
+    private $(final Optional<T> opt) { this.opt = requireNonNull(opt); }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
@@ -78,11 +79,16 @@ public class $<T>
     }
 
     public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> mapper) {
-        return cast(this.opt.flatMap(x -> mapper.apply(x).opt).map($::of).orElse(none()));
+        return cast(this.opt.flatMap(x -> {
+            final var y = mapper.apply(x);
+            return (y == null) ? Optional.empty() : y.opt;
+        }).map($::of).orElse(none()));
     }
 
     public $<T> otherwise(final Supplier<? extends $<? extends T>> supplier) {
-        return this.present() ? this : of(supplier.get().opt);
+        if (this.present()) return this;
+        final var x = supplier.get();
+        return (x == null) ? none() : of(x.opt);
     }
 
     public $<T> otherwise(final $<? extends T> supplier) { return this.present() ? this : cast(supplier); }
