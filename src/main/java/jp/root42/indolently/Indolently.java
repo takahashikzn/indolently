@@ -1122,7 +1122,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final CharSequence cs) {
-        return (cs == null) || (cs.length() == 0);
+        return (cs == null) || (cs == "") || (cs.length() == 0);
     }
 
     /**
