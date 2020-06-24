@@ -23,7 +23,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import jp.root42.indolently.$map.SEntry;
+import jp.root42.indolently.$map.$entry;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
@@ -46,7 +46,7 @@ import static java.util.Objects.*;
  */
 public interface $map<K, V>
     extends Map<K, V>, Freezable<$map<K, V>>, Identical<$map<K, V>>, Loopable<V, $map<K, V>>, Filterable<V, $map<K, V>>,
-    EdgeAwareIterable<SEntry<K, V>>, Matchable<V>, Cloneable {
+    EdgeAwareIterable<$entry<K, V>>, Matchable<V>, Cloneable {
 
     /**
      * Create a new fifo Map instance which containing all entries which this instance contains.
@@ -209,7 +209,7 @@ public interface $map<K, V>
      * @author takahashikzn.
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
-    class SEntry<K, V>
+    class $entry<K, V>
         implements Map.Entry<K, V> {
 
         private final Entry<K, V> e;
@@ -227,7 +227,7 @@ public interface $map<K, V>
          *
          * @param e entry
          */
-        public SEntry(final Entry<K, V> e) {
+        public $entry(final Entry<K, V> e) {
             this.e = requireNonNull(e, "entry");
             this.key = e.getKey();
             this.val = e.getValue();
@@ -294,13 +294,13 @@ public interface $map<K, V>
      *
      * @return entries
      */
-    default $set<SEntry<K, V>> entries() {
-        return Indolently.list(this.entrySet()).map(x -> new SEntry<>(x)).set();
+    default $set<$entry<K, V>> entries() {
+        return Indolently.list(this.entrySet()).map(x -> new $entry<>(x)).set();
     }
 
     @Override
-    default $iter<SEntry<K, V>> iterator() {
-        return Indolently.$(this.entrySet().iterator()).map(SEntry::new);
+    default $iter<$entry<K, V>> iterator() {
+        return Indolently.$(this.entrySet().iterator()).map($entry::new);
     }
 
     /**

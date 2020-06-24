@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import jp.root42.indolently.$map.SEntry;
+import jp.root42.indolently.$map.$entry;
 
 import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.*;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -44,7 +44,7 @@ public class $mapTest {
         when(entryIter.hasNext()).thenReturn(true, false);
         when(entryIter.next()).thenReturn(mock(Entry.class));
 
-        final $iter<SEntry<String, String>> testee = $(data).iterator();
+        final $iter<$entry<String, String>> testee = $(data).iterator();
 
         verify(entryIter, times(0)).hasNext();
 
