@@ -13,8 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Collection;
@@ -42,10 +42,10 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import jp.root42.indolently.bridge.BytesInputStream;
+import jp.root42.indolently.bridge.BytesOutputStream;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.io.BytesInputStream;
-import jp.root42.indolently.io.BytesOutputStream;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
@@ -3139,15 +3139,11 @@ public class Indolently {
         return x -> ienumOf(type, x);
     }
 
-    public static ByteArrayInputStream bytesIn(final byte[] bin) {
-        return BytesInputStream.isAvailable() ? new BytesInputStream(bin) : new ByteArrayInputStream(bin);
-    }
+    public static InputStream bytesIn(final byte[] bin) { return BytesInputStream.create(bin); }
 
-    public static ByteArrayOutputStream bytesOut() {
-        return BytesOutputStream.isAvailable() ? new BytesOutputStream() : new ByteArrayOutputStream();
-    }
+    public static InputStream bytesIn(final ByteArrayOutputStream baos) { return BytesInputStream.create(baos); }
 
-    public static ByteArrayOutputStream bytesOut(final int len) {
-        return BytesOutputStream.isAvailable() ? new BytesOutputStream(len) : new ByteArrayOutputStream(len);
-    }
+    public static BytesOutputStream bytesOut() { return BytesOutputStream.create(); }
+
+    public static BytesOutputStream bytesOut(final int len) { return BytesOutputStream.create(len); }
 }
