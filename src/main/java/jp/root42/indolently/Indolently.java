@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.Collection;
@@ -42,6 +44,8 @@ import java.util.stream.Stream;
 
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.function.Statement;
+import jp.root42.indolently.io.BytesInputStream;
+import jp.root42.indolently.io.BytesOutputStream;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
@@ -3134,5 +3138,16 @@ public class Indolently {
     public static <E extends Enum<E>> Function<String, $<E>> ienumOf(final Class<E> type) {
         return x -> ienumOf(type, x);
     }
-}
 
+    public static ByteArrayInputStream bytesIn(final byte[] bin) {
+        return BytesInputStream.isAvailable() ? new BytesInputStream(bin) : new ByteArrayInputStream(bin);
+    }
+
+    public static ByteArrayOutputStream bytesOut() {
+        return BytesOutputStream.isAvailable() ? new BytesOutputStream() : new ByteArrayOutputStream();
+    }
+
+    public static ByteArrayOutputStream bytesOut(final int len) {
+        return BytesOutputStream.isAvailable() ? new BytesOutputStream(len) : new ByteArrayOutputStream(len);
+    }
+}
