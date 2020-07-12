@@ -114,6 +114,11 @@ public class $<T>
     @Override
     public int hashCode() { return Objects.hash(this.getClass(), this.opt); }
 
+    public final boolean equals(final $<? extends T> that) {
+        return (this == that) || ((that != null) && equiv(this.opt, that.opt));
+    }
+
+    @Deprecated
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -121,7 +126,7 @@ public class $<T>
 
         final $<?> that = cast(o);
 
-        return equiv(this.opt, that.opt);
+        return this.equals(that);
     }
 
     @Override
