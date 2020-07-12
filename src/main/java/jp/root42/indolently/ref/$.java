@@ -118,6 +118,11 @@ public class $<T>
         return (this == that) || ((that != null) && equiv(this.opt, that.opt));
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public final boolean eq(final T that) {
+        return !this.empty() && this.opt.get().equals(that);
+    }
+
     @Deprecated
     @Override
     public boolean equals(final Object o) {
