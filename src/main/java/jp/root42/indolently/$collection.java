@@ -20,7 +20,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
@@ -64,7 +63,15 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @return {@code this} instance
      */
     @Destructive
-    default SELF pushAll(final Iterable<? extends T> values) { return this.pushAll(() -> values, x -> true); }
+    default SELF pushAll(final Iterable<? extends T> values) {
+        if (values instanceof Collection) {
+            this.addAll(cast(values));
+        } else {
+            values.forEach(this::add);
+        }
+
+        return this.identity();
+    }
 
     /**
      * add value then return this instance only if condition satisfied.
@@ -77,24 +84,6 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     default SELF push(final T value, final Predicate<? super T> f) {
         if (f.test(value)) {
             this.add(value);
-        }
-
-        return this.identity();
-    }
-
-    /**
-     * add all values then return this instance only if the condition is satisfied.
-     *
-     * @param values values to add
-     * @param cond condition. the argument is this instance.
-     * @return {@code this} instance
-     */
-    @Destructive
-    default SELF pushAll(final Supplier<? extends Iterable<? extends T>> values,
-        final Predicate<? super Iterable<? extends T>> cond) {
-
-        if (cond.test(this)) {
-            values.get().forEach(this::add);
         }
 
         return this.identity();
@@ -321,4 +310,9 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     default String join(final Function<T, CharSequence> f) { return this.join(f, null); }
 
     String join(Function<T, CharSequence> f, String sep);
+
+    default SELF tap(final Consumer<SELF> f) {
+        f.accept(cast(this));
+        return this.identity();
+    }
 }

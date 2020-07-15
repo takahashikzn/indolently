@@ -48,7 +48,7 @@ class $list_impl<T>
     @Override
     public $list<T> clone() {
         final List<T> newStore = newList();
-        newStore.addAll(this);
+        newStore.addAll(this.store);
         return new $list_impl<>(newStore);
     }
 
