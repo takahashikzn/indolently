@@ -16,10 +16,10 @@ package jp.root42.indolently;
 import dk.brics.automaton.RegExp;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.regex.AutomatonTest;
-import jp.root42.indolently.regex.RETest;
-import jp.root42.indolently.regex.SPtrn;
-import jp.root42.indolently.regex.SPtrnJDK;
-import jp.root42.indolently.regex.SPtrnRE2;
+import jp.root42.indolently.regex.ReTest;
+import jp.root42.indolently.regex.Regex;
+import jp.root42.indolently.regex.RegexJDK;
+import jp.root42.indolently.regex.RegexRe2;
 
 
 /**
@@ -40,7 +40,7 @@ public class Regexive {
      * @param pattern pattern string
      * @return enhanced Pattern instance
      */
-    public static SPtrn regex(final String pattern) { return new SPtrn(regex1(pattern)); }
+    public static Regex regex(final String pattern) { return new Regex(regex1(pattern)); }
 
     /**
      * create pattern instance using JDK regex library.
@@ -48,7 +48,7 @@ public class Regexive {
      * @param pattern pattern string
      * @return enhanced Pattern instance
      */
-    public static SPtrnJDK regex1(final String pattern) {
+    public static RegexJDK regex1(final String pattern) {
         return regex1(java.util.regex.Pattern.compile(pattern));
     }
 
@@ -58,7 +58,7 @@ public class Regexive {
      * @param pattern pattern string
      * @return enhanced Pattern instance
      */
-    public static SPtrnRE2 regex2(final String pattern) {
+    public static RegexRe2 regex2(final String pattern) {
         try {
             return regex2(com.google.re2j.Pattern.compile(pattern));
         } catch (final com.google.re2j.PatternSyntaxException e) {
@@ -72,8 +72,8 @@ public class Regexive {
      * @param pattern pattern object
      * @return enhanced Pattern instance
      */
-    public static SPtrnJDK regex1(final java.util.regex.Pattern pattern) {
-        return new SPtrnJDK(pattern);
+    public static RegexJDK regex1(final java.util.regex.Pattern pattern) {
+        return new RegexJDK(pattern);
     }
 
     /**
@@ -82,8 +82,8 @@ public class Regexive {
      * @param pattern pattern object
      * @return enhanced Pattern instance
      */
-    public static SPtrnRE2 regex2(final com.google.re2j.Pattern pattern) {
-        return new SPtrnRE2(pattern);
+    public static RegexRe2 regex2(final com.google.re2j.Pattern pattern) {
+        return new RegexRe2(pattern);
     }
 
     /**
@@ -92,7 +92,7 @@ public class Regexive {
      * @param pattern pattern object
      * @return enhanced Pattern instance
      */
-    public static RETest tester(final String pattern) {
+    public static ReTest tester(final String pattern) {
         if (AUTOMATON_AVAIL) {
             try {
                 final var pred = automatonTester(pattern);
@@ -103,10 +103,10 @@ public class Regexive {
             } catch (final IllegalArgumentException ignored) {}
         }
 
-        return RETest.of(regex(pattern));
+        return ReTest.of(regex(pattern));
     }
 
-    private static final SPtrnJDK JDK_REGEX = regex1("(?ms).*(?:" //
+    private static final RegexJDK JDK_REGEX = regex1("(?ms).*(?:" //
         + "[^\\\\]\\$" // unescaped '$'
 
         + "|[^\\\\]\\[\\[" // unescaped '[['
@@ -144,7 +144,7 @@ public class Regexive {
 
     private static final String DIGIT = regex1("[0-9]").pattern();
 
-    private static RETest automatonTester(final String pattern) {
+    private static ReTest automatonTester(final String pattern) {
 
         final var pt = pattern //
             .replaceAll("(?<!\\\\)\\(\\?:", "(") //

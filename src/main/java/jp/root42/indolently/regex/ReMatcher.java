@@ -36,8 +36,8 @@ import static jp.root42.indolently.Indolently.*;
  *
  * @author takahashikzn
  */
-public interface SMatcher<P, M>
-    extends RegexMatcher<P, M>, Iterable<String>, Loopable<String, SMatcher<P, M>> {
+public interface ReMatcher<P, M>
+    extends RegexMatcher<P, M>, Iterable<String>, Loopable<String, ReMatcher<P, M>> {
 
     @Override
     default $iter<String> iterator() {
@@ -53,9 +53,7 @@ public interface SMatcher<P, M>
     }
 
     @Override
-    default SMatcher<P, M> each(final Consumer<? super String> f) {
-        return this.each((m, s) -> f.accept(s));
-    }
+    default ReMatcher<P, M> each(final Consumer<? super String> f) { return this.each((m, s) -> f.accept(s)); }
 
     /**
      * Return original matching target text.
@@ -70,9 +68,7 @@ public interface SMatcher<P, M>
      * @param altText the alternative text
      * @return matching target text or alternative text
      */
-    default String orElse(final String altText) {
-        return this.matches() ? this.text() : altText;
-    }
+    default String orElse(final String altText) { return this.matches() ? this.text() : altText; }
 
     /**
      * Consume each matched token then return {@code this} instance which {@link Matcher#reset() reset} was called after
@@ -82,7 +78,7 @@ public interface SMatcher<P, M>
      * @return {@code this} instance which is reset
      * @see Matcher#reset()
      */
-    default SMatcher<P, M> each(final BiConsumer<? super SMatcher<P, M>, String> f) {
+    default ReMatcher<P, M> each(final BiConsumer<? super ReMatcher<P, M>, String> f) {
 
         this.iterator().each(x -> f.accept(this, x));
 
@@ -111,7 +107,7 @@ public interface SMatcher<P, M>
      * @return replaced string
      * @see #replaceAll(String)
      */
-    default String replace(final BiFunction<? super SMatcher<?, ?>, String, String> f) {
+    default String replace(final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
         Objects.requireNonNull(f);
 
         final var sb = new StringBuilder();

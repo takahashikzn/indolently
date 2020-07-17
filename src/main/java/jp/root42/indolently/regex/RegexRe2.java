@@ -23,16 +23,16 @@ import jp.root42.indolently.Indolently;
 
 
 /**
- * {@link SPtrn} implementation.
+ * {@link Regex} implementation.
  *
  * @author takahashikzn
  */
-public final class SPtrnRE2
-    implements SPtrnBase<Pattern, SMatcherRE2> {
+public final class RegexRe2
+    implements RegexBase<Pattern, ReMatcherRE2> {
 
     private final Pattern pattern;
 
-    public SPtrnRE2(final Pattern pattern) {
+    public RegexRe2(final Pattern pattern) {
         this.pattern = pattern;
     }
 
@@ -52,8 +52,8 @@ public final class SPtrnRE2
     }
 
     @Override
-    public SMatcherRE2 matcher(final CharSequence cs) {
-        return new SMatcherRE2(this.ptrn().matcher(cs), cs);
+    public ReMatcherRE2 matcher(final CharSequence cs) {
+        return new ReMatcherRE2(this.ptrn().matcher(cs), cs);
     }
 
     @Override
@@ -65,11 +65,11 @@ public final class SPtrnRE2
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof SPtrn)) {
+        } else if (!(o instanceof Regex)) {
             return false;
         }
 
-        return this.ptrn().equals(((SPtrn) o).ptrn());
+        return this.ptrn().equals(((Regex) o).ptrn());
     }
 
     @Override
@@ -83,14 +83,14 @@ public final class SPtrnRE2
     }
 }
 
-final class SMatcherRE2
-    implements SMatcher<Pattern, Matcher> {
+final class ReMatcherRE2
+    implements ReMatcher<Pattern, Matcher> {
 
     private final Matcher matcher;
 
     private final String text;
 
-    public SMatcherRE2(final Matcher matcher, final CharSequence text) {
+    public ReMatcherRE2(final Matcher matcher, final CharSequence text) {
         this.matcher = matcher;
         this.text = text.toString();
     }
@@ -104,11 +104,11 @@ final class SMatcherRE2
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof SMatcherRE2)) {
+        } else if (!(o instanceof ReMatcherRE2)) {
             return false;
         }
 
-        return ((SMatcherRE2) o).matcher.equals(this.matcher);
+        return ((ReMatcherRE2) o).matcher.equals(this.matcher);
     }
 
     @Override

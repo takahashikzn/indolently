@@ -23,16 +23,16 @@ import jp.root42.indolently.Indolently;
 
 
 /**
- * {@link SPtrn} implementation.
+ * {@link Regex} implementation.
  *
  * @author takahashikzn
  */
-public final class SPtrnJDK
-    implements SPtrnBase<Pattern, SMatcherJDK> {
+public final class RegexJDK
+    implements RegexBase<Pattern, ReMatcherJDK> {
 
     private final Pattern pattern;
 
-    public SPtrnJDK(final Pattern pattern) {
+    public RegexJDK(final Pattern pattern) {
         this.pattern = pattern;
     }
 
@@ -47,8 +47,8 @@ public final class SPtrnJDK
     }
 
     @Override
-    public SMatcherJDK matcher(final CharSequence cs) {
-        return new SMatcherJDK(this.ptrn().matcher(cs), cs);
+    public ReMatcherJDK matcher(final CharSequence cs) {
+        return new ReMatcherJDK(this.ptrn().matcher(cs), cs);
     }
 
     @Override
@@ -60,11 +60,11 @@ public final class SPtrnJDK
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof SPtrn)) {
+        } else if (!(o instanceof Regex)) {
             return false;
         }
 
-        return this.ptrn().equals(((SPtrn) o).ptrn());
+        return this.ptrn().equals(((Regex) o).ptrn());
     }
 
     @Override
@@ -78,14 +78,14 @@ public final class SPtrnJDK
     }
 }
 
-final class SMatcherJDK
-    implements SMatcher<Pattern, Matcher> {
+final class ReMatcherJDK
+    implements ReMatcher<Pattern, Matcher> {
 
     private final Matcher matcher;
 
     private final String text;
 
-    public SMatcherJDK(final Matcher matcher, final CharSequence text) {
+    public ReMatcherJDK(final Matcher matcher, final CharSequence text) {
         this.matcher = matcher;
         this.text = text.toString();
     }
@@ -99,11 +99,11 @@ final class SMatcherJDK
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
-        } else if (!(o instanceof SMatcherJDK)) {
+        } else if (!(o instanceof ReMatcherJDK)) {
             return false;
         }
 
-        return ((SMatcherJDK) o).matcher.equals(this.matcher);
+        return ((ReMatcherJDK) o).matcher.equals(this.matcher);
     }
 
     @Override

@@ -23,10 +23,10 @@ import jp.root42.indolently.Indolently;
 /**
  * @author takahashikzn.
  */
-public final class AdaptiveSPtrn
-    implements SPtrnBase<SPtrn.Ptrn, SMatcher<?, ?>> {
+public final class AdaptiveRegex
+    implements RegexBase<Regex.Ptrn, ReMatcher<?, ?>> {
 
-    private final List<? extends SPtrnBase<?, ?>> patterns;
+    private final List<? extends RegexBase<?, ?>> patterns;
 
     private final List<Long> times;
 
@@ -34,13 +34,13 @@ public final class AdaptiveSPtrn
 
     private int current;
 
-    private SPtrnBase<?, ?> fastest;
+    private RegexBase<?, ?> fastest;
 
-    public AdaptiveSPtrn(final List<? extends SPtrnBase<?, ?>> patterns) {
+    public AdaptiveRegex(final List<? extends RegexBase<?, ?>> patterns) {
         this(patterns, 100);
     }
 
-    public AdaptiveSPtrn(final List<? extends SPtrnBase<?, ?>> patterns, final int trial) {
+    public AdaptiveRegex(final List<? extends RegexBase<?, ?>> patterns, final int trial) {
         this.patterns = patterns;
         this.times = Indolently.list(patterns).map(x -> 0L);
         this.trial = trial;
@@ -51,7 +51,7 @@ public final class AdaptiveSPtrn
         return this.patterns.get(0).pattern();
     }
 
-    private SPtrnBase<?, ?> select() {
+    private RegexBase<?, ?> select() {
         this.determineFastest();
 
         return (this.fastest == null) ? this.patterns.get(this.current % this.patterns.size()) : this.fastest;
@@ -84,10 +84,10 @@ public final class AdaptiveSPtrn
     }
 
     @Override
-    public SPtrn.Ptrn ptrn() { return this::pattern; }
+    public Regex.Ptrn ptrn() { return this::pattern; }
 
     @Override
-    public SMatcher<?, ?> matcher(final CharSequence cs) {
+    public ReMatcher<?, ?> matcher(final CharSequence cs) {
         return this.select().matcher(cs);
     }
 

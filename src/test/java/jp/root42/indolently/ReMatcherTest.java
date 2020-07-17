@@ -13,9 +13,9 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import jp.root42.indolently.regex.SMatcher;
+import jp.root42.indolently.regex.ReMatcher;
 
-import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Regexive.*;
 
 import org.junit.Test;
@@ -26,10 +26,10 @@ import static org.assertj.core.api.Assertions.*;
 /**
  * @author takahashikzn
  */
-public class SMatcherTest {
+public class ReMatcherTest {
 
     /**
-     * Test of {@link SMatcher#iterator()}.
+     * Test of {@link ReMatcher#iterator()}.
      */
     @Test
     public void testRegex() {

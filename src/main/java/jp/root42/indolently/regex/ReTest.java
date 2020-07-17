@@ -20,13 +20,13 @@ import java.util.function.Supplier;
 /**
  * @author takahashikzn
  */
-public interface RETest
+public interface ReTest
     extends Predicate<CharSequence> {
 
-    static RETest of(final SPtrnBase<?, ?> ptrn) { return of(ptrn, ptrn.pattern()); }
+    static ReTest of(final RegexBase<?, ?> ptrn) { return of(ptrn, ptrn.pattern()); }
 
-    static RETest of(final Predicate<CharSequence> pred, final String pattern) {
-        return new RETest() {
+    static ReTest of(final Predicate<CharSequence> pred, final String pattern) {
+        return new ReTest() {
 
             @Override
             public boolean test(final CharSequence s) { return pred.test(s); }
@@ -36,11 +36,11 @@ public interface RETest
         };
     }
 
-    static RETest ofShared(final Supplier<Predicate<CharSequence>> pred, final String pattern) {
+    static ReTest ofShared(final Supplier<Predicate<CharSequence>> pred, final String pattern) {
 
         final var local = ThreadLocal.withInitial(pred);
 
-        return new RETest() {
+        return new ReTest() {
 
             @Override
             public boolean test(final CharSequence s) { return pred.get().test(s); }

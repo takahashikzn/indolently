@@ -21,19 +21,19 @@ import jp.root42.indolently.$list;
  *
  * @author takahashikzn.
  */
-public final class SPtrn
-    implements SPtrnBase<SPtrn.Ptrn, SMatcher> {
+public final class Regex
+    implements RegexBase<Regex.Ptrn, ReMatcher> {
 
     public interface Ptrn {
 
         String pattern();
     }
 
-    private final SPtrnBase<?, ?> pattern;
+    private final RegexBase<?, ?> pattern;
 
-    public SPtrn(final SPtrnBase<?, ?> pattern) { this.pattern = pattern; }
+    public Regex(final RegexBase<?, ?> pattern) { this.pattern = pattern; }
 
-    public <T extends SPtrnBase<?, ?>> T unwrap() {
+    public <T extends RegexBase<?, ?>> T unwrap() {
         //noinspection unchecked
         return (T) this.pattern;
     }
@@ -46,13 +46,10 @@ public final class SPtrn
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        } else if (!(o instanceof SPtrnBase)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof RegexBase)) return false;
 
-        final SPtrnBase<?, ?> that = this.pattern;
+        final RegexBase<?, ?> that = this.pattern;
 
         return this.pattern().equals(that.pattern());
     }
@@ -61,7 +58,7 @@ public final class SPtrn
     public Ptrn ptrn() { return this::pattern; }
 
     @Override
-    public SMatcher<?, ?> matcher(final CharSequence cs) { return this.pattern.matcher(cs); }
+    public ReMatcher<?, ?> matcher(final CharSequence cs) { return this.pattern.matcher(cs); }
 
     @Override
     public boolean test(final CharSequence cs) { return this.pattern.test(cs); }

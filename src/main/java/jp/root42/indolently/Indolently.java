@@ -60,10 +60,10 @@ import jp.root42.indolently.ref.$short;
 import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.ref.$voidc;
 import jp.root42.indolently.ref.Ref;
-import jp.root42.indolently.regex.RETest;
-import jp.root42.indolently.regex.SPtrn;
-import jp.root42.indolently.regex.SPtrnJDK;
-import jp.root42.indolently.regex.SPtrnRE2;
+import jp.root42.indolently.regex.ReTest;
+import jp.root42.indolently.regex.Regex;
+import jp.root42.indolently.regex.RegexJDK;
+import jp.root42.indolently.regex.RegexRe2;
 
 import static jp.root42.indolently.Expressive.*;
 
@@ -2916,51 +2916,51 @@ public class Indolently {
         return x -> blank(f.apply(x));
     }
 
-    public static Function<String, SPtrn> re() { return regex -> re(regex); }
+    public static Function<String, Regex> re() { return regex -> re(regex); }
 
-    public static SPtrn re(final String regex) {
+    public static Regex re(final String regex) {
         return re(regex, "`");
     }
 
-    public static SPtrn re(final String regex, final String escape) {
-        return new SPtrn(Regexive.regex(regex.replaceAll(escape, "\\\\")));
+    public static Regex re(final String regex, final String escape) {
+        return new Regex(Regexive.regex(regex.replaceAll(escape, "\\\\")));
     }
 
-    public static Function<String, SPtrnJDK> re1() { return regex -> re1(regex); }
+    public static Function<String, RegexJDK> re1() { return regex -> re1(regex); }
 
-    public static SPtrnJDK re1(final String regex) {
+    public static RegexJDK re1(final String regex) {
         return re1(regex, "`");
     }
 
-    public static SPtrnJDK re1(final String regex, final String escape) {
+    public static RegexJDK re1(final String regex, final String escape) {
         return Regexive.regex1(regex.replaceAll(escape, "\\\\"));
     }
 
-    public static Function<String, SPtrnRE2> re2() { return regex -> re2(regex); }
+    public static Function<String, RegexRe2> re2() { return regex -> re2(regex); }
 
-    public static SPtrnRE2 re2(final String regex) {
+    public static RegexRe2 re2(final String regex) {
         return re2(regex, "`");
     }
 
-    public static SPtrnRE2 re2(final String regex, final String escape) {
+    public static RegexRe2 re2(final String regex, final String escape) {
         return Regexive.regex2(regex.replaceAll(escape, "\\\\"));
     }
 
-    public static SPtrnJDK re(final java.util.regex.Pattern regex) {
+    public static RegexJDK re(final java.util.regex.Pattern regex) {
         return Regexive.regex1(regex);
     }
 
-    public static Function<String, RETest> rematch() { return regex -> rematch(regex); }
+    public static Function<String, ReTest> rematch() { return regex -> rematch(regex); }
 
-    public static RETest rematch(final String regex) {
+    public static ReTest rematch(final String regex) {
         return Regexive.tester(regex);
     }
 
-    public static Function<String, RETest> refind() { return regex -> refind(regex); }
+    public static Function<String, ReTest> refind() { return regex -> refind(regex); }
 
-    public static RETest refind(final String regex) {
+    public static ReTest refind(final String regex) {
         final var p = re(regex);
-        return RETest.of(x -> p.matcher(x).find(), regex);
+        return ReTest.of(x -> p.matcher(x).find(), regex);
     }
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {

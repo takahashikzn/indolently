@@ -24,8 +24,8 @@ import jp.root42.indolently.$list;
  *
  * @author takahashikzn.
  */
-public interface SPtrnBase<P, M extends SMatcher>
-    extends RETest {
+public interface RegexBase<P, M extends ReMatcher>
+    extends ReTest {
 
     /**
      * Get Pattern instance which this object contains.
@@ -115,7 +115,7 @@ public interface SPtrnBase<P, M extends SMatcher>
      * @return replaced string
      * @see java.util.regex.Matcher#replaceAll(String)
      */
-    default String replace(final CharSequence cs, final BiFunction<? super SMatcher<?, ?>, String, String> f) {
+    default String replace(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
         return this.matcher(cs).replace(f);
     }
 }

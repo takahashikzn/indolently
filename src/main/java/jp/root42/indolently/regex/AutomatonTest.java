@@ -21,7 +21,7 @@ import dk.brics.automaton.RunAutomaton;
  * @author takahashikzn
  */
 public class AutomatonTest
-    implements RETest {
+    implements ReTest {
 
     private final RunAutomaton automaton;
 
