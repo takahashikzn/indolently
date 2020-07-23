@@ -114,14 +114,10 @@ public class $<T>
     @Override
     public int hashCode() { return Objects.hash(this.getClass(), this.opt); }
 
-    public final boolean equals(final $<? extends T> that) {
-        return (this == that) || ((that != null) && equiv(this.opt, that.opt));
-    }
-
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public final boolean eq(final T that) {
-        return !this.empty() && this.opt.get().equals(that);
-    }
+    public final boolean eq(final T that) { return !this.empty() && this.opt.get().equals(that); }
+
+    public final boolean equals(final $<? extends T> that) { return this.equals0(that); }
 
     @Deprecated
     @Override
@@ -129,9 +125,11 @@ public class $<T>
         if (this == o) return true;
         if (!(o instanceof $)) return false;
 
-        final $<?> that = cast(o);
+        return this.equals0(cast(o));
+    }
 
-        return this.equals(that);
+    private boolean equals0(final $<? extends T> that) {
+        return (this == that) || ((that != null) && equiv(this.opt, that.opt));
     }
 
     @Override
