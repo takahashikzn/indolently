@@ -38,7 +38,7 @@
     <!--
     <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="test->master(*)" />
     -->
-    <dependency org="it.unimi.dsi" name="fastutil" rev="8.3.1" conf="compile->master(*)" />
+    <dependency org="it.unimi.dsi" name="fastutil" rev="8.4.0" conf="compile->master(*)" />
     <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="10.3.0.M4" conf="compile->master(*)" />
     <dependency org="org.eclipse.collections" name="eclipse-collections" rev="10.3.0.M4" conf="compile->master(*)" />
 
