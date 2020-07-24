@@ -2918,9 +2918,7 @@ public class Indolently {
 
     public static Function<String, Regex> re() { return regex -> re(regex); }
 
-    public static Regex re(final String regex) {
-        return re(regex, "`");
-    }
+    public static Regex re(final String regex) { return re(regex, "`"); }
 
     public static Regex re(final String regex, final String escape) {
         return new Regex(Regexive.regex(regex.replaceAll(escape, "\\\\")));
@@ -2928,9 +2926,7 @@ public class Indolently {
 
     public static Function<String, RegexJDK> re1() { return regex -> re1(regex); }
 
-    public static RegexJDK re1(final String regex) {
-        return re1(regex, "`");
-    }
+    public static RegexJDK re1(final String regex) { return re1(regex, "`"); }
 
     public static RegexJDK re1(final String regex, final String escape) {
         return Regexive.regex1(regex.replaceAll(escape, "\\\\"));
@@ -2938,23 +2934,17 @@ public class Indolently {
 
     public static Function<String, RegexRe2> re2() { return regex -> re2(regex); }
 
-    public static RegexRe2 re2(final String regex) {
-        return re2(regex, "`");
-    }
+    public static RegexRe2 re2(final String regex) { return re2(regex, "`"); }
 
     public static RegexRe2 re2(final String regex, final String escape) {
         return Regexive.regex2(regex.replaceAll(escape, "\\\\"));
     }
 
-    public static RegexJDK re(final java.util.regex.Pattern regex) {
-        return Regexive.regex1(regex);
-    }
+    public static RegexJDK re(final java.util.regex.Pattern regex) { return Regexive.regex1(regex); }
 
-    public static Function<String, ReTest> rematch() { return regex -> rematch(regex); }
+    public static Function<String, ReTest> retest() { return regex -> retest(regex); }
 
-    public static ReTest rematch(final String regex) {
-        return Regexive.tester(regex);
-    }
+    public static ReTest retest(final String regex) { return Regexive.tester(regex); }
 
     public static Function<String, ReTest> refind() { return regex -> refind(regex); }
 
@@ -2963,9 +2953,7 @@ public class Indolently {
         return ReTest.of(x -> p.matcher(x).find(), regex);
     }
 
-    public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) {
-        return x -> f.apply(x) == null;
-    }
+    public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) { return x -> f.apply(x) == null; }
 
     public static <X, T> Predicate<X> isa(final Function<X, ? extends T> f, final Class<?> cls) {
         return x -> cls.isInstance(f.apply(x));
@@ -2987,9 +2975,7 @@ public class Indolently {
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final T... val) {
-        return in(f, list(val));
-    }
+    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final T... val) { return in(f, list(val)); }
 
     public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) {
         return x -> val.contains(f.apply(x));
