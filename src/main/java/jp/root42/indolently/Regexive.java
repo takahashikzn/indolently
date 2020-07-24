@@ -48,9 +48,7 @@ public class Regexive {
      * @param pattern pattern string
      * @return enhanced Pattern instance
      */
-    public static RegexJDK regex1(final String pattern) {
-        return regex1(java.util.regex.Pattern.compile(pattern));
-    }
+    public static RegexJDK regex1(final String pattern) { return regex1(java.util.regex.Pattern.compile(pattern)); }
 
     /**
      * create pattern instance using RE2J library.
@@ -72,9 +70,7 @@ public class Regexive {
      * @param pattern pattern object
      * @return enhanced Pattern instance
      */
-    public static RegexJDK regex1(final java.util.regex.Pattern pattern) {
-        return new RegexJDK(pattern);
-    }
+    public static RegexJDK regex1(final java.util.regex.Pattern pattern) { return new RegexJDK(pattern); }
 
     /**
      * create pattern instance.
@@ -82,9 +78,7 @@ public class Regexive {
      * @param pattern pattern object
      * @return enhanced Pattern instance
      */
-    public static RegexRe2 regex2(final com.google.re2j.Pattern pattern) {
-        return new RegexRe2(pattern);
-    }
+    public static RegexRe2 regex2(final com.google.re2j.Pattern pattern) { return new RegexRe2(pattern); }
 
     /**
      * create tester instance.
@@ -97,9 +91,7 @@ public class Regexive {
             try {
                 final var pred = automatonTester(pattern);
 
-                if (pred != null) {
-                    return pred;
-                }
+                if (pred != null) return pred;
             } catch (final IllegalArgumentException ignored) {}
         }
 
@@ -157,9 +149,13 @@ public class Regexive {
             .replaceAll("\\\\s", SPACE) //
             .replaceAll("\\\\S", not(SPACE)) //
             .replaceAll("\\\\v", VERTICAL_SPACE) //
-            .replaceAll("\\\\V", not(VERTICAL_SPACE));
+            .replaceAll("\\\\V", not(VERTICAL_SPACE)) //
+            .replaceAll("\\\\p\\{Digit}", "[0-9]") //
+            .replaceAll("\\\\p\\{Alpha}", "[A-Za-z]") //
+            .replaceAll("\\\\p\\{Alnum}", "[A-Za-z0-9]") //
+            ;
 
-        if (isJDKRegex(pt)) { return null; }
+        if (isJDKRegex(pt)) return null;
 
         return new AutomatonTest(new RegExp(pt), pattern);
     }
