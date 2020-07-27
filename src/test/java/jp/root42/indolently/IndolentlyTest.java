@@ -798,6 +798,24 @@ public class IndolentlyTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testFreezeAgain() {
+
+        final $map<String, ?> frozen = map( //
+            "level1", map( //
+                "level2", listOf(set(42)))).freeze();
+
+        final var again = frozen.freeze();
+
+        assertThat((Object) again).isSameAs(frozen);
+        assertThat(again.get("level1")).isSameAs(frozen.get("level1"));
+        assertThat(((Map<String, ?>) again.get("level1")).get("level2"))
+            .isSameAs(((Map<String, ?>) frozen.get("level1")).get("level2"));
+        assertThat(((List<?>) ((Map<String, ?>) again.get("level1")).get("level2")).get(0))
+            .isSameAs(((List<?>) ((Map<String, ?>) frozen.get("level1")).get("level2")).get(0));
+    }
+
     /**
      * {@link Indolently#set(Object...)}
      *

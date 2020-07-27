@@ -1026,15 +1026,21 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        return $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
+        return (map instanceof $map_impl) && (($map_impl<?, ?>) map).frozen()
+            ? cast(map)
+            : $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
     }
 
-    public static <T> $set<T> freeze(final Set<? extends T> elems) {
-        return $(Collections.unmodifiableSet($(elems).map(Indolently::freeze0)));
+    public static <T> $set<T> freeze(final Set<? extends T> set) {
+        return (set instanceof $set_impl) && (($set_impl<?>) set).frozen()
+            ? cast(set)
+            : $(Collections.unmodifiableSet($(set).map(Indolently::freeze0)));
     }
 
-    public static <T> $list<T> freeze(final List<? extends T> elems) {
-        return $(Collections.unmodifiableList($(elems).map(Indolently::freeze0)));
+    public static <T> $list<T> freeze(final List<? extends T> list) {
+        return (list instanceof $list_impl) && (($list_impl<?>) list).frozen()
+            ? cast(list)
+            : $(Collections.unmodifiableList($(list).map(Indolently::freeze0)));
     }
 
     /**

@@ -19,6 +19,8 @@ import java.util.Map;
 import jp.root42.indolently.bridge.MapDelegate;
 import jp.root42.indolently.bridge.ObjFactory;
 
+import static jp.root42.indolently.Expressive.*;
+
 
 /**
  * Simple implementation of {@link $map}.
@@ -44,4 +46,11 @@ final class $map_impl<K, V>
 
     @Override
     public $map<K, V> clone() { return $map.super.clone(); }
+
+    private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableMap"));
+
+    boolean frozen() {
+        return (this.store instanceof $map_impl) && (($map_impl<?, ?>) this.store).frozen()
+            || this.store.getClass() == FROZEN;
+    }
 }

@@ -21,6 +21,8 @@ import java.util.function.Predicate;
 import jp.root42.indolently.bridge.ListDelegate;
 import jp.root42.indolently.bridge.ObjFactory;
 
+import static jp.root42.indolently.Expressive.*;
+
 
 /**
  * Simple implementation of {@link $list}.
@@ -111,4 +113,11 @@ class $list_impl<T>
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(final Object o) { return (this == o) || this.store.equals(o); }
+
+    private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableList"));
+
+    boolean frozen() {
+        return (this.store instanceof $list_impl) && (($list_impl<?>) this.store).frozen()
+            || this.store.getClass() == FROZEN;
+    }
 }

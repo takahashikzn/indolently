@@ -19,6 +19,8 @@ import java.util.Set;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.bridge.SetDelegate;
 
+import static jp.root42.indolently.Expressive.*;
+
 
 /**
  * Simple implementation of {@link $set}.
@@ -46,4 +48,11 @@ final class $set_impl<T>
 
     @Override
     public $iter<T> iterator() { return Indolently.$(this.store.iterator()); }
+
+    private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableSet"));
+
+    boolean frozen() {
+        return (this.store instanceof $set_impl) && (($set_impl<?>) this.store).frozen()
+            || this.store.getClass() == FROZEN;
+    }
 }
