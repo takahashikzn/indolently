@@ -609,4 +609,12 @@ public interface $map<K, V>
     default $map<K, V> order(final Comparator<? super K> comp) {
         return Indolently.$(ObjFactory.getInstance().<K, V> newSortedMap(comp)).pushAll(this);
     }
+
+    @Destructive
+    default $map<K, V> pushIfAbsent(final K key, final Supplier<? extends V> value) {
+        if (!this.containsKey(key)) {
+            this.put(key, value.get());
+        }
+        return this;
+    }
 }
