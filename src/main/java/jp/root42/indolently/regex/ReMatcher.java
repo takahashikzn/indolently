@@ -121,17 +121,9 @@ public interface ReMatcher<P, M>
 
     default String subst(final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
         Objects.requireNonNull(f);
-
-        final var sb = new StringBuilder();
-
-        while (this.find()) {
-            var repl = f.apply(this, this.group());
-            if (contains(repl, '$')) {
-                repl = repl.replaceAll("(?<!\\\\)\\$", "\\\\\\$");
-            }
-            this.appendReplacement(sb, repl);
-        }
-
-        return this.appendTail(sb).toString();
+        return this.replace((m, s) -> {
+            final var repl = f.apply(m, s);
+            return contains(repl, '$') ? repl.replaceAll("(?<!\\\\)\\$", "\\\\\\$") : repl;
+        });
     }
 }
