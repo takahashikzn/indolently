@@ -1178,15 +1178,11 @@ public class Indolently {
      * @return test result
      */
     public static boolean blank(final CharSequence cs) {
-        if (empty(cs)) {
-            return true;
-        }
+        if (empty(cs)) return true;
 
         // don't use "cs.chars().allMatch(Character::isWhitespace);" for performance
         for (int i = 0, M = cs.length(); i < M; i++) {
-            if (!Character.isWhitespace(cs.charAt(i))) {
-                return false;
-            }
+            if (!Character.isWhitespace(cs.charAt(i))) return false;
         }
 
         return true;
@@ -1202,163 +1198,109 @@ public class Indolently {
         return empty((Object[]) cs) || list(cs).every(Indolently::blank);
     }
 
-    public static boolean empty(final Object[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final Object[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final byte[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final byte[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final int[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final int[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final long[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final long[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final short[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final short[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final float[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final float[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final double[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final double[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final boolean[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final boolean[] ary) { return (ary == null) || (ary.length == 0); }
 
-    public static boolean empty(final char[] ary) {
-        return (ary == null) || (ary.length == 0);
-    }
+    public static boolean empty(final char[] ary) { return (ary == null) || (ary.length == 0); }
 
     public static boolean contains(final Object[] ary, final Object val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final Object x: ary) {
-            if (Objects.equals(x, val)) {
-                return true;
-            }
+            if (Objects.equals(x, val)) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final byte[] ary, final byte val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final byte x: ary) {
-            if (x == val) {
-                return true;
-            }
+            if (x == val) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final int[] ary, final int val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final int x: ary) {
-            if (x == val) {
-                return true;
-            }
+            if (x == val) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final long[] ary, final long val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final long x: ary) {
-            if (x == val) {
-                return true;
-            }
+            if (x == val) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final short[] ary, final short val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final short x: ary) {
-            if (x == val) {
-                return true;
-            }
+            if (x == val) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final float[] ary, final float val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final float x: ary) {
-            if (equal(x, val)) {
-                return true;
-            }
+            if (equal(x, val)) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final double[] ary, final double val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final double x: ary) {
-            if (equal(x, val)) {
-                return true;
-            }
+            if (equal(x, val)) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final boolean[] ary, final boolean val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final boolean x: ary) {
-            if (x == val) {
-                return true;
-            }
+            if (x == val) return true;
         }
 
         return false;
     }
 
     public static boolean contains(final char[] ary, final char val) {
-        if (empty(ary)) {
-            return false;
-        }
+        if (empty(ary)) return false;
 
         for (final char x: ary) {
-            if (x == val) {
-                return true;
-            }
+            if (x == val) return true;
         }
 
         return false;
@@ -1367,26 +1309,17 @@ public class Indolently {
     public static boolean contains(final CharSequence cs, final char c) {
 
         return (cs != null) && (0 < cs.length()) //
-            && (cs instanceof String) //
-            ? (0 <= ((String) cs).indexOf(c)) //
-            : (cs instanceof StringBuilder) //
-                ? (0 <= ((StringBuilder) cs).indexOf(String.valueOf(c))) //
-                : (cs instanceof StringBuffer) //
-                    ? (0 <= ((StringBuffer) cs).indexOf(String.valueOf(c))) //
+            && (cs instanceof String) ? (0 <= ((String) cs).indexOf(c)) //
+            : (cs instanceof StringBuilder) ? (0 <= ((StringBuilder) cs).indexOf(String.valueOf(c))) //
+                : (cs instanceof StringBuffer) ? (0 <= ((StringBuffer) cs).indexOf(String.valueOf(c))) //
                     : (0 <= cs.toString().indexOf(c));
     }
 
-    public static String join(final CharSequence... ary) {
-        return join(list(ary), null);
-    }
+    public static String join(final CharSequence... ary) { return join(list(ary), null); }
 
-    public static String join(final String[] ary, final String sep) {
-        return join(list(ary), sep);
-    }
+    public static String join(final String[] ary, final String sep) { return join(list(ary), sep); }
 
-    public static String join(final Iterable<? extends CharSequence> col) {
-        return join(col, null);
-    }
+    public static String join(final Iterable<? extends CharSequence> col) { return join(col, null); }
 
     public static String join(final Iterable<? extends CharSequence> col, final String sep) {
 
@@ -1397,13 +1330,9 @@ public class Indolently {
         }, (String) null);
     }
 
-    public static byte[] bytes(final String s, final Charset cs) {
-        return s.getBytes(cs);
-    }
+    public static byte[] bytes(final String s, final Charset cs) { return s.getBytes(cs); }
 
-    public static String string(final byte[] b, final Charset cs) {
-        return new String(b, cs);
-    }
+    public static String string(final byte[] b, final Charset cs) { return new String(b, cs); }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
@@ -1425,16 +1354,12 @@ public class Indolently {
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> T choose(final T initial, final Supplier<? extends T>... suppliers) {
 
-        if (initial != null) {
-            return initial;
-        }
+        if (initial != null) return initial;
 
         if (suppliers != null) {
             for (final var s: suppliers) {
                 final var val = s.get();
-                if (val != null) {
-                    return val;
-                }
+                if (val != null) return val;
             }
         }
 
@@ -1449,9 +1374,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean lt(final double l, final double r) {
-        return Double.compare(l, r) < 0;
-    }
+    public static boolean lt(final double l, final double r) { return Double.compare(l, r) < 0; }
 
     /**
      * Test that the lower is less equal than upper.
@@ -1461,9 +1384,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean le(final double l, final double r) {
-        return Double.compare(l, r) <= 0;
-    }
+    public static boolean le(final double l, final double r) { return Double.compare(l, r) <= 0; }
 
     /**
      * Test that the lower is greater than upper.
@@ -1473,9 +1394,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean gt(final double l, final double r) {
-        return Double.compare(l, r) > 0;
-    }
+    public static boolean gt(final double l, final double r) { return Double.compare(l, r) > 0; }
 
     /**
      * Test that the lower is greater equal than upper.
@@ -1485,9 +1404,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean ge(final double l, final double r) {
-        return Double.compare(l, r) >= 0;
-    }
+    public static boolean ge(final double l, final double r) { return Double.compare(l, r) >= 0; }
 
     /**
      * Test that the lower is less than upper.
@@ -1497,9 +1414,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean lt(final long l, final long r) {
-        return l < r;
-    }
+    public static boolean lt(final long l, final long r) { return l < r; }
 
     /**
      * Test that the lower is less equal than upper.
@@ -1509,9 +1424,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean le(final long l, final long r) {
-        return l <= r;
-    }
+    public static boolean le(final long l, final long r) { return l <= r; }
 
     /**
      * Test that the lower is greater than upper.
@@ -1521,9 +1434,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean gt(final long l, final long r) {
-        return l > r;
-    }
+    public static boolean gt(final long l, final long r) { return l > r; }
 
     /**
      * Test that the lower is greater equal than upper.
@@ -1533,9 +1444,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static boolean ge(final long l, final long r) {
-        return l >= r;
-    }
+    public static boolean ge(final long l, final long r) { return l >= r; }
 
     /**
      * Test that the lower is less than upper.
@@ -1546,9 +1455,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean lt(final T l, final T r) {
-        return l.compareTo(r) < 0;
-    }
+    public static <T extends Comparable<T>> boolean lt(final T l, final T r) { return l.compareTo(r) < 0; }
 
     /**
      * Test that the lower is less equal than upper.
@@ -1559,9 +1466,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean le(final T l, final T r) {
-        return l.compareTo(r) <= 0;
-    }
+    public static <T extends Comparable<T>> boolean le(final T l, final T r) { return l.compareTo(r) <= 0; }
 
     /**
      * Test that the lower is greater than upper.
@@ -1572,9 +1477,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gt(final T l, final T r) {
-        return l.compareTo(r) > 0;
-    }
+    public static <T extends Comparable<T>> boolean gt(final T l, final T r) { return l.compareTo(r) > 0; }
 
     /**
      * Test that the lower is greater equal than upper.
@@ -1585,9 +1488,7 @@ public class Indolently {
      * @param r right side value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean ge(final T l, final T r) {
-        return l.compareTo(r) >= 0;
-    }
+    public static <T extends Comparable<T>> boolean ge(final T l, final T r) { return l.compareTo(r) >= 0; }
 
     /**
      * Test that the value is gerater than lower and less than upper.
