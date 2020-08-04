@@ -113,7 +113,11 @@ public interface ReMatcher<P, M>
         final var sb = new StringBuilder();
 
         while (this.find()) {
-            this.appendReplacement(sb, f.apply(this, this.group()));
+            var repl = f.apply(this, this.group());
+            if (contains(repl, '$')) {
+                repl = repl.replaceAll("(?<!\\\\)\\$", "\\\\\\$");
+            }
+            this.appendReplacement(sb, repl);
         }
 
         return this.appendTail(sb).toString();

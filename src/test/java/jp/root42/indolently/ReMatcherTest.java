@@ -40,4 +40,10 @@ public class ReMatcherTest {
         assertThat(list(regex("\\d+").matcher("abc"))) //
             .isEqualTo(list());
     }
+
+    @Test
+    public void replace() {
+        assertThat(regex("(?<!\\\\)\\$\\w+").replace("$foo \\$bar $baz", s -> "$var")) //
+            .isEqualTo("$var \\$bar $var");
+    }
 }
