@@ -42,8 +42,8 @@ public class ReMatcherTest {
     }
 
     @Test
-    public void replace() {
-        assertThat(regex("(?<!\\\\)\\$\\w+").replace("$foo \\$bar $baz", s -> "$var")) //
+    public void subst() {
+        assertThat(regex("(?<!\\\\)\\$\\w+").subst("$foo \\$bar $baz", s -> "$var")) //
             .isEqualTo("$var \\$bar $var");
     }
 }

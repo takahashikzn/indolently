@@ -118,4 +118,12 @@ public interface RegexBase<P, M extends ReMatcher>
     default String replace(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
         return this.matcher(cs).replace(f);
     }
+
+    default String subst(final CharSequence cs, final Function<String, String> f) {
+        return this.matcher(cs).subst(f);
+    }
+
+    default String subst(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
+        return this.matcher(cs).subst(f);
+    }
 }

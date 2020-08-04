@@ -92,11 +92,9 @@ public interface ReMatcher<P, M>
      *
      * @param f replace operator
      * @return replaced string
-     * @see #replaceAll(String)
      */
     default String replace(final Function<String, String> f) {
         Objects.requireNonNull(f);
-
         return this.replace((m, s) -> f.apply(s));
     }
 
@@ -105,9 +103,23 @@ public interface ReMatcher<P, M>
      *
      * @param f replace operator
      * @return replaced string
-     * @see #replaceAll(String)
      */
     default String replace(final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
+        Objects.requireNonNull(f);
+
+        final var sb = new StringBuilder();
+        while (this.find()) {
+            this.appendReplacement(sb, f.apply(this, this.group()));
+        }
+        return this.appendTail(sb).toString();
+    }
+
+    default String subst(final Function<String, String> f) {
+        Objects.requireNonNull(f);
+        return this.subst((m, s) -> f.apply(s));
+    }
+
+    default String subst(final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
         Objects.requireNonNull(f);
 
         final var sb = new StringBuilder();
