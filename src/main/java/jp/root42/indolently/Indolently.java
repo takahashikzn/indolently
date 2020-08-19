@@ -2086,15 +2086,10 @@ public class Indolently {
                 : new $stream_impl<>(stream);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <K, V> $map<K, V> newMap(final Class<K> keyType, final Class<V> valType) {
-        return map();
-    }
+    public static <K, V> $map<K, V> newMap(final Class<K> keyType, final Class<V> valType) { return map(); }
 
     @SuppressWarnings("unchecked")
-    public static <K, V> $map<K, V> map(final K key, final V val) {
-        return ($map<K, V>) map().push(key, val);
-    }
+    public static <K, V> $map<K, V> map(final K key, final V val) { return ($map<K, V>) map().push(key, val); }
 
     @SuppressWarnings("unchecked")
     public static <K, V> $map<K, V> map(final K key, final $<? extends V> val) {
@@ -2104,24 +2099,22 @@ public class Indolently {
     /**
      * create two element tuple.
      *
-     * @param fst 1st element
-     * @param snd 2nd element
+     * @param _1 1st element
+     * @param _2 2nd element
      * @return tuple
      */
-    public static <F, S> $2<F, S> tuple(final F fst, final S snd) {
-        return new $2<F, S>()._1(fst)._2(snd);
-    }
+    public static <F, S> $2<F, S> tuple(final F _1, final S _2) { return new $2<F, S>()._1(_1)._2(_2); }
 
     /**
      * create three element tuple.
      *
-     * @param fst 1st element
-     * @param snd 2nd element
-     * @param trd 3rd element
+     * @param _1 1st element
+     * @param _2 2nd element
+     * @param _3 3rd element
      * @return tuple
      */
-    public static <F, S, T> $3<F, S, T> tuple(final F fst, final S snd, final T trd) {
-        return new $3<F, S, T>()._1(fst)._2(snd)._3(trd);
+    public static <F, S, T> $3<F, S, T> tuple(final F _1, final S _2, final T _3) {
+        return new $3<F, S, T>()._1(_1)._2(_2)._3(_3);
     }
 
     public static <F, S> Function<$2<F, S>, F> _1() { return x -> x._1; }
@@ -2140,9 +2133,7 @@ public class Indolently {
      * @param tuple two element tuple
      * @return list of tuple elements
      */
-    public static <T> $list<T> list(final $2<? extends T, ? extends T> tuple) {
-        return list(tuple._1, tuple._2);
-    }
+    public static <T> $list<T> list(final $2<? extends T, ? extends T> tuple) { return list(tuple._1, tuple._2); }
 
     /**
      * Convert tuple to list.
@@ -2160,9 +2151,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $bool ref(final boolean val) {
-        return Ref.of(val);
-    }
+    public static $bool ref(final boolean val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2170,9 +2159,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $int ref(final int val) {
-        return Ref.of(val);
-    }
+    public static $int ref(final int val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2180,9 +2167,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $long ref(final long val) {
-        return Ref.of(val);
-    }
+    public static $long ref(final long val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2190,9 +2175,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $double ref(final double val) {
-        return Ref.of(val);
-    }
+    public static $double ref(final double val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2200,9 +2183,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $float ref(final float val) {
-        return Ref.of(val);
-    }
+    public static $float ref(final float val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2210,9 +2191,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $short ref(final short val) {
-        return Ref.of(val);
-    }
+    public static $short ref(final short val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2220,9 +2199,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $byte ref(final byte val) {
-        return Ref.of(val);
-    }
+    public static $byte ref(final byte val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2230,9 +2207,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $char ref(final char val) {
-        return Ref.of(val);
-    }
+    public static $char ref(final char val) { return Ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2240,18 +2215,14 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static <T> $void<T> ref(final T val) {
-        return Ref.of(val);
-    }
+    public static <T> $void<T> ref(final T val) { return Ref.of(val); }
 
     /**
      * create an empty reference.
      *
      * @return empty reference
      */
-    public static <T> $void<T> ref() {
-        return Ref.of((T) null);
-    }
+    public static <T> $void<T> ref() { return Ref.of((T) null); }
 
     /**
      * create a reference of value.
@@ -2259,9 +2230,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static <T extends Comparable<T>> $voidc<T> ref(final T val) {
-        return Ref.of(val);
-    }
+    public static <T extends Comparable<T>> $voidc<T> ref(final T val) { return Ref.of(val); }
 
     // CHECKSTYLE:OFF
     public static <K, V> $map<K, V> map(final K k0, final V v0, final K k1, final V v1) {
@@ -2613,37 +2582,25 @@ public class Indolently {
 
     public static <T> Function<T, T> itself() { return cast(itself); }
 
-    public static <T, S> Function<T, S> fixed(final S val) {
-        return x -> val;
-    }
+    public static <T, S> Function<T, S> fixed(final S val) { return x -> val; }
 
-    public static <T> Predicate<T> fixed(final boolean val) {
-        return val ? vrai() : faux();
-    }
+    public static <T> Predicate<T> fixed(final boolean val) { return val ? vrai() : faux(); }
 
     private static final Predicate<Boolean> asis = x -> x;
 
-    public static Predicate<Boolean> asis() {
-        return asis;
-    }
+    public static Predicate<Boolean> asis() { return asis; }
 
     private static final Predicate<?> vrai = x -> true;
 
-    public static <T> Predicate<T> vrai() {
-        return cast(vrai);
-    }
+    public static <T> Predicate<T> vrai() { return cast(vrai); }
 
     private static final Predicate<?> faux = x -> false;
 
-    public static <T> Predicate<T> faux() {
-        return cast(faux);
-    }
+    public static <T> Predicate<T> faux() { return cast(faux); }
 
     private static final Predicate<?> nil = x -> x == null;
 
-    public static <T> Predicate<T> nil() {
-        return cast(nil);
-    }
+    public static <T> Predicate<T> nil() { return cast(nil); }
 
     private static final Predicate<?> nonnil = x -> x != null;
 
@@ -2665,15 +2622,11 @@ public class Indolently {
 
     public static boolean and(final boolean x0, final boolean x1, final boolean... x2) {
 
-        if (!x0 || !x1) {
-            return false;
-        }
+        if (!x0 || !x1) return false;
 
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < x2.length; i++) {
-            if (!x2[i]) {
-                return false;
-            }
+            if (!x2[i]) return false;
         }
 
         return true;
@@ -2691,15 +2644,11 @@ public class Indolently {
 
     public static boolean or(final boolean x0, final boolean x1, final boolean... x2) {
 
-        if (x0 || x1) {
-            return true;
-        }
+        if (x0 || x1) return true;
 
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < x2.length; i++) {
-            if (x2[i]) {
-                return true;
-            }
+            if (x2[i]) return true;
         }
 
         return false;
@@ -2976,8 +2925,8 @@ public class Indolently {
 
     public static List<String> split(final String s, final String sep, int from, int to) {
         final int sl = sep.length();
-        if (sl == 0) { return list(s); }
-        if (sl == 1) { return split(s, sep.charAt(0), from, to); }
+        if (sl == 0) return list(s);
+        if (sl == 1) return split(s, sep.charAt(0), from, to);
 
         if (from < 0) { from = s.length() + from; }
         if (to < 0) { to = s.length() + to; }
@@ -3001,10 +2950,9 @@ public class Indolently {
     }
 
     private static void checkSplitRange(final String s, final int from, final int to) {
-        if (to < from) { throw new IllegalArgumentException(String.format("to=%d < from=%d", to, from)); }
-        if (s.length() < from || s.length() < to) {
+        if (to < from) throw new IllegalArgumentException(String.format("to=%d < from=%d", to, from));
+        if (s.length() < from || s.length() < to)
             throw new StringIndexOutOfBoundsException(String.format("from=%d, to=%d, len=%d", from, to, s.length()));
-        }
     }
 
     public static <E extends Enum<E>> $<E> enumOf(final Class<E> type, final String name) {
