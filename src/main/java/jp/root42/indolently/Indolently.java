@@ -2777,7 +2777,7 @@ public class Indolently {
     public static Regex re(final String regex) { return re(regex, "`"); }
 
     public static Regex re(final String regex, final String escape) {
-        return new Regex(Regexive.regex(regex.replaceAll(escape, "\\\\")));
+        return new Regex(Regexive.regex(empty(escape) ? regex : regex.replaceAll(escape, "\\\\")));
     }
 
     public static Function<String, RegexJDK> re1() { return regex -> re1(regex); }
@@ -2785,7 +2785,7 @@ public class Indolently {
     public static RegexJDK re1(final String regex) { return re1(regex, "`"); }
 
     public static RegexJDK re1(final String regex, final String escape) {
-        return Regexive.regex1(regex.replaceAll(escape, "\\\\"));
+        return Regexive.regex1(empty(escape) ? regex : regex.replaceAll(escape, "\\\\"));
     }
 
     public static Function<String, RegexRe2> re2() { return regex -> re2(regex); }
@@ -2793,7 +2793,7 @@ public class Indolently {
     public static RegexRe2 re2(final String regex) { return re2(regex, "`"); }
 
     public static RegexRe2 re2(final String regex, final String escape) {
-        return Regexive.regex2(regex.replaceAll(escape, "\\\\"));
+        return Regexive.regex2(empty(escape) ? regex : regex.replaceAll(escape, "\\\\"));
     }
 
     public static RegexJDK re(final java.util.regex.Pattern regex) { return Regexive.regex1(regex); }
