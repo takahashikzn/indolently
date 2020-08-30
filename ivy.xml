@@ -51,7 +51,7 @@
     <dependency org="junit" name="junit" rev="4.13" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="test->master(*)" />
-    <dependency org="org.assertj" name="assertj-core" rev="3.17.0" conf="test->master(*)" />
+    <dependency org="org.assertj" name="assertj-core" rev="3.17.1" conf="test->master(*)" />
     <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="test->master(*)" />
     <dependency org="org.mockito" name="mockito-core" rev="3.5.7" conf="test->master(*)" />
     <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.14" conf="test->master(*)" />
