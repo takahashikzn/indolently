@@ -2127,6 +2127,14 @@ public class Indolently {
 
     public static <F, S, T> Function<$3<F, S, T>, T> _3of3() { return x -> x._3; }
 
+    public static <T, R> Function<List<T>, List<R>> mapList(final Function<T, R> f) {
+        return (List<T> list) -> $(list).map(f);
+    }
+
+    public static <T, R> Function<Set<T>, Set<R>> mapSet(final Function<T, R> f) {
+        return (Set<T> list) -> $(list).map(f);
+    }
+
     /**
      * Convert tuple to list.
      *
