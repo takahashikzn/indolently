@@ -2135,6 +2135,10 @@ public class Indolently {
         return (Set<T> set) -> $(set).map(f);
     }
 
+    public static <K, T, R> Function<Map<K, T>, Map<K, R>> mapm(final Function<T, R> f) {
+        return (Map<K, T> map) -> $(map).map(f);
+    }
+
     /**
      * Convert tuple to list.
      *
