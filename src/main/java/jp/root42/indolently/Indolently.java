@@ -13,7 +13,9 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
@@ -2999,4 +3001,12 @@ public class Indolently {
     public static BytesOutputStream bytesOut() { return BytesOutputStream.create(); }
 
     public static BytesOutputStream bytesOut(final int len) { return BytesOutputStream.create(len); }
+
+    public static byte[] bytes(final InputStream in) throws IOException {
+        if (in instanceof ByteArrayInputStream) return in.readAllBytes();
+
+        final var out = bytesOut();
+        out.write(in);
+        return out.toByteArray();
+    }
 }
