@@ -291,4 +291,46 @@ public class Iterative {
             .when(pred).then(x -> x.getThen(y -> y.$ += (from <= to ? step : -step))) //
             .raise(x -> new NoSuchElementException()));
     }
+
+    public static class ResourceIterable<T extends AutoCloseable>
+        implements Iterable<T>, AutoCloseable {
+
+        private final Iterable<T> iter;
+
+        private final $list<T> list = list();
+
+        public ResourceIterable(final Iterable<T> iter) { this.iter = iter; }
+
+        @Override
+        public void close() throws Exception {
+            Exception last = null;
+            for (final var r: this.list.pushAll(list(this.iter)))
+                try {
+                    r.close();
+                } catch (final Exception e) {
+                    (last = e).printStackTrace();
+                }
+
+            if (last != null) throw last;
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+
+            return new Iterator<>() {
+
+                private final Iterator<T> i = ResourceIterable.this.iter.iterator();
+
+                @Override
+                public boolean hasNext() { return this.i.hasNext(); }
+
+                @Override
+                public T next() {
+                    final var x = this.i.next();
+                    ResourceIterable.this.list.add(x);
+                    return x;
+                }
+            };
+        }
+    }
 }
