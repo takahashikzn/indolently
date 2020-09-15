@@ -85,11 +85,8 @@ public final class Numeric {
     public static boolean asBool(final String s) { return Boolean.parseBoolean(s); }
 
     private static <T> $<T> parseX(final String s, final Function<String, T> f) {
-        try {
-            return (s == null) ? $.none() : $.of(f.apply(s));
-        } catch (final IllegalArgumentException e) {
-            return $.none();
-        }
+        try { return empty(s) ? $.none() : $.of(f.apply(s)); } //
+        catch (final IllegalArgumentException e) { return $.none(); }
     }
 
     public static $<Integer> parseInt(final String s) {
