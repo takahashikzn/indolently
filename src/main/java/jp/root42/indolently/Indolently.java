@@ -2897,15 +2897,23 @@ public class Indolently {
     }
 
     public static int narrow(final int lower, final int x, final int upper) {
-        return (x <= lower) ? lower : (upper <= x) ? upper : x;
+        return (x < lower) ? lower : (upper < x) ? upper : x;
     }
 
     public static int narrow(final int lower, final long x, final int upper) {
-        return (int) ((x <= lower) ? lower : (upper <= x) ? upper : x);
+        return (int) ((x < lower) ? lower : (upper < x) ? upper : x);
     }
 
     public static long narrow(final long lower, final long x, final long upper) {
-        return (x <= lower) ? lower : (upper <= x) ? upper : x;
+        return (x < lower) ? lower : (upper < x) ? upper : x;
+    }
+
+    public static float narrow(final float lower, final float x, final float upper) {
+        return (x < lower) ? lower : (upper < x) ? upper : x;
+    }
+
+    public static double narrow(final double lower, final double x, final double upper) {
+        return (x < lower) ? lower : (upper < x) ? upper : x;
     }
 
     public static List<String> split(final String s, final char sep) { return split(s, sep, 0, s.length()); }
