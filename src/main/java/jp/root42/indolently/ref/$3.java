@@ -236,13 +236,8 @@ public class $3<T1, T2, T3>
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof $3)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof $3)) return false;
 
         final $3<?, ?, ?> that = cast(o);
 

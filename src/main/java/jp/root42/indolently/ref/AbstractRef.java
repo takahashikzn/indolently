@@ -33,13 +33,8 @@ abstract class AbstractRef<T, S extends AbstractRef<T, S>>
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!o.getClass().isInstance(o)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!o.getClass().isInstance(o)) return false;
 
         @SuppressWarnings("unchecked")
         final AbstractRef<T, ?> that = (AbstractRef<T, ?>) o;

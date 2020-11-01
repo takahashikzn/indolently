@@ -135,13 +135,8 @@ public class $2<T1, T2>
 
     @Override
     public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof $2)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof $2)) return false;
 
         final $2<?, ?> that = cast(o);
 
