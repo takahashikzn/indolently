@@ -22,9 +22,15 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import jp.root42.indolently.function.ConsumerE;
 import jp.root42.indolently.function.Expression;
+import jp.root42.indolently.function.Function2E;
 import jp.root42.indolently.function.Function3;
+import jp.root42.indolently.function.Function3E;
+import jp.root42.indolently.function.FunctionE;
+import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
+import jp.root42.indolently.function.SupplierE;
 import net.jodah.typetools.TypeResolver;
 
 import static jp.root42.indolently.Indolently.*;
@@ -84,9 +90,25 @@ public class Expressive {
      *
      * @param stmt statement body
      */
-    public static void let(final Statement stmt) {
-        stmt.run();
-    }
+    public static void let(final Statement stmt) { stmt.run(); }
+
+    /**
+     * Block statement.
+     *
+     * @param <E> the type of exception
+     * @param stmt statement body
+     */
+    public static <E extends Exception> void letE(final RunnableE<E> stmt) throws E { stmt.run(); }
+
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <R> the type of expression
+     * @param <E> the type of exception
+     * @param expr expression body
+     * @return the value of body expression
+     */
+    public static <R, E extends Exception> R evalE(final SupplierE<R, E> expr) throws E { return expr.get(); }
 
     /**
      * In-line evaluation expression.
@@ -95,9 +117,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value of body expression
      */
-    public static <R> R eval(final Expression<R> expr) {
-        return expr.get();
-    }
+    public static <R> R eval(final Expression<R> expr) { return expr.get(); }
 
     /**
      * Block statement.
@@ -105,7 +125,16 @@ public class Expressive {
      * @param value the value
      * @param stmt expression body
      */
-    public static <T> void let(final T value, final Consumer<? super T> stmt) {
+    public static <T> void let(final T value, final Consumer<? super T> stmt) { stmt.accept(value); }
+
+    /**
+     * Block statement.
+     *
+     * @param <E> the type of exception
+     * @param value the value
+     * @param stmt expression body
+     */
+    public static <T, E extends Exception> void letE(final T value, final ConsumerE<? super T, E> stmt) throws E {
         stmt.accept(value);
     }
 
@@ -150,9 +179,20 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T, R> R eval(final T val, final Function<? super T, ? extends R> expr) {
-        return expr.apply(val);
-    }
+    public static <T, R> R eval(final T val, final Function<? super T, ? extends R> expr) { return expr.apply(val); }
+
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <T> value type
+     * @param <R> the type of expression
+     * @param <E> the type of exception
+     * @param val the value
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T, R, E extends Exception> R evalE(final T val, final FunctionE<? super T, ? extends R, E> expr)
+        throws E { return expr.apply(val); }
 
     /**
      * In-line evaluation expression.
@@ -166,10 +206,22 @@ public class Expressive {
      * @return the value function returned
      */
     public static <T1, T2, R> R eval(final T1 val1, final T2 val2,
-        final BiFunction<? super T1, ? super T2, ? extends R> expr) {
+        final BiFunction<? super T1, ? super T2, ? extends R> expr) { return expr.apply(val1, val2); }
 
-        return expr.apply(val1, val2);
-    }
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <T1> first value type
+     * @param <T2> second value type
+     * @param <R> the type of expression
+     * @param <E> the type of exception
+     * @param val1 first value
+     * @param val2 second value
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T1, T2, R, E extends Exception> R evalE(final T1 val1, final T2 val2,
+        final Function2E<? super T1, ? super T2, ? extends R, E> expr) throws E { return expr.apply(val1, val2); }
 
     /**
      * In-line evaluation expression.
@@ -185,8 +237,24 @@ public class Expressive {
      * @return the value function returned
      */
     public static <T1, T2, T3, R> R eval(final T1 val1, final T2 val2, final T3 val3,
-        final Function3<? super T1, ? super T2, ? super T3, ? extends R> expr) {
+        final Function3<? super T1, ? super T2, ? super T3, ? extends R> expr) { return expr.apply(val1, val2, val3); }
 
+    /**
+     * In-line evaluation expression.
+     *
+     * @param <T1> first value type
+     * @param <T2> second value type
+     * @param <T3> third value type
+     * @param <R> the type of expression
+     * @param <E> the type of exception
+     * @param val1 first value
+     * @param val2 second value
+     * @param val3 third value
+     * @param expr expression body
+     * @return the value function returned
+     */
+    public static <T1, T2, T3, R, E extends Exception> R evalE(final T1 val1, final T2 val2, final T3 val3,
+        final Function3E<? super T1, ? super T2, ? super T3, ? extends R, E> expr) throws E {
         return expr.apply(val1, val2, val3);
     }
 
@@ -205,6 +273,27 @@ public class Expressive {
         final var val = first.get();
 
         list(forms).each(f -> f.accept(val));
+
+        return val;
+    }
+
+    /**
+     * evaluate following forms then return evaluation result of first expressions.
+     *
+     * @param <T> the type of expression
+     * @param <E> the type of exception
+     * @param first evaluation result of this expression
+     * @param forms evaluation target forms. argument is evaluation result of {@code first}.
+     * @return first expression evaluation result
+     */
+    @SuppressWarnings({ "varargs", "RedundantSuppression" })
+    @SafeVarargs
+    public static <T, E extends Exception> T prog1E(final SupplierE<? extends T, E> first,
+        final ConsumerE<? super T, E>... forms) throws E {
+
+        final var val = first.get();
+
+        for (final var f: list(forms)) { f.accept(val); }
 
         return val;
     }
