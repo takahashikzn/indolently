@@ -305,7 +305,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
 
     default String join() { return this.join((String) null); }
 
-    default String join(final String sep) { return this.join(Object::toString, sep); }
+    default String join(final String sep) { return this.join(x -> (x == null) ? "" : "" + x, sep); }
 
     default String join(final Function<T, CharSequence> f) { return this.join(f, null); }
 
