@@ -106,6 +106,24 @@ public final class Numeric {
 
     public static $<Boolean> parseBool(final String s) { return parseX(s, Boolean::parseBoolean); }
 
+    public static $<BigDecimal> parseDecimal(final String s) { return parseX(s, BigDecimal::new); }
+
+    public static Function<String, $<Integer>> parseInt() { return Numeric::parseInt; }
+
+    public static Function<String, $<Long>> parseLong() { return Numeric::parseLong; }
+
+    public static Function<String, $<Short>> parseShort() { return Numeric::parseShort; }
+
+    public static Function<String, $<Byte>> parseByte() { return Numeric::parseByte; }
+
+    public static Function<String, $<Float>> parseFloat() { return Numeric::parseFloat; }
+
+    public static Function<String, $<Double>> parseDouble() { return Numeric::parseDouble; }
+
+    public static Function<String, $<Boolean>> parseBool() { return Numeric::parseBool; }
+
+    public static Function<String, $<BigDecimal>> parseDecimal() { return Numeric::parseDecimal; }
+
     // public static char asChar(final String s) { return s.charAt(0); }
 
     public static BigDecimal decimal(final String s) { return new BigDecimal(s); }
