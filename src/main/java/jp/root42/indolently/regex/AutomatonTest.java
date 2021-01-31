@@ -35,8 +35,11 @@ public class AutomatonTest
     }
 
     @Override
+    public String pattern() { return this.pattern; }
+
+    @Override
     public boolean test(final CharSequence cs) { return this.automaton.run(cs.toString()); }
 
     @Override
-    public String toString() { return this.pattern; }
+    public String toString() { return this.pattern(); }
 }
