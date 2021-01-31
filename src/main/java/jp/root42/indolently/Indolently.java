@@ -3018,15 +3018,15 @@ public class Indolently {
         return out.toByteArray();
     }
 
-    public static void close(final AutoCloseable c) {
+    public static void shut(final AutoCloseable c) {
         if (c != null) //
             try { c.close(); } //
             catch (final Exception e) { raise(e); }
     }
 
-    public static Consumer<AutoCloseable> close() { return Indolently::close; }
+    public static Consumer<AutoCloseable> shut() { return Indolently::shut; }
 
-    public static void qclose(final AutoCloseable c) {
+    public static void qshut(final AutoCloseable c) {
         if (c != null) //
             try { c.close(); } //
             catch (final Exception e) {
@@ -3035,5 +3035,5 @@ public class Indolently {
             }
     }
 
-    public static Consumer<AutoCloseable> qclose() { return Indolently::qclose; }
+    public static Consumer<AutoCloseable> qshut() { return Indolently::qshut; }
 }
