@@ -22,6 +22,11 @@ import java.util.function.Predicate;
 public interface ReTest
     extends Predicate<CharSequence> {
 
+    /**
+     * get pattern string.
+     *
+     * @return regex string
+     */
     String pattern();
 
     static ReTest of(final RegexBase<?, ?> ptrn) { return of(ptrn, ptrn.pattern()); }

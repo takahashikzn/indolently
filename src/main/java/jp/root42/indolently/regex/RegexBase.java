@@ -24,6 +24,7 @@ import jp.root42.indolently.$list;
  *
  * @author takahashikzn.
  */
+@SuppressWarnings("unchecked")
 public interface RegexBase<P, M extends ReMatcher>
     extends ReTest {
 
@@ -41,13 +42,6 @@ public interface RegexBase<P, M extends ReMatcher>
      * @return created matcher instance
      */
     M matcher(CharSequence cs);
-
-    /**
-     * An shortcut of {@code ptrn.pattern().pattern()}.
-     *
-     * @return regex string
-     */
-    String pattern();
 
     default boolean found(final CharSequence cs) { return this.matcher(cs).find(); }
 
@@ -119,9 +113,7 @@ public interface RegexBase<P, M extends ReMatcher>
         return this.matcher(cs).replace(f);
     }
 
-    default String subst(final CharSequence cs, final Function<String, String> f) {
-        return this.matcher(cs).subst(f);
-    }
+    default String subst(final CharSequence cs, final Function<String, String> f) { return this.matcher(cs).subst(f); }
 
     default String subst(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
         return this.matcher(cs).subst(f);
