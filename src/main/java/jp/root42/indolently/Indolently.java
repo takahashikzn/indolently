@@ -3017,4 +3017,23 @@ public class Indolently {
         out.write(in);
         return out.toByteArray();
     }
+
+    public static void close(final AutoCloseable c) {
+        if (c != null) //
+            try { c.close(); } //
+            catch (final Exception e) { raise(e); }
+    }
+
+    public static Consumer<AutoCloseable> close() { return Indolently::close; }
+
+    public static void qclose(final AutoCloseable c) {
+        if (c != null) //
+            try { c.close(); } //
+            catch (final Exception e) {
+                //noinspection CallToPrintStackTrace
+                e.printStackTrace();
+            }
+    }
+
+    public static Consumer<AutoCloseable> qclose() { return Indolently::qclose; }
 }
