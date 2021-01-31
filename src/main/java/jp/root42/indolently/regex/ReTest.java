@@ -14,7 +14,6 @@
 package jp.root42.indolently.regex;
 
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 
 /**
@@ -23,27 +22,18 @@ import java.util.function.Supplier;
 public interface ReTest
     extends Predicate<CharSequence> {
 
+    String pattern();
+
     static ReTest of(final RegexBase<?, ?> ptrn) { return of(ptrn, ptrn.pattern()); }
 
     static ReTest of(final Predicate<CharSequence> pred, final String pattern) {
         return new ReTest() {
 
             @Override
+            public String pattern() { return pattern; }
+
+            @Override
             public boolean test(final CharSequence s) { return pred.test(s); }
-
-            @Override
-            public String toString() { return pattern; }
-        };
-    }
-
-    static ReTest ofShared(final Supplier<Predicate<CharSequence>> pred, final String pattern) {
-
-        final var local = ThreadLocal.withInitial(pred);
-
-        return new ReTest() {
-
-            @Override
-            public boolean test(final CharSequence s) { return pred.get().test(s); }
 
             @Override
             public String toString() { return pattern; }
