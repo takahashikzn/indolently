@@ -48,7 +48,7 @@
 
     <dependency org="commons-io" name="commons-io" rev="2.7" conf="compile->master(*)" />
 
-    <dependency org="junit" name="junit" rev="4.13.1" conf="test->master(*)" />
+    <dependency org="junit" name="junit" rev="4.13.2" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="test->master(*)" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="test->master(*)" />
     <dependency org="org.assertj" name="assertj-core" rev="3.19.0" conf="test->master(*)" />
