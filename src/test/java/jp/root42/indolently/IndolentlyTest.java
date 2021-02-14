@@ -899,6 +899,17 @@ public class IndolentlyTest {
     }
 
     /**
+     * {@link Indolently#refind(String)}
+     */
+    @Test
+    public void testRefind() {
+
+        assertThat(refind("#((([A-Z]|[a-z])|[0-9])|_)").test("#if(%{あああ})")).isTrue();
+        assertThat(refind("b.r").test("foobarbaz")).isTrue();
+        assertThat(refind("q.x").test("foobarbaz")).isFalse();
+    }
+
+    /**
      * {@link Indolently#not(java.util.function.Predicate)}
      */
     @Test

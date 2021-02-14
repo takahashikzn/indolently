@@ -26,7 +26,7 @@ import jp.root42.indolently.$list;
  */
 @SuppressWarnings("unchecked")
 public interface RegexBase<P, M extends ReMatcher>
-    extends ReTest {
+    extends ReTest, ReFindable {
 
     /**
      * Get Pattern instance which this object contains.
@@ -43,10 +43,11 @@ public interface RegexBase<P, M extends ReMatcher>
      */
     M matcher(CharSequence cs);
 
-    default boolean found(final CharSequence cs) { return this.matcher(cs).find(); }
-
     @Override
     default boolean test(final CharSequence cs) { return this.matcher(cs).matches(); }
+
+    @Override
+    default boolean find(final CharSequence cs) { return this.matcher(cs).find(); }
 
     /**
      * Tokenize string by the regex pattern which this object expresses.

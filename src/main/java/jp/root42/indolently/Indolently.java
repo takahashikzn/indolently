@@ -62,6 +62,7 @@ import jp.root42.indolently.ref.$short;
 import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.ref.$voidc;
 import jp.root42.indolently.ref.Ref;
+import jp.root42.indolently.regex.AutomatonTest;
 import jp.root42.indolently.regex.ReTest;
 import jp.root42.indolently.regex.Regex;
 import jp.root42.indolently.regex.RegexJDK;
@@ -230,6 +231,21 @@ public class Indolently {
     public static void ASSERT(final boolean flag, final Supplier<?> msg) {
         if (!flag) throw new AssertionError("" + msg.get());
     }
+
+    private static final boolean assertive;
+
+    static {
+        boolean b;
+        try {
+            assert false;
+            b = false;
+        } catch (final AssertionError ignored) {
+            b = true;
+        }
+        assertive = b;
+    }
+
+    public static boolean ASSERTIVE() { return assertive; }
 
     /**
      * An alias of {@link #optionalEmpty(Map)}.
@@ -2812,15 +2828,33 @@ public class Indolently {
 
     public static RegexJDK re(final java.util.regex.Pattern regex) { return Regexive.regex1(regex); }
 
-    public static Function<String, ReTest> retest() { return regex -> retest(regex); }
+    public static Function<String, ReTest> retest() { return Indolently::retest; }
 
     public static ReTest retest(final String regex) { return Regexive.tester(regex); }
 
-    public static Function<String, ReTest> refind() { return regex -> refind(regex); }
+    public static Function<String, ReTest> refind() { return Indolently::refind; }
 
     public static ReTest refind(final String regex) {
-        final var p = re(regex);
-        return ReTest.of(x -> p.matcher(x).find(), regex);
+        final var ptest = retest(regex);
+
+        if (ptest instanceof AutomatonTest) {
+            if (ASSERTIVE()) {
+                final var pregex = re(regex);
+                return ReTest.of(x -> {
+                    final var actual = ((AutomatonTest) ptest).find(x);
+                    final var expected = pregex.matcher(x).find();
+                    assert actual == expected : String
+                        .format("original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex,
+                            ((AutomatonTest) ptest).regex(), expected, actual, x);
+                    return actual;
+                }, regex);
+            }
+
+            return ReTest.of(x -> ((AutomatonTest) ptest).find(x), regex);
+        }
+
+        final var pregex = re(regex);
+        return ReTest.of(x -> pregex.matcher(x).find(), regex);
     }
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) { return x -> f.apply(x) == null; }

@@ -116,11 +116,13 @@ public class Regexive {
         + "|\\\\p" //
         + "|\\\\n" //
         + "|\\\\k" //
-        + "|&&" //
         + "|\\?\\?" //
         + "|\\*\\?" //
         + "|\\+\\?" //
         + "|\\{\\d+(?:,(?:\\d+)?)?}\\?" //
+
+        + "|[~&<\"]" // Automaton meta-characters
+
         + ").*");
 
     private static boolean isJDKRegex(final String p) { return JDK_REGEX.test(p); }
@@ -140,19 +142,21 @@ public class Regexive {
 
         final var pt = pattern //
             .replaceAll("(?<!\\\\)\\(\\?:", "(") //
-            .replaceAll("\\\\w", WORD) //
-            .replaceAll("\\\\W", not(WORD)) //
-            .replaceAll("\\\\d", DIGIT) //
-            .replaceAll("\\\\D", not(DIGIT)) //
-            .replaceAll("\\\\h", HORIZONTAL_SPACE) //
-            .replaceAll("\\\\H", not(HORIZONTAL_SPACE)) //
-            .replaceAll("\\\\s", SPACE) //
-            .replaceAll("\\\\S", not(SPACE)) //
-            .replaceAll("\\\\v", VERTICAL_SPACE) //
-            .replaceAll("\\\\V", not(VERTICAL_SPACE)) //
-            .replaceAll("\\\\p\\{Digit}", "[0-9]") //
-            .replaceAll("\\\\p\\{Alpha}", "[A-Za-z]") //
-            .replaceAll("\\\\p\\{Alnum}", "[A-Za-z0-9]") //
+            .replace("\\w", WORD) //
+            .replace("\\W", not(WORD)) //
+            .replace("\\d", DIGIT) //
+            .replace("\\D", not(DIGIT)) //
+            .replace("\\h", HORIZONTAL_SPACE) //
+            .replace("\\H", not(HORIZONTAL_SPACE)) //
+            .replace("\\s", SPACE) //
+            .replace("\\S", not(SPACE)) //
+            .replace("\\v", VERTICAL_SPACE) //
+            .replace("\\V", not(VERTICAL_SPACE)) //
+            .replace("\\p{Digit}", "[0-9]") //
+            .replace("\\p{Alpha}", "[A-Za-z]") //
+            .replace("\\p{Alnum}", "[A-Za-z0-9]") //
+            .replace("#", "\\#") //
+            .replace("@", "\\@") //
             ;
 
         if (isJDKRegex(pt)) return null;
