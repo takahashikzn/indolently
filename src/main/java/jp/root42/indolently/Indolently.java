@@ -3070,4 +3070,6 @@ public class Indolently {
     }
 
     public static Consumer<AutoCloseable> qshut() { return Indolently::qshut; }
+
+    public static String FQCN(final Class<?> cls) { return cls.getName(); }
 }
