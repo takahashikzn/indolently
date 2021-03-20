@@ -3095,6 +3095,13 @@ public class Indolently {
 
     public static <T> T await(final Promise<? extends T> promise) { return Promissory.await(promise); }
 
+    @SafeVarargs
+    public static <T> List<T> await(final Promise<? extends T>... promise) { return await(list(promise)); }
+
+    public static <T> List<T> await(final Iterable<Promise<? extends T>> promise) {
+        return Promissory.await(Promise.all(promise));
+    }
+
     public static <T> Function<Callable<? extends T>, Promise<T>> async() { return x -> async(x); }
 
     public static <T> Function<Promise<? extends T>, T> await() { return x -> await(x); }
