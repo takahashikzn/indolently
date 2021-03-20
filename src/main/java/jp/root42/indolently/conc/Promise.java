@@ -32,6 +32,14 @@ public interface Promise<T> {
 
     T resolve();
 
+    boolean cancel();
+
+    boolean cancelled();
+
+    boolean done();
+
+    boolean failed();
+
     Future<T> future();
 
     CompletableFuture<T> cfuture();
@@ -72,6 +80,18 @@ class PromiseImpl<T>
 
     @Override
     public T resolve() { return this.delegate.join(); }
+
+    @Override
+    public boolean cancel() { return this.delegate.cancel(true); }
+
+    @Override
+    public boolean cancelled() { return this.delegate.isCancelled(); }
+
+    @Override
+    public boolean done() { return this.delegate.isDone(); }
+
+    @Override
+    public boolean failed() { return this.delegate.isCompletedExceptionally(); }
 
     @Override
     public Future<T> future() { return this.delegate; }
