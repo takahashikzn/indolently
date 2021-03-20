@@ -3098,7 +3098,7 @@ public class Indolently {
     @SafeVarargs
     public static <T> List<T> await(final Promise<? extends T>... promise) { return await(list(promise)); }
 
-    public static <T> List<T> await(final Iterable<Promise<? extends T>> promise) {
+    public static <T> List<T> await(final Iterable<? extends Promise<? extends T>> promise) {
         return Promissory.await(Promise.all(promise));
     }
 
