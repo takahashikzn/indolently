@@ -16,6 +16,8 @@ package jp.root42.indolently.conc;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -32,19 +34,27 @@ public class Promissory {
     /** non private for subtyping. */
     protected Promissory() {}
 
-    public static CompletableFuture<Void> async(final RunnableE<Exception> run) {
-        return CompletableFuture.runAsync(() -> {
+    private static Executor executor() { return ForkJoinPool.commonPool(); }
+
+    public static Promise<Void> async(final RunnableE<Exception> run) { return async(run, executor()); }
+
+    public static Promise<Void> async(final RunnableE<Exception> run, final Executor exec) {
+        return new PromiseImpl<>(CompletableFuture.runAsync(() -> {
             try { run.run(); } //
             catch (final Exception e) { raise(e); }
-        });
+        }, exec));
     }
 
-    public static <T> CompletableFuture<T> async(final Callable<T> run) {
-        return CompletableFuture.supplyAsync(() -> {
+    public static <T> Promise<T> async(final Callable<T> run) { return async(run, executor()); }
+
+    public static <T> Promise<T> async(final Callable<T> run, final Executor exec) {
+        return new PromiseImpl<>(CompletableFuture.supplyAsync(() -> {
             try { return run.call(); } //
             catch (final Exception e) { return raise(e); }
-        });
+        }, exec));
     }
+
+    public static <T> T await(final Promise<T> promise) { return promise.resolve(); }
 
     public static <T> T await(final Future<T> promise) {
         try { return promise.get(); } //
@@ -52,7 +62,7 @@ public class Promissory {
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }
 
-    public static <T> T await(final CompletableFuture<T> promise, final Function<Exception, T> onfail) {
-        return await(promise.exceptionally(e -> (e instanceof Exception) ? onfail.apply((Exception) e) : raise(e)));
+    public static <T> T await(final Promise<T> promise, final Function<Exception, T> onfail) {
+        return promise.fail(onfail).resolve();
     }
 }

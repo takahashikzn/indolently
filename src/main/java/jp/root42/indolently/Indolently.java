@@ -32,7 +32,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -50,6 +50,7 @@ import java.util.stream.Stream;
 import jp.root42.indolently.bridge.BytesInputStream;
 import jp.root42.indolently.bridge.BytesOutputStream;
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.conc.Promise;
 import jp.root42.indolently.conc.Promissory;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
@@ -3078,13 +3079,23 @@ public class Indolently {
 
     public static String FQCN(final Class<?> cls) { return cls.getName(); }
 
-    public static CompletableFuture<Void> async(final RunnableE<Exception> run) { return Promissory.async(run); }
+    public static Promise<Void> async(final RunnableE<Exception> run) { return Promissory.async(run); }
 
-    public static <T> CompletableFuture<T> async(final Callable<T> run) { return Promissory.async(run); }
+    public static Promise<Void> async(final RunnableE<Exception> run, final Executor exec) {
+        return Promissory.async(run, exec);
+    }
+
+    public static <T> Promise<T> async(final Callable<T> run) { return Promissory.async(run); }
+
+    public static <T> Promise<T> async(final Callable<T> run, final Executor exec) {
+        return Promissory.async(run, exec);
+    }
 
     public static <T> T await(final Future<T> promise) { return Promissory.await(promise); }
 
-    public static <T> T await(final CompletableFuture<T> promise, final Function<Exception, T> _catch) {
-        return Promissory.await(promise, _catch);
-    }
+    public static <T> T await(final Promise<T> promise) { return Promissory.await(promise); }
+
+    public static <T> Function<Callable<T>, Promise<T>> async() { return x -> async(x); }
+
+    public static <T> Function<Promise<T>, T> await() { return x -> await(x); }
 }
