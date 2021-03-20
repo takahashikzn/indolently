@@ -31,6 +31,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -47,7 +50,10 @@ import java.util.stream.Stream;
 import jp.root42.indolently.bridge.BytesInputStream;
 import jp.root42.indolently.bridge.BytesOutputStream;
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.conc.Promissory;
+import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
+import jp.root42.indolently.function.SupplierE;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
@@ -3072,4 +3078,18 @@ public class Indolently {
     public static Consumer<AutoCloseable> qshut() { return Indolently::qshut; }
 
     public static String FQCN(final Class<?> cls) { return cls.getName(); }
+
+    public static CompletableFuture<Void> async(final Runnable run) { return Promissory.async(run); }
+
+    public static CompletableFuture<Void> asyncE(final RunnableE<Exception> run) { return Promissory.asyncE(run); }
+
+    public static <T> CompletableFuture<T> asyncE(final SupplierE<T, Exception> run) { return Promissory.asyncE(run); }
+
+    public static <T> CompletableFuture<T> async(final Callable<T> run) { return Promissory.async(run); }
+
+    public static <T> T await(final Future<T> promise) { return Promissory.await(promise); }
+
+    public static <T> T await(final CompletableFuture<T> promise, final Function<Exception, T> _catch) {
+        return Promissory.await(promise, _catch);
+    }
 }
