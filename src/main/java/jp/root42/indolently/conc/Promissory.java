@@ -20,7 +20,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import jp.root42.indolently.function.RunnableE;
-import jp.root42.indolently.function.SupplierE;
 
 import static jp.root42.indolently.Expressive.*;
 
@@ -33,23 +32,19 @@ public class Promissory {
     /** non private for subtyping. */
     protected Promissory() {}
 
-    public static CompletableFuture<Void> async(final Runnable run) { return CompletableFuture.runAsync(run); }
-
-    public static CompletableFuture<Void> asyncE(final RunnableE<Exception> run) {
-        return async(() -> {
+    public static CompletableFuture<Void> async(final RunnableE<Exception> run) {
+        return CompletableFuture.runAsync(() -> {
             try { run.run(); } //
             catch (final Exception e) { raise(e); }
         });
     }
 
-    public static <T> CompletableFuture<T> asyncE(final SupplierE<T, Exception> run) {
-        return async(() -> {
-            try { return run.get(); } //
+    public static <T> CompletableFuture<T> async(final Callable<T> run) {
+        return CompletableFuture.supplyAsync(() -> {
+            try { return run.call(); } //
             catch (final Exception e) { return raise(e); }
         });
     }
-
-    public static <T> CompletableFuture<T> async(final Callable<T> run) { return asyncE(run::call); }
 
     public static <T> T await(final Future<T> promise) {
         try { return promise.get(); } //

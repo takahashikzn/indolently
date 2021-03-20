@@ -53,7 +53,6 @@ import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.conc.Promissory;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
-import jp.root42.indolently.function.SupplierE;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
@@ -3079,11 +3078,7 @@ public class Indolently {
 
     public static String FQCN(final Class<?> cls) { return cls.getName(); }
 
-    public static CompletableFuture<Void> async(final Runnable run) { return Promissory.async(run); }
-
-    public static CompletableFuture<Void> asyncE(final RunnableE<Exception> run) { return Promissory.asyncE(run); }
-
-    public static <T> CompletableFuture<T> asyncE(final SupplierE<T, Exception> run) { return Promissory.asyncE(run); }
+    public static CompletableFuture<Void> async(final RunnableE<Exception> run) { return Promissory.async(run); }
 
     public static <T> CompletableFuture<T> async(final Callable<T> run) { return Promissory.async(run); }
 
