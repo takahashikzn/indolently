@@ -3079,23 +3079,23 @@ public class Indolently {
 
     public static String FQCN(final Class<?> cls) { return cls.getName(); }
 
-    public static Promise<Void> async(final RunnableE<Exception> run) { return Promissory.async(run); }
+    public static Promise<Void> async(final RunnableE<? super Exception> run) { return Promissory.async(run); }
 
-    public static Promise<Void> async(final RunnableE<Exception> run, final Executor exec) {
+    public static Promise<Void> async(final RunnableE<? super Exception> run, final Executor exec) {
         return Promissory.async(run, exec);
     }
 
-    public static <T> Promise<T> async(final Callable<T> run) { return Promissory.async(run); }
+    public static <T> Promise<T> async(final Callable<? extends T> run) { return Promissory.async(run); }
 
-    public static <T> Promise<T> async(final Callable<T> run, final Executor exec) {
+    public static <T> Promise<T> async(final Callable<? extends T> run, final Executor exec) {
         return Promissory.async(run, exec);
     }
 
-    public static <T> T await(final Future<T> promise) { return Promissory.await(promise); }
+    public static <T> T await(final Future<? extends T> promise) { return Promissory.await(promise); }
 
-    public static <T> T await(final Promise<T> promise) { return Promissory.await(promise); }
+    public static <T> T await(final Promise<? extends T> promise) { return Promissory.await(promise); }
 
-    public static <T> Function<Callable<T>, Promise<T>> async() { return x -> async(x); }
+    public static <T> Function<Callable<? extends T>, Promise<T>> async() { return x -> async(x); }
 
-    public static <T> Function<Promise<T>, T> await() { return x -> await(x); }
+    public static <T> Function<Promise<? extends T>, T> await() { return x -> await(x); }
 }
