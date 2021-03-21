@@ -15,10 +15,16 @@ package jp.root42.indolently.conc;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import jp.root42.indolently.ref.$$;
+import jp.root42.indolently.ref.$$.None;
 
 import static java.util.Objects.*;
 import static jp.root42.indolently.Expressive.*;
@@ -31,6 +37,8 @@ import static jp.root42.indolently.Indolently.*;
 public interface Promise<T> {
 
     T resolve();
+
+    $$<T, None> resolve(long timeout);
 
     boolean cancel();
 
@@ -79,6 +87,14 @@ class PromiseImpl<T>
 
     @Override
     public T resolve() { return this.delegate.join(); }
+
+    @Override
+    public $$<T, None> resolve(final long timeout) {
+        try { return left(this.delegate.get(timeout, TimeUnit.MILLISECONDS)); } //
+        catch (final TimeoutException e) { return right(NONE); } //
+        catch (final InterruptedException e) { return raise(e); } //
+        catch (final ExecutionException e) { return raise(e.getCause()); } //
+    }
 
     @Override
     public boolean cancel() { return this.delegate.cancel(true); }

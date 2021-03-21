@@ -19,10 +19,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import jp.root42.indolently.function.RunnableE;
+import jp.root42.indolently.ref.$$;
 
 import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -55,8 +59,19 @@ public class Promissory {
 
     public static <T> T await(final Promise<? extends T> promise) { return promise.resolve(); }
 
+    public static <T> $$<T, $$.None> await(final Promise<? extends T> promise, final long timeout) {
+        return cast(promise.resolve(timeout));
+    }
+
     public static <T> T await(final Future<? extends T> promise) {
         try { return promise.get(); } //
+        catch (final InterruptedException e) { return raise(e); } //
+        catch (final ExecutionException e) { return raise(e.getCause()); }
+    }
+
+    public static <T> $$<T, $$.None> await(final Future<? extends T> promise, final long timeout) {
+        try { return left(promise.get(timeout, TimeUnit.MILLISECONDS)); } //
+        catch (final TimeoutException e) { return right(NONE); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }

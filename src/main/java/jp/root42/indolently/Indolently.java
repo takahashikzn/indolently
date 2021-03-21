@@ -55,6 +55,7 @@ import jp.root42.indolently.conc.Promissory;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.ref.$;
+import jp.root42.indolently.ref.$$;
 import jp.root42.indolently.ref.$2;
 import jp.root42.indolently.ref.$3;
 import jp.root42.indolently.ref.$bool;
@@ -445,6 +446,12 @@ public class Indolently {
     public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final T1 root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
         final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last);}
+
+    public static <L, R> $$<L, R> left(final L val) { return $$.left(val); }
+
+    public static <L, R> $$<L, R> right(final R val) { return $$.right(val); }
+
+    public static final $$.None NONE = $$.None.NONE;
 
     /**
      * SQL's coalesce function. The name comes from ELVis operator.
@@ -3093,16 +3100,43 @@ public class Indolently {
 
     public static <T> T await(final Future<? extends T> promise) { return Promissory.await(promise); }
 
+    public static <T> $$<T, $$.None> await(final Future<? extends T> promise, final long timeout) {
+        return Promissory.await(promise, timeout);
+    }
+
     public static <T> T await(final Promise<? extends T> promise) { return Promissory.await(promise); }
+
+    public static <T> $$<T, $$.None> await(final Promise<? extends T> promise, final long timeout) {
+        return Promissory.await(promise, timeout);
+    }
 
     @SafeVarargs
     public static <T> List<T> await(final Promise<? extends T>... promise) { return await(list(promise)); }
+
+    @SafeVarargs
+    public static <T> $$<List<T>, $$.None> await(final long timeout, final Promise<? extends T>... promise) {
+        return await(list(promise), timeout);
+    }
 
     public static <T> List<T> await(final Iterable<? extends Promise<? extends T>> promise) {
         return Promissory.await(Promise.all(promise));
     }
 
-    public static <T> Function<Callable<? extends T>, Promise<T>> async() { return x -> async(x); }
+    public static <T> $$<List<T>, $$.None> await(final Iterable<? extends Promise<? extends T>> promise,
+        final long timeout) { return Promissory.await(Promise.all(promise), timeout); }
 
-    public static <T> Function<Promise<? extends T>, T> await() { return x -> await(x); }
+    public static <T> Function<Callable<? extends T>, Promise<T>> async() { return Indolently::async; }
+
+    public static Function<Runnable, Promise<Void>> rasync() {
+        return x -> async(() -> {
+            x.run();
+            return null;
+        });
+    }
+
+    public static <T> Function<Promise<? extends T>, T> await() { return Indolently::await; }
+
+    public static <T> Function<Promise<? extends T>, $$<T, $$.None>> await(final long timeout) {
+        return x -> await(x, timeout);
+    }
 }
