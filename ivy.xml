@@ -38,7 +38,7 @@
     <!--
     <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="test->master(*)" />
     -->
-    <dependency org="it.unimi.dsi" name="fastutil" rev="8.5.2" conf="compile->master(*)" />
+    <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.4" conf="compile->master(*)" />
     <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="11.0.0.M2" conf="compile->master(*)" />
     <dependency org="org.eclipse.collections" name="eclipse-collections" rev="11.0.0.M2" conf="compile->master(*)" />
 
@@ -55,7 +55,7 @@
     <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="test->master(*)" />
     <dependency org="org.mockito" name="mockito-core" rev="3.8.0" conf="test->master(*)" />
     <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.21" conf="test->master(*)" />
-    <dependency org="org.objenesis" name="objenesis" rev="3.1" conf="test->master(*)" />
+    <dependency org="org.objenesis" name="objenesis" rev="3.2" conf="test->master(*)" />
     <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.1" conf="test->master(*)" />
 
   </dependencies>
