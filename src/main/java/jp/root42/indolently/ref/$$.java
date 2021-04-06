@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static jp.root42.indolently.Indolently.*;
@@ -21,7 +22,7 @@ import static jp.root42.indolently.Indolently.*;
 /**
  * @author takahashikzn
  */
-public class $$<L, R> {
+public final class $$<L, R> {
 
     public enum None { NONE }
 
@@ -29,8 +30,8 @@ public class $$<L, R> {
 
     private final $<R> r;
 
-    $$(final L l, final R r) {
-        if (l == null && r == null) throw new IllegalArgumentException("both sides are null");
+    private $$(final L l, final R r) {
+        assert (l == null) ^ (r == null);
         this.l = $.of(l);
         this.r = $.of(r);
     }
@@ -51,10 +52,18 @@ public class $$<L, R> {
         return this.l.map(lfn).or(() -> cast(this.r.map(rfn).get()));
     }
 
+    public $$<L, R> tap(final Consumer<L> lfn, final Consumer<R> rfn) {
+        this.l.tap(lfn);
+        this.r.tap(rfn);
+        return this;
+    }
+
     public <T> $<T> lmap(final Function<L, T> fn) { return this.l.map(fn); }
 
     public <T> $<T> rmap(final Function<R, T> fn) { return this.r.map(fn); }
 
     @Override
-    public String toString() { return String.format("Either[%s,%s]", this.l, this.r); }
+    public String toString() { return String.format("Either[%s,%s]", tostr(this.l), tostr(this.r)); }
+
+    private static Object tostr(final $<?> x) { return x.empty() ? "_" : x.get(); }
 }

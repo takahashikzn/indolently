@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import jp.root42.indolently.ref.$$;
@@ -54,7 +55,21 @@ public interface Promise<T> {
 
     <U> Promise<U> thenAsync(Function<? super T, ? extends U> f);
 
+    default Promise<T> thenAsync(final Consumer<? super T> f) {
+        return this.thenAsync(x -> {
+            f.accept(x);
+            return x;
+        });
+    }
+
     <U> Promise<U> then(Function<? super T, ? extends U> f);
+
+    default Promise<T> then(final Consumer<? super T> f) {
+        return this.then(x -> {
+            f.accept(x);
+            return x;
+        });
+    }
 
     Promise<T> fail(Function<? super Exception, ? extends T> f);
 
@@ -76,6 +91,8 @@ public interface Promise<T> {
     }
 
     static <T> Promise<T> of(final CompletableFuture<T> f) { return new PromiseImpl<>(f); }
+
+    static <T> Promise<T> none() { return resolve(null); }
 }
 
 class PromiseImpl<T>

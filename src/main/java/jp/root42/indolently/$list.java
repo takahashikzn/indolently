@@ -368,7 +368,7 @@ public interface $list<T>
     default $list<T> order(final Comparator<? super T> comp) { return Indolently.sort(this, comp); }
 
     @Override
-    default String join(final Function<T, CharSequence> f, final String sep) {
+    default String join(final Function<T, ? extends CharSequence> f, final String sep) {
         return Indolently.join(this.map(f), sep);
     }
 

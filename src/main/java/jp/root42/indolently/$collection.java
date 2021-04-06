@@ -307,9 +307,9 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
 
     default String join(final String sep) { return this.join(x -> (x == null) ? "" : "" + x, sep); }
 
-    default String join(final Function<T, CharSequence> f) { return this.join(f, null); }
+    default String join(final Function<T, ? extends CharSequence> f) { return this.join(f, null); }
 
-    String join(Function<T, CharSequence> f, String sep);
+    String join(Function<T, ? extends CharSequence> f, String sep);
 
     default SELF tap(final Consumer<SELF> f) {
         f.accept(cast(this));

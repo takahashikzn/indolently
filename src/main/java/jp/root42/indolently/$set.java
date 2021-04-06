@@ -207,7 +207,7 @@ public interface $set<T>
     default $set<T> order(final Comparator<? super T> comp) { return sort(this, comp); }
 
     @Override
-    default String join(final Function<T, CharSequence> f, final String sep) {
+    default String join(final Function<T, ? extends CharSequence> f, final String sep) {
         return Indolently.join(this.map(f), sep);
     }
 }

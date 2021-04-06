@@ -451,6 +451,14 @@ public class Indolently {
 
     public static <L, R> $$<L, R> right(final R val) { return $$.right(val); }
 
+    public static Predicate<$$<?, ?>> isLeft() { return x -> x.isL(); }
+
+    public static Predicate<$$<?, ?>> isRight() { return x -> x.isR(); }
+
+    public static <L, R> Function<L, $$<L, R>> left() { return Indolently::left; }
+
+    public static <L, R> Function<R, $$<L, R>> right() { return Indolently::right; }
+
     public static final $$.None NONE = $$.None.NONE;
 
     /**

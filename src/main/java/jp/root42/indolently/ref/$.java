@@ -33,16 +33,18 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class $<T>
+public final class $<T>
     implements Serializable, Supplier<T> {
 
     @SuppressWarnings("PublicField")
     public final Optional<T> opt; // NOPMD
 
-    public static <T> $<T> of(final T val) { return new $<>(val); }
+    public static <T> $<T> of(final T val) { return (val == null) ? none() : new $<>(val); }
 
     @SuppressWarnings("OptionalAssignedToNull")
-    public static <T> $<T> of(final Optional<? extends T> val) { return val == null ? none() : new $<>(cast(val)); }
+    public static <T> $<T> of(final Optional<? extends T> val) {
+        return (val == null) || val.isEmpty() ? none() : new $<>(cast(val));
+    }
 
     private static final $<?> NONE = new $<>(Optional.empty());
 
@@ -115,9 +117,9 @@ public class $<T>
     public int hashCode() { return Objects.hash(this.getClass(), this.opt); }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public final boolean eq(final T that) { return !this.empty() && this.opt.get().equals(that); }
+    public boolean eq(final T that) { return !this.empty() && this.opt.get().equals(that); }
 
-    public final boolean equals(final $<? extends T> that) { return this.equals0(that); }
+    public boolean equals(final $<? extends T> that) { return this.equals0(that); }
 
     @Deprecated
     @Override
@@ -133,5 +135,5 @@ public class $<T>
     }
 
     @Override
-    public String toString() { return this.opt.isEmpty() ? "$.empty" : "$[" + this.opt.get() + "]"; }
+    public String toString() { return this.opt.isEmpty() ? "$empty" : "$[" + this.opt.get() + "]"; }
 }
