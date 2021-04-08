@@ -31,7 +31,7 @@
 
   <dependencies>
 
-    <dependency org="net.jodah" name="typetools" rev="0.6.2" conf="runtime->master(*)" />
+    <dependency org="net.jodah" name="typetools" rev="0.6.3" conf="runtime->master(*)" />
 
     <!-- optional dependencies for optimized performance -->
     <dependency org="com.koloboke" name="koloboke-api-jdk8" rev="1.0.0" conf="compile->master(*)" />
@@ -53,8 +53,8 @@
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="test->master(*)" />
     <dependency org="org.assertj" name="assertj-core" rev="3.19.0" conf="test->master(*)" />
     <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="test->master(*)" />
-    <dependency org="org.mockito" name="mockito-core" rev="3.8.0" conf="test->master(*)" />
-    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.10.21" conf="test->master(*)" />
+    <dependency org="org.mockito" name="mockito-core" rev="3.9.0" conf="test->master(*)" />
+    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.11.0" conf="test->master(*)" />
     <dependency org="org.objenesis" name="objenesis" rev="3.2" conf="test->master(*)" />
     <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.1" conf="test->master(*)" />
 
