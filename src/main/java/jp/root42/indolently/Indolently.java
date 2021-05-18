@@ -3147,4 +3147,26 @@ public class Indolently {
     public static <T> Function<Promise<? extends T>, $$<T, $$.None>> await(final long timeout) {
         return x -> await(x, timeout);
     }
+
+    public static double i2d(final int x) { return x; }
+
+    public static float i2f(final int x) { return x; }
+
+    public static double l2d(final long x) { return x; }
+
+    public static float l2f(final long x) { return x; }
+
+    public static int d2i(final double x) { return (int) x; }
+
+    public static int f2i(final float x) { return (int) x; }
+
+    public static long d2l(final double x) { return (long) x; }
+
+    public static long f2l(final float x) { return (long) x; }
+
+    public static long l2i(final long x) { return (int) x; }
+
+    public static byte i2b(final int x) { return (byte) x; }
+
+    public static byte l2b(final long x) { return (byte) x; }
 }
