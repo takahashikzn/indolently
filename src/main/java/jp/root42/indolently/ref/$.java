@@ -72,13 +72,12 @@ public final class $<T>
         return this;
     }
 
-    public $<T> filter(final Predicate<? super T> predicate) {
-        return this.opt.filter(predicate).map($::of).orElse(none());
-    }
-
     public $<T> when(final Predicate<? super T> predicate) {
         return this.opt.filter(predicate).map($::of).orElse(none());
     }
+
+    // alias
+    public $<T> filter(final Predicate<? super T> predicate) { return this.when(predicate); }
 
     public <U> $<U> map(final Function<? super T, ? extends U> mapper) {
         return cast(this.opt.map(mapper).map($::of).orElse(none()));
