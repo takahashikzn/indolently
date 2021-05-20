@@ -34,7 +34,7 @@ import static jp.root42.indolently.Indolently.*;
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class $<T>
-    implements Serializable, Supplier<T>, Predicate<Predicate<? super T>> {
+    implements Serializable, Supplier<T> {
 
     @SuppressWarnings("PublicField")
     public final Optional<T> opt; // NOPMD
@@ -62,48 +62,47 @@ public final class $<T>
 
     public boolean present() { return this.opt.isPresent(); }
 
-    public $<T> tap(final Consumer<? super T> action) {
-        this.opt.ifPresent(action);
+    public $<T> tap(final Consumer<? super T> f) {
+        this.opt.ifPresent(f);
         return this;
     }
 
-    public $<T> tap(final Consumer<? super T> action, final Runnable emptyAction) {
-        this.opt.ifPresentOrElse(action, emptyAction);
+    public $<T> tap(final Consumer<? super T> action, final Runnable orAction) {
+        this.opt.ifPresentOrElse(action, orAction);
         return this;
     }
 
-    public $<T> when(final Predicate<? super T> predicate) {
-        return this.opt.filter(predicate).map($::of).orElse(none());
-    }
+    public $<T> when(final Predicate<? super T> f) { return this.opt.filter(f).map($::of).orElse(none()); }
 
     // alias
-    public $<T> filter(final Predicate<? super T> predicate) { return this.when(predicate); }
+    public $<T> filter(final Predicate<? super T> f) { return this.when(f); }
 
-    public $<Boolean> exam(final Predicate<? super T> predicate) {
-        return this.empty() ? none() : of(this.when(predicate).present());
+    private static final $<Boolean> T = of(true);
+
+    private static final $<Boolean> F = of(false);
+
+    public $<Boolean> exam(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? T : F; }
+
+    public boolean test(final Predicate<? super T> f) { return this.when(f).present(); }
+
+    public <U> $<U> map(final Function<? super T, ? extends U> f) {
+        return cast(this.opt.map(f).map($::of).orElse(none()));
     }
 
-    @Override
-    public boolean test(final Predicate<? super T> predicate) { return this.when(predicate).present(); }
-
-    public <U> $<U> map(final Function<? super T, ? extends U> mapper) {
-        return cast(this.opt.map(mapper).map($::of).orElse(none()));
-    }
-
-    public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> mapper) {
+    public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) {
         return cast(this.opt.flatMap(x -> {
-            final var y = mapper.apply(x);
+            final var y = f.apply(x);
             return (y == null) ? Optional.empty() : y.opt;
         }).map($::of).orElse(none()));
     }
 
-    public $<T> otherwise(final Supplier<? extends $<? extends T>> supplier) {
+    public $<T> otherwise(final Supplier<? extends $<? extends T>> f) {
         if (this.present()) return this;
-        final var x = supplier.get();
+        final var x = f.get();
         return (x == null) ? none() : of(x.opt);
     }
 
-    public $<T> otherwise(final $<? extends T> supplier) { return this.present() ? this : cast(supplier); }
+    public $<T> otherwise(final $<? extends T> f) { return this.present() ? this : cast(f); }
 
     public Stream<T> stream() { return this.opt.stream(); }
 
@@ -113,14 +112,14 @@ public final class $<T>
 
     public T orNull() { return this.orElse(null); }
 
-    public T or(final Supplier<? extends T> supplier) { return this.orElseGet(supplier); }
+    public T or(final Supplier<? extends T> f) { return this.orElseGet(f); }
 
-    public T orElseGet(final Supplier<? extends T> supplier) { return this.opt.orElseGet(supplier); }
+    public T orElseGet(final Supplier<? extends T> f) { return this.opt.orElseGet(f); }
 
     public T orFail() { return this.opt.orElseThrow(); }
 
-    public <X extends Throwable> T orFail(final Supplier<? extends X> exceptionSupplier) throws X {
-        return this.opt.orElseThrow(exceptionSupplier);
+    public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X {
+        return this.opt.orElseThrow(f);
     }
 
     @Override
