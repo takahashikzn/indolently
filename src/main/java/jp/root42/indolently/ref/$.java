@@ -34,7 +34,7 @@ import static jp.root42.indolently.Indolently.*;
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class $<T>
-    implements Serializable, Supplier<T> {
+    implements Serializable, Supplier<T>, Predicate<Predicate<? super T>> {
 
     @SuppressWarnings("PublicField")
     public final Optional<T> opt; // NOPMD
@@ -78,6 +78,13 @@ public final class $<T>
 
     // alias
     public $<T> filter(final Predicate<? super T> predicate) { return this.when(predicate); }
+
+    public $<Boolean> exam(final Predicate<? super T> predicate) {
+        return this.empty() ? none() : of(this.when(predicate).present());
+    }
+
+    @Override
+    public boolean test(final Predicate<? super T> predicate) { return this.when(predicate).present(); }
 
     public <U> $<U> map(final Function<? super T, ? extends U> mapper) {
         return cast(this.opt.map(mapper).map($::of).orElse(none()));
