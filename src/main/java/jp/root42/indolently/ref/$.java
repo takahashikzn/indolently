@@ -58,11 +58,12 @@ public final class $<T>
     @Override
     public T get() { return this.opt.get(); }
 
-    public boolean empty() { return this.opt.isEmpty(); }
+    public boolean empty() { return this == NONE || this.opt.isEmpty(); }
 
-    public boolean present() { return this.opt.isPresent(); }
+    public boolean present() { return this != NONE && this.opt.isPresent(); }
 
     public $<T> tap(final Consumer<? super T> f) {
+        if (this == NONE) return this;
         this.opt.ifPresent(f);
         return this;
     }
@@ -72,7 +73,9 @@ public final class $<T>
         return this;
     }
 
-    public $<T> when(final Predicate<? super T> f) { return this.opt.filter(f).map($::of).orElse(none()); }
+    public $<T> when(final Predicate<? super T> f) {
+        return this == NONE ? this : this.opt.filter(f).map($::of).orElse(none());
+    }
 
     // alias
     public $<T> filter(final Predicate<? super T> f) { return this.when(f); }
@@ -83,14 +86,14 @@ public final class $<T>
 
     public $<Boolean> exam(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? T : F; }
 
-    public boolean test(final Predicate<? super T> f) { return this.when(f).present(); }
+    public boolean test(final Predicate<? super T> f) { return this != NONE && this.when(f).present(); }
 
     public <U> $<U> map(final Function<? super T, ? extends U> f) {
-        return cast(this.opt.map(f).map($::of).orElse(none()));
+        return this == NONE ? none() : cast(this.opt.map(f).map($::of).orElse(none()));
     }
 
     public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) {
-        return cast(this.opt.flatMap(x -> {
+        return this == NONE ? none() : cast(this.opt.flatMap(x -> {
             final var y = f.apply(x);
             return (y == null) ? Optional.empty() : y.opt;
         }).map($::of).orElse(none()));
@@ -118,9 +121,7 @@ public final class $<T>
 
     public T orFail() { return this.opt.orElseThrow(); }
 
-    public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X {
-        return this.opt.orElseThrow(f);
-    }
+    public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { return this.opt.orElseThrow(f); }
 
     @Override
     public int hashCode() { return Objects.hash(this.getClass(), this.opt); }
@@ -144,5 +145,5 @@ public final class $<T>
     }
 
     @Override
-    public String toString() { return this.opt.isEmpty() ? "$empty" : "$[" + this.opt.get() + "]"; }
+    public String toString() { return this.empty() ? "$empty" : "$[" + this.get() + "]"; }
 }

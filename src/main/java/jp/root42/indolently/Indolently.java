@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -87,7 +88,7 @@ import static jp.root42.indolently.Expressive.*;
 public class Indolently {
 
     /** non private for subtyping. */
-    protected Indolently() {}
+    protected Indolently() { }
 
     static int idx(final List<?> list, final int idx) {
         return 0 <= idx ? idx : list.size() + idx;
@@ -445,7 +446,7 @@ public class Indolently {
 
     public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final T1 root, final Function<T1, T2> c1,
         final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
-        final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last);}
+        final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last); }
 
     public static <L, R> $$<L, R> left(final L val) { return $$.left(val); }
 
@@ -1369,7 +1370,11 @@ public class Indolently {
         }, (String) null);
     }
 
+    public static byte[] bytes(final String s) { return bytes(s, StandardCharsets.UTF_8); }
+
     public static byte[] bytes(final String s, final Charset cs) { return s.getBytes(cs); }
+
+    public static String string(final byte[] b) { return string(b, StandardCharsets.UTF_8); }
 
     public static String string(final byte[] b, final Charset cs) { return new String(b, cs); }
 
@@ -2339,8 +2344,8 @@ public class Indolently {
         final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
         final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
         final K k08, final V v08, final K k09, final V v09, final K k10, final V v10) {
-        return map(k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09)
-            .push(k10, v10);
+        return map(k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09,
+            v09).push(k10, v10);
     }
 
     public static <K, V> $map<K, V> map( //
@@ -2864,9 +2869,9 @@ public class Indolently {
                 return ReTest.of(x -> {
                     final var actual = ((AutomatonTest) ptest).find(x);
                     final var expected = pregex.matcher(x).find();
-                    assert actual == expected : String
-                        .format("original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex,
-                            ((AutomatonTest) ptest).regex(), expected, actual, x);
+                    assert actual == expected : String.format(
+                        "original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex,
+                        ((AutomatonTest) ptest).regex(), expected, actual, x);
                     return actual;
                 }, regex);
             }
@@ -2924,14 +2929,14 @@ public class Indolently {
      *
      * @return do nothing Consumer
      */
-    public static <T> Consumer<T> nop() { return x -> {}; }
+    public static <T> Consumer<T> nop() { return x -> { }; }
 
     /**
      * Do nothing Consumer.
      *
      * @return do nothing Consumer
      */
-    public static <X, Y> BiConsumer<X, Y> noop() { return (x, y) -> {}; }
+    public static <X, Y> BiConsumer<X, Y> noop() { return (x, y) -> { }; }
 
     public static BiFunction<Number, Number, Integer> sum() { return sum(0); }
 
