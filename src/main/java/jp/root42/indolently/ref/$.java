@@ -72,7 +72,12 @@ public final class $<T>
         return this;
     }
 
+    @Deprecated
     public $<T> filter(final Predicate<? super T> predicate) {
+        return this.opt.filter(predicate).map($::of).orElse(none());
+    }
+
+    public $<T> when(final Predicate<? super T> predicate) {
         return this.opt.filter(predicate).map($::of).orElse(none());
     }
 

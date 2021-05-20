@@ -114,7 +114,7 @@ public class Indolently {
     }
 
     public static <T> Function<Object, $<T>> castTo(final Class<T> type) {
-        return x -> opt(x).filter(type::isInstance).map(type::cast);
+        return x -> opt(x).when(type::isInstance).map(type::cast);
     }
 
     /**
