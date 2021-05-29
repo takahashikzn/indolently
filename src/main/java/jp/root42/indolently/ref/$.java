@@ -22,6 +22,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import jp.root42.indolently.function.SupplierE;
+
 import static java.util.Objects.*;
 import static jp.root42.indolently.Indolently.*;
 
@@ -119,6 +121,12 @@ public final class $<T>
 
     public T orElseGet(final Supplier<? extends T> f) { return this.opt.orElseGet(f); }
 
+    public <E extends Exception> T orTry(final SupplierE<? extends T, E> f) throws E { return this.orElseTry(f); }
+
+    public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E {
+        return this.opt.isPresent() ? this.opt.get() : f.get();
+    }
+
     public T orFail() { return this.opt.orElseThrow(); }
 
     public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { return this.opt.orElseThrow(f); }
@@ -145,5 +153,5 @@ public final class $<T>
     }
 
     @Override
-    public String toString() { return this.empty() ? "$empty" : "$[" + this.get() + "]"; }
+    public String toString() { return this.present() ? "$(" + this.get() + ")" : "$<empty>"; }
 }

@@ -3169,6 +3169,8 @@ public class Indolently {
 
     public static long f2l(final float x) { return (long) x; }
 
+    public static float d2f(final double x) { return (float) x; }
+
     public static long l2i(final long x) { return (int) x; }
 
     public static byte i2b(final int x) { return (byte) x; }

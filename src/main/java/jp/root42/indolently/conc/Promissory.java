@@ -35,23 +35,23 @@ import static jp.root42.indolently.Indolently.*;
 public class Promissory {
 
     /** non private for subtyping. */
-    protected Promissory() {}
+    protected Promissory() { }
 
     private static Executor executor() { return ForkJoinPool.commonPool(); }
 
     public static Promise<Void> async(final RunnableE<? super Exception> run) { return async(run, executor()); }
 
     public static Promise<Void> async(final RunnableE<? super Exception> run, final Executor exec) {
-        return new PromiseImpl<>(CompletableFuture.runAsync(() -> {
-            try { run.run(); } //
-            catch (final Exception e) { raise(e); }
-        }, exec));
+        return async(() -> {
+            run.run();
+            return null;
+        }, exec);
     }
 
     public static <T> Promise<T> async(final Callable<? extends T> run) { return async(run, executor()); }
 
     public static <T> Promise<T> async(final Callable<? extends T> run, final Executor exec) {
-        return new PromiseImpl<>(CompletableFuture.supplyAsync(() -> {
+        return new PromiseCFuture<T>(CompletableFuture.supplyAsync(() -> {
             try { return run.call(); } //
             catch (final Exception e) { return raise(e); }
         }, exec));

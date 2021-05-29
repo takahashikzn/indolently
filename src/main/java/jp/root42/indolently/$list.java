@@ -67,6 +67,8 @@ public interface $list<T>
     @Override
     default T head() { return this.get(0); }
 
+    // for optimization
+
     /**
      * Return element at the position if exists.
      * This method never throws {@link IndexOutOfBoundsException}.
@@ -467,11 +469,22 @@ public interface $list<T>
     }
 
     @Override
+    default $<T> head(final Predicate<? super T> f) {
+
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0, Z = this.size(); i < Z; i++) {
+            final var val = this.get(i);
+            if (f.test(val)) return $.of(val);
+        }
+
+        return $.none();
+    }
+
+    @Override
     default $<T> last(final Predicate<? super T> f) {
 
         for (int i = this.size() - 1; 0 <= i; i--) {
             final var val = this.get(i);
-
             if (f.test(val)) return $.of(val);
         }
 

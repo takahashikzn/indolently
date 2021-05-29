@@ -49,10 +49,6 @@ public interface Promise<T> {
 
     boolean failed();
 
-    Future<T> future();
-
-    CompletableFuture<T> cfuture();
-
     <U> Promise<U> thenAsync(Function<? super T, ? extends U> f);
 
     default Promise<T> thenAsync(final Consumer<? super T> f) {
@@ -62,7 +58,7 @@ public interface Promise<T> {
         });
     }
 
-    <U> Promise<U> then(Function<? super T, ? extends U> f);
+    default <U> Promise<U> then(final Function<? super T, ? extends U> f) { return this.thenAsync(f); }
 
     default Promise<T> then(final Consumer<? super T> f) {
         return this.then(x -> {
@@ -75,7 +71,12 @@ public interface Promise<T> {
 
     <U> Promise<U> last(BiFunction<? super T, Exception, ? extends U> f);
 
-    Promise<T> last(BiConsumer<? super T, Exception> f);
+    default Promise<T> last(final BiConsumer<? super T, Exception> f) {
+        return this.last((x, e) -> {
+            f.accept(x, e);
+            return x;
+        });
+    }
 
     static <T> Promise<T> resolve(final T val) { return of(CompletableFuture.completedFuture(val)); }
 
@@ -90,23 +91,27 @@ public interface Promise<T> {
         return cast(of(CompletableFuture.anyOf(cast(promises))));
     }
 
-    static <T> Promise<T> of(final CompletableFuture<T> f) { return new PromiseImpl<>(f); }
+    static <T> Promise<T> of(final CompletableFuture<T> f) { return new PromiseCFuture<>(f); }
 
     static <T> Promise<T> none() { return resolve(null); }
 }
 
-class PromiseImpl<T>
+abstract class PromiseFuture<T, F extends Future<T>>
     implements Promise<T> {
 
-    private final CompletableFuture<T> delegate;
+    protected final F delegate;
 
-    PromiseImpl(final CompletableFuture<T> delegate) { this.delegate = delegate; }
-
-    @Override
-    public T resolve() { return this.delegate.join(); }
+    protected PromiseFuture(final F delegate) { this.delegate = delegate; }
 
     @Override
-    public $$<T, None> resolve(final long timeout) {
+    public T resolve() {
+        try { return this.delegate.get(); } //
+        catch (final InterruptedException e) { return raise(e); } //
+        catch (final ExecutionException e) { return raise(e.getCause()); } //
+    }
+
+    @Override
+    public $$<T, $$.None> resolve(final long timeout) {
         try { return left(this.delegate.get(timeout, TimeUnit.MILLISECONDS)); } //
         catch (final TimeoutException e) { return right(NONE); } //
         catch (final InterruptedException e) { return raise(e); } //
@@ -122,43 +127,43 @@ class PromiseImpl<T>
     @Override
     public boolean done() { return this.delegate.isDone(); }
 
+    public Future<T> future() { return this.delegate; }
+
+    @Override
+    public String toString() { return "Promise(" + this.delegate + ")"; }
+}
+
+class PromiseCFuture<T>
+    extends PromiseFuture<T, CompletableFuture<T>> {
+
+    public PromiseCFuture(final CompletableFuture<T> delegate) { super(delegate); }
+
+    @Override
+    public T resolve() { return this.delegate.join(); }
+
     @Override
     public boolean failed() { return this.delegate.isCompletedExceptionally(); }
 
     @Override
-    public Future<T> future() { return this.delegate; }
-
-    @Override
-    public CompletableFuture<T> cfuture() { return this.delegate; }
-
-    @Override
     public <U> Promise<U> thenAsync(final Function<? super T, ? extends U> f) {
-        return new PromiseImpl<>(this.delegate.thenApplyAsync(f));
+        return new PromiseCFuture<>(this.delegate.thenApplyAsync(f));
     }
 
     @Override
     public <U> Promise<U> then(final Function<? super T, ? extends U> f) {
-        return new PromiseImpl<>(this.delegate.thenApply(f));
+        return new PromiseCFuture<>(this.delegate.thenApply(f));
     }
 
     @Override
     public Promise<T> fail(final Function<? super Exception, ? extends T> f) {
-        return new PromiseImpl<>(
+        return new PromiseCFuture<>(
             this.delegate.exceptionally(e -> e instanceof Exception ? f.apply((Exception) e) : raise(e)));
     }
 
     @Override
     public <U> Promise<U> last(final BiFunction<? super T, Exception, ? extends U> f) {
-        return new PromiseImpl<>(
+        return new PromiseCFuture<>(
             this.delegate.handle((v, e) -> e instanceof Exception ? f.apply(v, cast(e)) : raise(e)));
-    }
-
-    @Override
-    public Promise<T> last(final BiConsumer<? super T, Exception> f) {
-        return new PromiseImpl<>(this.delegate.whenComplete((v, e) -> {
-            if (e instanceof Exception) f.accept(v, cast(e));
-            else raise(e);
-        }));
     }
 
     @Override

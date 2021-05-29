@@ -42,16 +42,14 @@ import static jp.root42.indolently.Indolently.*;
 public class Expressive {
 
     /** non private for subtyping. */
-    protected Expressive() {}
+    protected Expressive() { }
 
     public static class RaisedException
         extends RuntimeException {
 
         private static final long serialVersionUID = 1037309592665638717L;
 
-        public RaisedException(final Throwable e) {
-            super(e);
-        }
+        public RaisedException(final Throwable e) { super(e); }
     }
 
     /**
@@ -61,9 +59,7 @@ public class Expressive {
      * @param e exception
      * @return actually return nothing
      */
-    public static <T> T raise(final Throwable e) {
-        return raise(() -> e);
-    }
+    public static <T> T raise(final Throwable e) { return raise(() -> e); }
 
     /**
      * Throw exception in expression manner.
@@ -75,13 +71,9 @@ public class Expressive {
     public static <T> T raise(final Supplier<? extends Throwable> f) {
 
         throw opt(f.get()).map(e -> {
-            if (e instanceof Error) {
-                throw (Error) e;
-            } else if (e instanceof RuntimeException) {
-                return (RuntimeException) e;
-            } else {
-                return new RaisedException(e);
-            }
+            if (e instanceof Error) throw (Error) e;
+            else if (e instanceof RuntimeException) return (RuntimeException) e;
+            else return new RaisedException(e);
         }).or(() -> new NullPointerException("supplier returns null: " + f));
     }
 
@@ -98,7 +90,7 @@ public class Expressive {
      * @param <E> the type of exception
      * @param stmt statement body
      */
-    public static <E extends Exception> void letE(final RunnableE<E> stmt) throws E { stmt.run(); }
+    public static <E extends Exception> void letTry(final RunnableE<E> stmt) throws E { stmt.run(); }
 
     /**
      * In-line evaluation expression.
@@ -108,7 +100,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value of body expression
      */
-    public static <R, E extends Exception> R evalE(final SupplierE<R, E> expr) throws E { return expr.get(); }
+    public static <R, E extends Exception> R evalTry(final SupplierE<R, E> expr) throws E { return expr.get(); }
 
     /**
      * In-line evaluation expression.
@@ -134,7 +126,7 @@ public class Expressive {
      * @param value the value
      * @param stmt expression body
      */
-    public static <T, E extends Exception> void letE(final T value, final ConsumerE<? super T, E> stmt) throws E {
+    public static <T, E extends Exception> void letTry(final T value, final ConsumerE<? super T, E> stmt) throws E {
         stmt.accept(value);
     }
 
@@ -145,10 +137,7 @@ public class Expressive {
      * @param stmt statement body
      */
     public static <T> void ifInstance(final Object value, final Consumer<T> stmt) {
-
-        if (argTypeOf(stmt).isInstance(value)) {
-            stmt.accept(cast(value));
-        }
+        if (argTypeOf(stmt).isInstance(value)) stmt.accept(cast(value));
     }
 
     /**
@@ -163,11 +152,10 @@ public class Expressive {
     public static <T> void let(final T context, final Predicate<? super T> cond, final Consumer<? super T> then,
         final Consumer<? super T> other) {
 
-        if (cond.test(context)) {
+        if (cond.test(context)) //
             then.accept(context);
-        } else {
+        else //
             other.accept(context);
-        }
     }
 
     /**
@@ -191,7 +179,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T, R, E extends Exception> R evalE(final T val, final FunctionE<? super T, ? extends R, E> expr)
+    public static <T, R, E extends Exception> R evalTry(final T val, final FunctionE<? super T, ? extends R, E> expr)
         throws E { return expr.apply(val); }
 
     /**
@@ -220,7 +208,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T1, T2, R, E extends Exception> R evalE(final T1 val1, final T2 val2,
+    public static <T1, T2, R, E extends Exception> R evalTry(final T1 val1, final T2 val2,
         final Function2E<? super T1, ? super T2, ? extends R, E> expr) throws E { return expr.apply(val1, val2); }
 
     /**
@@ -253,7 +241,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T1, T2, T3, R, E extends Exception> R evalE(final T1 val1, final T2 val2, final T3 val3,
+    public static <T1, T2, T3, R, E extends Exception> R evalTry(final T1 val1, final T2 val2, final T3 val3,
         final Function3E<? super T1, ? super T2, ? super T3, ? extends R, E> expr) throws E {
         return expr.apply(val1, val2, val3);
     }
@@ -309,9 +297,7 @@ public class Expressive {
     public static <T> T prog1(final Supplier<? extends T> first, final Statement... forms) {
 
         final var val = first.get();
-
         list(forms).each(f -> f.run());
-
         return val;
     }
 
@@ -322,9 +308,7 @@ public class Expressive {
     }
 
     public static <T extends Closeable, R> R with(final T res, final WithBlock<T, R> f) throws IOException {
-        try (res) {
-            return f.apply(res);
-        }
+        try (res) { return f.apply(res); }
     }
 
     /**
@@ -377,9 +361,7 @@ public class Expressive {
         final Function<? super T, ? extends R> expr) {
 
         return eval(() -> {
-            try (final T x = res.get()) {
-                return expr.apply(x);
-            }
+            try (final T x = res.get()) { return expr.apply(x); }
         });
     }
 
@@ -409,9 +391,7 @@ public class Expressive {
          * @param then a value
          * @return 'then' object
          */
-        default <T> Then<T> then(final T then) {
-            return this.then(() -> then);
-        }
+        default <T> Then<T> then(final T then) { return this.then(() -> then); }
 
         /**
          * The body expression of 'if' expression.
@@ -438,25 +418,17 @@ public class Expressive {
              */
             Case<T> when(BooleanSupplier when);
 
-            default T none(final T none) {
-                return this.none(() -> none);
-            }
+            default T none(final T none) { return this.none(() -> none); }
 
-            default Case<T> when(final boolean when) {
-                return this.when(() -> when);
-            }
+            default Case<T> when(final boolean when) { return this.when(() -> when); }
 
             default T raise(final Supplier<? extends RuntimeException> raise) {
                 return this.none(() -> Expressive.raise(() -> raise.get()));
             }
 
-            default T fatal() {
-                return this.none(() -> Indolently.fatal());
-            }
+            default T fatal() { return this.none(() -> Indolently.fatal()); }
 
-            default T fatal(final Object msg) {
-                return this.none(() -> Indolently.fatal(msg));
-            }
+            default T fatal(final Object msg) { return this.none(() -> Indolently.fatal(msg)); }
         }
 
         /**
@@ -469,9 +441,7 @@ public class Expressive {
 
             Then<T> then(Supplier<? extends T> then);
 
-            default Then<T> then(final T then) {
-                return this.then(() -> then);
-            }
+            default Then<T> then(final T then) { return this.then(() -> then); }
         }
     }
 
@@ -481,9 +451,7 @@ public class Expressive {
      * @param pred constant conditional value
      * @return 'when' object
      */
-    public static When when(final boolean pred) {
-        return when(() -> pred);
-    }
+    public static When when(final boolean pred) { return when(() -> pred); }
 
     /**
      * if-then-else expression.
@@ -544,14 +512,10 @@ public class Expressive {
         return then -> new When.Then<T>() {
 
             @Override
-            public T none(final Supplier<? extends T> none) {
-                return theCase.then(then).none(none);
-            }
+            public T none(final Supplier<? extends T> none) { return theCase.then(then).none(none); }
 
             @Override
-            public When.Case<T> when(final BooleanSupplier when) {
-                return toWhenCase(theCase.then(then).when(when));
-            }
+            public When.Case<T> when(final BooleanSupplier when) { return toWhenCase(theCase.then(then).when(when)); }
         };
     }
 
@@ -569,20 +533,15 @@ public class Expressive {
 
         IntroCase<C> when(Predicate<? super C> pred);
 
-        default IntroCase<C> when(final boolean pred) {
-            return this.when(fixed(pred));
-        }
+        default IntroCase<C> when(final boolean pred) { return this.when(fixed(pred)); }
 
         default IntroCase<C> when(final Supplier<? extends C> pred) {
             return this.when(x -> Indolently.equal(x, pred.get()));
         }
 
-        default IntroCase<C> when(final Class<?> type) {
-            return this.when(x -> type.isInstance(x));
-        }
+        default IntroCase<C> when(final Class<?> type) { return this.when(x -> type.isInstance(x)); }
 
         default <SC extends C, T> Then<C, T> type(final Function<SC, ? extends T> then) {
-
             return eval(argTypeOf(then),
                 argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
         }
@@ -591,13 +550,9 @@ public class Expressive {
 
             <T> Then<C, T> then(Function<? super C, ? extends T> then);
 
-            default <T> Then<C, T> then(final T then) {
-                return this.then(() -> then);
-            }
+            default <T> Then<C, T> then(final T then) { return this.then(() -> then); }
 
-            default <T> Then<C, T> then(final Supplier<? extends T> then) {
-                return this.then(x -> then.get());
-            }
+            default <T> Then<C, T> then(final Supplier<? extends T> then) { return this.then(x -> then.get()); }
         }
 
         interface Then<C, T> {
@@ -606,9 +561,7 @@ public class Expressive {
 
             Case<C, T> when(Predicate<? super C> when);
 
-            default Case<C, T> when(final Class<?> type) {
-                return this.when(x -> type.isInstance(x));
-            }
+            default Case<C, T> when(final Class<?> type) { return this.when(x -> type.isInstance(x)); }
 
             default <SC extends C> Then<C, T> type(final Function<SC, ? extends T> then) {
 
@@ -616,50 +569,34 @@ public class Expressive {
                     argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
             }
 
-            default Case<C, T> when(final boolean when) {
-                return this.when(fixed(when));
-            }
+            default Case<C, T> when(final boolean when) { return this.when(fixed(when)); }
 
-            default Case<C, T> when(final BooleanSupplier when) {
-                return this.when(x -> when.getAsBoolean());
-            }
+            default Case<C, T> when(final BooleanSupplier when) { return this.when(x -> when.getAsBoolean()); }
 
             default Case<C, T> when(final Supplier<? extends C> pred) {
                 return this.when(x -> Indolently.equal(x, pred.get()));
             }
 
-            default T none(final T none) {
-                return this.none(() -> none);
-            }
+            default T none(final T none) { return this.none(() -> none); }
 
-            default T none(final Supplier<? extends T> none) {
-                return this.none(x -> none.get());
-            }
+            default T none(final Supplier<? extends T> none) { return this.none(x -> none.get()); }
 
             default T raise(final Function<? super C, ? extends RuntimeException> raise) {
                 return this.none(x -> Expressive.raise(() -> raise.apply(x)));
             }
 
-            default T fatal() {
-                return this.none(() -> Indolently.fatal());
-            }
+            default T fatal() { return this.none(() -> Indolently.fatal()); }
 
-            default T fatal(final Object msg) {
-                return this.none(() -> Indolently.fatal(msg));
-            }
+            default T fatal(final Object msg) { return this.none(() -> Indolently.fatal(msg)); }
         }
 
         interface Case<C, T> {
 
             Then<C, T> then(Function<? super C, ? extends T> then);
 
-            default Then<C, T> then(final T then) {
-                return this.then(() -> then);
-            }
+            default Then<C, T> then(final T then) { return this.then(() -> then); }
 
-            default Then<C, T> then(final Supplier<? extends T> then) {
-                return this.then(x -> then.get());
-            }
+            default Then<C, T> then(final Supplier<? extends T> then) { return this.then(x -> then.get()); }
         }
     }
 
@@ -686,14 +623,10 @@ public class Expressive {
                 return new Match.Then<C, T>() {
 
                     @Override
-                    public T none(final Function<? super C, ? extends T> none) {
-                        return value;
-                    }
+                    public T none(final Function<? super C, ? extends T> none) { return value; }
 
                     @Override
-                    public Match.Case<C, T> when(final Predicate<? super C> when) {
-                        return self;
-                    }
+                    public Match.Case<C, T> when(final Predicate<? super C> when) { return self; }
                 };
             }
         };
