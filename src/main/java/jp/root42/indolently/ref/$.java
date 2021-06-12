@@ -95,7 +95,7 @@ public final class $<T>
 
     public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
 
-    public $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.otherwiseTry(f::get); }
+    public $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.or$Try(f::get); }
 
     public $<T> or$(final $<? extends T> f) { return this.present() ? this : cast(f); }
 
@@ -129,7 +129,7 @@ public final class $<T>
         return (x == null) ? none() : cast(x);
     }
 
-    public <E extends Exception> $<T> otherwiseTry(final SupplierE<? extends $<? extends T>, E> f) throws E {
+    public <E extends Exception> $<T> or$Try(final SupplierE<? extends $<? extends T>, E> f) throws E {
         if (this.present()) return this;
         final var x = f.get();
         return (x == null) ? none() : of(x.opt);
