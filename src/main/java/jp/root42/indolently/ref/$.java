@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import jp.root42.indolently.function.FunctionE;
 import jp.root42.indolently.function.SupplierE;
 
 import static java.util.Objects.*;
@@ -62,10 +63,10 @@ public final class $<T>
 
     public boolean empty() { return this == NONE || this.opt.isEmpty(); }
 
-    public boolean present() { return this != NONE && this.opt.isPresent(); }
+    public boolean present() { return !this.empty(); }
 
     public $<T> tap(final Consumer<? super T> f) {
-        if (this == NONE) return this;
+        if (this.empty()) return none();
         this.opt.ifPresent(f);
         return this;
     }
@@ -76,7 +77,7 @@ public final class $<T>
     }
 
     public $<T> when(final Predicate<? super T> f) {
-        return this == NONE ? this : this.opt.filter(f).map($::of).orElse(none());
+        return this.empty() ? none() : this.opt.filter(f).map($::of).orElse(none());
     }
 
     // alias
@@ -88,26 +89,15 @@ public final class $<T>
 
     public $<Boolean> exam(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? T : F; }
 
-    public boolean test(final Predicate<? super T> f) { return this != NONE && this.when(f).present(); }
+    public boolean test(final Predicate<? super T> f) { return !this.empty() && this.when(f).present(); }
 
-    public <U> $<U> map(final Function<? super T, ? extends U> f) {
-        return this == NONE ? none() : cast(this.opt.map(f).map($::of).orElse(none()));
-    }
+    public <U> $<U> map(final Function<? super T, ? extends U> f) { return this.mapTry(f::apply); }
 
-    public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) {
-        return this == NONE ? none() : cast(this.opt.flatMap(x -> {
-            final var y = f.apply(x);
-            return (y == null) ? Optional.empty() : y.opt;
-        }).map($::of).orElse(none()));
-    }
+    public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
 
-    public $<T> otherwise(final Supplier<? extends $<? extends T>> f) {
-        if (this.present()) return this;
-        final var x = f.get();
-        return (x == null) ? none() : of(x.opt);
-    }
+    public $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.otherwiseTry(f::get); }
 
-    public $<T> otherwise(final $<? extends T> f) { return this.present() ? this : cast(f); }
+    public $<T> or$(final $<? extends T> f) { return this.present() ? this : cast(f); }
 
     public Stream<T> stream() { return this.opt.stream(); }
 
@@ -123,19 +113,37 @@ public final class $<T>
 
     public <E extends Exception> T orTry(final SupplierE<? extends T, E> f) throws E { return this.orElseTry(f); }
 
-    public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E {
-        return this.opt.isPresent() ? this.opt.get() : f.get();
-    }
-
     public T orFail() { return this.opt.orElseThrow(); }
 
     public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { return this.opt.orElseThrow(f); }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public <U, E extends Exception> $<U> mapTry(final FunctionE<? super T, ? extends U, E> f) throws E {
+        return this.empty() ? none() : of(f.apply(this.opt.get()));
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public <U, E extends Exception> $<U> fmapTry(final FunctionE<? super T, ? extends $<? extends U>, E> f) throws E {
+        if (this.empty()) return none();
+        final var x = f.apply(this.opt.get());
+        return (x == null) ? none() : cast(x);
+    }
+
+    public <E extends Exception> $<T> otherwiseTry(final SupplierE<? extends $<? extends T>, E> f) throws E {
+        if (this.present()) return this;
+        final var x = f.get();
+        return (x == null) ? none() : of(x.opt);
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E {
+        return this.present() ? this.opt.get() : f.get();
+    }
+
     @Override
     public int hashCode() { return Objects.hash(this.getClass(), this.opt); }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public boolean eq(final T that) { return !this.empty() && this.opt.get().equals(that); }
+    public boolean eq(final T that) { return this.test(x -> x.equals(that)); }
 
     public boolean equals(final $<? extends T> that) { return this.equals0(that); }
 
