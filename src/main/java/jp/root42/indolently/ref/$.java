@@ -22,7 +22,9 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import jp.root42.indolently.function.ConsumerE;
 import jp.root42.indolently.function.FunctionE;
+import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.SupplierE;
 
 import static java.util.Objects.*;
@@ -65,15 +67,10 @@ public final class $<T>
 
     public boolean present() { return !this.empty(); }
 
-    public $<T> tap(final Consumer<? super T> f) {
-        if (this.empty()) return none();
-        this.opt.ifPresent(f);
-        return this;
-    }
+    public $<T> tap(final Consumer<? super T> f) { return this.tapTry(f::accept); }
 
     public $<T> tap(final Consumer<? super T> action, final Runnable orAction) {
-        this.opt.ifPresentOrElse(action, orAction);
-        return this;
+        return this.tapTry(action::accept, orAction::run);
     }
 
     public $<T> when(final Predicate<? super T> f) {
@@ -116,6 +113,24 @@ public final class $<T>
     public T orFail() { return this.opt.orElseThrow(); }
 
     public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { return this.opt.orElseThrow(f); }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public <U, E extends Exception> $<T> tapTry(final ConsumerE<? super T, E> f) throws E {
+        if (this.empty()) return none();
+        f.accept(this.opt.get());
+        return this;
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public <U, E extends Exception> $<T> tapTry(final ConsumerE<? super T, E> f, final RunnableE<E> orAction) throws E {
+        if (this.empty()) {
+            orAction.run();
+            return none();
+        } else {
+            f.accept(this.opt.get());
+            return this;
+        }
+    }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public <U, E extends Exception> $<U> mapTry(final FunctionE<? super T, ? extends U, E> f) throws E {
