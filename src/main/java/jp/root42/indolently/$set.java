@@ -110,6 +110,8 @@ public interface $set<T>
         return this.reduce(set(), (x, y) -> x.push(f.apply(y)));
     }
 
+    default <R> $set<R> fmap(final Function<? super T, $<? extends R>> f) { return this.flatMap(f); }
+
     /**
      * Map operation: map value to another type value.
      *
@@ -120,22 +122,14 @@ public interface $set<T>
     default <R> $set<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
 
         final var i = ref(0);
-
         return this.flatMap(x -> f.apply(i.$++, x));
     }
 
+    default <R> $set<R> fmap(final BiFunction<Integer, ? super T, $<? extends R>> f) { return this.flatMap(f); }
+
     @Override
     default $set<T> filter(final Predicate<? super T> f) {
-
-        final $set<T> rslt = set();
-
-        for (final var val: this) {
-            if (f.test(val)) {
-                rslt.add(val);
-            }
-        }
-
-        return rslt;
+        return this.reduce(set(), (x, y) -> f.test(y) ? x.push(y) : x);
     }
 
     /**

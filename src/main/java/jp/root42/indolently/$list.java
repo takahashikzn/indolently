@@ -260,9 +260,7 @@ public interface $list<T>
      * @return newly constructed list which contains converted values
      */
     default <R> $list<R> map(final BiFunction<Integer, ? super T, ? extends R> f) {
-
         final var i = ref(0);
-
         return this.map(x -> f.apply(i.$++, x));
     }
 
@@ -287,9 +285,7 @@ public interface $list<T>
      * @return newly constructed list which contains converted values
      */
     default <R> $list<R> flatMap(final BiFunction<Integer, ? super T, $<? extends R>> f) {
-
         final var i = ref(0);
-
         return this.flatMap(x -> f.apply(i.$++, x));
     }
 
