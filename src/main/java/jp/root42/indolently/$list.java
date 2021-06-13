@@ -277,6 +277,8 @@ public interface $list<T>
         return this.reduce(list(), (x, y) -> x.push(f.apply(y)));
     }
 
+    default <R> $list<R> fmap(final Function<? super T, $<? extends R>> f) { return this.flatMap(f); }
+
     /**
      * Map operation: map value to another type value.
      *
@@ -290,6 +292,8 @@ public interface $list<T>
 
         return this.flatMap(x -> f.apply(i.$++, x));
     }
+
+    default <R> $list<R> fmap(final BiFunction<Integer, ? super T, $<? extends R>> f) { return this.flatMap(f); }
 
     @Override
     default $list<T> filter(final Predicate<? super T> f) {
