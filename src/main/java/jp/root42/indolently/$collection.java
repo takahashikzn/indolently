@@ -21,6 +21,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import jp.root42.indolently.function.Consumer2E;
+import jp.root42.indolently.function.ConsumerE;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
@@ -175,12 +177,11 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     SELF tail();
 
     @Override
-    default SELF each(final Consumer<? super T> f) {
+    default SELF each(final Consumer<? super T> f) { return this.eachTry(f::accept); }
 
-        for (final T val: this) {
+    default <E extends Exception> SELF eachTry(final ConsumerE<? super T, E> f) throws E {
+        for (final T val: this)
             f.accept(val);
-        }
-
         return this.identity();
     }
 
@@ -190,21 +191,17 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @param f function. first argument is loop index.
      * @return {@code this} instance
      */
-    default SELF each(final BiConsumer<Integer, ? super T> f) {
+    default SELF each(final BiConsumer<Integer, ? super T> f) { return this.eachTry(f::accept); }
 
+    default <E extends Exception> SELF eachTry(final Consumer2E<Integer, ? super T, E> f) throws E {
         final var i = ref(0);
-
-        return this.each(x -> f.accept(i.$++, x));
+        return this.eachTry(x -> f.accept(i.$++, x));
     }
 
     @Override
     default boolean some(final Predicate<? super T> f) {
-
-        for (final var x: this) {
-            if (f.test(x)) {
-                return true;
-            }
-        }
+        for (final var x: this)
+            if (f.test(x)) return true;
 
         return false;
     }
@@ -225,9 +222,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @return new filtered collection
      */
     default SELF filter(final BiPredicate<Integer, ? super T> f) {
-
         final var i = ref(0);
-
         return this.filter(x -> f.test(i.$++, x));
     }
 
