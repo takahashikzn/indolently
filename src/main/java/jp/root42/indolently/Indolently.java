@@ -13,13 +13,18 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -3176,4 +3181,12 @@ public class Indolently {
     public static byte i2b(final int x) { return (byte) x; }
 
     public static byte l2b(final long x) { return (byte) x; }
+
+    public static InputStream openRead(final Path file) throws IOException {
+        return new BufferedInputStream(Files.newInputStream(file), 1024 * 1024);
+    }
+
+    public static OutputStream openWrite(final Path file) throws IOException {
+        return new BufferedOutputStream(Files.newOutputStream(file), 1024 * 1024);
+    }
 }

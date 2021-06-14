@@ -226,15 +226,11 @@ public interface $list<T>
 
         int fromIndex = idx(this, from);
 
-        if (fromIndex < 0) {
-            fromIndex = 0;
-        }
+        if (fromIndex < 0) fromIndex = 0;
 
         int toIndex = idx(this, to);
 
-        if (((from < 0) && (toIndex == 0)) || (this.size() < toIndex)) {
-            toIndex = this.size();
-        }
+        if (((from < 0) && (toIndex == 0)) || (this.size() < toIndex)) toIndex = this.size();
 
         if (toIndex < fromIndex) return list();
 
@@ -323,9 +319,7 @@ public interface $list<T>
      * @param other alternative value
      * @return this instance or other
      */
-    default $list<T> orElse(final List<? extends T> other) {
-        return this.orElseGet(() -> other);
-    }
+    default $list<T> orElse(final List<? extends T> other) { return this.orElseGet(() -> other); }
 
     /**
      * Return this instance if not empty, otherwise return the invocation result of {@code other}.
@@ -353,15 +347,12 @@ public interface $list<T>
      * @return the list of chunks
      */
     default $list<$list<T>> chunk(final int size) {
-        if (size <= 0) {
-            throw new IllegalArgumentException("size should greater than 0");
-        }
+        if (size <= 0) throw new IllegalArgumentException("size should greater than 0");
 
         final $list<$list<T>> ret = list();
 
-        for (int i = 0, max = (int) Math.ceil((double) this.size() / size); i < max; i++) {
+        for (int i = 0, max = (int) Math.ceil((double) this.size() / size); i < max; i++)
             ret.add(this.slice(i * size, (i + 1) * size));
-        }
 
         return ret;
     }
@@ -410,9 +401,8 @@ public interface $list<T>
     @Destructive
     default $list<T> update(final Function<? super T, ? extends T> f) {
 
-        for (int i = 0; i < this.size(); i++) {
+        for (int i = 0; i < this.size(); i++)
             this.update(i, f);
-        }
 
         return this;
     }
