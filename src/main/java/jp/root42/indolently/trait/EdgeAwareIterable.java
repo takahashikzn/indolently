@@ -33,11 +33,16 @@ public interface EdgeAwareIterable<T>
      * get first element.
      *
      * @return first element
+     */
+    default $<T> head$() { return this.head(vrai()); }
+
+    /**
+     * get first element.
+     *
+     * @return first element
      * @throws NoSuchElementException if empty
      */
-    default T head() {
-        return this.head(vrai()).get();
-    }
+    default T head() { return this.head$().get(); }
 
     /**
      * get first element which satisfy the condition.
@@ -48,9 +53,8 @@ public interface EdgeAwareIterable<T>
      */
     default $<T> head(final Predicate<? super T> f) {
 
-        for (final T val: this) {
+        for (final T val: this)
             if (f.test(val)) return $.of(val);
-        }
 
         return $.none();
     }
@@ -61,9 +65,7 @@ public interface EdgeAwareIterable<T>
      * @param other alternative value.
      * @return first element or alternative value
      */
-    default T head(final Supplier<? extends T> other) {
-        return this.head(x -> true, other);
-    }
+    default T head(final Supplier<? extends T> other) { return this.head(x -> true, other); }
 
     /**
      * get first element which satisfy the condition, otherwise return alternative value.
@@ -72,9 +74,14 @@ public interface EdgeAwareIterable<T>
      * @param other alternative value.
      * @return first element or alternative value
      */
-    default T head(final Predicate<? super T> f, final Supplier<? extends T> other) {
-        return this.head(f).or(other);
-    }
+    default T head(final Predicate<? super T> f, final Supplier<? extends T> other) { return this.head(f).or(other); }
+
+    /**
+     * get last element of this iterator.
+     *
+     * @return last element
+     */
+    default $<T> last$() { return this.last(vrai()); }
 
     /**
      * get last element of this iterator.
@@ -82,9 +89,7 @@ public interface EdgeAwareIterable<T>
      * @return last element
      * @throws NoSuchElementException if this iterator is empty
      */
-    default T last() {
-        return this.last(x -> true).get();
-    }
+    default T last() { return this.last$().get(); }
 
     /**
      * get last element which satisfy the condition.
@@ -97,11 +102,8 @@ public interface EdgeAwareIterable<T>
 
         T rslt = null;
 
-        for (final T val: this) {
-            if (f.test(val)) {
-                rslt = val;
-            }
-        }
+        for (final T val: this)
+            if (f.test(val)) rslt = val;
 
         return $.of(rslt);
     }
@@ -112,9 +114,7 @@ public interface EdgeAwareIterable<T>
      * @param other alternative value.
      * @return last element or alternative value
      */
-    default T last(final Supplier<? extends T> other) {
-        return this.last(x -> true, other);
-    }
+    default T last(final Supplier<? extends T> other) { return this.last(x -> true, other); }
 
     /**
      * get last element which satisfy the condition, otherwise return alternative value.
@@ -123,7 +123,5 @@ public interface EdgeAwareIterable<T>
      * @param other alternative value
      * @return last element or alternative value
      */
-    default T last(final Predicate<? super T> f, final Supplier<? extends T> other) {
-        return this.last(f).or(other);
-    }
+    default T last(final Predicate<? super T> f, final Supplier<? extends T> other) { return this.last(f).or(other); }
 }

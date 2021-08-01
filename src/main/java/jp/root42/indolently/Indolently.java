@@ -1334,9 +1334,8 @@ public class Indolently {
     public static boolean contains(final boolean[] ary, final boolean val) {
         if (empty(ary)) return false;
 
-        for (final boolean x: ary) {
+        for (final boolean x: ary)
             if (x == val) return true;
-        }
 
         return false;
     }
@@ -1344,9 +1343,8 @@ public class Indolently {
     public static boolean contains(final char[] ary, final char val) {
         if (empty(ary)) return false;
 
-        for (final char x: ary) {
+        for (final char x: ary)
             if (x == val) return true;
-        }
 
         return false;
     }
@@ -1354,10 +1352,10 @@ public class Indolently {
     public static boolean contains(final CharSequence cs, final char c) {
 
         return (cs != null) && (0 < cs.length()) //
-            && (cs instanceof String) ? (0 <= ((String) cs).indexOf(c)) //
+            && ((cs instanceof String) ? (0 <= ((String) cs).indexOf(c)) //
             : (cs instanceof StringBuilder) ? (0 <= ((StringBuilder) cs).indexOf(String.valueOf(c))) //
                 : (cs instanceof StringBuffer) ? (0 <= ((StringBuffer) cs).indexOf(String.valueOf(c))) //
-                    : (0 <= cs.toString().indexOf(c));
+                    : (0 <= cs.toString().indexOf(c)));
     }
 
     public static String join(final CharSequence... ary) { return join(list(ary), null); }

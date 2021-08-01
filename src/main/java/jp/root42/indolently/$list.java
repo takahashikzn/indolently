@@ -63,11 +63,11 @@ public interface $list<T>
     @Override
     default $list<T> freeze() { return Indolently.freeze(this); }
 
-    // for optimization
     @Override
-    default T head() { return this.get(0); }
+    default $<T> head$() { return this.opt(0); } // for optimization
 
-    // for optimization
+    @Override
+    default T head() { return this.get(0); } // for optimization
 
     /**
      * Return element at the position if exists.
@@ -76,10 +76,8 @@ public interface $list<T>
      * @param index index of the element
      * @return the element if exists
      */
-    default $<T> opt(final int index) {
-
+    default $<T> opt(final int index) { // for optimization
         final int i = idx(this, index);
-
         return (0 <= i) && (i < this.size()) ? Indolently.opt(this.get(i)) : $.none();
     }
 
@@ -97,12 +95,12 @@ public interface $list<T>
     @Override
     default $list<T> tail() { return (this.size() <= 1) ? list() : this.subList(1).clone(); }
 
-    // for optimization
     @Override
-    default T last() {
-        //noinspection ConstantConditions
-        return this.get(-1);
-    }
+    default $<T> last$() { return this.opt(-1); } // for optimization
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    default T last() { return this.get(-1); } // for optimization
 
     /**
      * convert this list to {@link $set}. original order is reserved.
