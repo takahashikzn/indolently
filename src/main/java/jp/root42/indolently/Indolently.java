@@ -3187,4 +3187,8 @@ public class Indolently {
     public static OutputStream openWrite(final Path file) throws IOException {
         return new BufferedOutputStream(Files.newOutputStream(file), 1024 * 1024);
     }
+
+    public static String lcase(final String s) { return s == null ? null : s.toLowerCase(); }
+
+    public static String ucase(final String s) { return s == null ? null : s.toUpperCase(); }
 }
