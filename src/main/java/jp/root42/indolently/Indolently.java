@@ -123,6 +123,10 @@ public class Indolently {
         return x -> opt(x).when(type::isInstance).map(type::cast);
     }
 
+    public static <T> Function<Object, $<? extends T>> castAs(final Class<T> type) {
+        return x -> opt(x).when(type::isInstance).map(type::cast);
+    }
+
     /**
      * null-safe wrapper to primitive conversion.
      *
