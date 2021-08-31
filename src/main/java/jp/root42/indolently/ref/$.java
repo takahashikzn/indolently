@@ -92,15 +92,19 @@ public final class $<T>
 
     public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
 
+    public <S> $<$2<T, S>> and$(final Supplier<? extends $<? extends S>> f) { return this.and$Try(f::get); }
+
+    public <S> $<$2<T, S>> and$(final $<? extends S> and) { return this.and$(() -> and); }
+
     public $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.or$Try(f::get); }
 
-    public $<T> or$(final $<? extends T> f) { return this.present() ? this : cast(f); }
+    public $<T> or$(final $<? extends T> or) { return this.present() ? this : cast(or); }
 
     public Stream<T> stream() { return this.opt.stream(); }
 
-    public T or(final T other) { return this.orElse(other); }
+    public T or(final T or) { return this.orElse(or); }
 
-    public T orElse(final T other) { return this.opt.orElse(other); }
+    public T orElse(final T or) { return this.opt.orElse(or); }
 
     public T orNull() { return this.orElse(null); }
 
@@ -148,6 +152,12 @@ public final class $<T>
         if (this.present()) return this;
         final var x = f.get();
         return (x == null) ? none() : of(x.opt);
+    }
+
+    public <S, E extends Exception> $<$2<T, S>> and$Try(final SupplierE<? extends $<? extends S>, E> f) throws E {
+        if (this.empty()) return none();
+        final var x = f.get();
+        return (x == null) ? none() : x.map(y -> tuple(this.get(), y));
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
