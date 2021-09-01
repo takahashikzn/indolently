@@ -421,7 +421,7 @@ public interface $map<K, V>
      * @return new converted map
      */
     default <R> $map<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
-        return this.map((k, v) -> k, (k, v) -> f.apply(k, v));
+        return this.map((k, v) -> k, f);
     }
 
     /**
