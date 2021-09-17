@@ -51,18 +51,18 @@ public interface Promise<T> {
 
     <U> Promise<U> thenAsync(Function<? super T, ? extends U> f);
 
-    default Promise<T> thenAsync(final Consumer<? super T> f) {
-        return this.thenAsync(x -> {
-            f.accept(x);
-            return x;
-        });
-    }
-
     default <U> Promise<U> then(final Function<? super T, ? extends U> f) { return this.thenAsync(f); }
 
     default Promise<T> then(final Consumer<? super T> f) {
         return this.then(x -> {
             f.accept(x);
+            return x;
+        });
+    }
+
+    default Promise<T> then(final Runnable f) {
+        return this.then(x -> {
+            f.run();
             return x;
         });
     }
