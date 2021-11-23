@@ -356,58 +356,37 @@ public class Functional {
         });
     }
 
-    public static <T> Expression<T> expressionOf(final Expression<T> f) {
-        return f;
+    public static <T> Expression<T> expressionOf(final Expression<? extends T> f) { return cast(f); }
+
+    public static Statement statementOf(final Statement f) { return f; }
+
+    public static <T> Supplier<T> supplierOf(final Supplier<? extends T> f) { return cast(f); }
+
+    public static <X> Consumer<X> consumerOf(final Consumer<? super X> f) { return cast(f); }
+
+    public static <X0, X1> BiConsumer<X0, X1> consumer2Of(final BiConsumer<? super X0, ? super X1> f) {
+        return cast(f);
     }
 
-    public static Statement statementOf(final Statement f) {
-        return f;
+    public static <X0, X1, X2> Consumer3<X0, X1, X2> consumer3Of(
+        final Consumer3<? super X0, ? super X1, ? super X2> f) { return cast(f); }
+
+    public static <X0, X1> Function<X0, X1> functionOf(final Function<? super X0, ? extends X1> f) { return cast(f); }
+
+    public static <X0, X1, Y> BiFunction<X0, X1, Y> function2Of(
+        final BiFunction<? super X0, ? super X1, ? extends Y> f) { return cast(f); }
+
+    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> function4Of(
+        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) { return cast(f); }
+
+    public static <X> Predicate<X> predicateOf(final Predicate<? super X> f) { return cast(f); }
+
+    public static <X0, X1> BiPredicate<X0, X1> predicate2Of(final BiPredicate<? super X0, ? super X1> f) {
+        return cast(f);
     }
 
-    public static <T> Supplier<? extends T> supplierOf(final Supplier<? extends T> f) {
-        return f;
-    }
-
-    public static <X> Consumer<? super X> consumerOf(final Consumer<? super X> f) {
-        return f;
-    }
-
-    public static <X0, X1> BiConsumer<? super X0, ? super X1> consumer2Of(final BiConsumer<? super X0, ? super X1> f) {
-        return f;
-    }
-
-    public static <X0, X1, X2> Consumer3<? super X0, ? super X1, ? super X2> consumer3Of(
-        final Consumer3<? super X0, ? super X1, ? super X2> f) {
-        return f;
-    }
-
-    public static <X0, X1> Function<? super X0, ? extends X1> functionOf(final Function<? super X0, ? extends X1> f) {
-        return f;
-    }
-
-    public static <X0, X1, Y> BiFunction<? super X0, ? super X1, ? extends Y> function2Of(
-        final BiFunction<? super X0, ? super X1, ? extends Y> f) {
-        return f;
-    }
-
-    public static <X0, X1, X2, Y> Function3<? super X0, ? super X1, ? super X2, ? extends Y> function4Of(
-        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) {
-        return f;
-    }
-
-    public static <X> Predicate<? super X> predicateOf(final Predicate<? super X> f) {
-        return f;
-    }
-
-    public static <X0, X1> BiPredicate<? super X0, ? super X1> predicate2Of(
-        final BiPredicate<? super X0, ? super X1> f) {
-        return f;
-    }
-
-    public static <X0, X1, X2> Predicate3<? super X0, ? super X1, ? super X2> predicate3Of(
-        final Predicate3<? super X0, ? super X1, ? super X2> f) {
-        return f;
-    }
+    public static <X0, X1, X2> Predicate3<X0, X1, X2> predicate3Of(
+        final Predicate3<? super X0, ? super X1, ? super X2> f) { return cast(f); }
 
     @FunctionalInterface
     public interface ThrowableFunction<X0, X1> {
