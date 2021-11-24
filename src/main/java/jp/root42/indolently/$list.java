@@ -478,4 +478,27 @@ public interface $list<T>
 
         return $.none();
     }
+
+    @Override
+    default <R> $<R> fhead(final Function<T, $<R>> f) {
+
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0, Z = this.size(); i < Z; i++) {
+            final var x = f.apply(this.get(i));
+            if (x.present()) return x;
+        }
+
+        return $.none();
+    }
+
+    @Override
+    default <R> $<R> flast(final Function<T, $<R>> f) {
+
+        for (int i = this.size() - 1; 0 <= i; i--) {
+            final var x = f.apply(this.get(i));
+            if (x.present()) return x;
+        }
+
+        return $.none();
+    }
 }

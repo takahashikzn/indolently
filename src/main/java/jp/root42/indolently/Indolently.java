@@ -119,11 +119,11 @@ public class Indolently {
         return (T) o;
     }
 
-    public static <T> Function<Object, $<T>> castTo(final Class<T> type) {
+    public static <IN, OUT> Function<IN, $<OUT>> castTo(final Class<OUT> type) {
         return x -> opt(x).when(type::isInstance).map(type::cast);
     }
 
-    public static <T> Function<Object, $<? extends T>> castAs(final Class<T> type) {
+    public static <IN, OUT> Function<IN, $<? extends OUT>> castAs(final Class<OUT> type) {
         return x -> opt(x).when(type::isInstance).map(type::cast);
     }
 
@@ -844,7 +844,7 @@ public class Indolently {
                 try {
                     return cs.charAt(this.pos++);
                 } catch (final IndexOutOfBoundsException e) {
-                    throw (NoSuchElementException) new NoSuchElementException().initCause(e);
+                    throw (NoSuchElementException) new NoSuchElementException(e);
                 }
             }
         });

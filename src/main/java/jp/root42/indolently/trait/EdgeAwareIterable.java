@@ -14,6 +14,7 @@
 package jp.root42.indolently.trait;
 
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -124,4 +125,26 @@ public interface EdgeAwareIterable<T>
      * @return last element or alternative value
      */
     default T last(final Predicate<? super T> f, final Supplier<? extends T> other) { return this.last(f).or(other); }
+
+    default <R> $<R> fhead(final Function<T, $<R>> f) {
+
+        for (final var val: this) {
+            final var ret = f.apply(val);
+            if (ret.present()) return ret;
+        }
+
+        return $.none();
+    }
+
+    default <R> $<R> flast(final Function<T, $<R>> f) {
+
+        $<R> ret = $.none();
+
+        for (final var val: this) {
+            final var x = f.apply(val);
+            if (x.present()) ret = x;
+        }
+
+        return ret;
+    }
 }
