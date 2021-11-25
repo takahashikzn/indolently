@@ -53,9 +53,7 @@ public interface $map<K, V>
      *
      * @return a new fifo Map instance which containing all entries which this instance contains
      */
-    default $map<K, V> fifo() {
-        return of(ObjFactory.getInstance().<K, V> newFifoMap()).pushAll(this);
-    }
+    default $map<K, V> fifo() { return of(ObjFactory.getInstance().<K, V> newFifoMap()).pushAll(this); }
 
     /**
      * Clone this instance.
@@ -64,9 +62,7 @@ public interface $map<K, V>
      * @see Cloneable
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    default $map<K, V> clone() {
-        return Indolently.<K, V> map().pushAll(this);
-    }
+    default $map<K, V> clone() { return Indolently.<K, V> map().pushAll(this); }
 
     /**
      * Wrap a map.
@@ -75,17 +71,13 @@ public interface $map<K, V>
      * @param map map to wrap
      * @return wrapped map
      */
-    static <K, V> $map<K, V> of(final Map<K, V> map) {
-        return Indolently.$(map);
-    }
+    static <K, V> $map<K, V> of(final Map<K, V> map) { return Indolently.$(map); }
 
     /**
      * @see Indolently#freeze(Map)
      */
     @Override
-    default $map<K, V> freeze() {
-        return Indolently.freeze(this);
-    }
+    default $map<K, V> freeze() { return Indolently.freeze(this); }
 
     /**
      * put key/value pair then return this instance.
@@ -123,9 +115,9 @@ public interface $map<K, V>
     default $map<K, V> pushAll(final Supplier<? extends Map<? extends K, ? extends V>> map,
         final Predicate<? super $map<K, V>> cond) {
 
-        if (cond.test(this)) {
+        if (cond.test(this)) //
             this.putAll(map.get());
-        }
+
 
         return this;
     }
@@ -185,9 +177,7 @@ public interface $map<K, V>
      *
      * @return keys
      */
-    default $set<K> keys() {
-        return Indolently.set(this.keySet());
-    }
+    default $set<K> keys() { return Indolently.set(this.keySet()); }
 
     /**
      * Almost same as {@link Map#values()} but returns newly constructed, detached one.
@@ -196,9 +186,7 @@ public interface $map<K, V>
      *
      * @return values
      */
-    default $list<V> vals() {
-        return Indolently.list(this.values());
-    }
+    default $list<V> vals() { return Indolently.list(this.values()); }
 
     /**
      * Extended {@link Map.Entry} class for indolent person.
@@ -234,14 +222,10 @@ public interface $map<K, V>
         }
 
         @Override
-        public K getKey() {
-            return this.key;
-        }
+        public K getKey() { return this.key; }
 
         @Override
-        public V getValue() {
-            return this.val;
-        }
+        public V getValue() { return this.val; }
 
         /**
          * Use {@link #update(Object)} instead of.
@@ -266,25 +250,17 @@ public interface $map<K, V>
          * @return {@code this} instance
          * @see #setValue(Object)
          */
-        public V update(final V value) {
-            return this.e.setValue(value);
-        }
+        public V update(final V value) { return this.e.setValue(value); }
 
         @Override
-        public int hashCode() {
-            return this.e.hashCode();
-        }
+        public int hashCode() { return this.e.hashCode(); }
 
         @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
         @Override
-        public boolean equals(final Object o) {
-            return this.e.equals(o);
-        }
+        public boolean equals(final Object o) { return this.e.equals(o); }
 
         @Override
-        public String toString() {
-            return this.e.toString();
-        }
+        public String toString() { return this.e.toString(); }
     }
 
     /**
@@ -294,14 +270,10 @@ public interface $map<K, V>
      *
      * @return entries
      */
-    default $set<$entry<K, V>> entries() {
-        return Indolently.list(this.entrySet()).map(x -> new $entry<>(x)).set();
-    }
+    default $set<$entry<K, V>> entries() { return Indolently.list(this.entrySet()).map(x -> new $entry<>(x)).set(); }
 
     @Override
-    default $iter<$entry<K, V>> iterator() {
-        return Indolently.$(this.entrySet().iterator()).map($entry::new);
-    }
+    default $iter<$entry<K, V>> iterator() { return Indolently.$(this.entrySet().iterator()).map($entry::new); }
 
     /**
      * construct new map which having keys you specify.
@@ -321,9 +293,7 @@ public interface $map<K, V>
      * @return {@code this} instance
      */
     @Override
-    default $map<K, V> each(final Consumer<? super V> f) {
-        return this.each((key, val) -> f.accept(val));
-    }
+    default $map<K, V> each(final Consumer<? super V> f) { return this.each((key, val) -> f.accept(val)); }
 
     /**
      * internal iterator.
@@ -337,9 +307,7 @@ public interface $map<K, V>
     }
 
     @Override
-    default boolean some(final Predicate<? super V> f) {
-        return this.some((key, val) -> f.test(val));
-    }
+    default boolean some(final Predicate<? super V> f) { return this.some((key, val) -> f.test(val)); }
 
     /**
      * Test whether at least one key/value pair satisfy condition.
@@ -347,9 +315,7 @@ public interface $map<K, V>
      * @param f condition
      * @return test result
      */
-    default boolean some(final BiPredicate<? super K, ? super V> f) {
-        return !this.filter(f).isEmpty();
-    }
+    default boolean some(final BiPredicate<? super K, ? super V> f) { return !this.filter(f).isEmpty(); }
 
     /**
      * Test whether all key/value pairs satisfy condition.
@@ -357,9 +323,7 @@ public interface $map<K, V>
      * @param f condition
      * @return test result
      */
-    default boolean every(final BiPredicate<? super K, ? super V> f) {
-        return this.filter(f).size() == this.size();
-    }
+    default boolean every(final BiPredicate<? super K, ? super V> f) { return this.filter(f).size() == this.size(); }
 
     /**
      * Count key/value pairs which satisfying condition.
@@ -367,9 +331,7 @@ public interface $map<K, V>
      * @param f condition
      * @return the number of key/value pairs which satisfying condition
      */
-    default int count(final BiPredicate<? super K, ? super V> f) {
-        return this.filter(f).size();
-    }
+    default int count(final BiPredicate<? super K, ? super V> f) { return this.filter(f).size(); }
 
     /**
      * Filter operation: returns entries as a map which satisfying condition.
@@ -379,9 +341,7 @@ public interface $map<K, V>
      * @return new filtered map
      */
     @Override
-    default $map<K, V> filter(final Predicate<? super V> f) {
-        return this.filter((key, val) -> f.test(val));
-    }
+    default $map<K, V> filter(final Predicate<? super V> f) { return this.filter((key, val) -> f.test(val)); }
 
     /**
      * Filter operation: returns entries as a map which satisfying condition.
@@ -400,6 +360,10 @@ public interface $map<K, V>
                 (map, e) -> map.push(e.key, e.val));
     }
 
+    default $map<K, V> only(final Predicate<? super V> f) { return this.filter(f); }
+
+    default $map<K, V> only(final BiPredicate<? super K, ? super V> f) { return this.filter(f); }
+
     /**
      * Map operation: map value to another type value.
      * This operation is constructive.
@@ -408,9 +372,7 @@ public interface $map<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> $map<K, R> map(final Function<? super V, ? extends R> f) {
-        return this.map((k, v) -> f.apply(v));
-    }
+    default <R> $map<K, R> map(final Function<? super V, ? extends R> f) { return this.map((k, v) -> f.apply(v)); }
 
     /**
      * Map operation: map value to another type value.
@@ -483,7 +445,7 @@ public interface $map<K, V>
      * @return new converted map
      */
     default <R> $map<K, R> flatMap(final BiFunction<? super K, ? super V, $<? extends R>> f) {
-        return this.flatMap((k, v) -> k, (k, v) -> f.apply(k, v));
+        return this.flatMap((k, v) -> k, f);
     }
 
     /**
@@ -530,9 +492,7 @@ public interface $map<K, V>
      * @param key key of map
      * @return the result of {@link #containsKey(Object)}
      */
-    default boolean has(final K key) {
-        return this.containsKey(key);
-    }
+    default boolean has(final K key) { return this.containsKey(key); }
 
     /**
      * Get value of the key which is contained by this instance.
@@ -540,9 +500,7 @@ public interface $map<K, V>
      * @param key the key of value
      * @return optional representation of the value
      */
-    default $<V> opt(final K key) {
-        return this.containsKey(key) ? Indolently.opt(this.get(key)) : $.none();
-    }
+    default $<V> opt(final K key) { return this.containsKey(key) ? Indolently.opt(this.get(key)) : $.none(); }
 
     /**
      * Return newly constructed sorted map using comparator.
@@ -550,9 +508,7 @@ public interface $map<K, V>
      * @param comp comparator
      * @return sorted map
      */
-    default $map<K, V> sortWith(final Comparator<? super K> comp) {
-        return Indolently.sort(this, comp);
-    }
+    default $map<K, V> sortWith(final Comparator<? super K> comp) { return Indolently.sort(this, comp); }
 
     /**
      * Replace value of the key if exists.
@@ -603,7 +559,7 @@ public interface $map<K, V>
     }
 
     default <C extends Comparable<? super C>> $map<K, V> order(final Function<? super K, C> f) {
-        return this.order(Comparator.comparing(f::apply));
+        return this.order(Comparator.comparing(f));
     }
 
     default $map<K, V> order(final Comparator<? super K> comp) {
@@ -612,9 +568,9 @@ public interface $map<K, V>
 
     @Destructive
     default $map<K, V> pushIfAbsent(final K key, final Supplier<? extends V> value) {
-        if (!this.containsKey(key)) {
+        if (!this.containsKey(key)) //
             this.put(key, value.get());
-        }
+
         return this;
     }
 }
