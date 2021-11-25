@@ -295,7 +295,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     SELF order(Comparator<? super T> comp);
 
     default <C extends Comparable<? super C>> SELF order(final Function<? super T, C> f) {
-        return this.order(Comparator.comparing(f));
+        return this.order(equal(f, it()) ? cast(Comparator.naturalOrder()) : Comparator.comparing(f));
     }
 
     default String join() { return this.join((String) null); }
