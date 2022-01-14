@@ -47,9 +47,7 @@ public final class Regex
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof RegexBase)) return false;
-
-        final RegexBase<?, ?> that = this.pattern;
+        if (!(o instanceof RegexBase that)) return false;
 
         return this.pattern().equals(that.pattern());
     }
