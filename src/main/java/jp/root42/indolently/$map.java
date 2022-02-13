@@ -118,7 +118,6 @@ public interface $map<K, V>
         if (cond.test(this)) //
             this.putAll(map.get());
 
-
         return this;
     }
 
@@ -360,9 +359,12 @@ public interface $map<K, V>
                 (map, e) -> map.push(e.key, e.val));
     }
 
+    @Override
     default $map<K, V> only(final Predicate<? super V> f) { return this.filter(f); }
 
     default $map<K, V> only(final BiPredicate<? super K, ? super V> f) { return this.filter(f); }
+
+    default <U extends V> $map<K, U> only(final Class<U> type) { return this.only(type::isInstance).map(type::cast); }
 
     /**
      * Map operation: map value to another type value.

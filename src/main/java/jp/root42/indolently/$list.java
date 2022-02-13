@@ -501,4 +501,6 @@ public interface $list<T>
 
         return $.none();
     }
+
+    default <U extends T> $list<U> only(final Class<U> type) { return this.only(type::isInstance).map(type::cast); }
 }

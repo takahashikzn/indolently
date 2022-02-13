@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import jp.root42.indolently.Indolently;
 import jp.root42.indolently.function.ConsumerE;
 import jp.root42.indolently.function.FunctionE;
 import jp.root42.indolently.function.RunnableE;
@@ -48,12 +49,12 @@ public final class $<T>
 
     @SuppressWarnings("OptionalAssignedToNull")
     public static <T> $<T> of(final Optional<? extends T> val) {
-        return (val == null) || val.isEmpty() ? none() : new $<>(cast(val));
+        return (val == null) || val.isEmpty() ? none() : new $<>(Indolently.cast(val));
     }
 
     private static final $<?> NONE = new $<>(Optional.empty());
 
-    public static <T> $<T> none() { return cast(NONE); }
+    public static <T> $<T> none() { return Indolently.cast(NONE); }
 
     private $(final T val) { this(Optional.ofNullable(val)); }
 
@@ -88,6 +89,8 @@ public final class $<T>
 
     public boolean test(final Predicate<? super T> f) { return !this.empty() && this.when(f).present(); }
 
+    public <U> $<U> cast(final Class<U> type) { return this.when(type::isInstance).map(type::cast); }
+
     public <U> $<U> map(final Function<? super T, ? extends U> f) { return this.mapTry(f::apply); }
 
     public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
@@ -100,7 +103,7 @@ public final class $<T>
 
     public $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.or$Try(f::get); }
 
-    public $<T> or$(final $<? extends T> or) { return this.present() ? this : cast(or); }
+    public $<T> or$(final $<? extends T> or) { return this.present() ? this : Indolently.cast(or); }
 
     public Stream<T> stream() { return this.opt.stream(); }
 
@@ -147,12 +150,12 @@ public final class $<T>
     public <U, E extends Exception> $<U> fmapTry(final FunctionE<? super T, ? extends $<? extends U>, E> f) throws E {
         if (this.empty()) return none();
         final var x = f.apply(this.opt.get());
-        return (x == null) ? none() : cast(x);
+        return (x == null) ? none() : Indolently.cast(x);
     }
 
     public <E extends Exception> $<T> foldTry(final FunctionE<? super T, ? extends $<? extends T>, E> f) throws E {
         final var ret = this.fmapTry(f::apply);
-        return ret.empty() ? this : cast(ret);
+        return ret.empty() ? this : Indolently.cast(ret);
     }
 
     public <E extends Exception> $<T> or$Try(final SupplierE<? extends $<? extends T>, E> f) throws E {
@@ -185,7 +188,7 @@ public final class $<T>
         if (this == o) return true;
         if (!(o instanceof $)) return false;
 
-        return this.equals0(cast(o));
+        return this.equals0(Indolently.cast(o));
     }
 
     private boolean equals0(final $<? extends T> that) {
