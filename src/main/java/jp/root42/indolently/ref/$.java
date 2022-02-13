@@ -92,6 +92,11 @@ public final class $<T>
 
     public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
 
+    public $<T> fold(final Function<? super T, ? extends $<? extends T>> f) {
+        final var ret = this.fmapTry(f::apply);
+        return ret.empty() ? this : cast(ret);
+    }
+
     public <S> $<$2<T, S>> and$(final Supplier<? extends $<? extends S>> f) { return this.and$Try(f::get); }
 
     public <S> $<$2<T, S>> and$(final $<? extends S> and) { return this.and$(() -> and); }
