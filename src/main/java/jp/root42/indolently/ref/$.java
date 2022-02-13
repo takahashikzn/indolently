@@ -92,10 +92,7 @@ public final class $<T>
 
     public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
 
-    public $<T> fold(final Function<? super T, ? extends $<? extends T>> f) {
-        final var ret = this.fmapTry(f::apply);
-        return ret.empty() ? this : cast(ret);
-    }
+    public $<T> fold(final Function<? super T, ? extends $<? extends T>> f) { return this.foldTry(f::apply); }
 
     public <S> $<$2<T, S>> and$(final Supplier<? extends $<? extends S>> f) { return this.and$Try(f::get); }
 
@@ -151,6 +148,11 @@ public final class $<T>
         if (this.empty()) return none();
         final var x = f.apply(this.opt.get());
         return (x == null) ? none() : cast(x);
+    }
+
+    public <E extends Exception> $<T> foldTry(final FunctionE<? super T, ? extends $<? extends T>, E> f) throws E {
+        final var ret = this.fmapTry(f::apply);
+        return ret.empty() ? this : cast(ret);
     }
 
     public <E extends Exception> $<T> or$Try(final SupplierE<? extends $<? extends T>, E> f) throws E {
