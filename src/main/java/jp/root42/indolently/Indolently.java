@@ -51,6 +51,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import jp.root42.indolently.bridge.BytesInputStream;
@@ -844,7 +845,7 @@ public class Indolently {
                 try {
                     return cs.charAt(this.pos++);
                 } catch (final IndexOutOfBoundsException e) {
-                    throw (NoSuchElementException) new NoSuchElementException(e);
+                    throw new NoSuchElementException(e);
                 }
             }
         });
@@ -2859,7 +2860,7 @@ public class Indolently {
         return Regexive.regex2(empty(escape) ? regex : regex.replaceAll(escape, "\\\\"));
     }
 
-    public static RegexJDK re(final java.util.regex.Pattern regex) { return Regexive.regex1(regex); }
+    public static RegexJDK re(final Pattern regex) { return Regexive.regex1(regex); }
 
     public static Function<String, ReTest> retest() { return Indolently::retest; }
 
@@ -3195,4 +3196,24 @@ public class Indolently {
     public static String lcase(final String s) { return s == null ? null : s.toLowerCase(); }
 
     public static String ucase(final String s) { return s == null ? null : s.toUpperCase(); }
+
+    public static String substr(final String s, final int from) {
+        return s == null ? null : substr(s, from, s.length());
+    }
+
+    public static String substr(final String s, final int from, final int to) {
+        if (s == null) return null;
+
+        final int len = s.length();
+
+        int start = from;
+        int end = to;
+
+        if (start < 0) start += len;
+        if (end <= 0) end += len;
+
+        return (start < 0 || end < 0 || !between(start, narrow(0, end, len), len))
+            ? null
+            : s.substring(start, narrow(0, end, len));
+    }
 }
