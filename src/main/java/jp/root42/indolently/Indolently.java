@@ -3185,6 +3185,10 @@ public class Indolently {
 
     public static byte l2b(final long x) { return (byte) x; }
 
+    public static short i2s(final int x) { return (short) x; }
+
+    public static short l2s(final long x) { return (short) x; }
+
     public static InputStream openRead(final Path file) throws IOException {
         return new BufferedInputStream(Files.newInputStream(file), 1024 * 1024);
     }
