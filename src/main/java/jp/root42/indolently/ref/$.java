@@ -68,18 +68,24 @@ public final class $<T>
 
     public boolean present() { return !this.empty(); }
 
-    public $<T> tap(final Consumer<? super T> f) { return this.tapTry(f::accept); }
-
-    public $<T> tap(final Consumer<? super T> action, final Runnable orAction) {
-        return this.tapTry(action::accept, orAction::run);
-    }
-
     public $<T> when(final Predicate<? super T> f) {
         return this.empty() ? none() : this.opt.filter(f).map($::of).orElse(none());
     }
 
     // alias
     public $<T> filter(final Predicate<? super T> f) { return this.when(f); }
+
+    public $<T> tap(final Consumer<? super T> f) { return this.tapTry(f::accept); }
+
+    public $<T> tap(final Consumer<? super T> action, final Runnable orAction) {
+        return this.tapTry(action::accept, orAction::run);
+    }
+
+    // alias
+    public $<T> then(final Consumer<? super T> f) { return this.tap(f); }
+
+    // alias
+    public $<T> then(final Consumer<? super T> action, final Runnable orAction) { return this.tap(action, orAction); }
 
     private static final $<Boolean> T = of(true);
 
