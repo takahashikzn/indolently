@@ -14,7 +14,7 @@ This is also my study of English/GitHub/Java8-Lambda.
 
 # Requirement
 
-Java11. That is all.
+Java17. That is all.
 
 
 # Dependencies
