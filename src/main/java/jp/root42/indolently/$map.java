@@ -575,4 +575,9 @@ public interface $map<K, V>
 
         return this;
     }
+
+    // alias
+    default boolean empty() { return this.isEmpty(); }
+
+    default boolean present() { return !this.isEmpty(); }
 }
