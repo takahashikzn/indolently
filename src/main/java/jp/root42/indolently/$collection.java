@@ -310,4 +310,6 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
         f.accept(cast(this));
         return this.identity();
     }
+
+    default boolean present() { return !this.isEmpty(); }
 }
