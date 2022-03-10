@@ -100,7 +100,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      */
     @Destructive
     default SELF push(final $<? extends T> value) {
-        return empty(value) ? this.identity() : this.push(value.get());
+        return Indolently.empty(value) ? this.identity() : this.push(value.get());
     }
 
     /**
@@ -112,7 +112,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      */
     @Destructive
     default SELF pushAll(final $<? extends Iterable<? extends T>> values) {
-        return empty(values) ? this.identity() : this.pushAll(values.get());
+        return Indolently.empty(values) ? this.identity() : this.pushAll(values.get());
     }
 
     /**
@@ -310,6 +310,9 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
         f.accept(cast(this));
         return this.identity();
     }
+
+    // alias
+    default boolean empty() { return this.isEmpty(); }
 
     default boolean present() { return !this.isEmpty(); }
 }

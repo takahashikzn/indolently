@@ -168,7 +168,7 @@ public interface $list<T>
      */
     @Destructive
     default $list<T> push(final int idx, final $<? extends T> value) {
-        return empty(value) ? this : this.push(idx, value.get());
+        return Indolently.empty(value) ? this : this.push(idx, value.get());
     }
 
     /**
@@ -183,7 +183,7 @@ public interface $list<T>
      */
     @Destructive
     default $list<T> pushAll(final int idx, final $<? extends Iterable<? extends T>> values) {
-        return empty(values) ? this : this.pushAll(idx, values.get());
+        return Indolently.empty(values) ? this : this.pushAll(idx, values.get());
     }
 
     /**
