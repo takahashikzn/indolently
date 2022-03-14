@@ -580,4 +580,6 @@ public interface $map<K, V>
     default boolean empty() { return this.isEmpty(); }
 
     default boolean present() { return !this.isEmpty(); }
+
+    default $<$map<K, V>> present$() { return this.empty() ? Indolently.none() : Indolently.opt(this); }
 }

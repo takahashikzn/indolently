@@ -307,7 +307,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     String join(Function<T, ? extends CharSequence> f, String sep);
 
     default SELF tap(final Consumer<SELF> f) {
-        f.accept(cast(this));
+        f.accept(this.identity());
         return this.identity();
     }
 
@@ -315,4 +315,6 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     default boolean empty() { return this.isEmpty(); }
 
     default boolean present() { return !this.isEmpty(); }
+
+    default $<SELF> present$() { return this.empty() ? Indolently.none() : Indolently.opt(this.identity()); }
 }

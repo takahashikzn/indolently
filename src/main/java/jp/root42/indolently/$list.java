@@ -326,7 +326,7 @@ public interface $list<T>
      * @return {@code this} instance or other
      */
     default $list<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
-        return nonEmpty(this).or(() -> list(other.get()));
+        return this.present$().or(() -> list(other.get()));
     }
 
     @Override
