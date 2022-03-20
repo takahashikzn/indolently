@@ -13,7 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently;
 
-import dk.brics.automaton.RegExp;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.regex.AutomatonTest;
 import jp.root42.indolently.regex.ReTest;
@@ -25,6 +24,7 @@ import jp.root42.indolently.regex.RegexRe2;
 /**
  * @author takahashikzn
  */
+@SuppressWarnings({ "UnnecessaryFullyQualifiedName", "RegExpSimplifiable" })
 public class Regexive {
 
     // private static final boolean RE2_AVAIL = ObjFactory.isPresent("com.google.re2j.Pattern");
@@ -32,7 +32,7 @@ public class Regexive {
     private static final boolean AUTOMATON_AVAIL = ObjFactory.isPresent("dk.brics.automaton.RegExp");
 
     /** non private for subtyping. */
-    protected Regexive() {}
+    protected Regexive() { }
 
     /**
      * create pattern instance using JDK regex library.
@@ -92,17 +92,17 @@ public class Regexive {
                 final var pred = automatonTester(pattern);
 
                 if (pred != null) return pred;
-            } catch (final IllegalArgumentException ignored) {}
+            } catch (final IllegalArgumentException ignored) { }
         }
 
         return ReTest.of(regex(pattern));
     }
 
     private static final RegexJDK JDK_REGEX = regex1("(?ms).*(?:" //
-        + "[^\\\\]\\$" // unescaped '$'
+        + "[^\\\\]?\\$" // unescaped '$'
+        + "|[^\\\\]?\\^" // unescaped '^'
 
         + "|[^\\\\]\\[\\[" // unescaped '[['
-        + "|[^\\\\\\[]\\^" // unescaped '^' or negated character class '^'
         + "|[^\\\\]][\\[\\]]" // unescaped ']]' or ']['
 
         + "|\\(\\?[^:]" //
@@ -138,10 +138,11 @@ public class Regexive {
 
     private static final String DIGIT = regex1("[0-9]").pattern();
 
-    private static ReTest automatonTester(final String pattern) {
+    private static ReTest automatonTester(final String original) {
 
-        final var pt = pattern //
+        final var pt = original //
             .replaceAll("(?<!\\\\)\\(\\?:", "(") //
+            .replaceAll("(?<!\\\\)\"", "\\\"") //
             .replace("\\w", WORD) //
             .replace("\\W", not(WORD)) //
             .replace("\\d", DIGIT) //
@@ -155,13 +156,11 @@ public class Regexive {
             .replace("\\p{Digit}", "[0-9]") //
             .replace("\\p{Alpha}", "[A-Za-z]") //
             .replace("\\p{Alnum}", "[A-Za-z0-9]") //
-            .replace("#", "\\#") //
-            .replace("@", "\\@") //
             ;
 
         if (isJDKRegex(pt)) return null;
 
-        return new AutomatonTest(new RegExp(pt), pattern);
+        return new AutomatonTest(new dk.brics.automaton.RegExp(pt, dk.brics.automaton.RegExp.NONE), original);
     }
 
     private static String not(final String word) { return "[^" + word + "]"; }
