@@ -120,7 +120,43 @@ public final class Numeric {
         };
     }
 
-    public static long asLong(final String s) { return Long.parseLong(s); }
+    public static long asLong(final String s) {
+        return switch (s) {
+            case "0" -> 0;
+            case "1" -> 1;
+            case "2" -> 2;
+            case "3" -> 3;
+            case "4" -> 4;
+            case "5" -> 5;
+            case "6" -> 6;
+            case "7" -> 7;
+            case "8" -> 8;
+            case "9" -> 9;
+            case "10" -> 10;
+            case "11" -> 11;
+            case "12" -> 12;
+            case "13" -> 13;
+            case "14" -> 14;
+            case "15" -> 15;
+            case "16" -> 16;
+            case "17" -> 17;
+            case "18" -> 18;
+            case "19" -> 19;
+            case "20" -> 20;
+            case "21" -> 21;
+            case "22" -> 22;
+            case "23" -> 23;
+            case "24" -> 24;
+            case "25" -> 25;
+            case "26" -> 26;
+            case "27" -> 27;
+            case "28" -> 28;
+            case "29" -> 29;
+            case "30" -> 30;
+            case "31" -> 31;
+            default -> str2long(s);
+        };
+    }
 
     public static short asShort(final String s) { return Short.parseShort(s); }
 
