@@ -28,48 +28,96 @@ import static jp.root42.indolently.Iterative.*;
 public final class Numeric {
 
     /** non private for subtyping. */
-    protected Numeric() {}
+    protected Numeric() { }
 
-    private static final $map<String, Integer> intCache = range(0, 256).list().mapmap(x -> "" + x, it()).freeze();
+    public static int str2int(final CharSequence s) {
+        if (9 < s.length()) return Integer.parseInt(s.toString()); // avoid edge case
+
+        var minus = false;
+        var num = 0;
+
+        for (int i = 0, Z = s.length(); i < Z; i++) {
+            final var c = s.charAt(i);
+
+            if (c < '0' || '9' < c) {
+                if (i == 0) {
+                    if (c == '+') continue;
+                    if (c == '-') {
+                        minus = true;
+                        continue;
+                    }
+                }
+                throw new NumberFormatException(s.toString());
+            }
+
+            num = num * 10 + (c - '0');
+        }
+
+        return minus ? -num : num;
+    }
+
+    public static long str2long(final CharSequence s) {
+        if (18 < s.length()) return Long.parseLong(s.toString()); // avoid edge case
+
+        var minus = false;
+        var num = 0L;
+
+        for (int i = 0, Z = s.length(); i < Z; i++) {
+            final var c = s.charAt(i);
+
+            if (c < '0' || '9' < c) {
+                if (i == 0) {
+                    if (c == '+') continue;
+                    if (c == '-') {
+                        minus = true;
+                        continue;
+                    }
+                }
+                throw new NumberFormatException(s.toString());
+            }
+
+            num = num * 10 + (c - '0');
+        }
+
+        return minus ? -num : num;
+    }
 
     public static int asInt(final String s) {
-        switch (s) {
-            case "0": { return 0; }
-            case "1": { return 1; }
-            case "2": { return 2; }
-            case "3": { return 3; }
-            case "4": { return 4; }
-            case "5": { return 5; }
-            case "6": { return 6; }
-            case "7": { return 7; }
-            case "8": { return 8; }
-            case "9": { return 9; }
-            case "10": { return 10; }
-            case "11": { return 11; }
-            case "12": { return 12; }
-            case "13": { return 13; }
-            case "14": { return 14; }
-            case "15": { return 15; }
-            case "16": { return 16; }
-            case "17": { return 17; }
-            case "18": { return 18; }
-            case "19": { return 19; }
-            case "20": { return 20; }
-            case "21": { return 21; }
-            case "22": { return 22; }
-            case "23": { return 23; }
-            case "24": { return 24; }
-            case "25": { return 25; }
-            case "26": { return 26; }
-            case "27": { return 27; }
-            case "28": { return 28; }
-            case "29": { return 29; }
-            case "30": { return 30; }
-            case "31": { return 31; }
-            default:
-                final var i = intCache.get(s);
-                return (i != null) ? i : Integer.parseInt(s);
-        }
+        return switch (s) {
+            case "0" -> 0;
+            case "1" -> 1;
+            case "2" -> 2;
+            case "3" -> 3;
+            case "4" -> 4;
+            case "5" -> 5;
+            case "6" -> 6;
+            case "7" -> 7;
+            case "8" -> 8;
+            case "9" -> 9;
+            case "10" -> 10;
+            case "11" -> 11;
+            case "12" -> 12;
+            case "13" -> 13;
+            case "14" -> 14;
+            case "15" -> 15;
+            case "16" -> 16;
+            case "17" -> 17;
+            case "18" -> 18;
+            case "19" -> 19;
+            case "20" -> 20;
+            case "21" -> 21;
+            case "22" -> 22;
+            case "23" -> 23;
+            case "24" -> 24;
+            case "25" -> 25;
+            case "26" -> 26;
+            case "27" -> 27;
+            case "28" -> 28;
+            case "29" -> 29;
+            case "30" -> 30;
+            case "31" -> 31;
+            default -> str2int(s);
+        };
     }
 
     public static long asLong(final String s) { return Long.parseLong(s); }
@@ -89,12 +137,14 @@ public final class Numeric {
         catch (final IllegalArgumentException e) { return $.none(); }
     }
 
+    private static final $map<String, Integer> intCache = range(0, 256).list().mapmap(x -> "" + x, it()).freeze();
+
     public static $<Integer> parseInt(final String s) {
         final var i = intCache.get(s);
-        return (i != null) ? $.of(i) : parseX(s, Integer::parseInt);
+        return (i != null) ? $.of(i) : parseX(s, Numeric::str2int);
     }
 
-    public static $<Long> parseLong(final String s) { return parseX(s, Long::parseLong); }
+    public static $<Long> parseLong(final String s) { return parseX(s, Numeric::str2long); }
 
     public static $<Short> parseShort(final String s) { return parseX(s, Short::parseShort); }
 
