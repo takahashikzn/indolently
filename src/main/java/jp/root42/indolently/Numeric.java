@@ -38,10 +38,9 @@ public final class Numeric {
 
         for (int i = 0, Z = s.length(); i < Z; i++) {
             final var c = s.charAt(i);
-            final var isHalfDigit = '0' <= c && c <= '9';
-            final var isFullDigit = '０' <= c && c <= '９';
+            final var isHalfDigit = isHalfDigit(c);
 
-            if (!isHalfDigit && !isFullDigit) {
+            if (!isHalfDigit && !isFullDigit(c)) {
                 if (i == 0) {
                     if (c == '+') continue;
                     if (c == '-') {
@@ -58,6 +57,10 @@ public final class Numeric {
         return minus ? -num : num;
     }
 
+    private static boolean isFullDigit(final char c) { return '０' <= c && c <= '９'; }
+
+    private static boolean isHalfDigit(final char c) { return '0' <= c && c <= '9'; }
+
     public static long str2long(final CharSequence s) {
         if (18 < s.length()) return Long.parseLong(s.toString()); // avoid edge case
 
@@ -66,10 +69,9 @@ public final class Numeric {
 
         for (int i = 0, Z = s.length(); i < Z; i++) {
             final var c = s.charAt(i);
-            final var isHalfDigit = '0' <= c && c <= '9';
-            final var isFullDigit = '０' <= c && c <= '９';
+            final var isHalfDigit = isHalfDigit(c);
 
-            if (!isHalfDigit && !isFullDigit) {
+            if (!isHalfDigit && !isFullDigit(c)) {
                 if (i == 0) {
                     if (c == '+') continue;
                     if (c == '-') {
