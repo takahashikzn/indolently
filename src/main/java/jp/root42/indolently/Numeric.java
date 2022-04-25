@@ -38,8 +38,10 @@ public final class Numeric {
 
         for (int i = 0, Z = s.length(); i < Z; i++) {
             final var c = s.charAt(i);
+            final var isHalfDigit = '0' <= c && c <= '9';
+            final var isFullDigit = '０' <= c && c <= '９';
 
-            if (c < '0' || '9' < c) {
+            if (!isHalfDigit && !isFullDigit) {
                 if (i == 0) {
                     if (c == '+') continue;
                     if (c == '-') {
@@ -50,7 +52,7 @@ public final class Numeric {
                 throw new NumberFormatException(s.toString());
             }
 
-            num = num * 10 + (c - '0');
+            num = num * 10 + (isHalfDigit ? (c - '0') : (c - '０'));
         }
 
         return minus ? -num : num;
@@ -64,8 +66,10 @@ public final class Numeric {
 
         for (int i = 0, Z = s.length(); i < Z; i++) {
             final var c = s.charAt(i);
+            final var isHalfDigit = '0' <= c && c <= '9';
+            final var isFullDigit = '０' <= c && c <= '９';
 
-            if (c < '0' || '9' < c) {
+            if (!isHalfDigit && !isFullDigit) {
                 if (i == 0) {
                     if (c == '+') continue;
                     if (c == '-') {
@@ -76,7 +80,7 @@ public final class Numeric {
                 throw new NumberFormatException(s.toString());
             }
 
-            num = num * 10 + (c - '0');
+            num = num * 10 + (isHalfDigit ? (c - '0') : (c - '０'));
         }
 
         return minus ? -num : num;
