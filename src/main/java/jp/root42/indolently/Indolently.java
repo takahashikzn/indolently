@@ -3220,4 +3220,20 @@ public class Indolently {
             ? null
             : s.substring(start, narrow(0, end, len));
     }
+
+    public static $<byte[]> readClassResource(final Class<?> cls, final String suffix) throws IOException {
+
+        final var path = '/' + cls.getName().replace('.', '/') + suffix;
+        final var in = cls.getResourceAsStream(path);
+        if (in == null) return none();
+        else try (in) { return opt(in.readAllBytes()); }
+    }
+
+    public static $<byte[]> readPkgResource(final Package pkg, final String name) throws IOException {
+
+        final var path = '/' + pkg.getName().replace('.', '/') + '/' + name;
+        final var in = Indolently.class.getResourceAsStream(path);
+        if (in == null) return none();
+        else try (in) { return opt(in.readAllBytes()); }
+    }
 }
