@@ -13,10 +13,13 @@
 // limitations under the License.
 package jp.root42.indolently.conc;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +40,40 @@ public class Promissory {
     /** non private for subtyping. */
     protected Promissory() { }
 
-    private static Executor executor() { return ForkJoinPool.commonPool(); }
+    private static boolean loom;
+
+    private static Executor executor;
+
+    static {
+        block:
+        {
+            try {
+                executor = (Executor) Executors.class.getDeclaredMethod("newVirtualThreadPerTaskExecutor")
+                    .invoke(null); // loom
+                loom = true;
+                break block;
+            } //
+            catch (final NoSuchMethodException ignored) { } //
+            catch (final InvocationTargetException | IllegalAccessException e) {
+
+                if (!(e.getCause() instanceof UnsupportedOperationException cause && cause.getMessage()
+                    .contains("Preview Features not enabled, need to run with --enable-preview"))) {
+
+                    e.printStackTrace();
+                    System.err.println("loom not available");
+                }
+            }
+
+            loom = false;
+            executor = ForkJoinPool.commonPool();
+        }
+    }
+
+    public static boolean loomAvailable() { return loom; }
+
+    public static Executor executor() { return executor; }
+
+    public static void executor(final Executor executor) { Promissory.executor = Objects.requireNonNull(executor); }
 
     public static Promise<Void> async(final RunnableE<? super Exception> run) { return async(run, executor()); }
 

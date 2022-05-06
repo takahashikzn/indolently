@@ -83,7 +83,7 @@ public interface Promise<T> {
     static <T> Promise<T> reject(final Exception e) { return of(CompletableFuture.failedFuture(requireNonNull(e))); }
 
     static <T> Promise<List<T>> all(final Iterable<? extends Promise<? extends T>> promises) {
-        return of(CompletableFuture.supplyAsync(() -> list(promises).map(x -> x.resolve())));
+        return of(CompletableFuture.supplyAsync(() -> list(promises).map(x -> x.resolve()), Promissory.executor()));
     }
 
     @SuppressWarnings("ConstantConditions")
