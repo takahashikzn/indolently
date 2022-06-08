@@ -259,4 +259,32 @@ public final class Numeric {
             ? cast(x)
             : (x instanceof Float || x instanceof Double) ? decimal(x.doubleValue()) : decimal(x.longValue());
     }
+
+    public static double dsum(final Iterable<Double> vals) {
+        var d = 0d;
+        for (final var x: vals)
+            d += x;
+        return d;
+    }
+
+    public static double fsum(final Iterable<Float> vals) {
+        var d = 0f;
+        for (final var x: vals)
+            d += x;
+        return d;
+    }
+
+    public static int isum(final Iterable<Integer> vals) {
+        var d = 0;
+        for (final var x: vals)
+            d += x;
+        return d;
+    }
+
+    public static long lsum(final Iterable<Long> vals) {
+        var d = 0L;
+        for (final var x: vals)
+            d += x;
+        return d;
+    }
 }
