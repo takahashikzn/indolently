@@ -260,31 +260,31 @@ public final class Numeric {
             : (x instanceof Float || x instanceof Double) ? decimal(x.doubleValue()) : decimal(x.longValue());
     }
 
-    public static double dsum(final Iterable<Double> vals) {
-        var d = 0d;
+    public static double dsum(final Iterable<? extends Number> vals) {
+        var n = 0d;
         for (final var x: vals)
-            d += x;
-        return d;
+            n += x.doubleValue();
+        return n;
     }
 
-    public static double fsum(final Iterable<Float> vals) {
-        var d = 0f;
+    public static float fsum(final Iterable<? extends Number> vals) {
+        var n = 0f;
         for (final var x: vals)
-            d += x;
-        return d;
+            n += x.floatValue();
+        return n;
     }
 
-    public static int isum(final Iterable<Integer> vals) {
-        var d = 0;
+    public static int isum(final Iterable<? extends Number> vals) {
+        var n = 0;
         for (final var x: vals)
-            d += x;
-        return d;
+            n += x.intValue();
+        return n;
     }
 
-    public static long lsum(final Iterable<Long> vals) {
-        var d = 0L;
+    public static long lsum(final Iterable<? extends Number> vals) {
+        var n = 0L;
         for (final var x: vals)
-            d += x;
-        return d;
+            n += x.longValue();
+        return n;
     }
 }
