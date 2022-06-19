@@ -50,7 +50,7 @@ public interface $iter<T>
     default Iterator<T> iterator() { return this; }
 
     @Override
-    default boolean some(final Predicate<? super T> f) {
+    default boolean any(final Predicate<? super T> f) {
 
         for (final T val: this) {
             if (f.test(val)) return true;

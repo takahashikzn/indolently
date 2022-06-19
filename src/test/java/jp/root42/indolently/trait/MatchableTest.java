@@ -30,30 +30,30 @@ import static org.junit.Assert.*;
 public class MatchableTest {
 
     /**
-     * Test of {@link Matchable#some(Predicate)}
+     * Test of {@link Matchable#any(Predicate)}
      */
     @Test
     public void some() {
 
-        assertTrue(map("123", 1, "456", 2).keys().some(x -> x.matches("\\d+")));
-        assertFalse(map("123", 1, "456", 2).keys().some(x -> x.matches("[A-Za-z]+")));
+        assertTrue(map("123", 1, "456", 2).keys().any(x -> x.matches("\\d+")));
+        assertFalse(map("123", 1, "456", 2).keys().any(x -> x.matches("[A-Za-z]+")));
 
-        assertFalse(map().keys().some(vrai()));
-        assertFalse(map().keys().some(faux()));
+        assertFalse(map().keys().any(vrai()));
+        assertFalse(map().keys().any(faux()));
     }
 
     /**
-     * Test of {@link Matchable#every(Predicate)}
+     * Test of {@link Matchable#all(Predicate)}
      */
     @Test
     public void every() {
 
-        assertTrue(map("123", 1, "456", 2).keys().every(x -> x.matches("\\d+")));
-        assertFalse(map("123", 1, "456", 2).keys().every(x -> x.matches("[A-Za-z]+")));
-        assertFalse(map("123", 1, "abc", 2).keys().every(x -> x.matches("[A-Za-z]+")));
+        assertTrue(map("123", 1, "456", 2).keys().all(x -> x.matches("\\d+")));
+        assertFalse(map("123", 1, "456", 2).keys().all(x -> x.matches("[A-Za-z]+")));
+        assertFalse(map("123", 1, "abc", 2).keys().all(x -> x.matches("[A-Za-z]+")));
 
-        assertTrue(map().keys().every(vrai()));
-        assertTrue(map().keys().every(faux()));
+        assertTrue(map().keys().all(vrai()));
+        assertTrue(map().keys().all(faux()));
     }
 
     /**

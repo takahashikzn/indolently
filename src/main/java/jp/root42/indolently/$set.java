@@ -205,5 +205,5 @@ public interface $set<T>
         return Indolently.join(this.map(f), sep);
     }
 
-    default <U extends T> $set<U> only(final Class<U> type) { return this.only(type::isInstance).map(type::cast); }
+    default <U extends T> $set<U> only(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
 }

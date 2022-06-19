@@ -68,4 +68,11 @@ final class EclipseObjFactory
     public <V> List<V> newList() {
         return FastList.newList();
     }
+
+    @Override
+    public <K, V> Map<K, V> optimize(final Map<K, V> map) {
+        final var ret = UnifiedMap.newMap(map);
+        ret.trimToSize();
+        return ret;
+    }
 }

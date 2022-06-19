@@ -80,4 +80,7 @@ final class FastutilObjFactory
     public <V> List<V> newList() {
         return new ObjectArrayList<>();
     }
+
+    @Override
+    public <K, V> Map<K, V> optimize(final Map<K, V> map) { return new Object2ObjectOpenHashMap<>(map); }
 }

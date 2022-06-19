@@ -79,4 +79,7 @@ final class KolobokeObjFactory
     public <V> Set<V> newSet() {
         return new KolobokeHashSet<>();
     }
+
+    @Override
+    public <K, V> Map<K, V> optimize(final Map<K, V> map) { return HashObjObjMaps.newMutableMap(map); }
 }

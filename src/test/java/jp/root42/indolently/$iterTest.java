@@ -24,7 +24,7 @@ import static jp.root42.indolently.Iterative.*;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 
 /**

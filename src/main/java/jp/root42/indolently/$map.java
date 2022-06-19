@@ -79,6 +79,8 @@ public interface $map<K, V>
     @Override
     default $map<K, V> freeze() { return Indolently.freeze(this); }
 
+    default Map<K, V> optimize() { return ObjFactory.getInstance().optimize(this); }
+
     /**
      * put key/value pair then return this instance.
      *
@@ -166,7 +168,7 @@ public interface $map<K, V>
      */
     @Destructive
     default $map<K, V> delete(final BiPredicate<? super K, ? super V> f) {
-        return this.delete(this.keys().filter(x -> f.test(x, this.get(x))));
+        return this.delete(this.keys().take(x -> f.test(x, this.get(x))));
     }
 
     /**
@@ -306,7 +308,7 @@ public interface $map<K, V>
     }
 
     @Override
-    default boolean some(final Predicate<? super V> f) { return this.some((key, val) -> f.test(val)); }
+    default boolean any(final Predicate<? super V> f) { return this.some((key, val) -> f.test(val)); }
 
     /**
      * Test whether at least one key/value pair satisfy condition.
@@ -353,18 +355,17 @@ public interface $map<K, V>
 
         return this //
             .entries() //
-            .filter(e -> f.test(e.key, e.val)) //
+            .take(e -> f.test(e.key, e.val)) //
             .reduce( //
                 Indolently.map(), //
                 (map, e) -> map.push(e.key, e.val));
     }
 
-    @Override
-    default $map<K, V> only(final Predicate<? super V> f) { return this.filter(f); }
+    default $map<K, V> take(final BiPredicate<? super K, ? super V> f) { return this.filter(f); }
 
-    default $map<K, V> only(final BiPredicate<? super K, ? super V> f) { return this.filter(f); }
+    default $map<K, V> drop(final BiPredicate<? super K, ? super V> f) { return this.take(f.negate()); }
 
-    default <U extends V> $map<K, U> only(final Class<U> type) { return this.only(type::isInstance).map(type::cast); }
+    default <U extends V> $map<K, U> take(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
 
     /**
      * Map operation: map value to another type value.

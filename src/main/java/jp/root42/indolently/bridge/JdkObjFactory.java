@@ -39,37 +39,26 @@ class JdkObjFactory
     private static final int INITIAL_CAPACITY = 32;
 
     @Override
-    public <K, V> SortedMap<K, V> newSortedMap(final Comparator<? super K> comp) {
-        return new TreeMap<>(comp);
-    }
+    public <K, V> SortedMap<K, V> newSortedMap(final Comparator<? super K> comp) { return new TreeMap<>(comp); }
 
     @Override
-    public <V> SortedSet<V> newSortedSet(final Comparator<? super V> comp) {
-        return new TreeSet<>(comp);
-    }
+    public <V> SortedSet<V> newSortedSet(final Comparator<? super V> comp) { return new TreeSet<>(comp); }
 
     @Override
-    public <K, V> Map<K, V> newFifoMap() {
-        return new LinkedHashMap<>();
-    }
+    public <K, V> Map<K, V> newFifoMap() { return new LinkedHashMap<>(); }
 
     @Override
-    public <V> Set<V> newFifoSet() {
-        return new LinkedHashSet<>();
-    }
+    public <V> Set<V> newFifoSet() { return new LinkedHashSet<>(); }
 
     @Override
-    public <K, V> Map<K, V> newMap() {
-        return new HashMap<>(INITIAL_CAPACITY);
-    }
+    public <K, V> Map<K, V> newMap() { return new HashMap<>(INITIAL_CAPACITY); }
 
     @Override
-    public <V> Set<V> newSet() {
-        return new HashSet<>(INITIAL_CAPACITY);
-    }
+    public <V> Set<V> newSet() { return new HashSet<>(INITIAL_CAPACITY); }
 
     @Override
-    public <V> List<V> newList() {
-        return new ArrayList<>(INITIAL_CAPACITY);
-    }
+    public <V> List<V> newList() { return new ArrayList<>(INITIAL_CAPACITY); }
+
+    @Override
+    public <K, V> Map<K, V> optimize(final Map<K, V> map) { return new HashMap<>(map); }
 }

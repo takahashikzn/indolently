@@ -44,11 +44,11 @@ public interface $stream<T>
     default $stream<T> each(final Consumer<? super T> f) { return Indolently.$(this.peek(f)); }
 
     @Override
-    default boolean some(final Predicate<? super T> f) { return this.anyMatch(f); }
+    default boolean any(final Predicate<? super T> f) { return this.anyMatch(f); }
 
     // optimization
     @Override
-    default boolean every(final Predicate<? super T> f) { return this.allMatch(f); }
+    default boolean all(final Predicate<? super T> f) { return this.allMatch(f); }
 
     // optimization
     @Override

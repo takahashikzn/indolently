@@ -97,7 +97,7 @@ class $list_impl<T>
 
     // for optimization
     @Override
-    public boolean some(final Predicate<? super T> f) {
+    public boolean any(final Predicate<? super T> f) {
 
         //noinspection ForLoopReplaceableByForEach
         for (int i = 0, Z = this.size(); i < Z; i++) {

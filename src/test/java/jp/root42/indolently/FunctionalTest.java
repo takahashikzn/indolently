@@ -34,7 +34,7 @@ import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 
 /**
@@ -52,15 +52,15 @@ public class FunctionalTest {
     public void testListComprehension() {
 
         assertThat(
-            range(2, 10).filter(z -> func2((final BiFunction<Integer, Integer, Boolean> self) -> {}, (self, x, y) -> {
-                if (y <= 1) {
-                    return true;
-                } else if ((x % y) == 0) {
-                    return false;
-                } else {
-                    return self.apply(x, y - 1);
-                }
-            }).apply(z, z - 1)) //
+            range(2, 10).filter(z -> func2((final BiFunction<Integer, Integer, Boolean> self) -> { }, (self, x, y) -> {
+                    if (y <= 1) {
+                        return true;
+                    } else if ((x % y) == 0) {
+                        return false;
+                    } else {
+                        return self.apply(x, y - 1);
+                    }
+                }).apply(z, z - 1)) //
                 .map(x -> "" + x) //
                 .list()) //
             .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
@@ -117,7 +117,7 @@ public class FunctionalTest {
     public void testFunction2() {
 
         assertThat(func( //
-            (final Function<$3<Integer, Integer, Integer>, Integer> self) -> {}, // function decl
+            (final Function<$3<Integer, Integer, Integer>, Integer> self) -> { }, // function decl
             (self, v) -> { // function body
 
                 final int x = v._1;
@@ -140,7 +140,7 @@ public class FunctionalTest {
     @Test
     public void testFunction3() {
 
-        final SFunc<$3<Integer, Integer, Integer>, Integer> tarai = func(self -> {}, (self, v) -> {
+        final SFunc<$3<Integer, Integer, Integer>, Integer> tarai = func(self -> { }, (self, v) -> {
 
             final int x = v._1;
             final int y = v._2;
@@ -166,7 +166,7 @@ public class FunctionalTest {
 
         assertThat(function( //
             // function decl
-            (final Function3<Integer, Integer, Integer, Integer> self) -> {},
+            (final Function3<Integer, Integer, Integer, Integer> self) -> { },
 
             // function body
             (self, x, y, z) -> when(() -> (y < x)) //
@@ -184,7 +184,7 @@ public class FunctionalTest {
 
         final SFunc3<Integer, Integer, Integer, Integer> tarai = func3(
             // function initializer
-            self -> {},
+            self -> { },
 
             // function body
             (self, x, y, z) -> when(() -> (y < x)) //

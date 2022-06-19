@@ -30,10 +30,10 @@ public interface Filterable<T, SELF extends Filterable<T, SELF>> {
      * @param f condition
      * @return new filtered collection
      */
+    @Deprecated
     SELF filter(Predicate<? super T> f);
 
-    /**
-     * An alias of {@link #filter(Predicate)}
-     */
-    default SELF only(final Predicate<? super T> f) { return this.filter(f); }
+    default SELF take(final Predicate<? super T> f) { return this.filter(f); }
+
+    default SELF drop(final Predicate<? super T> f) { return this.take(f.negate()); }
 }

@@ -28,7 +28,11 @@ public interface Matchable<T> {
      * @param f condition
      * @return test result
      */
-    boolean some(Predicate<? super T> f);
+    boolean any(Predicate<? super T> f);
+
+    // alias
+    @Deprecated
+    default boolean some(final Predicate<? super T> f) { return this.any(f); }
 
     /**
      * Test whether all values satisfy condition.
@@ -36,9 +40,11 @@ public interface Matchable<T> {
      * @param f condition
      * @return test result
      */
-    default boolean every(final Predicate<? super T> f) {
-        return this.none(f.negate());
-    }
+    default boolean all(final Predicate<? super T> f) { return this.none(f.negate()); }
+
+    // alias
+    @Deprecated
+    default boolean every(final Predicate<? super T> f) { return this.all(f); }
 
     /**
      * Test whether no value satisfy condition.
@@ -46,7 +52,5 @@ public interface Matchable<T> {
      * @param f condition
      * @return test result
      */
-    default boolean none(final Predicate<? super T> f) {
-        return !this.some(f);
-    }
+    default boolean none(final Predicate<? super T> f) { return !this.any(f); }
 }

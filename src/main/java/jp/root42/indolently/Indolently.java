@@ -1059,7 +1059,7 @@ public class Indolently {
     public static <T> $list<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
 
         return $(elems).reduce(list(), (ret, x) -> {
-            if (ret.isEmpty() || !ret.some(y -> f.test(x, y))) {
+            if (ret.isEmpty() || !ret.any(y -> f.test(x, y))) {
                 ret.add(x);
             }
 
@@ -1118,7 +1118,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Iterable<?>... i) {
-        return empty((Object[]) i) || list(i).every(Indolently::empty);
+        return empty((Object[]) i) || list(i).all(Indolently::empty);
     }
 
     /**
@@ -1138,7 +1138,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Map<?, ?>... map) {
-        return empty((Object[]) map) || list(map).every(Indolently::empty);
+        return empty((Object[]) map) || list(map).all(Indolently::empty);
     }
 
     /**
@@ -1155,7 +1155,7 @@ public class Indolently {
      * @param opt test target
      * @return test result
      */
-    public static boolean empty(final $<?>... opt) { return empty((Object[]) opt) || list(opt).every(x -> empty(x)); }
+    public static boolean empty(final $<?>... opt) { return empty((Object[]) opt) || list(opt).all(x -> empty(x)); }
 
     /**
      * test whether the argument is present or not.
@@ -1172,7 +1172,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final Optional<?>... opt) {
-        return empty((Object[]) opt) || list(opt).every(x -> empty(x));
+        return empty((Object[]) opt) || list(opt).all(x -> empty(x));
     }
 
     /**
@@ -1192,7 +1192,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean empty(final CharSequence... cs) {
-        return empty((Object[]) cs) || list(cs).every(x -> empty(x));
+        return empty((Object[]) cs) || list(cs).all(x -> empty(x));
     }
 
     public static boolean present(final $<?> opt) {
@@ -1200,11 +1200,11 @@ public class Indolently {
     }
 
     public static boolean presentAny(final $<?> x, final $<?> y, final $<?>... rest) {
-        return present(x) || present(y) || list(rest).some(o -> present(o));
+        return present(x) || present(y) || list(rest).any(o -> present(o));
     }
 
     public static boolean presentAll(final $<?> x, final $<?> y, final $<?>... rest) {
-        return present(x) && present(y) && list(rest).every(o -> present(o));
+        return present(x) && present(y) && list(rest).all(o -> present(o));
     }
 
     public static boolean presentNone(final $<?> x, final $<?> y, final $<?>... rest) {
@@ -1245,7 +1245,7 @@ public class Indolently {
      * @return test result
      */
     public static boolean blank(final CharSequence... cs) {
-        return empty((Object[]) cs) || list(cs).every(Indolently::blank);
+        return empty((Object[]) cs) || list(cs).all(Indolently::blank);
     }
 
     public static boolean empty(final Object[] ary) { return (ary == null) || (ary.length == 0); }
@@ -1779,11 +1779,11 @@ public class Indolently {
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T extends Comparable<T>> boolean equal(final T l, final T r, final T... rest) {
-        return list(r).pushAll(list(rest)).every(x -> equal(l, x));
+        return list(r).pushAll(list(rest)).all(x -> equal(l, x));
     }
 
     public static boolean equal(final Object l, final Object r, final Object... rest) {
-        return list(r).pushAll(list(rest)).every(x -> equal(l, x));
+        return list(r).pushAll(list(rest)).all(x -> equal(l, x));
     }
 
     public static <T extends Comparable<T>> boolean equal(final T l, final T r) {
@@ -1887,7 +1887,7 @@ public class Indolently {
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> boolean equiv(final T l, final T r, final T... rest) {
-        return list(r).pushAll(list(rest)).every(x -> equiv(l, x));
+        return list(r).pushAll(list(rest)).all(x -> equiv(l, x));
     }
 
     public static <T extends Comparable<T>> T max(final T l, final T r) {
@@ -2680,7 +2680,7 @@ public class Indolently {
             final $list<BooleanSupplier> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-            return preds.every(BooleanSupplier::getAsBoolean);
+            return preds.all(BooleanSupplier::getAsBoolean);
         };
     }
 
@@ -2702,7 +2702,7 @@ public class Indolently {
             final $list<BooleanSupplier> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-            return preds.some(BooleanSupplier::getAsBoolean);
+            return preds.any(BooleanSupplier::getAsBoolean);
         };
     }
 
@@ -2727,7 +2727,7 @@ public class Indolently {
             final $list<Predicate<? super T>> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-            return preds.every(z -> z.test(y));
+            return preds.all(z -> z.test(y));
         };
     }
 
@@ -2740,7 +2740,7 @@ public class Indolently {
             final $list<Predicate<? super T>> preds =
                 cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
 
-            return preds.some(z -> z.test(y));
+            return preds.any(z -> z.test(y));
         };
     }
 

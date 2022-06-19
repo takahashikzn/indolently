@@ -199,7 +199,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     }
 
     @Override
-    default boolean some(final Predicate<? super T> f) {
+    default boolean any(final Predicate<? super T> f) {
         for (final var x: this)
             if (f.test(x)) return true;
 
@@ -212,7 +212,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @param f condition
      * @return the number of elements which satisfying condition
      */
-    default int count(final Predicate<? super T> f) { return this.filter(f).size(); }
+    default int count(final Predicate<? super T> f) { return this.take(f).size(); }
 
     /**
      * Filter operation: returns values which satisfying condition.
@@ -223,7 +223,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      */
     default SELF filter(final BiPredicate<Integer, ? super T> f) {
         final var i = ref(0);
-        return this.filter(x -> f.test(i.$++, x));
+        return this.take(x -> f.test(i.$++, x));
     }
 
     @Override

@@ -38,17 +38,17 @@ public abstract class ObjFactory {
         try {
             instance = new EclipseObjFactory();
             return;
-        } catch (final UnsupportedOperationException ignored) {}
+        } catch (final UnsupportedOperationException ignored) { }
 
         try {
             instance = new FastutilObjFactory();
             return;
-        } catch (final UnsupportedOperationException ignored) {}
+        } catch (final UnsupportedOperationException ignored) { }
 
         try {
             instance = new KolobokeObjFactory();
             return;
-        } catch (final UnsupportedOperationException ignored) {}
+        } catch (final UnsupportedOperationException ignored) { }
 
         instance = new JdkObjFactory();
     }
@@ -148,4 +148,6 @@ public abstract class ObjFactory {
      * @return new list instance
      */
     public abstract <V> List<V> newList();
+
+    public abstract <K, V> Map<K, V> optimize(Map<K, V> map);
 }
