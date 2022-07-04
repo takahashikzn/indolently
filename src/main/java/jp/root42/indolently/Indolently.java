@@ -116,9 +116,7 @@ public class Indolently {
      * @return casted value
      */
     @SuppressWarnings("unchecked")
-    public static <T> T cast(final Object o) {
-        return (T) o;
-    }
+    public static <T> T cast(final Object o) { return (T) o; }
 
     public static <IN, OUT> Function<IN, $<OUT>> castTo(final Class<OUT> type) {
         return x -> opt(x).when(type::isInstance).map(type::cast);
@@ -134,9 +132,7 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static int unbox(final Integer x) {
-        return (x == null) ? 0 : x;
-    }
+    public static int unbox(final Integer x) { return (x == null) ? 0 : x; }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -144,9 +140,7 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static long unbox(final Long x) {
-        return (x == null) ? 0 : x;
-    }
+    public static long unbox(final Long x) { return (x == null) ? 0 : x; }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -154,9 +148,7 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static short unbox(final Short x) {
-        return (x == null) ? 0 : x;
-    }
+    public static short unbox(final Short x) { return (x == null) ? 0 : x; }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -164,9 +156,7 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static byte unbox(final Byte x) {
-        return (x == null) ? 0 : x;
-    }
+    public static byte unbox(final Byte x) { return (x == null) ? 0 : x; }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -174,9 +164,7 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static float unbox(final Float x) {
-        return (x == null) ? 0 : x;
-    }
+    public static float unbox(final Float x) { return (x == null) ? 0 : x; }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -184,9 +172,7 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static double unbox(final Double x) {
-        return (x == null) ? 0 : x;
-    }
+    public static double unbox(final Double x) { return (x == null) ? 0 : x; }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -194,9 +180,7 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static char unbox(final Character x) {
-        return (x == null) ? 0 : x;
-    }
+    public static char unbox(final Character x) { return (x == null) ? 0 : x; }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -204,47 +188,27 @@ public class Indolently {
      * @param x wrapper value
      * @return primitive value
      */
-    public static boolean unbox(final Boolean x) {
-        return (x != null) && x;
-    }
+    public static boolean unbox(final Boolean x) { return (x != null) && x; }
 
-    public static <T> T fatal() {
-        throw new AssertionError();
-    }
+    public static <T> T fatal() { throw new AssertionError(); }
 
-    public static <T> T fatal(final Object msg) {
-        throw new AssertionError(msg);
-    }
+    public static <T> T fatal(final Object msg) { throw new AssertionError(msg); }
 
-    public static <T> T TODO() {
-        throw new UnsupportedOperationException();
-    }
+    public static <T> T TODO() { throw new UnsupportedOperationException(); }
 
-    public static <T> T TODO(final Object msg) {
-        throw new UnsupportedOperationException();
-    }
+    public static <T> T TODO(final Object msg) { throw new UnsupportedOperationException(); }
 
-    public static <T> T FIXME() {
-        throw new UnsupportedOperationException();
-    }
+    public static <T> T FIXME() { throw new UnsupportedOperationException(); }
 
-    public static <T> T FIXME(final Object msg) {
-        throw new UnsupportedOperationException();
-    }
+    public static <T> T FIXME(final Object msg) { throw new UnsupportedOperationException(); }
 
-    public static <T> T UNSUPPORTED() {
-        throw new UnsupportedOperationException();
-    }
+    public static <T> T UNSUPPORTED() { throw new UnsupportedOperationException(); }
 
-    public static <T> T UNSUPPORTED(final Object msg) {
-        throw new UnsupportedOperationException();
-    }
+    public static <T> T UNSUPPORTED(final Object msg) { throw new UnsupportedOperationException(); }
 
     public static void ASSERT(final boolean flag) { if (!flag) throw new AssertionError(); }
 
-    public static void ASSERT(final boolean flag, final Object msg) {
-        if (!flag) throw new AssertionError("" + msg);
-    }
+    public static void ASSERT(final boolean flag, final Object msg) { if (!flag) throw new AssertionError("" + msg); }
 
     public static void ASSERT(final boolean flag, final Supplier<?> msg) {
         if (!flag) throw new AssertionError("" + msg.get());
@@ -266,15 +230,14 @@ public class Indolently {
     public static boolean ASSERTIVE() { return assertive; }
 
     /**
-     * An alias of {@link #optionalEmpty(Map)}.
+     * {@link Optional} representation of collection.
+     * Equivalent to {@code empty(col) ? Optional.empty() : Optional.of(col)}.
      *
      * @param <T> type of value
      * @param value collection value
      * @return Optional representation of collection
      */
-    public static <T extends Map<?, ?>> $<T> nonEmpty(final T value) {
-        return optionalEmpty(value);
-    }
+    public static <T extends Map<?, ?>> $<T> nonEmpty(final T value) { return empty(value) ? $.none() : $.of(value); }
 
     /**
      * {@link Optional} representation of collection.
@@ -283,46 +246,8 @@ public class Indolently {
      * @param <T> type of value
      * @param value collection value
      * @return Optional representation of collection
-     * @see #empty(Map)
      */
-    public static <T extends Map<?, ?>> $<T> optionalEmpty(final T value) {
-        return empty(value) ? $.none() : $.of(value);
-    }
-
-    /**
-     * An alias of {@link #optionalEmpty(Iterable)}.
-     *
-     * @param <T> type of value
-     * @param value collection value
-     * @return Optional representation of collection
-     */
-    public static <T extends Iterable<?>> $<T> nonEmpty(final T value) {
-        return optionalEmpty(value);
-    }
-
-    /**
-     * {@link Optional} representation of collection.
-     * Equivalent to {@code empty(col) ? Optional.empty() : Optional.of(col)}.
-     *
-     * @param <T> type of value
-     * @param value collection value
-     * @return Optional representation of collection
-     * @see #empty(Iterable)
-     */
-    public static <T extends Iterable<?>> $<T> optionalEmpty(final T value) {
-        return empty(value) ? $.none() : $.of(value);
-    }
-
-    /**
-     * An alias of {@link #optionalEmpty(CharSequence)}.
-     *
-     * @param <T> type of value
-     * @param value string value
-     * @return Optional representation of string
-     */
-    public static <T extends CharSequence> $<T> nonEmpty(final T value) {
-        return optionalEmpty(value);
-    }
+    public static <T extends Iterable<?>> $<T> nonEmpty(final T value) { return empty(value) ? $.none() : $.of(value); }
 
     /**
      * {@link Optional} representation of string.
@@ -331,21 +256,9 @@ public class Indolently {
      * @param <T> type of value
      * @param value string value
      * @return Optional representation of string
-     * @see #empty(CharSequence)
      */
-    public static <T extends CharSequence> $<T> optionalEmpty(final T value) {
+    public static <T extends CharSequence> $<T> nonEmpty(final T value) {
         return empty(value) ? $.none() : $.of(value);
-    }
-
-    /**
-     * An alias of {@link #optionalBlank(CharSequence)}.
-     *
-     * @param <T> type of value
-     * @param value string value
-     * @return Optional representation of string
-     */
-    public static <T extends CharSequence> $<T> nonBlank(final T value) {
-        return optionalBlank(value);
     }
 
     /**
@@ -355,9 +268,8 @@ public class Indolently {
      * @param <T> type of value
      * @param value string value
      * @return Optional representation of string
-     * @see #blank(CharSequence)
      */
-    public static <T extends CharSequence> $<T> optionalBlank(final T value) {
+    public static <T extends CharSequence> $<T> nonBlank(final T value) {
         return blank(value) ? $.none() : $.of(value);
     }
 
@@ -675,9 +587,7 @@ public class Indolently {
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression", "unchecked" })
     public static <T> T[] array(final T first, final T... rest) {
-        if (first == null) {
-            throw new IllegalArgumentException("can't infer empty array type");
-        }
+        if (first == null) throw new IllegalArgumentException("can't infer empty array type");
 
         final int len = 1 + ((rest == null) ? 0 : rest.length);
 
@@ -700,9 +610,7 @@ public class Indolently {
     @SuppressWarnings({ "varargs", "RedundantSuppression", "unchecked" })
     public static <T, V extends T> T[] array(final Class<T> type, final V first, final V... rest) {
 
-        if (first == null) {
-            return cast(Array.newInstance(type, 0));
-        }
+        if (first == null) return cast(Array.newInstance(type, 0));
 
         final int len = 1 + ((rest == null) ? 0 : rest.length);
 
@@ -719,9 +627,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> T[] arrayOf(final T... elems) {
-        return elems;
-    }
+    public static <T> T[] arrayOf(final T... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new Object[] { ... }}.
@@ -729,9 +635,7 @@ public class Indolently {
      * @param elems elements of array
      * @return {@link Object} array
      */
-    public static Object[] oarray(final Object... elems) {
-        return elems;
-    }
+    public static Object[] oarray(final Object... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new char[] { ... }}.
@@ -739,9 +643,7 @@ public class Indolently {
      * @param elems elements of array
      * @return char array
      */
-    public static char[] parray(final char... elems) {
-        return elems;
-    }
+    public static char[] parray(final char... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new int[] { ... }}.
@@ -749,9 +651,7 @@ public class Indolently {
      * @param elems elements of array
      * @return int array
      */
-    public static int[] parray(final int... elems) {
-        return elems;
-    }
+    public static int[] parray(final int... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new long[] { ... }}.
@@ -759,9 +659,7 @@ public class Indolently {
      * @param elems elements of array
      * @return long array
      */
-    public static long[] parray(final long... elems) {
-        return elems;
-    }
+    public static long[] parray(final long... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new float[] { ... }}.
@@ -769,9 +667,7 @@ public class Indolently {
      * @param elems elements of array
      * @return float array
      */
-    public static float[] parray(final float... elems) {
-        return elems;
-    }
+    public static float[] parray(final float... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new byte[] { ... }}.
@@ -779,9 +675,7 @@ public class Indolently {
      * @param elems elements of array
      * @return byte array
      */
-    public static byte[] parray(final byte... elems) {
-        return elems;
-    }
+    public static byte[] parray(final byte... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new double[] { ... }}.
@@ -789,9 +683,7 @@ public class Indolently {
      * @param elems elements of array
      * @return double array
      */
-    public static double[] parray(final double... elems) {
-        return elems;
-    }
+    public static double[] parray(final double... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new boolean[] { ... }}.
@@ -799,9 +691,7 @@ public class Indolently {
      * @param elems elements of array
      * @return boolean array
      */
-    public static boolean[] parray(final boolean... elems) {
-        return elems;
-    }
+    public static boolean[] parray(final boolean... elems) { return elems; }
 
     /**
      * The shortcut notation of {@code new byte[] { (byte) 0xFF, ... }}.
@@ -810,13 +700,9 @@ public class Indolently {
      * @return int array
      */
     public static byte[] bytes(final int... elems) {
-
         final byte[] ret = new byte[elems.length];
-
-        for (int i = 0; i < ret.length; i++) {
+        for (int i = 0; i < ret.length; i++)
             ret[i] = (byte) elems[i];
-        }
-
         return ret;
     }
 
@@ -835,9 +721,7 @@ public class Indolently {
             private int pos;
 
             @Override
-            public boolean hasNext() {
-                return this.pos < this.len;
-            }
+            public boolean hasNext() { return this.pos < this.len; }
 
             @Override
             public Character next() {
@@ -851,13 +735,9 @@ public class Indolently {
         });
     }
 
-    public static <T> $<T> head(final T[] ary) {
-        return empty(ary) ? none() : opt(ary[0]);
-    }
+    public static <T> $<T> head(final T[] ary) { return empty(ary) ? none() : opt(ary[0]); }
 
-    public static <T> $<T> last(final T[] ary) {
-        return empty(ary) ? none() : opt(ary[ary.length - 1]);
-    }
+    public static <T> $<T> last(final T[] ary) { return empty(ary) ? none() : opt(ary[ary.length - 1]); }
 
     /**
      * Create a list of {@code char}.
@@ -867,9 +747,7 @@ public class Indolently {
      */
     public static $list<Character> plist(final char... elems) {
         final $list<Character> list = list();
-        for (final char e: elems) {
-            list.add(e);
-        }
+        for (final char e: elems) list.add(e);
         return list;
     }
 
@@ -881,9 +759,7 @@ public class Indolently {
      */
     public static $list<Integer> plist(final int... elems) {
         final $list<Integer> list = list();
-        for (final int e: elems) {
-            list.add(e);
-        }
+        for (final int e: elems) list.add(e);
         return list;
     }
 
@@ -895,9 +771,7 @@ public class Indolently {
      */
     public static $list<Long> plist(final long... elems) {
         final $list<Long> list = list();
-        for (final long e: elems) {
-            list.add(e);
-        }
+        for (final long e: elems) list.add(e);
         return list;
     }
 
@@ -909,9 +783,7 @@ public class Indolently {
      */
     public static $list<Float> plist(final float... elems) {
         final $list<Float> list = list();
-        for (final float e: elems) {
-            list.add(e);
-        }
+        for (final float e: elems) list.add(e);
         return list;
     }
 
@@ -923,9 +795,7 @@ public class Indolently {
      */
     public static $list<Short> plist(final short... elems) {
         final $list<Short> list = list();
-        for (final short e: elems) {
-            list.add(e);
-        }
+        for (final short e: elems) list.add(e);
         return list;
     }
 
@@ -937,9 +807,7 @@ public class Indolently {
      */
     public static $list<Double> plist(final double... elems) {
         final $list<Double> list = list();
-        for (final double e: elems) {
-            list.add(e);
-        }
+        for (final double e: elems) list.add(e);
         return list;
     }
 
@@ -951,19 +819,13 @@ public class Indolently {
      */
     public static $list<Boolean> plist(final boolean... elems) {
         final $list<Boolean> list = list();
-        for (final boolean e: elems) {
-            list.add(e);
-        }
+        for (final boolean e: elems) list.add(e);
         return list;
     }
 
-    public static <T> $set<T> set(final $<? extends T> elem) {
-        return new $set_impl<T>().push(elem);
-    }
+    public static <T> $set<T> set(final $<? extends T> elem) { return new $set_impl<T>().push(elem); }
 
-    public static <T> $set<T> set(final Iterable<? extends T> elems) {
-        return new $set_impl<T>().pushAll(opt(elems));
-    }
+    public static <T> $set<T> set(final Iterable<? extends T> elems) { return new $set_impl<T>().pushAll(opt(elems)); }
 
     /**
      * Just an alias of {@link #set(Object...)} but not overloaded one.
@@ -977,9 +839,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> $set<T> setOf(final T... elems) {
-        return set(elems);
-    }
+    public static <T> $set<T> setOf(final T... elems) { return set(elems); }
 
     /**
      * Just an alias of {@link #set(Object...)} but not overloaded one.
@@ -991,9 +851,7 @@ public class Indolently {
      * @return new set
      * @see #set(Object...)
      */
-    public static <T> $set<T> newSet(final Class<T> type) {
-        return set();
-    }
+    public static <T> $set<T> newSet(final Class<T> type) { return set(); }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
@@ -1001,9 +859,7 @@ public class Indolently {
 
         final $set<T> set = new $set_impl<>();
 
-        if (elems != null) {
-            set.addAll(list(elems));
-        }
+        if (elems != null) set.addAll(list(elems));
 
         return set;
     }
@@ -1059,9 +915,7 @@ public class Indolently {
     public static <T> $list<T> uniq(final List<? extends T> elems, final BiPredicate<? super T, ? super T> f) {
 
         return $(elems).reduce(list(), (ret, x) -> {
-            if (ret.isEmpty() || !ret.any(y -> f.test(x, y))) {
-                ret.add(x);
-            }
+            if (ret.isEmpty() || !ret.any(y -> f.test(x, y))) ret.add(x);
 
             return ret;
         });
@@ -1076,19 +930,19 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        return (map instanceof $map_impl) && (($map_impl<?, ?>) map).frozen()
+        return (map instanceof $map_impl impl) && impl.frozen()
             ? cast(map)
             : $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
     }
 
     public static <T> $set<T> freeze(final Set<? extends T> set) {
-        return (set instanceof $set_impl) && (($set_impl<?>) set).frozen()
+        return (set instanceof $set_impl impl) && impl.frozen()
             ? cast(set)
             : $(Collections.unmodifiableSet($(set).map(Indolently::freeze0)));
     }
 
     public static <T> $list<T> freeze(final List<? extends T> list) {
-        return (list instanceof $list_impl) && (($list_impl<?>) list).frozen()
+        return (list instanceof $list_impl impl) && impl.frozen()
             ? cast(list)
             : $(Collections.unmodifiableList($(list).map(Indolently::freeze0)));
     }
@@ -1103,10 +957,10 @@ public class Indolently {
         if (i == null) return true;
 
         // for optimization
-        if (i instanceof Collection) return ((Collection<?>) i).isEmpty();
-        if (i instanceof Map) return ((Map<?, ?>) i).isEmpty();
-        if (i instanceof Iterator<?>) return !((Iterator<?>) i).hasNext();
-        if (i instanceof Enumeration<?>) return !((Enumeration<?>) i).hasMoreElements();
+        if (i instanceof Collection x) return x.isEmpty();
+        if (i instanceof Map x) return x.isEmpty();
+        if (i instanceof Iterator<?> x) return !x.hasNext();
+        if (i instanceof Enumeration<?> x) return !x.hasMoreElements();
 
         return !i.iterator().hasNext();
     }
@@ -1127,9 +981,7 @@ public class Indolently {
      * @param map test target
      * @return test result
      */
-    public static boolean empty(final Map<?, ?> map) {
-        return (map == null) || map.isEmpty();
-    }
+    public static boolean empty(final Map<?, ?> map) { return (map == null) || map.isEmpty(); }
 
     /**
      * test whether the argument is empty or not.
@@ -1181,9 +1033,7 @@ public class Indolently {
      * @param cs test target
      * @return test result
      */
-    public static boolean empty(final CharSequence cs) {
-        return (cs == null) || (cs == "") || (cs.length() == 0);
-    }
+    public static boolean empty(final CharSequence cs) { return (cs == null) || (cs == "") || (cs.length() == 0); }
 
     /**
      * test whether the argument is empty string or not.
@@ -1195,9 +1045,7 @@ public class Indolently {
         return empty((Object[]) cs) || list(cs).all(x -> empty(x));
     }
 
-    public static boolean present(final $<?> opt) {
-        return !empty(opt);
-    }
+    public static boolean present(final $<?> opt) { return !empty(opt); }
 
     public static boolean presentAny(final $<?> x, final $<?> y, final $<?>... rest) {
         return present(x) || present(y) || list(rest).any(o -> present(o));
@@ -1217,9 +1065,7 @@ public class Indolently {
      * @param o test target
      * @return test result
      */
-    public static boolean isNull(final Object o) {
-        return o == null;
-    }
+    public static boolean isNull(final Object o) { return o == null; }
 
     /**
      * test whether the argument is blank string or not.
@@ -1231,9 +1077,8 @@ public class Indolently {
         if (empty(cs)) return true;
 
         // don't use "cs.chars().allMatch(Character::isWhitespace);" for performance
-        for (int i = 0, M = cs.length(); i < M; i++) {
+        for (int i = 0, M = cs.length(); i < M; i++)
             if (!Character.isWhitespace(cs.charAt(i))) return false;
-        }
 
         return true;
     }
@@ -1269,9 +1114,8 @@ public class Indolently {
     public static boolean contains(final Object[] ary, final Object val) {
         if (empty(ary)) return false;
 
-        for (final Object x: ary) {
+        for (final Object x: ary)
             if (Objects.equals(x, val)) return true;
-        }
 
         return false;
     }
@@ -1279,9 +1123,8 @@ public class Indolently {
     public static boolean contains(final byte[] ary, final byte val) {
         if (empty(ary)) return false;
 
-        for (final byte x: ary) {
+        for (final byte x: ary)
             if (x == val) return true;
-        }
 
         return false;
     }
@@ -1289,9 +1132,8 @@ public class Indolently {
     public static boolean contains(final int[] ary, final int val) {
         if (empty(ary)) return false;
 
-        for (final int x: ary) {
+        for (final int x: ary)
             if (x == val) return true;
-        }
 
         return false;
     }
@@ -1299,9 +1141,8 @@ public class Indolently {
     public static boolean contains(final long[] ary, final long val) {
         if (empty(ary)) return false;
 
-        for (final long x: ary) {
+        for (final long x: ary)
             if (x == val) return true;
-        }
 
         return false;
     }
@@ -1309,9 +1150,8 @@ public class Indolently {
     public static boolean contains(final short[] ary, final short val) {
         if (empty(ary)) return false;
 
-        for (final short x: ary) {
+        for (final short x: ary)
             if (x == val) return true;
-        }
 
         return false;
     }
@@ -1319,9 +1159,8 @@ public class Indolently {
     public static boolean contains(final float[] ary, final float val) {
         if (empty(ary)) return false;
 
-        for (final float x: ary) {
+        for (final float x: ary)
             if (equal(x, val)) return true;
-        }
 
         return false;
     }
@@ -1329,9 +1168,8 @@ public class Indolently {
     public static boolean contains(final double[] ary, final double val) {
         if (empty(ary)) return false;
 
-        for (final double x: ary) {
+        for (final double x: ary)
             if (equal(x, val)) return true;
-        }
 
         return false;
     }
@@ -1408,12 +1246,11 @@ public class Indolently {
 
         if (initial != null) return initial;
 
-        if (suppliers != null) {
+        if (suppliers != null) //
             for (final var s: suppliers) {
                 final var val = s.get();
                 if (val != null) return val;
             }
-        }
 
         throw new IllegalArgumentException("all elements are null");
     }
@@ -1744,34 +1581,22 @@ public class Indolently {
 
     public static boolean equal(final long l, final long r, final long... rest) {
 
-        if (l != r) {
-            return false;
-        }
+        if (l != r) return false;
 
-        for (final long x: rest) {
-            if (l != x) {
-                return false;
-            }
-        }
+        for (final long x: rest)
+            if (l != x) return false;
 
         return true;
     }
 
-    public static boolean equal(final double l, final double r) {
-        return Double.compare(l, r) == 0;
-    }
+    public static boolean equal(final double l, final double r) { return Double.compare(l, r) == 0; }
 
     public static boolean equal(final double l, final double r, final double... rest) {
 
-        if (Double.compare(l, r) != 0) {
-            return false;
-        }
+        if (Double.compare(l, r) != 0) return false;
 
-        for (final double x: rest) {
-            if (Double.compare(l, x) != 0) {
-                return false;
-            }
-        }
+        for (final double x: rest)
+            if (Double.compare(l, x) != 0) return false;
 
         return true;
     }
@@ -1802,41 +1627,27 @@ public class Indolently {
 
         public final int sign;
 
-        ComparisonResult(final int sign) {
-            this.sign = sign;
-        }
+        ComparisonResult(final int sign) { this.sign = sign; }
 
-        public int sign() {
-            return this.sign;
-        }
+        public int sign() { return this.sign; }
 
-        public int sign(final boolean asc) {
-            return asc ? this.sign : -this.sign;
-        }
+        public int sign(final boolean asc) { return asc ? this.sign : -this.sign; }
 
-        public int reverse() {
-            return -this.sign;
-        }
+        public int reverse() { return -this.sign; }
     }
 
     public static <T extends Comparable<T>> ComparisonResult compare(final T l, final T r) {
 
         final int rslt = l.compareTo(r);
 
-        if (rslt < 0) {
-            return ComparisonResult.SMALL;
-        } else if (rslt == 0) {
-            return ComparisonResult.EQUAL;
-        } else {
-            return ComparisonResult.LARGE;
-        }
+        if (rslt < 0) return ComparisonResult.SMALL;
+        else if (rslt == 0) return ComparisonResult.EQUAL;
+        else return ComparisonResult.LARGE;
     }
 
     public static <T extends Comparable<T>> ComparisonResult compare(final Iterable<T> l, final Iterable<T> r) {
 
-        if ((l instanceof List) && (r instanceof List)) {
-            return compare((List<T>) l, (List<T>) r);
-        }
+        if ((l instanceof List) && (r instanceof List)) return compare((List<T>) l, (List<T>) r);
 
         for (final Iterator<T> li = l.iterator(), ri = r.iterator(); ; ) {
 
@@ -1846,12 +1657,9 @@ public class Indolently {
             if (moreL && moreR) {
                 final var rslt = compare(li.next(), ri.next());
 
-                if (rslt != ComparisonResult.EQUAL) {
-                    return rslt;
-                }
-            } else {
+                if (rslt != ComparisonResult.EQUAL) return rslt;
+            } else //
                 return compare(moreL ? 1 : 0, moreR ? 1 : 0);
-            }
         }
     }
 
@@ -1865,9 +1673,7 @@ public class Indolently {
 
             final var rslt = compare(l.get(i), r.get(i));
 
-            if (rslt != ComparisonResult.EQUAL) {
-                return rslt;
-            }
+            if (rslt != ComparisonResult.EQUAL) return rslt;
         }
 
         return compare(lsize, rsize);
@@ -1876,11 +1682,8 @@ public class Indolently {
     @TypeUnsafe
     public static <T> boolean equiv(final T l, final T r) {
 
-        if ((l instanceof Comparable) && (r instanceof Comparable)) {
-            return equal(cast(l), cast(r));
-        } else {
-            return equal(l, r);
-        }
+        if (l instanceof Comparable lc && r instanceof Comparable rc) return equal(lc, rc);
+        else return equal(l, r);
     }
 
     @TypeUnsafe
@@ -1890,13 +1693,9 @@ public class Indolently {
         return list(r).pushAll(list(rest)).all(x -> equiv(l, x));
     }
 
-    public static <T extends Comparable<T>> T max(final T l, final T r) {
-        return ge(l, r) ? l : r;
-    }
+    public static <T extends Comparable<T>> T max(final T l, final T r) { return ge(l, r) ? l : r; }
 
-    public static <T extends Comparable<T>> T min(final T l, final T r) {
-        return le(l, r) ? l : r;
-    }
+    public static <T extends Comparable<T>> T min(final T l, final T r) { return le(l, r) ? l : r; }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
@@ -1940,9 +1739,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> $list<T> $(final $list<T> x) {
-        return x;
-    }
+    public static <T> $list<T> $(final $list<T> x) { return x; }
 
     /**
      * Just for producing compilation warning.
@@ -1952,9 +1749,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> $set<T> $(final $set<T> x) {
-        return x;
-    }
+    public static <T> $set<T> $(final $set<T> x) { return x; }
 
     /**
      * Just for producing compilation warning.
@@ -1964,9 +1759,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <K, V> $map<K, V> $(final $map<K, V> x) {
-        return x;
-    }
+    public static <K, V> $map<K, V> $(final $map<K, V> x) { return x; }
 
     /**
      * Just for producing compilation warning.
@@ -1976,9 +1769,7 @@ public class Indolently {
      * @deprecated Use {@link $list#clone()} instead of to get more intentional.
      */
     @Deprecated
-    public static <T> $list<T> list(final $list<T> x) {
-        return x.clone();
-    }
+    public static <T> $list<T> list(final $list<T> x) { return x.clone(); }
 
     /**
      * Just for producing compilation warning.
@@ -1988,9 +1779,7 @@ public class Indolently {
      * @deprecated Use {@link $set#clone()} instead of to get more intentional.
      */
     @Deprecated
-    public static <T> $set<T> set(final $set<T> x) {
-        return x.clone();
-    }
+    public static <T> $set<T> set(final $set<T> x) { return x.clone(); }
 
     /**
      * Just for producing compilation warning.
@@ -2000,9 +1789,7 @@ public class Indolently {
      * @deprecated Use {@link $map#clone()} instead of to get more intentional.
      */
     @Deprecated
-    public static <K, V> $map<K, V> map(final $map<K, V> x) {
-        return x.clone();
-    }
+    public static <K, V> $map<K, V> map(final $map<K, V> x) { return x.clone(); }
 
     /**
      * Just for producing compilation warning.
@@ -2012,9 +1799,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> $iter<T> $(final $iter<T> x) {
-        return x;
-    }
+    public static <T> $iter<T> $(final $iter<T> x) { return x; }
 
     /**
      * Just for producing compilation warning.
@@ -2024,9 +1809,7 @@ public class Indolently {
      * @deprecated this is meaningless method call.
      */
     @Deprecated
-    public static <T> $stream<T> $(final $stream<T> x) {
-        return x;
-    }
+    public static <T> $stream<T> $(final $stream<T> x) { return x; }
 
     /**
      * Wrap a map.
@@ -2711,9 +2494,8 @@ public class Indolently {
         if (x0 || x1) return true;
 
         //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < x2.length; i++) {
+        for (int i = 0; i < x2.length; i++)
             if (x2[i]) return true;
-        }
 
         return false;
     }
