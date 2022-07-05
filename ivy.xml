@@ -39,8 +39,8 @@
     <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="test->master(*)" />
     -->
     <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.8" conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="11.1.0.M2" conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="11.1.0.M2" conf="compile->master(*)" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="11.1.0" conf="compile->master(*)" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="11.1.0" conf="compile->master(*)" />
 
     <dependency org="com.google.re2j" name="re2j" rev="1.7" conf="compile->master(*)" />
     <dependency org="dk.brics" name="automaton" rev="1.12-4" conf="compile->master(*)" />
