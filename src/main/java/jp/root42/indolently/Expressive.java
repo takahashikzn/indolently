@@ -301,6 +301,31 @@ public class Expressive {
         return val;
     }
 
+    public static <T> T progn(final boolean ignored, final T last) { return last; }
+
+    public static <T> T progn(final int ignored, final T last) { return last; }
+
+    public static <T> T progn(final long ignored, final T last) { return last; }
+
+    public static <T> T progn(final byte ignored, final T last) { return last; }
+
+    public static <T> T progn(final short ignored, final T last) { return last; }
+
+    public static <T> T progn(final char ignored, final T last) { return last; }
+
+    public static <T> T progn(final float ignored, final T last) { return last; }
+
+    public static <T> T progn(final double ignored, final T last) { return last; }
+
+    public static <T> T progn(final Object ignored, final T last) { return last; }
+
+    public static <T> T progn(final Statement form, final T last) { return progn(form, () -> last); }
+
+    public static <T> T progn(final Statement form, final Supplier<? extends T> last) {
+        form.run();
+        return last.get();
+    }
+
     @FunctionalInterface
     public interface WithBlock<X, Y> {
 
