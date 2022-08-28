@@ -332,19 +332,38 @@ public class Expressive {
         Y apply(X x) throws IOException;
     }
 
+    @Deprecated
     public static <T extends Closeable, R> R with(final T res, final WithBlock<T, R> f) throws IOException {
         try (res) { return f.apply(res); }
     }
 
+    @FunctionalInterface
+    public interface IOExpr<X, Y, E extends Exception> {
+
+        Y apply(X x) throws E;
+    }
+
+    public static <T extends Closeable, R, E extends Exception> R IO(final T res, final IOExpr<T, R, E> f)
+        throws E, IOException { try (res) { return f.apply(res); } }
+
+    @FunctionalInterface
+    public interface IOStmt<X, E extends Exception> {
+
+        void accept(X x) throws E;
+    }
+
+    public static <T extends Closeable, E extends Exception> void IO_(final T res, final IOStmt<T, E> f)
+        throws E, IOException { try (res) { f.accept(res); } }
+
     /**
      * try-with-resource statement.
      *
      * @param res the resource
      * @param stmt expression body
      */
-    public static <T extends AutoCloseable> void letWith(final T res, final Consumer<? super T> stmt) {
+    public static <T extends AutoCloseable> void WITH_(final T res, final Consumer<? super T> stmt) {
         // cast is required to avoid compilation failure on javac
-        letWith((Supplier<T>) () -> res, stmt);
+        WITH_((Supplier<T>) () -> res, stmt);
     }
 
     /**
@@ -353,10 +372,10 @@ public class Expressive {
      * @param res the resource
      * @param stmt expression body
      */
-    public static <T extends AutoCloseable> void letWith(final Supplier<? extends T> res,
+    public static <T extends AutoCloseable> void WITH_(final Supplier<? extends T> res,
         final Consumer<? super T> stmt) {
 
-        evalWith(res, x -> {
+        WITH(res, x -> {
             stmt.accept(x);
             return null;
         });
@@ -369,9 +388,9 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T extends AutoCloseable, R> R evalWith(final T res, final Function<? super T, ? extends R> expr) {
+    public static <T extends AutoCloseable, R> R WITH(final T res, final Function<? super T, ? extends R> expr) {
         // cast is required to avoid compilation failure on javac
-        return evalWith((Supplier<T>) () -> res, expr);
+        return WITH((Supplier<T>) () -> res, expr);
     }
 
     /**
@@ -382,12 +401,10 @@ public class Expressive {
      * @return the value function returned
      */
     @SuppressWarnings({ "try", "RedundantSuppression" })
-    public static <T extends AutoCloseable, R> R evalWith(final Supplier<? extends T> res,
+    public static <T extends AutoCloseable, R> R WITH(final Supplier<? extends T> res,
         final Function<? super T, ? extends R> expr) {
 
-        return eval(() -> {
-            try (final T x = res.get()) { return expr.apply(x); }
-        });
+        return eval(() -> { try (final T x = res.get()) { return expr.apply(x); } });
     }
 
     /**
