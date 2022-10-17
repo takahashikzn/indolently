@@ -20,10 +20,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.Cleaner;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
@@ -82,6 +84,7 @@ import jp.root42.indolently.regex.Regex;
 import jp.root42.indolently.regex.RegexJDK;
 import jp.root42.indolently.regex.RegexRe2;
 
+import static java.util.Objects.*;
 import static jp.root42.indolently.Expressive.*;
 
 
@@ -875,7 +878,7 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> sort(final Map<? extends K, ? extends V> map, final Comparator<? super K> comp) {
-        return $(ObjFactory.getInstance().<K, V> newSortedMap(Objects.requireNonNull(comp, "comparator"))).pushAll(map);
+        return $(ObjFactory.getInstance().<K, V> newSortedMap(requireNonNull(comp, "comparator"))).pushAll(map);
     }
 
     public static <T extends Comparable<T>> $set<T> sort(final Set<? extends T> elems) {
@@ -889,7 +892,7 @@ public class Indolently {
     }
 
     public static <T> $set<T> sort(final Set<? extends T> elems, final Comparator<? super T> comp) {
-        return $(ObjFactory.getInstance().<T> newSortedSet(Objects.requireNonNull(comp, "comparator"))).pushAll(elems);
+        return $(ObjFactory.getInstance().<T> newSortedSet(requireNonNull(comp, "comparator"))).pushAll(elems);
     }
 
     public static <T extends Comparable<T>> $list<T> sort(final List<? extends T> elems) {
@@ -904,7 +907,7 @@ public class Indolently {
 
     public static <T> $list<T> sort(final List<? extends T> elems, final Comparator<? super T> comp) {
         final $list<T> rslt = list(elems);
-        rslt.sort(Objects.requireNonNull(comp, "comparator"));
+        rslt.sort(requireNonNull(comp, "comparator"));
         return rslt;
     }
 
@@ -1856,7 +1859,7 @@ public class Indolently {
      * @return wrapped map
      */
     public static <K, V> $map<K, V> $(final Map<K, V> map, final K key, final V val) {
-        return $(Objects.requireNonNull(map, "map")).push(key, val);
+        return $(requireNonNull(map, "map")).push(key, val);
     }
 
     /**
@@ -1869,7 +1872,7 @@ public class Indolently {
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> $list<T> $(final List<T> list, final T... elems) {
-        return $(Objects.requireNonNull(list, "list")).pushAll(list(elems));
+        return $(requireNonNull(list, "list")).pushAll(list(elems));
     }
 
     /**
@@ -1882,7 +1885,7 @@ public class Indolently {
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> $set<T> $(final Set<T> set, final T... elems) {
-        return $(Objects.requireNonNull(set, "set")).pushAll(list(elems));
+        return $(requireNonNull(set, "set")).pushAll(list(elems));
     }
 
     /**
@@ -2460,8 +2463,7 @@ public class Indolently {
     public static BooleanSupplier and(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
         return () -> {
-            final $list<BooleanSupplier> preds =
-                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+            final $list<BooleanSupplier> preds = cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.all(BooleanSupplier::getAsBoolean);
         };
@@ -2482,8 +2484,7 @@ public class Indolently {
     public static BooleanSupplier or(final BooleanSupplier x0, final BooleanSupplier x1, final BooleanSupplier... x2) {
 
         return () -> {
-            final $list<BooleanSupplier> preds =
-                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+            final $list<BooleanSupplier> preds = cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.any(BooleanSupplier::getAsBoolean);
         };
@@ -2507,7 +2508,7 @@ public class Indolently {
 
         return y -> {
             final $list<Predicate<? super T>> preds =
-                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+                cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.all(z -> z.test(y));
         };
@@ -2520,7 +2521,7 @@ public class Indolently {
 
         return y -> {
             final $list<Predicate<? super T>> preds =
-                cast(list(Objects.requireNonNull(x0), Objects.requireNonNull(x1)).pushAll(list(x2)));
+                cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.any(z -> z.test(y));
         };
@@ -3017,5 +3018,30 @@ public class Indolently {
         final var in = Indolently.class.getResourceAsStream(path);
         if (in == null) return none();
         else try (in) { return opt(in.readAllBytes()); }
+    }
+
+    public static Path createTmpFile(final Object monitor, final $<String> prefix, final $<String> suffix,
+        final boolean warning) {
+
+        interface $static {
+
+            Cleaner cleaner = Cleaner.create();
+        }
+
+        final var file = eval(() -> Files.createTempFile(prefix.orNull(), suffix.or(".tmp")));
+
+        $static.cleaner.register(requireNonNull(monitor), () -> {
+            if (!Files.exists(file)) return;
+
+            if (warning) //
+                System.getLogger(FQCN(Indolently.class))
+                    .log(System.Logger.Level.WARNING, "delete disposed tempfile: path = %s", file.toAbsolutePath());
+
+            try { Files.delete(file); } //
+            catch (final NoSuchFileException ignored) { } //
+            catch (final IOException e) { e.printStackTrace(); }
+        });
+
+        return file;
     }
 }
