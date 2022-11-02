@@ -40,40 +40,40 @@ public class Promissory {
     /** non private for subtyping. */
     protected Promissory() { }
 
-    private static boolean loom;
+    private static boolean useVirtualThread;
 
-    private static Executor executor;
+    private static Executor virtualThreadExecutor;
+
+    private static Executor platformThreadExecutor = ForkJoinPool.commonPool();
 
     static {
-        block:
-        {
-            try {
-                executor = (Executor) Executors.class.getDeclaredMethod("newVirtualThreadPerTaskExecutor")
-                    .invoke(null); // loom
-                loom = true;
-                break block;
-            } //
-            catch (final NoSuchMethodException ignored) { } //
-            catch (final InvocationTargetException | IllegalAccessException e) {
+        try {
+            virtualThreadExecutor =
+                (Executor) Executors.class.getDeclaredMethod("newVirtualThreadPerTaskExecutor").invoke(null); // loom
+        } //
+        catch (final NoSuchMethodException ignored) { } //
+        catch (final InvocationTargetException | IllegalAccessException e) {
 
-                if (!(e.getCause() instanceof UnsupportedOperationException cause && cause.getMessage()
-                    .contains("Preview Features not enabled, need to run with --enable-preview"))) {
+            if (!(e.getCause() instanceof UnsupportedOperationException cause && cause.getMessage()
+                .contains("Preview Features not enabled, need to run with --enable-preview"))) {
 
-                    e.printStackTrace();
-                    System.err.println("loom not available");
-                }
+                e.printStackTrace();
+                System.err.println("loom not available");
             }
-
-            loom = false;
-            executor = ForkJoinPool.commonPool();
         }
     }
 
-    public static boolean loomAvailable() { return loom; }
+    public static boolean virtualThreadAvailable() { return virtualThreadExecutor != null; }
 
-    public static Executor executor() { return executor; }
+    public static boolean useVirtualThread() { return useVirtualThread; }
 
-    public static void executor(final Executor executor) { Promissory.executor = Objects.requireNonNull(executor); }
+    public static void useVirtualThread(final boolean x) { useVirtualThread = x; }
+
+    public static Executor executor() {
+        return virtualThreadAvailable() && useVirtualThread ? virtualThreadExecutor : platformThreadExecutor;
+    }
+
+    public static void executor(final Executor x) { platformThreadExecutor = Objects.requireNonNull(x); }
 
     public static Promise<Void> async(final RunnableE<? super Exception> run) { return async(run, executor()); }
 
