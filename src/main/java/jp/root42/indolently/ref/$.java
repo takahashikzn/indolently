@@ -91,7 +91,7 @@ public final class $<T>
 
     private static final $<Boolean> F = of(false);
 
-    public $<Boolean> exam(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? T : F; }
+    public $<Boolean> test$(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? T : F; }
 
     public boolean test(final Predicate<? super T> f) { return !this.empty() && this.when(f).present(); }
 
