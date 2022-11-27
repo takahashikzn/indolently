@@ -40,7 +40,7 @@ public class Promissory {
     /** non private for subtyping. */
     protected Promissory() { }
 
-    private static boolean useVirtualThread;
+    private static boolean useVirtualThread = true;
 
     private static Executor virtualThreadExecutor;
 
@@ -49,17 +49,11 @@ public class Promissory {
     static {
         try {
             virtualThreadExecutor =
-                (Executor) Executors.class.getDeclaredMethod("newVirtualThreadPerTaskExecutor").invoke(null); // loom
+                (Executor) Executors.class.getDeclaredMethod("newVirtualThreadPerTaskExecutor").invoke(null);
         } //
         catch (final NoSuchMethodException ignored) { } //
         catch (final InvocationTargetException | IllegalAccessException e) {
-
-            if (!(e.getCause() instanceof UnsupportedOperationException cause && cause.getMessage()
-                .contains("Preview Features not enabled, need to run with --enable-preview"))) {
-
-                e.printStackTrace();
-                System.err.println("loom not available");
-            }
+            if (!e.getCause().getMessage().contains("--enable-preview")) e.printStackTrace();
         }
     }
 
