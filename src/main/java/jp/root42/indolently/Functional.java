@@ -50,7 +50,7 @@ import static jp.root42.indolently.Indolently.*;
 @SuppressWarnings({ "overloads", "RedundantSuppression" })
 public class Functional {
 
-    protected Functional() {}
+    protected Functional() { }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public static <T> $<T> apply(final $<T> x, final $<T> y, final BiFunction<? super T, ? super T, T> f) {
@@ -184,7 +184,7 @@ public class Functional {
     }
 
     public static <T> SSuppl<T> suppl(final Supplier<? extends T> suppl) {
-        return suppl(self -> {}, self -> suppl.get());
+        return suppl(self -> { }, self -> suppl.get());
     }
 
     public static <T> SSuppl<T> suppl(final Consumer<? super Supplier<T>> init,
@@ -214,7 +214,7 @@ public class Functional {
     }
 
     public static <X, Y> SFunc<X, Y> func(final Function<? super X, ? extends Y> func) {
-        return func(self -> {}, (self, x) -> func.apply(x));
+        return func(self -> { }, (self, x) -> func.apply(x));
     }
 
     public static <X, Y> SFunc<X, Y> func(final Consumer<? super Function<X, Y>> init,
@@ -245,7 +245,7 @@ public class Functional {
     }
 
     public static <X0, X1, Y> SFunc2<X0, X1, Y> func2(final BiFunction<? super X0, ? super X1, ? extends Y> func) {
-        return func2(self -> {}, (self, x0, x1) -> func.apply(x0, x1));
+        return func2(self -> { }, (self, x0, x1) -> func.apply(x0, x1));
     }
 
     public static <X0, X1, Y> SFunc2<X0, X1, Y> func2(final Consumer<? super BiFunction<X0, X1, Y>> init,
@@ -299,7 +299,7 @@ public class Functional {
     }
 
     public static <X> SPred<X> pred(final Predicate<? super X> pred) {
-        return pred(self -> {}, (self, x) -> pred.test(x));
+        return pred(self -> { }, (self, x) -> pred.test(x));
     }
 
     public static <X> SPred<X> pred(final Consumer<? super Predicate<X>> init,
@@ -330,7 +330,7 @@ public class Functional {
     }
 
     public static <X0, X1> SPred2<X0, X1> pred2(final BiPredicate<X0, X1> pred) {
-        return pred2(self -> {}, (self, x0, x1) -> pred.test(x0, x1));
+        return pred2(self -> { }, (self, x0, x1) -> pred.test(x0, x1));
     }
 
     public static <X0, X1> SPred2<X0, X1> pred2(final Consumer<? super BiPredicate<X0, X1>> init,

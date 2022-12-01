@@ -14,6 +14,7 @@
 package jp.root42.indolently.ref;
 
 import java.io.Serializable;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -28,7 +29,6 @@ import jp.root42.indolently.function.FunctionE;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.SupplierE;
 
-import static java.util.Objects.*;
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -39,11 +39,8 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public final class $<T>
+public record $<T>(Optional<T> opt)
     implements Serializable, Supplier<T> {
-
-    @SuppressWarnings("PublicField")
-    public final Optional<T> opt; // NOPMD
 
     public static <T> $<T> of(final T val) { return (val == null) ? none() : new $<>(val); }
 
@@ -58,11 +55,11 @@ public final class $<T>
 
     private $(final T val) { this(Optional.ofNullable(val)); }
 
-    private $(final Optional<T> opt) { this.opt = requireNonNull(opt); }
+    public Optional<T> unwrap() { return this.opt; }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
-    public T get() { return this.opt.get(); }
+    public T get() throws NoSuchElementException { return this.opt.get(); }
 
     public boolean empty() { return this == NONE || this.opt.isEmpty(); }
 
@@ -191,10 +188,7 @@ public final class $<T>
     @Deprecated
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof $)) return false;
-
-        return this.equals0(Indolently.cast(o));
+        return this == o || (o instanceof $ that && this.equals0(that));
     }
 
     private boolean equals0(final $<? extends T> that) {

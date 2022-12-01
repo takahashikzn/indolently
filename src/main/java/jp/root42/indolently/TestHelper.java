@@ -28,7 +28,7 @@ import org.assertj.core.api.OptionalAssert;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public final class TestHelper {
 
-    private TestHelper() {}
+    private TestHelper() { }
 
     public static <VALUE> OptionalAssert<VALUE> assertThat(final Optional<VALUE> actual) {
         return Assertions.assertThat(actual);
@@ -37,13 +37,13 @@ public final class TestHelper {
     public static <VALUE> OptionalAssert<VALUE> assertThat(final $<VALUE> actual) { return assertThat$(actual); }
 
     public static <VALUE> OptionalAssert<VALUE> assertThat$(final $<VALUE> actual) {
-        return new OptionalAssert<>(actual.opt) {
+        return new OptionalAssert<>(actual.unwrap()) {
 
             @SuppressWarnings("rawtypes")
             @Override
             public OptionalAssert<VALUE> isEqualTo(final Object expected) {
                 if (expected instanceof $) {
-                    this.objects.assertEqual(this.info, this.actual, (($) expected).opt);
+                    this.objects.assertEqual(this.info, this.actual, (($) expected).unwrap());
                 } else {
                     this.objects.assertEqual(this.info, this.actual, expected);
                 }
@@ -55,7 +55,7 @@ public final class TestHelper {
             @Override
             public OptionalAssert<VALUE> isNotEqualTo(final Object other) {
                 if (other instanceof $) {
-                    this.objects.assertNotEqual(this.info, this.actual, (($) other).opt);
+                    this.objects.assertNotEqual(this.info, this.actual, (($) other).unwrap());
                 } else {
                     this.objects.assertNotEqual(this.info, this.actual, other);
                 }

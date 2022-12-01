@@ -23,7 +23,6 @@ import jp.root42.indolently.ref.$int;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Generator.*;
 import static jp.root42.indolently.Indolently.list;
-import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.iterator;
 import static jp.root42.indolently.Iterative.*;
@@ -82,7 +81,7 @@ public class IterativeTest {
             ref(1), //
             env -> (10 < env.$) ? breaks() : env.$++) //
             .forEach(consumerOf((final Integer x) -> ints.add(x)) //
-                .andThen(x -> {}));
+                .andThen(x -> { }));
 
         assertThat(ints.reduce((x, y) -> x + y).get()).isEqualTo(55);
     }
@@ -117,7 +116,7 @@ public class IterativeTest {
             generator( //
                 ref(1), //
                 env -> (10 < env.$) ? breaks() : env.$++)) //
-            .forEach(consumerOf((final Integer x) -> {}));
+            .forEach(consumerOf((final Integer x) -> { }));
     }
 
     /**

@@ -26,7 +26,6 @@ import jp.root42.indolently.ref.$int;
 import static jp.root42.indolently.Expressive.*;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Indolently.list;
-import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
 
@@ -120,18 +119,18 @@ public class FunctionalTest {
             (final Function<$3<Integer, Integer, Integer>, Integer> self) -> { }, // function decl
             (self, v) -> { // function body
 
-                final int x = v._1;
-                final int y = v._2;
-                final int z = v._3;
+                final int x = v._1();
+                final int y = v._2();
+                final int z = v._3();
 
                 return when(() -> (y < x)) //
                     .then(() -> (int) self.apply( //
-                        tuple( //
-                            self.apply(tuple(x - 1, y, z)), //
-                            self.apply(tuple(y - 1, z, x)), //
-                            self.apply(tuple(z - 1, x, y))))) //
+                        Indolently.tuple( //
+                            self.apply(Indolently.tuple(x - 1, y, z)), //
+                            self.apply(Indolently.tuple(y - 1, z, x)), //
+                            self.apply(Indolently.tuple(z - 1, x, y))))) //
                     .none(y);
-            }).memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
+            }).memoize().apply(Indolently.tuple(20, 6, 0))).isEqualTo(20);
     }
 
     /**
@@ -142,20 +141,20 @@ public class FunctionalTest {
 
         final SFunc<$3<Integer, Integer, Integer>, Integer> tarai = func(self -> { }, (self, v) -> {
 
-            final int x = v._1;
-            final int y = v._2;
-            final int z = v._3;
+            final int x = v._1();
+            final int y = v._2();
+            final int z = v._3();
 
             return when(() -> (y < x)) //
                 .then(() -> (int) self.apply( //
-                    tuple( //
-                        self.apply(tuple(x - 1, y, z)), //
-                        self.apply(tuple(y - 1, z, x)), //
-                        self.apply(tuple(z - 1, x, y))))) //
+                    Indolently.tuple( //
+                        self.apply(Indolently.tuple(x - 1, y, z)), //
+                        self.apply(Indolently.tuple(y - 1, z, x)), //
+                        self.apply(Indolently.tuple(z - 1, x, y))))) //
                 .none(y);
         });
 
-        assertThat(tarai.memoize().apply(tuple(20, 6, 0))).isEqualTo(20);
+        assertThat(tarai.memoize().apply(Indolently.tuple(20, 6, 0))).isEqualTo(20);
     }
 
     /**

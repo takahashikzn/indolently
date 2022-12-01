@@ -25,225 +25,149 @@ import static jp.root42.indolently.Indolently.*;
 
 
 /**
- * Three element tuple.
+ * Three element record.
  *
  * @param <T1> 1st element type
  * @param <T2> 2nd element type
  * @param <T3> 3rd element type
  * @author takahashikzn
  */
-public class $3<T1, T2, T3>
-    implements Serializable, Consumer3<T1, T2, T3>, Supplier<$3<T1, T2, T3>>, Consumer<$3<T1, T2, T3>> {
+public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
+    implements Elem3<T1, T2, T3>, Serializable {
 
-    private static final long serialVersionUID = 1387913510813532191L;
-
-    /** first element */
-    @SuppressWarnings("PublicField")
-    public T1 _1; // NOPMD
-
-    /** second element */
-    @SuppressWarnings("PublicField")
-    public T2 _2; // NOPMD
-
-    /** third element */
-    @SuppressWarnings("PublicField")
-    public T3 _3; // NOPMD
-
-    @Destructive
-    @Override
-    public void accept(final $3<T1, T2, T3> that) {
-        this._1 = that._1;
-        this._2 = that._2;
-        this._3 = that._3;
-    }
-
-    /**
-     * set elements then return {@code this} instance.
-     *
-     * @param that the element supplier
-     * @return {@code this} instance
-     */
-    @Destructive
-    public $3<T1, T2, T3> set(final $3<? extends T1, ? extends T2, ? extends T3> that) {
-        return (that == null) ? this.set(null, null, null) : this.set(that._1, that._2, that._3);
-    }
-
-    /**
-     * set elements then return {@code this} instance.
-     *
-     * @param _1 first element
-     * @param _2 second element
-     * @param _3 third element
-     * @return {@code this} instance
-     */
-    @Destructive
-    public $3<T1, T2, T3> set(final T1 _1, final T2 _2, final T3 _3) {
-        this.accept(_1, _2, _3);
-        return this;
-    }
-
-    @Override
-    public $3<T1, T2, T3> get() { return this;}
-
-    @Destructive
-    @Override
-    public void accept(final T1 _1, final T2 _2, final T3 _3) {
-        this._1 = _1;
-        this._2 = _2;
-        this._3 = _3;
-    }
-
-    /**
-     * get 1st element
-     *
-     * @return 1st element
-     */
-    public T1 _1() { return this._1; }
-
-    /**
-     * set 1st element
-     *
-     * @param _1 1st element
-     * @return {@code this}
-     */
-    @Destructive
-    public $3<T1, T2, T3> _1(final T1 _1) {
-        this._1 = _1;
-        return this;
-    }
-
-    /**
-     * get 2nd element
-     *
-     * @return 2nd element
-     */
-    public T2 _2() { return this._2; }
-
-    /**
-     * set 2nd element
-     *
-     * @param _2 2st element
-     * @return {@code this}
-     */
-    @Destructive
-    public $3<T1, T2, T3> _2(final T2 _2) {
-        this._2 = _2;
-        return this;
-    }
-
-    /**
-     * get 3rt element
-     *
-     * @return 1st element
-     */
-    public T3 _3() { return this._3; }
-
-    /**
-     * set 3rd element
-     *
-     * @param _3 3rd element
-     * @return {@code this}
-     */
-    @Destructive
-    public $3<T1, T2, T3> _3(final T3 _3) {
-        this._3 = _3;
-        return this;
-    }
-
-    /**
-     * expand to all combination of two element tuples.
-     *
-     * @return all combination of two element tuples
-     */
     public $3<$2<T1, T2>, $2<T2, T3>, $2<T1, T3>> _12_23_13() { return tuple(this._12(), this._23(), this._13()); }
 
-    /**
-     * get duo of first and second element.
-     *
-     * @return duo of first and second element
-     */
     public $2<T1, T2> _12() { return tuple(this._1, this._2); }
 
-    /**
-     * get duo of second and third element.
-     *
-     * @return duo of second and third element
-     */
     public $2<T2, T3> _23() { return tuple(this._2, this._3); }
 
-    /**
-     * get duo of first and third element.
-     *
-     * @return duo of first and third element
-     */
     public $2<T1, T3> _13() { return tuple(this._1, this._3); }
 
-    /**
-     * set first and second element the return {@code this} instance.
-     *
-     * @param t first and second element
-     * @return {@code this} instance
-     */
-    @Destructive
-    public $3<T1, T2, T3> _12(final $2<T1, T2> t) {
-        this._1 = t._1;
-        this._2 = t._2;
-        return this;
-    }
-
-    /**
-     * set second and third element the return {@code this} instance.
-     *
-     * @param t second and third element
-     * @return {@code this} instance
-     */
-    @Destructive
-    public $3<T1, T2, T3> _23(final $2<T2, T3> t) {
-        this._2 = t._1;
-        this._3 = t._2;
-        return this;
-    }
-
-    /**
-     * set first and third element the return {@code this} instance.
-     *
-     * @param t first and third element
-     * @return {@code this} instance
-     */
-    @Destructive
-    public $3<T1, T2, T3> _13(final $2<T1, T3> t) {
-        this._1 = t._1;
-        this._3 = t._2;
-        return this;
-    }
-
-    /**
-     * create order reversed tuple.
-     *
-     * @return newly constructed reversed tuple
-     */
     public $3<T3, T2, T1> _321() { return tuple(this._3, this._2, this._1); }
 
-    /**
-     * rotate this tuple.
-     *
-     * @return rotated tuple
-     */
     public $3<T3, T1, T2> _312() { return tuple(this._3, this._1, this._2); }
 
-    @Override
-    public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2, this._3); }
+    public mutable<T1, T2, T3> mutable() { return new mutable<T1, T2, T3>()._1(this._1)._2(this._2)._3(this._3); }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof $3)) return false;
+    public static final class mutable<T1, T2, T3>
+        implements Elem3<T1, T2, T3>, Serializable, Consumer3<T1, T2, T3>, Supplier<mutable<T1, T2, T3>>,
+        Consumer<mutable<T1, T2, T3>> {
 
-        final $3<?, ?, ?> that = cast(o);
+        private mutable() { }
 
-        return equiv(this._1, that._1) && equiv(this._2, that._2) && equiv(this._3, that._3);
+        @SuppressWarnings("PublicField")
+        public T1 _1; // NOPMD
+
+        @SuppressWarnings("PublicField")
+        public T2 _2; // NOPMD
+
+        @SuppressWarnings("PublicField")
+        public T3 _3; // NOPMD
+
+        @Destructive
+        @Override
+        public void accept(final mutable<T1, T2, T3> that) {
+            this._1 = that._1;
+            this._2 = that._2;
+            this._3 = that._3;
+        }
+
+        @Destructive
+        public mutable<T1, T2, T3> set(final mutable<? extends T1, ? extends T2, ? extends T3> that) {
+            return (that == null) ? this.set(null, null, null) : this.set(that._1, that._2, that._3);
+        }
+
+        @Destructive
+        public mutable<T1, T2, T3> set(final T1 _1, final T2 _2, final T3 _3) {
+            this.accept(_1, _2, _3);
+            return this;
+        }
+
+        @Override
+        public mutable<T1, T2, T3> get() { return this; }
+
+        @Destructive
+        @Override
+        public void accept(final T1 _1, final T2 _2, final T3 _3) {
+            this._1 = _1;
+            this._2 = _2;
+            this._3 = _3;
+        }
+
+        @Override
+        public T1 _1() { return this._1; }
+
+        @Destructive
+        public mutable<T1, T2, T3> _1(final T1 _1) {
+            this._1 = _1;
+            return this;
+        }
+
+        @Override
+        public T2 _2() { return this._2; }
+
+        @Destructive
+        public mutable<T1, T2, T3> _2(final T2 _2) {
+            this._2 = _2;
+            return this;
+        }
+
+        @Override
+        public T3 _3() { return this._3; }
+
+        @Destructive
+        public mutable<T1, T2, T3> _3(final T3 _3) {
+            this._3 = _3;
+            return this;
+        }
+
+        public mutable<$2.mutable<T1, T2>, $2.mutable<T2, T3>, $2.mutable<T1, T3>> _12_23_13() {
+            return tuple(this._12(), this._23(), this._13()).mutable();
+        }
+
+        public $2.mutable<T1, T2> _12() { return tuple(this._1, this._2).mutable(); }
+
+        public $2.mutable<T2, T3> _23() { return tuple(this._2, this._3).mutable(); }
+
+        public $2.mutable<T1, T3> _13() { return tuple(this._1, this._3).mutable(); }
+
+        @Destructive
+        public mutable<T1, T2, T3> _12(final $2.mutable<T1, T2> t) {
+            this._1 = t._1;
+            this._2 = t._2;
+            return this;
+        }
+
+        @Destructive
+        public mutable<T1, T2, T3> _23(final $2.mutable<T2, T3> t) {
+            this._2 = t._1;
+            this._3 = t._2;
+            return this;
+        }
+
+        @Destructive
+        public mutable<T1, T2, T3> _13(final $2.mutable<T1, T3> t) {
+            this._1 = t._1;
+            this._3 = t._2;
+            return this;
+        }
+
+        public mutable<T3, T2, T1> _321() { return tuple(this._3, this._2, this._1).mutable(); }
+
+        public mutable<T3, T1, T2> _312() { return tuple(this._3, this._1, this._2).mutable(); }
+
+        public $3<T1, T2, T3> immutable() { return tuple(this._1, this._2, this._3); }
+
+        @Override
+        public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2, this._3); }
+
+        @Override
+        public boolean equals(final Object o) {
+            return this == o || (o instanceof $3.mutable that && equiv(this._1, that._1) && equiv(this._2, that._2)
+                && equiv(this._3, that._3));
+        }
+
+        @Override
+        public String toString() { return String.format("(%s, %s, %s)", this._1, this._2, this._3); }
     }
-
-    @Override
-    public String toString() { return String.format("(%s, %s, %s)", this._1, this._2, this._3); }
 }

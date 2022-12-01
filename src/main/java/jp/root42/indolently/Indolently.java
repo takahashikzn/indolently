@@ -77,6 +77,8 @@ import jp.root42.indolently.ref.$long;
 import jp.root42.indolently.ref.$short;
 import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.ref.$voidc;
+import jp.root42.indolently.ref.Elem2;
+import jp.root42.indolently.ref.Elem3;
 import jp.root42.indolently.ref.Ref;
 import jp.root42.indolently.regex.AutomatonTest;
 import jp.root42.indolently.regex.ReTest;
@@ -1935,43 +1937,58 @@ public class Indolently {
     }
 
     /**
-     * create two element tuple.
+     * create two element immutable tuple.
      *
      * @param _1 1st element
      * @param _2 2nd element
      * @return tuple
      */
-    public static <F, S> $2<F, S> tuple(final F _1, final S _2) { return new $2<F, S>()._1(_1)._2(_2); }
+    public static <F, S> $2<F, S> tuple(final F _1, final S _2) { return new $2<>(_1, _2); }
 
     /**
-     * create three element tuple.
+     * create two element immutable tuple.
      *
      * @param _1 1st element
      * @param _2 2nd element
      * @param _3 3rd element
      * @return tuple
      */
-    public static <F, S, T> $3<F, S, T> tuple(final F _1, final S _2, final T _3) {
-        return new $3<F, S, T>()._1(_1)._2(_2)._3(_3);
+    public static <F, S, T> $3<F, S, T> tuple(final F _1, final S _2, final T _3) { return new $3<>(_1, _2, _3); }
+
+    /**
+     * create two element mutable tuple.
+     *
+     * @param _1 1st element
+     * @param _2 2nd element
+     * @return tuple
+     */
+    @Deprecated
+    public static <F, S> $2.mutable<F, S> mtuple(final F _1, final S _2) { return tuple(_1, _2).mutable(); }
+
+    /**
+     * create three element mutable tuple.
+     *
+     * @param _1 1st element
+     * @param _2 2nd element
+     * @param _3 3rd element
+     * @return tuple
+     */
+    @Deprecated
+    public static <F, S, T> $3.mutable<F, S, T> mtuple(final F _1, final S _2, final T _3) {
+        return tuple(_1, _2, _3).mutable();
     }
 
-    public static <F, S> Function<$2<F, S>, F> _1() { return x -> x._1; }
+    public static <F> Function<Elem2<F, ?>, F> _1() { return x -> x._1(); }
 
-    public static <F, S> Function<$2<F, S>, S> _2() { return x -> x._2; }
+    public static <S> Function<Elem2<?, S>, S> _2() { return x -> x._2(); }
 
-    public static <F, S, T> Function<$3<F, S, T>, F> _1of3() { return x -> x._1; }
-
-    public static <F, S, T> Function<$3<F, S, T>, S> _2of3() { return x -> x._2; }
-
-    public static <F, S, T> Function<$3<F, S, T>, T> _3of3() { return x -> x._3; }
+    public static <T> Function<Elem3<?, ?, T>, T> _3() { return x -> x._3(); }
 
     public static <T, R> Function<List<T>, List<R>> mapl(final Function<T, R> f) {
         return (List<T> list) -> $(list).map(f);
     }
 
-    public static <T, R> Function<Set<T>, Set<R>> maps(final Function<T, R> f) {
-        return (Set<T> set) -> $(set).map(f);
-    }
+    public static <T, R> Function<Set<T>, Set<R>> maps(final Function<T, R> f) { return (Set<T> set) -> $(set).map(f); }
 
     public static <K, T, R> Function<Map<K, T>, Map<K, R>> mapm(final Function<T, R> f) {
         return (Map<K, T> map) -> $(map).map(f);
@@ -1983,7 +2000,9 @@ public class Indolently {
      * @param tuple two element tuple
      * @return list of tuple elements
      */
-    public static <T> $list<T> list(final $2<? extends T, ? extends T> tuple) { return list(tuple._1, tuple._2); }
+    public static <T> $list<T> list(final $2.mutable<? extends T, ? extends T> tuple) {
+        return list(tuple._1, tuple._2);
+    }
 
     /**
      * Convert tuple to list.
@@ -1991,7 +2010,7 @@ public class Indolently {
      * @param tuple three element tuple
      * @return list of tuple elements
      */
-    public static <T> $list<T> list(final $3<? extends T, ? extends T, ? extends T> tuple) {
+    public static <T> $list<T> list(final $3.mutable<? extends T, ? extends T, ? extends T> tuple) {
         return list(tuple._1, tuple._2, tuple._3);
     }
 
@@ -2770,8 +2789,8 @@ public class Indolently {
     public static List<String> split(final String s, final char sep) { return split(s, sep, 0, s.length()); }
 
     public static List<String> split(final String s, final char sep, int from, int to) {
-        if (from < 0) { from = s.length() + from; }
-        if (to < 0) { to = s.length() + to; }
+        if (from < 0) from = s.length() + from;
+        if (to < 0) to = s.length() + to;
         checkSplitRange(s, from, to);
 
         final var chars = s.toCharArray();
@@ -2801,8 +2820,8 @@ public class Indolently {
         if (sl == 0) return list(s);
         if (sl == 1) return split(s, sep.charAt(0), from, to);
 
-        if (from < 0) { from = s.length() + from; }
-        if (to < 0) { to = s.length() + to; }
+        if (from < 0) from = s.length() + from;
+        if (to < 0) to = s.length() + to;
         checkSplitRange(s, from, to);
 
         final int begin = from;

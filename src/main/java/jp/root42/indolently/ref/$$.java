@@ -22,27 +22,13 @@ import static jp.root42.indolently.Indolently.*;
 /**
  * @author takahashikzn
  */
-public final class $$<L, R> {
+public record $$<L, R>($<L> l, $<R> r) {
 
     public enum None { NONE }
 
-    private final $<L> l;
+    public static <L, R> $$<L, R> left(final L l) { return new $$<>($.of(l), none()); }
 
-    private final $<R> r;
-
-    private $$(final L l, final R r) {
-        assert (l == null) ^ (r == null);
-        this.l = $.of(l);
-        this.r = $.of(r);
-    }
-
-    public static <L, R> $$<L, R> left(final L l) { return new $$<>(l, null); }
-
-    public static <L, R> $$<L, R> right(final R r) { return new $$<>(null, r); }
-
-    public $<L> l() { return this.l; }
-
-    public $<R> r() { return this.r; }
+    public static <L, R> $$<L, R> right(final R r) { return new $$<>(none(), $.of(r)); }
 
     public boolean isL() { return this.l.present(); }
 
