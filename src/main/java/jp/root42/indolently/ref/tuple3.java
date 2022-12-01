@@ -6,8 +6,8 @@ package jp.root42.indolently.ref;
 /**
  * @author takahashikzn
  */
-public interface Elem3<T1, T2, T3>
-    extends Elem2<T1, T2> {
+public interface tuple3<T1, T2, T3>
+    extends tuple2<T1, T2> {
 
     T3 _3();
 }

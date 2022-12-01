@@ -6,7 +6,7 @@ package jp.root42.indolently.ref;
 /**
  * @author takahashikzn
  */
-public interface Elem2<T1, T2> {
+public interface tuple2<T1, T2> {
 
     T1 _1();
 

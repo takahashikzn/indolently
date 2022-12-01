@@ -15,40 +15,19 @@ package jp.root42.indolently.ref;
 
 /**
  * @author takahashikzn
- * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $byte
-    extends AbstractRef<Byte, $byte>
-    implements NumberRef<Byte, $byte>, Comparable<$byte> {
+public final class $byte
+    extends _ref_num<Byte, $byte> {
 
-    private static final long serialVersionUID = -6479571510369831870L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public byte $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $byte() { this((byte) 0); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $byte(final byte $) { this.$ = $; }
+    $byte(final byte $) { this.$ = $; }
 
     @Override
     public void accept(final Byte ＄) { this.$ = ＄; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param ＄ value
-     * @return {@code this}
-     */
     public $byte set(final byte ＄) {
         this.$ = ＄;
         return this;
@@ -56,6 +35,9 @@ public class $byte
 
     @Override
     public Byte get() { return this.$; }
+
+    @Override
+    public byte byteValue() { return this.$; }
 
     @Override
     public int compareTo(final $byte that) { return this.compareTo(that.$); }

@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package jp.root42.indolently.ref;
 
 import java.util.function.LongConsumer;
@@ -19,40 +20,20 @@ import java.util.function.LongSupplier;
 
 /**
  * @author takahashikzn
- * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $long
-    extends AbstractRef<Long, $long>
-    implements NumberRef<Long, $long>, Comparable<$long>, LongSupplier, LongConsumer {
+public final class $long
+    extends _ref_num<Long, $long>
+    implements LongSupplier, LongConsumer {
 
-    private static final long serialVersionUID = -5582550853171233363L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public long $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $long() { this(0); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $long(final long $) { this.$ = $; }
+    $long(final long $) { this.$ = $; }
 
     @Override
     public void accept(final Long $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $long set(final long $) {
         this.$ = $;
         return this;
@@ -60,6 +41,9 @@ public class $long
 
     @Override
     public Long get() { return this.$; }
+
+    @Override
+    public long longValue() { return this.$; }
 
     @Override
     public void accept(final long $) { this.$ = $; }

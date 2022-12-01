@@ -15,40 +15,19 @@ package jp.root42.indolently.ref;
 
 /**
  * @author takahashikzn
- * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $short
-    extends AbstractRef<Short, $short>
-    implements NumberRef<Short, $short>, Comparable<$short> {
+public final class $short
+    extends _ref_num<Short, $short> {
 
-    private static final long serialVersionUID = -6819998391641172785L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public short $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $short() { this((short) 0); /* NOPMD*/ }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $short(final short $) { /* NOPMD*/this.$ = $; }
+    $short(final short $) { /* NOPMD*/this.$ = $; }
 
     @Override
     public void accept(final Short $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $short set(final short $) { // NOPMD
         this.$ = $;
         return this;
@@ -56,6 +35,9 @@ public class $short
 
     @Override
     public Short get() { return this.$; }
+
+    @Override
+    public short shortValue() { return this.$; }
 
     @Override
     public int compareTo(final $short that) { return this.compareTo(that.$); }

@@ -33,7 +33,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
-    implements Elem3<T1, T2, T3>, Serializable {
+    implements tuple3<T1, T2, T3>, Serializable {
 
     public $3<$2<T1, T2>, $2<T2, T3>, $2<T1, T3>> _12_23_13() { return tuple(this._12(), this._23(), this._13()); }
 
@@ -50,7 +50,7 @@ public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
     public mutable<T1, T2, T3> mutable() { return new mutable<T1, T2, T3>()._1(this._1)._2(this._2)._3(this._3); }
 
     public static final class mutable<T1, T2, T3>
-        implements Elem3<T1, T2, T3>, Serializable, Consumer3<T1, T2, T3>, Supplier<mutable<T1, T2, T3>>,
+        implements tuple3<T1, T2, T3>, Serializable, Consumer3<T1, T2, T3>, Supplier<mutable<T1, T2, T3>>,
         Consumer<mutable<T1, T2, T3>> {
 
         private mutable() { }

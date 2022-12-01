@@ -19,40 +19,20 @@ import java.util.function.DoubleSupplier;
 
 /**
  * @author takahashikzn
- * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $double
-    extends AbstractRef<Double, $double>
-    implements NumberRef<Double, $double>, Comparable<$double>, DoubleSupplier, DoubleConsumer {
+public final class $double
+    extends _ref_num<Double, $double>
+    implements DoubleSupplier, DoubleConsumer {
 
-    private static final long serialVersionUID = -3198217652103277386L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public double $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $double() { this(0); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $double(final double $) { this.$ = $; }
+    $double(final double $) { this.$ = $; }
 
     @Override
     public void accept(final Double $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $double set(final double $) {
         this.$ = $;
         return this;
@@ -60,6 +40,9 @@ public class $double
 
     @Override
     public Double get() { return this.$; }
+
+    @Override
+    public double doubleValue() { return this.$; }
 
     @Override
     public void accept(final double $) { this.$ = $; }

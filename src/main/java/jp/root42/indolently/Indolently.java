@@ -77,9 +77,9 @@ import jp.root42.indolently.ref.$long;
 import jp.root42.indolently.ref.$short;
 import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.ref.$voidc;
-import jp.root42.indolently.ref.Elem2;
-import jp.root42.indolently.ref.Elem3;
-import jp.root42.indolently.ref.Ref;
+import jp.root42.indolently.ref.ref;
+import jp.root42.indolently.ref.tuple2;
+import jp.root42.indolently.ref.tuple3;
 import jp.root42.indolently.regex.AutomatonTest;
 import jp.root42.indolently.regex.ReTest;
 import jp.root42.indolently.regex.Regex;
@@ -1978,11 +1978,11 @@ public class Indolently {
         return tuple(_1, _2, _3).mutable();
     }
 
-    public static <F> Function<Elem2<F, ?>, F> _1() { return x -> x._1(); }
+    public static <F> Function<tuple2<F, ?>, F> _1() { return x -> x._1(); }
 
-    public static <S> Function<Elem2<?, S>, S> _2() { return x -> x._2(); }
+    public static <S> Function<tuple2<?, S>, S> _2() { return x -> x._2(); }
 
-    public static <T> Function<Elem3<?, ?, T>, T> _3() { return x -> x._3(); }
+    public static <T> Function<tuple3<?, ?, T>, T> _3() { return x -> x._3(); }
 
     public static <T, R> Function<List<T>, List<R>> mapl(final Function<T, R> f) {
         return (List<T> list) -> $(list).map(f);
@@ -2020,7 +2020,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $bool ref(final boolean val) { return Ref.of(val); }
+    public static $bool ref(final boolean val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2028,7 +2028,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $int ref(final int val) { return Ref.of(val); }
+    public static $int ref(final int val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2036,7 +2036,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $long ref(final long val) { return Ref.of(val); }
+    public static $long ref(final long val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2044,7 +2044,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $double ref(final double val) { return Ref.of(val); }
+    public static $double ref(final double val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2052,7 +2052,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $float ref(final float val) { return Ref.of(val); }
+    public static $float ref(final float val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2060,7 +2060,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $short ref(final short val) { return Ref.of(val); }
+    public static $short ref(final short val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2068,7 +2068,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $byte ref(final byte val) { return Ref.of(val); }
+    public static $byte ref(final byte val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2076,7 +2076,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static $char ref(final char val) { return Ref.of(val); }
+    public static $char ref(final char val) { return ref.of(val); }
 
     /**
      * create a reference of value.
@@ -2084,14 +2084,14 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static <T> $void<T> ref(final T val) { return Ref.of(val); }
+    public static <T> $void<T> ref(final T val) { return ref.of(val); }
 
     /**
      * create an empty reference.
      *
      * @return empty reference
      */
-    public static <T> $void<T> ref() { return Ref.of((T) null); }
+    public static <T> $void<T> ref() { return ref.of((T) null); }
 
     /**
      * create a reference of value.
@@ -2099,7 +2099,7 @@ public class Indolently {
      * @param val initial value
      * @return reference of value
      */
-    public static <T extends Comparable<T>> $voidc<T> ref(final T val) { return Ref.of(val); }
+    public static <T extends Comparable<T>> $voidc<T> ref(final T val) { return ref.of(val); }
 
     // CHECKSTYLE:OFF
     public static <K, V> $map<K, V> map(final K k0, final V v0, final K k1, final V v1) {

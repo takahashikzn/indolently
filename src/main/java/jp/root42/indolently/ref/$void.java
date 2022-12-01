@@ -18,35 +18,16 @@ package jp.root42.indolently.ref;
  * @author takahashikzn
  */
 public class $void<T>
-    extends AbstractRef<T, $void<T>> {
+    extends _ref_nonNum<T, $void<T>> {
 
-    private static final long serialVersionUID = 2548417883489580934L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public T $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $void() { this(null); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $void(final T $) { this.$ = $; }
+    $void(final T $) { this.$ = $; }
 
     @Override
     public void accept(final T $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $void<T> set(final T $) {
         this.$ = $;
         return this;

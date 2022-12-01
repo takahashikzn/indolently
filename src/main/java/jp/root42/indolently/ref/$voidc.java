@@ -21,66 +21,24 @@ import jp.root42.indolently.Indolently;
  * @author takahashikzn
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $voidc<T extends Comparable<T>>
+public final class $voidc<T extends Comparable<T>>
     extends $void<T>
-    implements Comparable<Ref<? extends T, ? extends Ref<? extends T, ?>>> {
+    implements Comparable<ref<? extends T, ? extends ref<? extends T, ?>>> {
 
-    private static final long serialVersionUID = 8031677453769730996L;
-
-    /**
-     * constructor.
-     */
-    protected $voidc() {}
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $voidc(final T $) { super($); }
+    $voidc(final T $) { super($); }
 
     @Override
-    public int compareTo(final Ref<? extends T, ? extends Ref<? extends T, ?>> that) {
+    public int compareTo(final ref<? extends T, ? extends ref<? extends T, ?>> that) {
         return this.get().compareTo(that.get());
     }
 
-    /**
-     * test if value is equivalent or not.
-     *
-     * @param $ value to compare.
-     * @return test result
-     */
     public boolean equiv(final T $) { return Indolently.equiv(this.get(), $); }
 
-    /**
-     * compute largest value.
-     *
-     * @param that comparison target
-     * @return largest value.
-     */
-    public T max(final Ref<? extends T, ?> that) { return Indolently.max(this.get(), that.get()); }
+    public T max(final ref<? extends T, ?> that) { return Indolently.max(this.get(), that.get()); }
 
-    /**
-     * compute largest value.
-     *
-     * @param $ comparison target
-     * @return largest value.
-     */
     public T max(final T $) { return Indolently.max(this.get(), $); }
 
-    /**
-     * compute smallest value.
-     *
-     * @param that comparison target
-     * @return smallest value.
-     */
-    public T min(final Ref<? extends T, ?> that) { return Indolently.min(this.get(), that.get()); }
+    public T min(final ref<? extends T, ?> that) { return Indolently.min(this.get(), that.get()); }
 
-    /**
-     * compute smallest value.
-     *
-     * @param $ comparison target
-     * @return smallest value.
-     */
     public T min(final T $) { return Indolently.min(this.get(), $); }
 }

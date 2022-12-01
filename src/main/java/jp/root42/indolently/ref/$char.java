@@ -18,37 +18,18 @@ package jp.root42.indolently.ref;
  * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $char
-    extends AbstractRef<Character, $char>
+public final class $char
+    extends _ref_nonNum<Character, $char>
     implements Comparable<$char> {
 
-    private static final long serialVersionUID = 6739224434382670429L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public char $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $char() { this((char) 0); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $char(final char $) { this.$ = $; }
+    $char(final char $) { this.$ = $; }
 
     @Override
     public void accept(final Character $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $char set(final char $) {
         this.$ = $;
         return this;
@@ -56,6 +37,8 @@ public class $char
 
     @Override
     public Character get() { return this.$; }
+
+    public char charValue() { return this.$; }
 
     @Override
     public int compareTo(final $char that) { return this.compareTo(that.$); }

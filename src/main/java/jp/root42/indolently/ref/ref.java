@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -26,7 +28,7 @@ import jp.root42.indolently.trait.Identical;
  * @param <S> self type
  * @author takahashikzn
  */
-public interface Ref<T, S extends Ref<T, S>>
+public interface ref<T, S extends ref<T, S>>
     extends Supplier<T>, Consumer<T>, Identical<S> {
 
     /**
@@ -164,4 +166,65 @@ public interface Ref<T, S extends Ref<T, S>>
      * @return reference of value
      */
     static <T extends Comparable<T>> $voidc<T> of(final T val) { return new $voidc<>(val); }
+}
+
+interface _num<T extends Number, S extends _num<T, S>>
+    extends ref<T, S> {
+
+    S add(T val);
+
+    S mul(T val);
+
+    S div(T val);
+
+    S negate();
+}
+
+abstract class _ref_num<T extends Number, SELF extends _ref_num<T, SELF>>
+    extends Number
+    implements _num<T, SELF>, Comparable<SELF> {
+
+    @Override
+    public int intValue() { return this.get().intValue(); }
+
+    @Override
+    public long longValue() { return this.get().longValue(); }
+
+    @Override
+    public float floatValue() { return this.get().floatValue(); }
+
+    @Override
+    public double doubleValue() { return this.get().doubleValue(); }
+
+    @Override
+    public int hashCode() { return Objects.hash(this.get()); }
+
+    @Override
+    public boolean equals(final Object o) {
+        return o == this || (o instanceof _ref_num that && this.get().equals(that.get()));
+    }
+
+    @Override
+    public String toString() { return "" + this.get(); }
+}
+
+abstract class _ref_nonNum<T, S extends _ref_nonNum<T, S>>
+    implements Serializable, ref<T, S> {
+
+    @Override
+    public int hashCode() { return this.getClass().hashCode() ^ Objects.hashCode(this.get()) ^ 13; }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (!o.getClass().isInstance(o)) return false;
+
+        @SuppressWarnings("unchecked")
+        final var that = (_ref_nonNum<T, ?>) o;
+
+        return Objects.equals(this.get(), that.get());
+    }
+
+    @Override
+    public String toString() { return String.format("%s(%s)", this.getClass().getSimpleName(), this.get()); }
 }

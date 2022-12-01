@@ -32,7 +32,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public record $2<T1, T2>(T1 _1, T2 _2)
-    implements Elem2<T1, T2>, Serializable {
+    implements tuple2<T1, T2>, Serializable {
 
     public $2<T1, T2> _1(final T1 _1) { return tuple(_1, this._2); }
 
@@ -43,7 +43,7 @@ public record $2<T1, T2>(T1 _1, T2 _2)
     public mutable<T1, T2> mutable() { return new mutable<T1, T2>()._1(this._1)._2(this._2); }
 
     public static final class mutable<T1, T2>
-        implements Elem2<T1, T2>, Serializable, BiConsumer<T1, T2>, Supplier<mutable<T1, T2>>,
+        implements tuple2<T1, T2>, Serializable, BiConsumer<T1, T2>, Supplier<mutable<T1, T2>>,
         Consumer<mutable<T1, T2>> {
 
         private mutable() { }

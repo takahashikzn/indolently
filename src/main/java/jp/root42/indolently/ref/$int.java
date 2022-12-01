@@ -19,40 +19,20 @@ import java.util.function.IntSupplier;
 
 /**
  * @author takahashikzn
- * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $int
-    extends AbstractRef<Integer, $int>
-    implements NumberRef<Integer, $int>, Comparable<$int>, IntSupplier, IntConsumer {
+public final class $int
+    extends _ref_num<Integer, $int>
+    implements IntSupplier, IntConsumer {
 
-    private static final long serialVersionUID = -5827553121494604722L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public int $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $int() { this(0); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $int(final int $) { this.$ = $; }
+    $int(final int $) { this.$ = $; }
 
     @Override
     public void accept(final Integer $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $int set(final int $) {
         this.$ = $;
         return this;
@@ -60,6 +40,9 @@ public class $int
 
     @Override
     public Integer get() { return this.$; }
+
+    @Override
+    public int intValue() { return this.$; }
 
     @Override
     public int getAsInt() { return this.$; }

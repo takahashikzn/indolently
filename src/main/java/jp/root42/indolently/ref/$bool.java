@@ -21,40 +21,20 @@ import jp.root42.indolently.function.Statement;
 
 /**
  * @author takahashikzn
- * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $bool
-    extends AbstractRef<Boolean, $bool>
+public final class $bool
+    extends _ref_nonNum<Boolean, $bool>
     implements Comparable<$bool>, BooleanSupplier {
 
-    private static final long serialVersionUID = 8087914133902951131L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public boolean $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $bool() { this(false); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $bool(final boolean $) { this.$ = $; }
+    $bool(final boolean $) { this.$ = $; }
 
     @Override
     public void accept(final Boolean $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $bool set(final boolean $) {
         this.$ = $;
         return this;

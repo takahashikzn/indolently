@@ -15,40 +15,19 @@ package jp.root42.indolently.ref;
 
 /**
  * @author takahashikzn
- * @version $Id$
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public class $float
-    extends AbstractRef<Float, $float>
-    implements NumberRef<Float, $float>, Comparable<$float> {
+public final class $float
+    extends _ref_num<Float, $float> {
 
-    private static final long serialVersionUID = -6479571510369831870L;
-
-    /** the value. */
     @SuppressWarnings("PublicField")
     public float $; // NOPMD
 
-    /**
-     * constructor.
-     */
-    protected $float() { this(0); }
-
-    /**
-     * constructor.
-     *
-     * @param $ the value.
-     */
-    protected $float(final float $) { this.$ = $; }
+    $float(final float $) { this.$ = $; }
 
     @Override
     public void accept(final Float $) { this.$ = $; }
 
-    /**
-     * set value then return this instance.
-     *
-     * @param $ value
-     * @return {@code this}
-     */
     public $float set(final float $) {
         this.$ = $;
         return this;
@@ -56,6 +35,9 @@ public class $float
 
     @Override
     public Float get() { return this.$; }
+
+    @Override
+    public float floatValue() { return this.$; }
 
     @Override
     public int compareTo(final $float that) { return this.compareTo(that.$); }
