@@ -76,7 +76,6 @@ import jp.root42.indolently.ref.$int;
 import jp.root42.indolently.ref.$long;
 import jp.root42.indolently.ref.$short;
 import jp.root42.indolently.ref.$void;
-import jp.root42.indolently.ref.$voidc;
 import jp.root42.indolently.ref.ref;
 import jp.root42.indolently.ref.tuple2;
 import jp.root42.indolently.ref.tuple3;
@@ -2092,14 +2091,6 @@ public class Indolently {
      * @return empty reference
      */
     public static <T> $void<T> ref() { return ref.of((T) null); }
-
-    /**
-     * create a reference of value.
-     *
-     * @param val initial value
-     * @return reference of value
-     */
-    public static <T extends Comparable<T>> $voidc<T> ref(final T val) { return ref.of(val); }
 
     // CHECKSTYLE:OFF
     public static <K, V> $map<K, V> map(final K k0, final V v0, final K k1, final V v1) {

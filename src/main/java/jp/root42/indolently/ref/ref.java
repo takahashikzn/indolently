@@ -158,14 +158,6 @@ public interface ref<T, S extends ref<T, S>>
      * @return reference of value
      */
     static <T> $void<T> of(final T val) { return new $void<>(val); }
-
-    /**
-     * create a reference of value.
-     *
-     * @param val initial value
-     * @return reference of value
-     */
-    static <T extends Comparable<T>> $voidc<T> of(final T val) { return new $voidc<>(val); }
 }
 
 interface _num<T extends Number, S extends _num<T, S>>
