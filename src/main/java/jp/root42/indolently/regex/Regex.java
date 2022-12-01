@@ -13,6 +13,9 @@
 // limitations under the License.
 package jp.root42.indolently.regex;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import jp.root42.indolently.$list;
 
 
@@ -22,9 +25,9 @@ import jp.root42.indolently.$list;
  * @author takahashikzn.
  */
 public final class Regex
-    implements RegexBase<Regex.Ptrn, ReMatcher> {
+    implements RegexBase<Regex.Ptrn, ReMatcher<?, ?>> {
 
-    public interface Ptrn {
+    interface Ptrn {
 
         String pattern();
     }
@@ -46,10 +49,7 @@ public final class Regex
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RegexBase that)) return false;
-
-        return this.pattern().equals(that.pattern());
+        return this == o || (o instanceof RegexBase<?, ?> that && this.pattern().equals(that.pattern()));
     }
 
     @Override
@@ -66,4 +66,100 @@ public final class Regex
 
     @Override
     public $list<String> split(final CharSequence cs, final int limit) { return this.pattern.split(cs, limit); }
+}
+
+interface RegexBase<P, M extends ReMatcher<?, ?>>
+    extends ReTest, ReFindable {
+
+    /**
+     * Get Pattern instance which this object contains.
+     *
+     * @return Pattern instance which this object contains
+     */
+    P ptrn();
+
+    /**
+     * Create a matcher instance.
+     *
+     * @param cs the string to match
+     * @return created matcher instance
+     */
+    M matcher(CharSequence cs);
+
+    @Override
+    default boolean test(final CharSequence cs) { return this.matcher(cs).matches(); }
+
+    @Override
+    default boolean find(final CharSequence cs) { return this.matcher(cs).find(); }
+
+    /**
+     * Tokenize string by the regex pattern which this object expresses.
+     * This method is equivalent to {@code ptrn.split(cs, 0)}.
+     *
+     * @param cs the string to tokenize
+     * @return token list
+     */
+    default $list<String> split(final CharSequence cs) { return this.split(cs, 0); }
+
+    /**
+     * Tokenize string by the regex pattern which this object expresses.
+     *
+     * @param cs the string to tokenize
+     * @param limit The result threshold
+     * @return token list
+     * @see Pattern#split(CharSequence, int)
+     */
+    $list<String> split(CharSequence cs, int limit);
+
+    /**
+     * delegate for {@link java.util.regex.Matcher#replaceAll(String)}
+     *
+     * @param cs the string to replace
+     * @param replacement replacement string
+     * @return replaced string
+     */
+    default String replaceAll(final CharSequence cs, final String replacement) {
+        return this.matcher(cs).replaceAll(replacement);
+    }
+
+    /**
+     * delegate for {@link java.util.regex.Matcher#replaceFirst(String)}
+     *
+     * @param cs the string to replace
+     * @param replacement replacement string
+     * @return replaced string
+     */
+    default String replaceFirst(final CharSequence cs, final String replacement) {
+        return this.matcher(cs).replaceFirst(replacement);
+    }
+
+    /**
+     * replace matched character sequence.
+     *
+     * @param cs the string to replace
+     * @param f replace operator
+     * @return replaced string
+     * @see java.util.regex.Matcher#replaceAll(String)
+     */
+    default String replace(final CharSequence cs, final Function<String, String> f) {
+        return this.matcher(cs).replace(f);
+    }
+
+    /**
+     * replace matched character sequence.
+     *
+     * @param cs the string to replace
+     * @param f replace operator
+     * @return replaced string
+     * @see java.util.regex.Matcher#replaceAll(String)
+     */
+    default String replace(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
+        return this.matcher(cs).replace(f);
+    }
+
+    default String subst(final CharSequence cs, final Function<String, String> f) { return this.matcher(cs).subst(f); }
+
+    default String subst(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
+        return this.matcher(cs).subst(f);
+    }
 }
