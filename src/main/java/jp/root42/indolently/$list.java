@@ -307,9 +307,12 @@ public interface $list<T>
      * @param f value generator
      * @return newly constructed flatten list
      */
-    default <R> $list<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return list(this.iterator().flatten(f));
+    default <R> $list<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) {
+        return list(this.iterator().flat(f));
     }
+
+    @Deprecated
+    default <R> $list<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) { return this.flat(f); }
 
     /**
      * Return this instance if not empty, otherwise return {@code other}.

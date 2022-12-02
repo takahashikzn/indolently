@@ -103,13 +103,12 @@ public class $listTest {
     }
 
     /**
-     * Test of {@link $list#flatten(Function)}
+     * Test of {@link $list#flat(Function)}
      */
     @Test
     public void flatten() {
 
-        assertThat(list("123", "abc").flatten(x -> plist(x.toCharArray())))
-            .isEqualTo(list('1', '2', '3', 'a', 'b', 'c'));
+        assertThat(list("123", "abc").flat(x -> plist(x.toCharArray()))).isEqualTo(list('1', '2', '3', 'a', 'b', 'c'));
     }
 
     /**
@@ -279,7 +278,7 @@ public class $listTest {
         assertThat(list(1, 2, 3).chunk(4)).isEqualTo(listOf(list(1, 2, 3)));
         assertThat(list(1).chunk(2)).isEqualTo(listOf(list(1)));
         assertThat(list().chunk(2)).isEmpty();
-        assertThat(list(1, 2, 3, 4, 5, 6, 7, 8, 9).subList(3).chunk(2))
-            .isEqualTo(listOf(list(4, 5), list(6, 7), list(8, 9)));
+        assertThat(list(1, 2, 3, 4, 5, 6, 7, 8, 9).subList(3).chunk(2)).isEqualTo(
+            listOf(list(4, 5), list(6, 7), list(8, 9)));
     }
 }

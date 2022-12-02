@@ -171,7 +171,7 @@ public interface $iter<T>
         return Indolently.$(f.apply(this).iterator());
     }
 
-    default <R> $iter<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
+    default <R> $iter<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) {
         Objects.requireNonNull(f);
 
         return new $iter<R>() {

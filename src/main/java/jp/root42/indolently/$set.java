@@ -167,9 +167,12 @@ public interface $set<T>
      * @param f value generator
      * @return newly constructed flatten set
      */
-    default <R> $set<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return set(this.iterator().flatten(f));
+    default <R> $set<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) {
+        return set(this.iterator().flat(f));
     }
+
+    @Deprecated
+    default <R> $set<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) { return this.flat(f); }
 
     /**
      * Return this instance if not empty, otherwise return {@code other}.

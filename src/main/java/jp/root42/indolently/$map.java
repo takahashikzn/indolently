@@ -555,7 +555,7 @@ public interface $map<K, V>
      * @param f value generator
      * @return newly constructed flatten map
      */
-    default <RK, RV> $map<RK, RV> flatten(
+    default <RK, RV> $map<RK, RV> flat(
         final BiFunction<? super K, ? super V, ? extends Map<? extends RK, ? extends RV>> f) {
 
         return this.entries().reduce(Indolently.map(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
