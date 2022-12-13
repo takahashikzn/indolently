@@ -3045,7 +3045,7 @@ public class Indolently {
 
             if (warning) //
                 System.getLogger(FQCN(Indolently.class))
-                    .log(System.Logger.Level.WARNING, "delete disposed tempfile: path = %s", file.toAbsolutePath());
+                    .log(System.Logger.Level.WARNING, "delete disposed tempfile: path = {0}", file.toAbsolutePath());
 
             try { Files.deleteIfExists(file); } //
             catch (final NoSuchFileException ignored) { } //
