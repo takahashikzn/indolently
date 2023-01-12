@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ivy-module [
+  <!ENTITY compile_conf "compile->master(*)">
+  <!ENTITY runtime_conf "runtime->master(*)">
+  <!ENTITY test_conf "test->master(*)">
+  <!ENTITY mockito_version "5.0.0">
+  <!ENTITY bytebuddy_version "1.12.22">
+  ]>
 <!--
   Copyright 2014 takahashikzn
 
@@ -31,32 +38,34 @@
 
   <dependencies>
 
-    <dependency org="net.jodah" name="typetools" rev="0.6.3" conf="runtime->master(*)" />
+    <dependency org="net.jodah" name="typetools" rev="0.6.3" conf="&runtime_conf;" />
 
     <!-- optional dependencies for optimized performance -->
-    <dependency org="com.koloboke" name="koloboke-api-jdk8" rev="1.0.0" conf="compile->master(*)" />
+    <dependency org="com.koloboke" name="koloboke-api-jdk8" rev="1.0.0" conf="&compile_conf;" />
     <!--
-    <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="test->master(*)" />
+    <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="&test_conf;" />
     -->
-    <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.11" conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="11.1.0" conf="compile->master(*)" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="11.1.0" conf="compile->master(*)" />
+    <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.11" conf="&compile_conf;" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="11.1.0" conf="&compile_conf;" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="11.1.0" conf="&compile_conf;" />
 
-    <dependency org="com.google.re2j" name="re2j" rev="1.7" conf="compile->master(*)" />
-    <dependency org="dk.brics" name="automaton" rev="1.12-4" conf="compile->master(*)" />
-    <!--dependency org="com.gliwka.hyperscan" name="hyperscan" rev="0.6.2" conf="compile->master(*)" /-->
+    <dependency org="com.google.re2j" name="re2j" rev="1.7" conf="&compile_conf;" />
+    <dependency org="dk.brics" name="automaton" rev="1.12-4" conf="&compile_conf;" />
+    <!--dependency org="com.gliwka.hyperscan" name="hyperscan" rev="0.6.2" conf="&compile_conf;" /-->
 
-    <dependency org="commons-io" name="commons-io" rev="2.11.0" conf="compile->master(*)" />
+    <dependency org="commons-io" name="commons-io" rev="2.11.0" conf="&compile_conf;" />
 
-    <dependency org="junit" name="junit" rev="4.13.2" conf="test->master(*)" />
-    <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="test->master(*)" />
-    <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="test->master(*)" />
-    <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="test->master(*)" />
-    <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="test->master(*)" />
-    <dependency org="org.mockito" name="mockito-core" rev="4.10.0" conf="test->master(*)" />
-    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.12.20" conf="test->master(*)" />
-    <dependency org="org.objenesis" name="objenesis" rev="3.3" conf="test->master(*)" />
-    <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.1" conf="test->master(*)" />
+    <dependency org="junit" name="junit" rev="4.13.2" conf="&test_conf;" />
+    <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="&test_conf;" />
+    <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="&test_conf;" />
+    <dependency org="org.assertj" name="assertj-core" rev="3.23.2" conf="&test_conf;" />
+    <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" conf="&test_conf;" />
+    <dependency org="org.mockito" name="mockito-core" rev="&mockito_version;" conf="&test_conf;" />
+    <dependency org="org.mockito" name="mockito-subclass" rev="&mockito_version;" conf="&test_conf;" />
+    <dependency org="net.bytebuddy" name="byte-buddy" rev="&bytebuddy_version;" conf="&test_conf;" />
+    <dependency org="net.bytebuddy" name="byte-buddy-agent" rev="&bytebuddy_version;" conf="&test_conf;" />
+    <dependency org="org.objenesis" name="objenesis" rev="3.3" conf="&test_conf;" />
+    <dependency org="pl.pragmatists" name="JUnitParams" rev="1.1.1" conf="&test_conf;" />
 
   </dependencies>
 
