@@ -22,6 +22,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -48,10 +49,16 @@ public class Promissory {
 
     static {
         try {
+            final var builderCls = Class.forName("java.lang.Thread$Builder");
+            var builder = Thread.class.getDeclaredMethod("ofVirtual").invoke(null);
+            builder = builderCls.getMethod("name", String.class, long.class).invoke(builder, "virtual-", 0L);
+            final var factory = builderCls.getMethod("factory").invoke(builder);
+
             virtualThreadExecutor =
-                (Executor) Executors.class.getDeclaredMethod("newVirtualThreadPerTaskExecutor").invoke(null);
+                (Executor) Executors.class.getDeclaredMethod("newThreadPerTaskExecutor", ThreadFactory.class)
+                    .invoke(null, factory);
         } //
-        catch (final NoSuchMethodException ignored) { } //
+        catch (final ClassNotFoundException | NoSuchMethodException ignored) { } //
         catch (final InvocationTargetException | IllegalAccessException e) {
             if (!e.getCause().getMessage().contains("--enable-preview")) e.printStackTrace();
         }
