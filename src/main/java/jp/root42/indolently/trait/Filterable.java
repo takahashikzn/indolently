@@ -23,6 +23,9 @@ import java.util.function.Predicate;
  */
 public interface Filterable<T, SELF extends Filterable<T, SELF>> {
 
+    @Deprecated
+    default SELF filter(final Predicate<? super T> f) { return this.take(f); }
+
     /**
      * Filter operation: returns values which satisfying condition.
      * This operation is constructive.
@@ -30,10 +33,7 @@ public interface Filterable<T, SELF extends Filterable<T, SELF>> {
      * @param f condition
      * @return new filtered collection
      */
-    @Deprecated
-    SELF filter(Predicate<? super T> f);
-
-    default SELF take(final Predicate<? super T> f) { return this.filter(f); }
+    SELF take(Predicate<? super T> f);
 
     default SELF drop(final Predicate<? super T> f) { return this.take(f.negate()); }
 }

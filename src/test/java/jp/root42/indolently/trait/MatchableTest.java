@@ -57,16 +57,16 @@ public class MatchableTest {
     }
 
     /**
-     * Test of {@link Matchable#none(Predicate)}
+     * Test of {@link Matchable#non(Predicate)}
      */
     @Test
     public void none() {
 
-        assertFalse(map("123", 1, "456", 2).keys().none(x -> x.matches("\\d+")));
-        assertTrue(map("123", 1, "456", 2).keys().none(x -> x.matches("[A-Za-z]+")));
-        assertFalse(map("123", 1, "abc", 2).keys().none(x -> x.matches("[A-Za-z]+")));
+        assertFalse(map("123", 1, "456", 2).keys().non(x -> x.matches("\\d+")));
+        assertTrue(map("123", 1, "456", 2).keys().non(x -> x.matches("[A-Za-z]+")));
+        assertFalse(map("123", 1, "abc", 2).keys().non(x -> x.matches("[A-Za-z]+")));
 
-        assertTrue(map().keys().none(vrai()));
-        assertTrue(map().keys().none(faux()));
+        assertTrue(map().keys().non(vrai()));
+        assertTrue(map().keys().non(faux()));
     }
 }

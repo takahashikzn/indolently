@@ -34,16 +34,16 @@ import static org.assertj.core.api.Assertions.*;
 public class $iterTest {
 
     /**
-     * test of {@link $iter#filter(java.util.function.Predicate)}
+     * test of {@link $iter#take(java.util.function.Predicate)}
      */
     @Test
     public void filter() {
 
-        assertThat(range(1, 1).filter(x -> x < 0).hasNext()).isFalse();
-        assertThat(range(1, 2).filter(x -> x > 0).hasNext()).isTrue();
-        assertThat(range(1, 100000).filter(x -> x < 0).hasNext()).isFalse();
+        assertThat(range(1, 1).take(x -> x < 0).hasNext()).isFalse();
+        assertThat(range(1, 2).take(x -> x > 0).hasNext()).isTrue();
+        assertThat(range(1, 100000).take(x -> x < 0).hasNext()).isFalse();
 
-        for (final Iterator<Integer> i = range(1, 100000).filter(x -> x > 0); i.hasNext(); ) {
+        for (final Iterator<Integer> i = range(1, 100000).take(x -> x > 0); i.hasNext(); ) {
             assertThat(i.next()).isGreaterThan(0);
         }
     }

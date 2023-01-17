@@ -286,7 +286,7 @@ public interface $list<T>
     default <R> $list<R> fmap(final BiFunction<Integer, ? super T, $<? extends R>> f) { return this.flatMap(f); }
 
     @Override
-    default $list<T> filter(final Predicate<? super T> f) {
+    default $list<T> take(final Predicate<? super T> f) {
         return this.reduce(list(), (x, y) -> f.test(y) ? x.push(y) : x);
     }
 

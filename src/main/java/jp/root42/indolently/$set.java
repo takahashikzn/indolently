@@ -128,7 +128,7 @@ public interface $set<T>
     default <R> $set<R> fmap(final BiFunction<Integer, ? super T, $<? extends R>> f) { return this.flatMap(f); }
 
     @Override
-    default $set<T> filter(final Predicate<? super T> f) {
+    default $set<T> take(final Predicate<? super T> f) {
         return this.reduce(set(), (x, y) -> f.test(y) ? x.push(y) : x);
     }
 

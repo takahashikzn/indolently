@@ -123,11 +123,11 @@ public class Indolently {
     public static <T> T cast(final Object o) { return (T) o; }
 
     public static <IN, OUT> Function<IN, $<OUT>> castTo(final Class<OUT> type) {
-        return x -> opt(x).when(type::isInstance).map(type::cast);
+        return x -> opt(x).if_(type::isInstance).map(type::cast);
     }
 
     public static <IN, OUT> Function<IN, $<? extends OUT>> castAs(final Class<OUT> type) {
-        return x -> opt(x).when(type::isInstance).map(type::cast);
+        return x -> opt(x).if_(type::isInstance).map(type::cast);
     }
 
     /**
@@ -1953,29 +1953,6 @@ public class Indolently {
      * @return tuple
      */
     public static <F, S, T> $3<F, S, T> tuple(final F _1, final S _2, final T _3) { return new $3<>(_1, _2, _3); }
-
-    /**
-     * create two element mutable tuple.
-     *
-     * @param _1 1st element
-     * @param _2 2nd element
-     * @return tuple
-     */
-    @Deprecated
-    public static <F, S> $2.mutable<F, S> mtuple(final F _1, final S _2) { return tuple(_1, _2).mutable(); }
-
-    /**
-     * create three element mutable tuple.
-     *
-     * @param _1 1st element
-     * @param _2 2nd element
-     * @param _3 3rd element
-     * @return tuple
-     */
-    @Deprecated
-    public static <F, S, T> $3.mutable<F, S, T> mtuple(final F _1, final S _2, final T _3) {
-        return tuple(_1, _2, _3).mutable();
-    }
 
     public static <F> Function<tuple2<F, ?>, F> _1() { return x -> x._1(); }
 

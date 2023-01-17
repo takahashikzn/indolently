@@ -30,12 +30,11 @@ final class $stream_impl<T>
     extends StreamDelegate<T>
     implements $stream<T> {
 
-    public $stream_impl(final Stream<T> store) {
-        super(store);
-    }
+    public $stream_impl(final Stream<T> store) { super(store); }
 
     @Override
-    public $stream<T> filter(final Predicate<? super T> f) {
-        return new $stream_impl<>(super.filter(f));
-    }
+    public $stream<T> filter(final Predicate<? super T> f) { return this.take(f); }
+
+    @Override
+    public $stream<T> take(final Predicate<? super T> f) { return new $stream_impl<>(super.filter(f)); }
 }

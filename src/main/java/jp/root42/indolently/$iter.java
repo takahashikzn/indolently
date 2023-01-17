@@ -96,7 +96,7 @@ public interface $iter<T>
     }
 
     @Override
-    default $iter<T> filter(final Predicate<? super T> f) {
+    default $iter<T> take(final Predicate<? super T> f) {
 
         return new $iter<T>() {
 

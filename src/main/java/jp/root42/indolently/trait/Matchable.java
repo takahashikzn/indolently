@@ -30,27 +30,31 @@ public interface Matchable<T> {
      */
     boolean any(Predicate<? super T> f);
 
-    // alias
-    @Deprecated
-    default boolean some(final Predicate<? super T> f) { return this.any(f); }
-
     /**
      * Test whether all values satisfy condition.
      *
      * @param f condition
      * @return test result
      */
-    default boolean all(final Predicate<? super T> f) { return this.none(f.negate()); }
+    default boolean all(final Predicate<? super T> f) { return this.non(f.negate()); }
+
+    /**
+     * Test whether no value satisfies condition.
+     *
+     * @param f condition
+     * @return test result
+     */
+    default boolean non(final Predicate<? super T> f) { return !this.any(f); }
+
+    // alias
+    @Deprecated
+    default boolean some(final Predicate<? super T> f) { return this.any(f); }
 
     // alias
     @Deprecated
     default boolean every(final Predicate<? super T> f) { return this.all(f); }
 
-    /**
-     * Test whether no value satisfy condition.
-     *
-     * @param f condition
-     * @return test result
-     */
-    default boolean none(final Predicate<? super T> f) { return !this.any(f); }
+    // alias
+    @Deprecated
+    default boolean none(final Predicate<? super T> f) { return this.non(f); }
 }

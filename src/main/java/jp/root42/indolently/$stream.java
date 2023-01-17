@@ -37,6 +37,10 @@ public interface $stream<T>
     extends Stream<T>, EdgeAwareIterable<T>, Loopable<T, $stream<T>>, Filterable<T, $stream<T>>, ReducibleIterable<T>,
     Matchable<T> {
 
+    @Deprecated
+    @Override
+    default $stream<T> filter(final Predicate<? super T> f) { return this.take(f); }
+
     @Override
     default void forEach(final Consumer<? super T> action) { ReducibleIterable.super.forEach(action); }
 
@@ -52,7 +56,7 @@ public interface $stream<T>
 
     // optimization
     @Override
-    default boolean none(final Predicate<? super T> f) { return this.noneMatch(f); }
+    default boolean non(final Predicate<? super T> f) { return this.noneMatch(f); }
 
     @Override
     default Spliterator<T> spliterator() { return Spliterators.spliteratorUnknownSize(this.iterator(), 0); }

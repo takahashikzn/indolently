@@ -308,15 +308,7 @@ public interface $map<K, V>
     }
 
     @Override
-    default boolean any(final Predicate<? super V> f) { return this.some((key, val) -> f.test(val)); }
-
-    /**
-     * Test whether at least one key/value pair satisfy condition.
-     *
-     * @param f condition
-     * @return test result
-     */
-    default boolean some(final BiPredicate<? super K, ? super V> f) { return !this.filter(f).isEmpty(); }
+    default boolean any(final Predicate<? super V> f) { return !this.take(f).isEmpty(); }
 
     /**
      * Test whether all key/value pairs satisfy condition.
@@ -324,7 +316,7 @@ public interface $map<K, V>
      * @param f condition
      * @return test result
      */
-    default boolean every(final BiPredicate<? super K, ? super V> f) { return this.filter(f).size() == this.size(); }
+    default boolean all(final BiPredicate<? super K, ? super V> f) { return this.take(f).size() == this.size(); }
 
     /**
      * Count key/value pairs which satisfying condition.
@@ -332,7 +324,7 @@ public interface $map<K, V>
      * @param f condition
      * @return the number of key/value pairs which satisfying condition
      */
-    default int count(final BiPredicate<? super K, ? super V> f) { return this.filter(f).size(); }
+    default int count(final BiPredicate<? super K, ? super V> f) { return this.take(f).size(); }
 
     /**
      * Filter operation: returns entries as a map which satisfying condition.
@@ -342,7 +334,7 @@ public interface $map<K, V>
      * @return new filtered map
      */
     @Override
-    default $map<K, V> filter(final Predicate<? super V> f) { return this.filter((key, val) -> f.test(val)); }
+    default $map<K, V> take(final Predicate<? super V> f) { return this.take((key, val) -> f.test(val)); }
 
     /**
      * Filter operation: returns entries as a map which satisfying condition.
@@ -351,7 +343,7 @@ public interface $map<K, V>
      * @param f condition
      * @return new filtered map
      */
-    default $map<K, V> filter(final BiPredicate<? super K, ? super V> f) {
+    default $map<K, V> take(final BiPredicate<? super K, ? super V> f) {
 
         return this //
             .entries() //
@@ -361,7 +353,8 @@ public interface $map<K, V>
                 (map, e) -> map.push(e.key, e.val));
     }
 
-    default $map<K, V> take(final BiPredicate<? super K, ? super V> f) { return this.filter(f); }
+    @Deprecated
+    default $map<K, V> filter(final BiPredicate<? super K, ? super V> f) { return this.take(f); }
 
     default $map<K, V> drop(final BiPredicate<? super K, ? super V> f) { return this.take(f.negate()); }
 

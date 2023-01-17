@@ -51,7 +51,7 @@ public class FunctionalTest {
     public void testListComprehension() {
 
         assertThat(
-            range(2, 10).filter(z -> func2((final BiFunction<Integer, Integer, Boolean> self) -> { }, (self, x, y) -> {
+            range(2, 10).take(z -> func2((final BiFunction<Integer, Integer, Boolean> self) -> { }, (self, x, y) -> {
                     if (y <= 1) {
                         return true;
                     } else if ((x % y) == 0) {
