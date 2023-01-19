@@ -77,8 +77,8 @@ import jp.root42.indolently.ref.$long;
 import jp.root42.indolently.ref.$short;
 import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.ref.ref;
-import jp.root42.indolently.ref.tuple2;
-import jp.root42.indolently.ref.tuple3;
+import jp.root42.indolently.ref.tpl2;
+import jp.root42.indolently.ref.tpl3;
 import jp.root42.indolently.regex.AutomatonTest;
 import jp.root42.indolently.regex.ReTest;
 import jp.root42.indolently.regex.Regex;
@@ -934,19 +934,19 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        return (map instanceof $map_impl impl) && impl.frozen()
+        return (map instanceof final $map_impl impl) && impl.frozen()
             ? cast(map)
             : $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
     }
 
     public static <T> $set<T> freeze(final Set<? extends T> set) {
-        return (set instanceof $set_impl impl) && impl.frozen()
+        return (set instanceof final $set_impl impl) && impl.frozen()
             ? cast(set)
             : $(Collections.unmodifiableSet($(set).map(Indolently::freeze0)));
     }
 
     public static <T> $list<T> freeze(final List<? extends T> list) {
-        return (list instanceof $list_impl impl) && impl.frozen()
+        return (list instanceof final $list_impl impl) && impl.frozen()
             ? cast(list)
             : $(Collections.unmodifiableList($(list).map(Indolently::freeze0)));
     }
@@ -961,10 +961,10 @@ public class Indolently {
         if (i == null) return true;
 
         // for optimization
-        if (i instanceof Collection x) return x.isEmpty();
-        if (i instanceof Map x) return x.isEmpty();
-        if (i instanceof Iterator<?> x) return !x.hasNext();
-        if (i instanceof Enumeration<?> x) return !x.hasMoreElements();
+        if (i instanceof final Collection x) return x.isEmpty();
+        if (i instanceof final Map x) return x.isEmpty();
+        if (i instanceof final Iterator<?> x) return !x.hasNext();
+        if (i instanceof final Enumeration<?> x) return !x.hasMoreElements();
 
         return !i.iterator().hasNext();
     }
@@ -1686,7 +1686,7 @@ public class Indolently {
     @TypeUnsafe
     public static <T> boolean equiv(final T l, final T r) {
 
-        if (l instanceof Comparable lc && r instanceof Comparable rc) return equal(lc, rc);
+        if (l instanceof final Comparable lc && r instanceof final Comparable rc) return equal(lc, rc);
         else return equal(l, r);
     }
 
@@ -1954,11 +1954,11 @@ public class Indolently {
      */
     public static <F, S, T> $3<F, S, T> tuple(final F _1, final S _2, final T _3) { return new $3<>(_1, _2, _3); }
 
-    public static <F> Function<tuple2<F, ?>, F> _1() { return x -> x._1(); }
+    public static <F> Function<tpl2<?, F, ?>, F> _1() { return x -> x._1(); }
 
-    public static <S> Function<tuple2<?, S>, S> _2() { return x -> x._2(); }
+    public static <S> Function<tpl2<?, ?, S>, S> _2() { return x -> x._2(); }
 
-    public static <T> Function<tuple3<?, ?, T>, T> _3() { return x -> x._3(); }
+    public static <T> Function<tpl3<?, ?, ?, T>, T> _3() { return x -> x._3(); }
 
     public static <T, R> Function<List<T>, List<R>> mapl(final Function<T, R> f) {
         return (List<T> list) -> $(list).map(f);
@@ -1976,7 +1976,7 @@ public class Indolently {
      * @param tuple two element tuple
      * @return list of tuple elements
      */
-    public static <T> $list<T> list(final $2.mutable<? extends T, ? extends T> tuple) {
+    public static <T> $list<T> list(final $2.mut<? extends T, ? extends T> tuple) {
         return list(tuple._1, tuple._2);
     }
 
@@ -1986,7 +1986,7 @@ public class Indolently {
      * @param tuple three element tuple
      * @return list of tuple elements
      */
-    public static <T> $list<T> list(final $3.mutable<? extends T, ? extends T, ? extends T> tuple) {
+    public static <T> $list<T> list(final $3.mut<? extends T, ? extends T, ? extends T> tuple) {
         return list(tuple._1, tuple._2, tuple._3);
     }
 

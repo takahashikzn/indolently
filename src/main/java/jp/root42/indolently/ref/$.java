@@ -191,11 +191,9 @@ public record $<T>(Optional<T> opt)
 
     @Deprecated
     @Override
-    public boolean equals(final Object o) {
-        return this == o || (o instanceof $ that && this.equals0(that));
-    }
+    public boolean equals(final Object o) { return this == o || (o instanceof $<?> that && this.equals0(that)); }
 
-    private boolean equals0(final $<? extends T> that) {
+    private boolean equals0(final $<?> that) {
         return (this == that) || ((that != null) && equiv(this.opt, that.opt));
     }
 
