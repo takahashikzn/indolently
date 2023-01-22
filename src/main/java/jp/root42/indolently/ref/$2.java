@@ -128,7 +128,7 @@ public record $2<T1, T2>(T1 _1, T2 _2)
 
         @Override
         public boolean equals(final Object o) {
-            return this == o || (o instanceof final mut<?, ?> that && this.equiv(that));
+            return this == o || (o instanceof mut<?, ?> that && this.equiv(that));
         }
 
         @Override

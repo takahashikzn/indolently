@@ -934,19 +934,19 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        return (map instanceof final $map_impl impl) && impl.frozen()
+        return (map instanceof $map_impl impl) && impl.frozen()
             ? cast(map)
             : $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
     }
 
     public static <T> $set<T> freeze(final Set<? extends T> set) {
-        return (set instanceof final $set_impl impl) && impl.frozen()
+        return (set instanceof $set_impl impl) && impl.frozen()
             ? cast(set)
             : $(Collections.unmodifiableSet($(set).map(Indolently::freeze0)));
     }
 
     public static <T> $list<T> freeze(final List<? extends T> list) {
-        return (list instanceof final $list_impl impl) && impl.frozen()
+        return (list instanceof $list_impl impl) && impl.frozen()
             ? cast(list)
             : $(Collections.unmodifiableList($(list).map(Indolently::freeze0)));
     }
@@ -961,10 +961,10 @@ public class Indolently {
         if (i == null) return true;
 
         // for optimization
-        if (i instanceof final Collection x) return x.isEmpty();
-        if (i instanceof final Map x) return x.isEmpty();
-        if (i instanceof final Iterator<?> x) return !x.hasNext();
-        if (i instanceof final Enumeration<?> x) return !x.hasMoreElements();
+        if (i instanceof Collection x) return x.isEmpty();
+        if (i instanceof Map x) return x.isEmpty();
+        if (i instanceof Iterator<?> x) return !x.hasNext();
+        if (i instanceof Enumeration<?> x) return !x.hasMoreElements();
 
         return !i.iterator().hasNext();
     }
@@ -1686,7 +1686,7 @@ public class Indolently {
     @TypeUnsafe
     public static <T> boolean equiv(final T l, final T r) {
 
-        if (l instanceof final Comparable lc && r instanceof final Comparable rc) return equal(lc, rc);
+        if (l instanceof Comparable lc && r instanceof Comparable rc) return equal(lc, rc);
         else return equal(l, r);
     }
 
@@ -2853,8 +2853,10 @@ public class Indolently {
 
         final var out = bytesOut();
         out.write(in);
-        return out.toByteArray();
+        return bytes(out);
     }
+
+    public static byte[] bytes(final ByteArrayOutputStream out) throws IOException { return out.toByteArray(); }
 
     public static void shut(final AutoCloseable c) {
         if (c != null) //

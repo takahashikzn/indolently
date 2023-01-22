@@ -185,7 +185,7 @@ public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
 
         @Override
         public boolean equals(final Object o) {
-            return this == o || (o instanceof final mut<?, ?, ?> that && this.equiv(that));
+            return this == o || (o instanceof mut<?, ?, ?> that && this.equiv(that));
         }
 
         @Override

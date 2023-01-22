@@ -23,6 +23,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.$$;
 import jp.root42.indolently.ref.$$.None;
@@ -35,7 +36,11 @@ import static jp.root42.indolently.Indolently.*;
 /**
  * @author takahashikzn
  */
-public interface Promise<T> {
+public interface Promise<T>
+    extends Supplier<T> {
+
+    @Override
+    default T get() { return this.resolve(); }
 
     T resolve();
 
@@ -83,7 +88,7 @@ public interface Promise<T> {
     static <T> Promise<T> reject(final Exception e) { return of(CompletableFuture.failedFuture(requireNonNull(e))); }
 
     static <T> Promise<List<T>> all(final Iterable<? extends Promise<? extends T>> promises) {
-        return of(CompletableFuture.supplyAsync(() -> list(promises).map(x -> x.resolve()), Promissory.executor()));
+        return of(CompletableFuture.supplyAsync(() -> list(promises).map(x -> x.get()), Promissory.executor()));
     }
 
     @SuppressWarnings("ConstantConditions")
