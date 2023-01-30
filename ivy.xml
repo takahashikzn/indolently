@@ -3,8 +3,8 @@
   <!ENTITY compile_conf "compile->master(*)">
   <!ENTITY runtime_conf "runtime->master(*)">
   <!ENTITY test_conf "test->master(*)">
-  <!ENTITY mockito_version "5.0.0">
-  <!ENTITY bytebuddy_version "1.12.22">
+  <!ENTITY mockito_version "5.1.1">
+  <!ENTITY bytebuddy_version "1.14.0">
   ]>
 <!--
   Copyright 2014 takahashikzn
@@ -46,8 +46,8 @@
     <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="&test_conf;" />
     -->
     <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.11" conf="&compile_conf;" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="11.1.0" conf="&compile_conf;" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="11.1.0" conf="&compile_conf;" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="12.0.0.M1" conf="&compile_conf;" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="12.0.0.M1" conf="&compile_conf;" />
 
     <dependency org="com.google.re2j" name="re2j" rev="1.7" conf="&compile_conf;" />
     <dependency org="dk.brics" name="automaton" rev="1.12-4" conf="&compile_conf;" />
