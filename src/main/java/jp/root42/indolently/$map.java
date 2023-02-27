@@ -310,6 +310,10 @@ public interface $map<K, V>
     @Override
     default boolean any(final Predicate<? super V> f) { return !this.take(f).isEmpty(); }
 
+    default boolean any(final BiPredicate<? super K, ? super V> f) { return !this.take(f).isEmpty(); }
+
+    default boolean non(final BiPredicate<? super K, ? super V> f) { return !this.any(f); }
+
     /**
      * Test whether all key/value pairs satisfy condition.
      *
