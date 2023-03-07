@@ -65,7 +65,7 @@
   <target name="build" depends="clean, make" description="build" />
 
   <target name="jar" depends="build" description="jar">
-    <jar destfile="target/indolently.jar" duplicate="fail">
+    <jar destfile="target/indolently.jar">
       <fileset dir="target/classes" />
     </jar>
   </target>

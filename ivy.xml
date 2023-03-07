@@ -3,8 +3,8 @@
   <!ENTITY compile_conf "compile->master(*)">
   <!ENTITY runtime_conf "runtime->master(*)">
   <!ENTITY test_conf "test->master(*)">
-  <!ENTITY mockito_version "5.1.1">
-  <!ENTITY bytebuddy_version "1.14.0">
+  <!ENTITY mockito_version "5.2.0">
+  <!ENTITY bytebuddy_version "1.14.2">
   ]>
 <!--
   Copyright 2014 takahashikzn
