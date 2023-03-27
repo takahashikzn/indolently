@@ -66,11 +66,10 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      */
     @Destructive
     default SELF pushAll(final Iterable<? extends T> values) {
-        if (values instanceof Collection) {
+        if (values instanceof Collection) //
             this.addAll(cast(values));
-        } else {
+        else //
             values.forEach(this::add);
-        }
 
         return this.identity();
     }
@@ -84,9 +83,8 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      */
     @Destructive
     default SELF push(final T value, final Predicate<? super T> f) {
-        if (f.test(value)) {
-            this.add(value);
-        }
+
+        if (f.test(value)) this.add(value);
 
         return this.identity();
     }
@@ -126,9 +124,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     default SELF delete(final Iterable<? extends T> values) {
 
         // optimization
-        @SuppressWarnings("unchecked")
-        final Collection<? extends T> vals =
-            (values instanceof Collection) ? (Collection<? extends T>) values : list(values);
+        final Collection<? extends T> vals = (values instanceof Collection) ? cast(values) : list(values);
 
         this.removeAll(vals);
 
@@ -182,6 +178,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     default <E extends Exception> SELF eachTry(final ConsumerE<? super T, E> f) throws E {
         for (final T val: this)
             f.accept(val);
+
         return this.identity();
     }
 

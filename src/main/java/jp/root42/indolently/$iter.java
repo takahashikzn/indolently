@@ -52,9 +52,8 @@ public interface $iter<T>
     @Override
     default boolean any(final Predicate<? super T> f) {
 
-        for (final T val: this) {
+        for (final T val: this)
             if (f.test(val)) return true;
-        }
 
         return false;
     }

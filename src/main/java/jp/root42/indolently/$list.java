@@ -46,6 +46,7 @@ public interface $list<T>
      * @return clone of this instance
      * @see Cloneable
      */
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     default $list<T> clone() { return list((Iterable<T>) this); }
 
     /**
@@ -147,9 +148,7 @@ public interface $list<T>
     default $list<T> pushAll(final int idx, final Iterable<? extends T> values) {
 
         // optimization
-        @SuppressWarnings("unchecked")
-        final Collection<? extends T> vals =
-            (values instanceof Collection) ? (Collection<? extends T>) values : list(values);
+        final Collection<? extends T> vals = (values instanceof Collection) ? cast(values) : list(values);
 
         this.addAll(idx(this, idx), vals);
 
@@ -296,7 +295,7 @@ public interface $list<T>
      * @return newly constructed reversed list
      */
     default $list<T> reverse() {
-        final $list<T> rslt = this.clone();
+        final var rslt = this.clone();
         Collections.reverse(rslt);
         return rslt;
     }
@@ -352,7 +351,7 @@ public interface $list<T>
 
         final $list<$list<T>> ret = list();
 
-        for (int i = 0, max = (int) Math.ceil((double) this.size() / size); i < max; i++)
+        for (int i = 0, Z = (int) Math.ceil((double) this.size() / size); i < Z; i++)
             ret.add(this.slice(i * size, (i + 1) * size));
 
         return ret;
@@ -402,8 +401,7 @@ public interface $list<T>
     @Destructive
     default $list<T> update(final Function<? super T, ? extends T> f) {
 
-        for (int i = 0; i < this.size(); i++)
-            this.update(i, f);
+        for (int i = 0, Z = this.size(); i < Z; i++) this.update(i, f);
 
         return this;
     }
@@ -457,52 +455,6 @@ public interface $list<T>
      */
     default OptionalInt lastIndexOf(final Predicate<T> f) {
         return this.last(f).map(this::lastIndexOf).map(OptionalInt::of).or(OptionalInt::empty);
-    }
-
-    @Override
-    default $<T> head(final Predicate<? super T> f) {
-
-        //noinspection ForLoopReplaceableByForEach
-        for (int i = 0, Z = this.size(); i < Z; i++) {
-            final var val = this.get(i);
-            if (f.test(val)) return $.of(val);
-        }
-
-        return $.none();
-    }
-
-    @Override
-    default $<T> last(final Predicate<? super T> f) {
-
-        for (int i = this.size() - 1; 0 <= i; i--) {
-            final var val = this.get(i);
-            if (f.test(val)) return $.of(val);
-        }
-
-        return $.none();
-    }
-
-    @Override
-    default <R> $<R> fhead(final Function<T, $<R>> f) {
-
-        //noinspection ForLoopReplaceableByForEach
-        for (int i = 0, Z = this.size(); i < Z; i++) {
-            final var x = f.apply(this.get(i));
-            if (x.present()) return x;
-        }
-
-        return $.none();
-    }
-
-    @Override
-    default <R> $<R> flast(final Function<T, $<R>> f) {
-
-        for (int i = this.size() - 1; 0 <= i; i--) {
-            final var x = f.apply(this.get(i));
-            if (x.present()) return x;
-        }
-
-        return $.none();
     }
 
     default <U extends T> $list<U> only(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
