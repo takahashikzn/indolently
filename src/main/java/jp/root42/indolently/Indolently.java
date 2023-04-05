@@ -2067,7 +2067,7 @@ public class Indolently {
      *
      * @return empty reference
      */
-    public static <T> $void<T> ref() { return ref.of((T) null); }
+    public static <T> $void<T> ref() { return ref.of(null); }
 
     // CHECKSTYLE:OFF
     public static <K, V> $map<K, V> map(final K k0, final V v0, final K k1, final V v1) {
@@ -2892,6 +2892,10 @@ public class Indolently {
     }
 
     public static <T> T await(final Future<? extends T> promise) { return Promissory.await(promise); }
+
+    public static <T> Function<? extends Future<T>, T> fresolve() { return (Future<T> f) -> eval(() -> f.get()); }
+
+    public static Consumer<? super Future<?>> fawait() { return (Future<?> f) -> let(() -> f.get()); }
 
     public static <T> $$<T, $$.None> await(final Future<? extends T> promise, final long timeout) {
         return Promissory.await(promise, timeout);

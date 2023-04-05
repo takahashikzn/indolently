@@ -83,6 +83,8 @@ public interface Promise<T>
         });
     }
 
+    Future<T> future();
+
     static <T> Promise<T> resolve(final T val) { return of(CompletableFuture.completedFuture(val)); }
 
     static <T> Promise<T> reject(final Exception e) { return of(CompletableFuture.failedFuture(requireNonNull(e))); }
@@ -132,6 +134,7 @@ abstract class PromiseFuture<T, F extends Future<T>>
     @Override
     public boolean done() { return this.delegate.isDone(); }
 
+    @Override
     public Future<T> future() { return this.delegate; }
 
     @Override
