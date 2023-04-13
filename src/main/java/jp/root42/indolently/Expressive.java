@@ -78,6 +78,32 @@ public class Expressive {
     }
 
     /**
+     * Throw exception in expression manner.
+     *
+     * @param <T> the type of expression
+     * @param <E> the type of exception
+     * @param e exception
+     * @param type type of exception
+     * @return actually return nothing
+     */
+    public static <T, E extends Throwable> T raise(final Throwable e, final Class<E> type) throws E {
+        if (type.isInstance(e)) throw (E) e;
+        else return raise(() -> e);
+    }
+
+    /**
+     * Throw exception in expression manner.
+     *
+     * @param <T> the type of expression
+     * @param <E> the type of exception
+     * @param f supplies exception to throw
+     * @param type type of exception
+     * @return actually return nothing
+     */
+    public static <T, E extends Throwable> T raise(final Supplier<? extends Throwable> f, final Class<E> type)
+        throws E { return raise(f.get(), type); }
+
+    /**
      * Block statement.
      *
      * @param stmt statement body
