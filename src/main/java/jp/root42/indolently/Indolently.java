@@ -2413,8 +2413,10 @@ public class Indolently {
 
     // CHECKSTYLE:ON
 
+    /** To avoid compile-time optimization */
     public static final boolean TRUE = now() > 0;
 
+    /** To avoid compile-time optimization */
     public static final boolean FALSE = !TRUE;
 
     private static final Function<?, ?> itself = x -> x;
