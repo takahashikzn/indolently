@@ -2413,6 +2413,10 @@ public class Indolently {
 
     // CHECKSTYLE:ON
 
+    public static final boolean TRUE = now() > 0;
+
+    public static final boolean FALSE = !TRUE;
+
     private static final Function<?, ?> itself = x -> x;
 
     public static <T> Function<T, T> it() { return itself(); }
