@@ -84,6 +84,15 @@ public interface $map<K, V>
     /**
      * put key/value pair then return this instance.
      *
+     * @param e map entry
+     * @return {@code this} instance
+     */
+    @Destructive
+    default $map<K, V> push(final Map.Entry<K, V> e) { return this.push(e.getKey(), e.getValue()); }
+
+    /**
+     * put key/value pair then return this instance.
+     *
      * @param key key to put
      * @param value value to put
      * @return {@code this} instance
