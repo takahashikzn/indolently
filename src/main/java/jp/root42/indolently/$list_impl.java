@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import jp.root42.indolently.bridge.ListDelegate;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.function.ConsumerE;
+import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Expressive.*;
@@ -185,5 +186,17 @@ interface $list_optimized<T>
             if (f.test(this.get(i))) return true;
 
         return false;
+    }
+
+    @Override
+    default <R> $<R> reduce(final $<? extends R> initial,
+        final Function3<Integer, ? super R, ? super T, ? extends R> f) {
+
+        var rem = initial.orNull();
+
+        for (int i = 0, Z = this.size(); i < Z; i++)
+            rem = f.apply(i, rem, this.get(i));
+
+        return $.of(rem);
     }
 }

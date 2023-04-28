@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.Cleaner;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -1603,6 +1605,17 @@ public class Indolently {
             if (Double.compare(l, x) != 0) return false;
 
         return true;
+    }
+
+    public static boolean numeql(final Number l, final Number r) {
+
+        if (l == r) return true;
+        if (r == null || l == null) return false;
+        if (l instanceof BigDecimal lb && r instanceof BigDecimal rb) return lb.compareTo(rb) == 0;
+        if (l instanceof BigInteger lb && r instanceof BigInteger rb) return lb.compareTo(rb) == 0;
+        if (l instanceof Float || l instanceof Double) return equal(l.doubleValue(), r.doubleValue());
+
+        return equal(l.longValue(), r.longValue());
     }
 
     @SafeVarargs
