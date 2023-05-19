@@ -255,9 +255,7 @@ public final class Numeric {
     public static Function<Number, Double> toDouble() { return Number::doubleValue; }
 
     public static Function<Number, BigDecimal> toDecimal() {
-        return x -> (x instanceof BigDecimal)
-            ? cast(x)
-            : (x instanceof Float || x instanceof Double) ? decimal(x.doubleValue()) : decimal(x.longValue());
+        return x -> (x instanceof BigDecimal) ? cast(x) : (x instanceof Float || x instanceof Double) ? decimal(x.doubleValue()) : decimal(x.longValue());
     }
 
     public static double dsum(final Iterable<? extends Number> vals) {

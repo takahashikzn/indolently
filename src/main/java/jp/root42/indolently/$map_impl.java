@@ -50,7 +50,6 @@ final class $map_impl<K, V>
     private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableMap"));
 
     boolean frozen() {
-        return (this.store instanceof $map_impl) && (($map_impl<?, ?>) this.store).frozen()
-            || this.store.getClass() == FROZEN;
+        return (this.store instanceof $map_impl) && (($map_impl<?, ?>) this.store).frozen() || this.store.getClass() == FROZEN;
     }
 }

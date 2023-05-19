@@ -278,7 +278,6 @@ public class $listTest {
         assertThat(list(1, 2, 3).chunk(4)).isEqualTo(listOf(list(1, 2, 3)));
         assertThat(list(1).chunk(2)).isEqualTo(listOf(list(1)));
         assertThat(list().chunk(2)).isEmpty();
-        assertThat(list(1, 2, 3, 4, 5, 6, 7, 8, 9).subList(3).chunk(2)).isEqualTo(
-            listOf(list(4, 5), list(6, 7), list(8, 9)));
+        assertThat(list(1, 2, 3, 4, 5, 6, 7, 8, 9).subList(3).chunk(2)).isEqualTo(listOf(list(4, 5), list(6, 7), list(8, 9)));
     }
 }

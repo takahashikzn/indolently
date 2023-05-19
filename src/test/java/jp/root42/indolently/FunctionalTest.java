@@ -50,18 +50,17 @@ public class FunctionalTest {
     @Test
     public void testListComprehension() {
 
-        assertThat(
-            range(2, 10).take(z -> func2((final BiFunction<Integer, Integer, Boolean> self) -> { }, (self, x, y) -> {
-                    if (y <= 1) {
-                        return true;
-                    } else if ((x % y) == 0) {
-                        return false;
-                    } else {
-                        return self.apply(x, y - 1);
-                    }
-                }).apply(z, z - 1)) //
-                .map(x -> "" + x) //
-                .list()) //
+        assertThat(range(2, 10).take(z -> func2((final BiFunction<Integer, Integer, Boolean> self) -> { }, (self, x, y) -> {
+                if (y <= 1) {
+                    return true;
+                } else if ((x % y) == 0) {
+                    return false;
+                } else {
+                    return self.apply(x, y - 1);
+                }
+            }).apply(z, z - 1)) //
+            .map(x -> "" + x) //
+            .list()) //
             .isEqualTo(list(2, 3, 5, 7).map(x -> "" + x));
     }
 
@@ -81,9 +80,9 @@ public class FunctionalTest {
                 (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)).memoize();
 
         final $list<Integer> fibonacciNums =
-            list(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711,
-                28657, 46368, 75025, 121393, 196418, 317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887,
-                9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141, 267914296).freeze();
+            list(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418,
+                317811, 514229, 832040, 1346269, 2178309, 3524578, 5702887, 9227465, 14930352, 24157817, 39088169, 63245986, 102334155, 165580141,
+                267914296).freeze();
 
         assertThat(initCount.$).isEqualTo(0);
 

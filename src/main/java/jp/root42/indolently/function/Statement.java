@@ -27,7 +27,7 @@ import jp.root42.indolently.Expressive;
 public interface Statement
     extends Runnable {
 
-    Statement NOP = () -> {};
+    Statement NOP = () -> { };
 
     /**
      * Perform this operation.

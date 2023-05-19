@@ -40,8 +40,7 @@ import jp.root42.indolently.trait.ReducibleIterable;
  * @author takahashikzn
  */
 public interface $iter<T>
-    extends Iterator<T>, Supplier<T>, EdgeAwareIterable<T>, Loopable<T, $iter<T>>, Filterable<T, $iter<T>>,
-    ReducibleIterable<T>, Matchable<T> {
+    extends Iterator<T>, Supplier<T>, EdgeAwareIterable<T>, Loopable<T, $iter<T>>, Filterable<T, $iter<T>>, ReducibleIterable<T>, Matchable<T> {
 
     @Override
     default T get() { return this.next(); }
@@ -66,8 +65,7 @@ public interface $iter<T>
      * @param next {@link Iterator#next()} implementation
      * @return a instance of this class.
      */
-    static <E, T> $iter<T> of(final E env, final Predicate<? super E> hasNext,
-        final Function<? super E, ? extends T> next) {
+    static <E, T> $iter<T> of(final E env, final Predicate<? super E> hasNext, final Function<? super E, ? extends T> next) {
 
         Objects.requireNonNull(next);
 

@@ -39,8 +39,7 @@ public class SFunc3<X0, X1, X2, Y>
      *
      * @param body function body
      */
-    public SFunc3(
-        final Function4<? super Function3<X0, X1, X2, Y>, ? super X0, ? super X1, ? super X2, ? extends Y> body) {
+    public SFunc3(final Function4<? super Function3<X0, X1, X2, Y>, ? super X0, ? super X1, ? super X2, ? extends Y> body) {
         this.body = Objects.requireNonNull(body);
     }
 
@@ -111,8 +110,7 @@ public class SFunc3<X0, X1, X2, Y>
      * @param x2 3rd argument to bind
      * @return curried function
      */
-    public SSuppl<Y> bind(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1,
-        final Supplier<? extends X2> x2) {
+    public SSuppl<Y> bind(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1, final Supplier<? extends X2> x2) {
         return this.bind(x0).bind(x1).bind(x2);
     }
 

@@ -52,7 +52,6 @@ final class $set_impl<T>
     private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableSet"));
 
     boolean frozen() {
-        return (this.store instanceof $set_impl) && (($set_impl<?>) this.store).frozen()
-            || this.store.getClass() == FROZEN;
+        return (this.store instanceof $set_impl) && (($set_impl<?>) this.store).frozen() || this.store.getClass() == FROZEN;
     }
 }

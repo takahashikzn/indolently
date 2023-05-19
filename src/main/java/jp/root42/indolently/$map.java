@@ -45,8 +45,8 @@ import static java.util.Objects.*;
  * @author takahashikzn
  */
 public interface $map<K, V>
-    extends Map<K, V>, Freezable<$map<K, V>>, Identical<$map<K, V>>, Loopable<V, $map<K, V>>, Filterable<V, $map<K, V>>,
-    EdgeAwareIterable<$entry<K, V>>, Matchable<V>, Cloneable {
+    extends Map<K, V>, Freezable<$map<K, V>>, Identical<$map<K, V>>, Loopable<V, $map<K, V>>, Filterable<V, $map<K, V>>, EdgeAwareIterable<$entry<K, V>>,
+    Matchable<V>, Cloneable {
 
     /**
      * Create a new fifo Map instance which containing all entries which this instance contains.
@@ -123,8 +123,7 @@ public interface $map<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default $map<K, V> pushAll(final Supplier<? extends Map<? extends K, ? extends V>> map,
-        final Predicate<? super $map<K, V>> cond) {
+    default $map<K, V> pushAll(final Supplier<? extends Map<? extends K, ? extends V>> map, final Predicate<? super $map<K, V>> cond) {
 
         if (cond.test(this)) //
             this.putAll(map.get());
@@ -405,8 +404,7 @@ public interface $map<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> $map<K2, V2> map(final Function<? super K, ? extends K2> fk,
-        final Function<? super V, ? extends V2> fv) {
+    default <K2, V2> $map<K2, V2> map(final Function<? super K, ? extends K2> fk, final Function<? super V, ? extends V2> fv) {
 
         return this.map((k, v) -> fk.apply(k), (k, v) -> fv.apply(v));
     }
@@ -421,8 +419,7 @@ public interface $map<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> $map<K2, V2> map(final BiFunction<? super K, ? super V, ? extends K2> fk,
-        final BiFunction<? super K, ? super V, ? extends V2> fv) {
+    default <K2, V2> $map<K2, V2> map(final BiFunction<? super K, ? super V, ? extends K2> fk, final BiFunction<? super K, ? super V, ? extends V2> fv) {
 
         return this //
             .entries() //
@@ -467,8 +464,7 @@ public interface $map<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> $map<K2, V2> flatMap(final Function<? super K, ? extends K2> fk,
-        final Function<? super V, $<? extends V2>> fv) {
+    default <K2, V2> $map<K2, V2> flatMap(final Function<? super K, ? extends K2> fk, final Function<? super V, $<? extends V2>> fv) {
 
         return this.flatMap((k, v) -> fk.apply(k), (k, v) -> fv.apply(v));
     }
@@ -483,8 +479,7 @@ public interface $map<K, V>
      * @param fv function
      * @return new converted map
      */
-    default <K2, V2> $map<K2, V2> flatMap(final BiFunction<? super K, ? super V, ? extends K2> fk,
-        final BiFunction<? super K, ? super V, $<? extends V2>> fv) {
+    default <K2, V2> $map<K2, V2> flatMap(final BiFunction<? super K, ? super V, ? extends K2> fk, final BiFunction<? super K, ? super V, $<? extends V2>> fv) {
 
         return this //
             .entries() //
@@ -561,8 +556,7 @@ public interface $map<K, V>
      * @param f value generator
      * @return newly constructed flatten map
      */
-    default <RK, RV> $map<RK, RV> flat(
-        final BiFunction<? super K, ? super V, ? extends Map<? extends RK, ? extends RV>> f) {
+    default <RK, RV> $map<RK, RV> flat(final BiFunction<? super K, ? super V, ? extends Map<? extends RK, ? extends RV>> f) {
 
         return this.entries().reduce(Indolently.map(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
     }

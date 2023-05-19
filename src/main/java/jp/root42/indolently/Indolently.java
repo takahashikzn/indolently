@@ -335,46 +335,43 @@ public class Indolently {
         return root.map(c1).fmap(opt()).map(last).fmap(opt());
     }
 
-    public static <T1, T2, T3, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2,
-        final Function<T3, R> last) {
+    public static <T1, T2, T3, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, R> last) {
         return opt(root, c1, c2).map(last).fmap(opt());
     }
 
-    public static <T1, T2, T3, T4, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2,
-        final Function<T3, T4> c3, final Function<T4, R> last) {
+    public static <T1, T2, T3, T4, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, T4> c3,
+        final Function<T4, R> last) {
         return opt(root, c1, c2, c3).map(last).fmap(opt());
     }
 
-    public static <T1, T2, T3, T4, T5, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1,
-        final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, R> last) {
+    public static <T1, T2, T3, T4, T5, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, T4> c3,
+        final Function<T4, T5> c4, final Function<T5, R> last) {
         return opt(root, c1, c2, c3, c4).map(last).fmap(opt());
     }
 
-    public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1,
-        final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
-        final Function<T6, R> last) {
+    public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final $<T1> root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, T4> c3,
+        final Function<T4, T5> c4, final Function<T5, T6> c5, final Function<T6, R> last) {
         return opt(root, c1, c2, c3, c4, c5).map(last).fmap(opt());
     }
 
-    public static <T1, T2, R> $<R> opt(final T1 root, final Function<T1, T2> c1,
-        final Function<T2, R> last) { return opt(opt(root), c1, last); }
+    public static <T1, T2, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, R> last) { return opt(opt(root), c1, last); }
 
-    public static <T1, T2, T3, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
-        final Function<T3, R> last) { return opt(opt(root), c1, c2, last); }
+    public static <T1, T2, T3, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, R> last) {
+        return opt(opt(root), c1, c2, last);
+    }
 
-    public static <T1, T2, T3, T4, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
-        final Function<T3, T4> c3, final Function<T4, R> last) {
+    public static <T1, T2, T3, T4, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, T4> c3,
+        final Function<T4, R> last) {
         return opt(opt(root), c1, c2, c3, last);
     }
 
-    public static <T1, T2, T3, T4, T5, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2,
-        final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, R> last) {
+    public static <T1, T2, T3, T4, T5, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, T4> c3,
+        final Function<T4, T5> c4, final Function<T5, R> last) {
         return opt(opt(root), c1, c2, c3, c4, last);
     }
 
-    public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final T1 root, final Function<T1, T2> c1,
-        final Function<T2, T3> c2, final Function<T3, T4> c3, final Function<T4, T5> c4, final Function<T5, T6> c5,
-        final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last); }
+    public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, T4> c3,
+        final Function<T4, T5> c4, final Function<T5, T6> c5, final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last); }
 
     public static <L, R> $$<L, R> left(final L val) { return $$.left(val); }
 
@@ -442,11 +439,13 @@ public class Indolently {
         return elv(elv(value, other0), other1);
     }
 
-    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1,
-        final Supplier<T> other2) { return elv(elv(value, other0, other1), other2); }
+    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1, final Supplier<T> other2) {
+        return elv(elv(value, other0, other1), other2);
+    }
 
-    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1, final Supplier<T> other2,
-        final Supplier<T> other3) { return elv(elv(value, other0, other1, other2), other3); }
+    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1, final Supplier<T> other2, final Supplier<T> other3) {
+        return elv(elv(value, other0, other1, other2), other3);
+    }
 
     /**
      * A shortcut notation of {@code Optional.ofNullable(value).map(mapper).orElse(other)}.
@@ -874,8 +873,7 @@ public class Indolently {
         return sort(map, Comparator.naturalOrder());
     }
 
-    public static <K, V, S extends Comparable<S>> $map<K, V> sort(final Map<? extends K, ? extends V> map,
-        final Function<? super K, ? extends S> f) {
+    public static <K, V, S extends Comparable<S>> $map<K, V> sort(final Map<? extends K, ? extends V> map, final Function<? super K, ? extends S> f) {
 
         return sort(map, Comparator.comparing(f::apply));
     }
@@ -888,8 +886,7 @@ public class Indolently {
         return sort(elems, Comparator.naturalOrder());
     }
 
-    public static <T, S extends Comparable<S>> $set<T> sort(final Set<? extends T> elems,
-        final Function<? super T, ? extends S> f) {
+    public static <T, S extends Comparable<S>> $set<T> sort(final Set<? extends T> elems, final Function<? super T, ? extends S> f) {
 
         return sort(elems, Comparator.comparing(f::apply));
     }
@@ -902,8 +899,7 @@ public class Indolently {
         return sort(elems, Comparator.naturalOrder());
     }
 
-    public static <T, S extends Comparable<S>> $list<T> sort(final List<? extends T> elems,
-        final Function<? super T, ? extends S> f) {
+    public static <T, S extends Comparable<S>> $list<T> sort(final List<? extends T> elems, final Function<? super T, ? extends S> f) {
 
         return sort(elems, Comparator.comparing(f::apply));
     }
@@ -936,21 +932,15 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> freeze(final Map<? extends K, ? extends V> map) {
-        return (map instanceof $map_impl impl) && impl.frozen()
-            ? cast(map)
-            : $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
+        return (map instanceof $map_impl impl) && impl.frozen() ? cast(map) : $(Collections.unmodifiableMap($(map).map(Indolently::freeze0)));
     }
 
     public static <T> $set<T> freeze(final Set<? extends T> set) {
-        return (set instanceof $set_impl impl) && impl.frozen()
-            ? cast(set)
-            : $(Collections.unmodifiableSet($(set).map(Indolently::freeze0)));
+        return (set instanceof $set_impl impl) && impl.frozen() ? cast(set) : $(Collections.unmodifiableSet($(set).map(Indolently::freeze0)));
     }
 
     public static <T> $list<T> freeze(final List<? extends T> list) {
-        return (list instanceof $list_impl impl) && impl.frozen()
-            ? cast(list)
-            : $(Collections.unmodifiableList($(list).map(Indolently::freeze0)));
+        return (list instanceof $list_impl impl) && impl.frozen() ? cast(list) : $(Collections.unmodifiableList($(list).map(Indolently::freeze0)));
     }
 
     /**
@@ -2097,55 +2087,50 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
-        final V v4) {
+        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4, final V v4) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3).push(k4, v4);
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
-        final V v4, final K k5, final V v5) {
+        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4, final V v4, final K k5, final V v5) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4).push(k5, v5);
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
-        final V v4, final K k5, final V v5, final K k6, final V v6) {
+        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4, final V v4, final K k5, final V v5,
+        final K k6, final V v6) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5).push(k6, v6);
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
-        final V v4, final K k5, final V v5, final K k6, final V v6, final K k7, final V v7) {
+        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4, final V v4, final K k5, final V v5,
+        final K k6, final V v6, final K k7, final V v7) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6).push(k7, v7);
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
-        final V v4, final K k5, final V v5, final K k6, final V v6, final K k7, final V v7, final K k8, final V v8) {
+        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4, final V v4, final K k5, final V v5,
+        final K k6, final V v6, final K k7, final V v7, final K k8, final V v8) {
 
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7).push(k8, v8);
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4,
-        final V v4, final K k5, final V v5, final K k6, final V v6, final K k7, final V v7, final K k8, final V v8,
-        final K k9, final V v9) {
+        final K k0, final V v0, final K k1, final V v1, final K k2, final V v2, final K k3, final V v3, final K k4, final V v4, final K k5, final V v5,
+        final K k6, final V v6, final K k7, final V v7, final K k8, final V v8, final K k9, final V v9) {
         return map(k0, v0, k1, v1, k2, v2, k3, v3, k4, v4, k5, v5, k6, v6, k7, v7, k8, v8).push(k9, v9);
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10) {
-        return map(k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09,
-            v09).push(k10, v10);
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10) {
+        return map(k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09).push(k10, v10);
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10) //
@@ -2153,10 +2138,9 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11) //
@@ -2164,10 +2148,9 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12) //
@@ -2175,10 +2158,9 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13) //
@@ -2186,10 +2168,9 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14) //
@@ -2197,11 +2178,10 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15) //
@@ -2209,11 +2189,10 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16) //
@@ -2221,11 +2200,10 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17) //
@@ -2233,11 +2211,10 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18) //
@@ -2245,12 +2222,10 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19) //
@@ -2258,12 +2233,10 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2272,12 +2245,11 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2286,12 +2258,11 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2300,13 +2271,11 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2315,13 +2284,11 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24, final K k25, final V v25) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24, final K k25, final V v25) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2330,13 +2297,11 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24, final K k25, final V v25, final K k26, final V v26) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24, final K k25, final V v25, final K k26, final V v26) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2345,13 +2310,12 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27,
+        final V v27) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2360,14 +2324,12 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
-        final K k28, final V v28) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27,
+        final V v27, final K k28, final V v28) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2376,14 +2338,12 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
-        final K k28, final V v28, final K k29, final V v29) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27,
+        final V v27, final K k28, final V v28, final K k29, final V v29) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2392,14 +2352,12 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
-        final K k28, final V v28, final K k29, final V v29, final K k30, final V v30) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27,
+        final V v27, final K k28, final V v28, final K k29, final V v29, final K k30, final V v30) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2408,14 +2366,12 @@ public class Indolently {
     }
 
     public static <K, V> $map<K, V> map( //
-        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03,
-        final K k04, final V v04, final K k05, final V v05, final K k06, final V v06, final K k07, final V v07,
-        final K k08, final V v08, final K k09, final V v09, final K k10, final V v10, final K k11, final V v11,
-        final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15,
-        final K k16, final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19,
-        final K k20, final V v20, final K k21, final V v21, final K k22, final V v22, final K k23, final V v23,
-        final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27, final V v27,
-        final K k28, final V v28, final K k29, final V v29, final K k30, final V v30, final K k31, final V v31) {
+        final K k00, final V v00, final K k01, final V v01, final K k02, final V v02, final K k03, final V v03, final K k04, final V v04, final K k05,
+        final V v05, final K k06, final V v06, final K k07, final V v07, final K k08, final V v08, final K k09, final V v09, final K k10, final V v10,
+        final K k11, final V v11, final K k12, final V v12, final K k13, final V v13, final K k14, final V v14, final K k15, final V v15, final K k16,
+        final V v16, final K k17, final V v17, final K k18, final V v18, final K k19, final V v19, final K k20, final V v20, final K k21, final V v21,
+        final K k22, final V v22, final K k23, final V v23, final K k24, final V v24, final K k25, final V v25, final K k26, final V v26, final K k27,
+        final V v27, final K k28, final V v28, final K k29, final V v29, final K k30, final V v30, final K k31, final V v31) {
         return map( //
             k00, v00, k01, v01, k02, v02, k03, v03, k04, v04, k05, v05, k06, v06, k07, v07, k08, v08, k09, v09, //
             k10, v10, k11, v11, k12, v12, k13, v13, k14, v14, k15, v15, k16, v16, k17, v17, k18, v18, k19, v19, //
@@ -2509,12 +2465,10 @@ public class Indolently {
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> Predicate<T> and(final Predicate<? super T> x0, final Predicate<? super T> x1,
-        final Predicate<? super T>... x2) {
+    public static <T> Predicate<T> and(final Predicate<? super T> x0, final Predicate<? super T> x1, final Predicate<? super T>... x2) {
 
         return y -> {
-            final $list<Predicate<? super T>> preds =
-                cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
+            final $list<Predicate<? super T>> preds = cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.all(z -> z.test(y));
         };
@@ -2522,12 +2476,10 @@ public class Indolently {
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> Predicate<T> or(final Predicate<? super T> x0, final Predicate<? super T> x1,
-        final Predicate<? super T>... x2) {
+    public static <T> Predicate<T> or(final Predicate<? super T> x0, final Predicate<? super T> x1, final Predicate<? super T>... x2) {
 
         return y -> {
-            final $list<Predicate<? super T>> preds =
-                cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
+            final $list<Predicate<? super T>> preds = cast(list(requireNonNull(x0), requireNonNull(x1)).pushAll(list(x2)));
 
             return preds.any(z -> z.test(y));
         };
@@ -2597,23 +2549,19 @@ public class Indolently {
         return l -> ge(f.apply(l), r);
     }
 
-    public static <X, T extends Comparable<T>> Predicate<X> gtlt(final Function<X, ? extends T> f, final T l,
-        final T u) {
+    public static <X, T extends Comparable<T>> Predicate<X> gtlt(final Function<X, ? extends T> f, final T l, final T u) {
         return m -> gtlt(l, f.apply(m), u);
     }
 
-    public static <X, T extends Comparable<T>> Predicate<X> gelt(final Function<X, ? extends T> f, final T l,
-        final T u) {
+    public static <X, T extends Comparable<T>> Predicate<X> gelt(final Function<X, ? extends T> f, final T l, final T u) {
         return m -> gelt(l, f.apply(m), u);
     }
 
-    public static <X, T extends Comparable<T>> Predicate<X> gtle(final Function<X, ? extends T> f, final T l,
-        final T u) {
+    public static <X, T extends Comparable<T>> Predicate<X> gtle(final Function<X, ? extends T> f, final T l, final T u) {
         return m -> gtle(l, f.apply(m), u);
     }
 
-    public static <X, T extends Comparable<T>> Predicate<X> gele(final Function<X, ? extends T> f, final T l,
-        final T u) {
+    public static <X, T extends Comparable<T>> Predicate<X> gele(final Function<X, ? extends T> f, final T l, final T u) {
         return m -> gele(l, f.apply(m), u);
     }
 
@@ -2666,8 +2614,7 @@ public class Indolently {
                 return ReTest.of(x -> {
                     final var actual = ((AutomatonTest) ptest).find(x);
                     final var expected = pregex.matcher(x).find();
-                    assert actual == expected : String.format(
-                        "original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex,
+                    assert actual == expected : String.format("original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex,
                         ((AutomatonTest) ptest).regex(), expected, actual, x);
                     return actual;
                 }, regex);
@@ -2830,8 +2777,7 @@ public class Indolently {
 
     private static void checkSplitRange(final String s, final int from, final int to) {
         if (to < from) throw new IllegalArgumentException(String.format("to=%d < from=%d", to, from));
-        if (s.length() < from || s.length() < to)
-            throw new StringIndexOutOfBoundsException(String.format("from=%d, to=%d, len=%d", from, to, s.length()));
+        if (s.length() < from || s.length() < to) throw new StringIndexOutOfBoundsException(String.format("from=%d, to=%d, len=%d", from, to, s.length()));
     }
 
     public static <E extends Enum<E>> $<E> enumOf(final Class<E> type, final String name) {
@@ -2938,8 +2884,9 @@ public class Indolently {
         return Promissory.await(Promise.all(promise));
     }
 
-    public static <T> $$<List<T>, $$.None> await(final Iterable<? extends Promise<? extends T>> promise,
-        final long timeout) { return Promissory.await(Promise.all(promise), timeout); }
+    public static <T> $$<List<T>, $$.None> await(final Iterable<? extends Promise<? extends T>> promise, final long timeout) {
+        return Promissory.await(Promise.all(promise), timeout);
+    }
 
     public static <T> Function<Callable<? extends T>, Promise<T>> async() { return Indolently::async; }
 
@@ -3011,9 +2958,7 @@ public class Indolently {
         if (start < 0) start += len;
         if (end <= 0) end += len;
 
-        return (start < 0 || end < 0 || !between(start, narrow(0, end, len), len))
-            ? null
-            : s.substring(start, narrow(0, end, len));
+        return (start < 0 || end < 0 || !between(start, narrow(0, end, len), len)) ? null : s.substring(start, narrow(0, end, len));
     }
 
     public static $<byte[]> readClassResource(final Class<?> cls, final String suffix) throws IOException {
@@ -3032,8 +2977,7 @@ public class Indolently {
         else try (in) { return opt(in.readAllBytes()); }
     }
 
-    public static Path createTmpFile(final Object monitor, final $<String> prefix, final $<String> suffix,
-        final boolean warning) {
+    public static Path createTmpFile(final Object monitor, final $<String> prefix, final $<String> suffix, final boolean warning) {
 
         interface $static {
 
@@ -3046,8 +2990,7 @@ public class Indolently {
             if (!Files.exists(file)) return;
 
             if (warning) //
-                System.getLogger(FQCN(Indolently.class))
-                    .log(System.Logger.Level.WARNING, "delete disposed tempfile: path = {0}", file.toAbsolutePath());
+                System.getLogger(FQCN(Indolently.class)).log(System.Logger.Level.WARNING, "delete disposed tempfile: path = {0}", file.toAbsolutePath());
 
             try { Files.deleteIfExists(file); } //
             catch (final NoSuchFileException ignored) { } //

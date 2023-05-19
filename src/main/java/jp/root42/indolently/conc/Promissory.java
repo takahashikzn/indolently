@@ -54,9 +54,7 @@ public class Promissory {
             builder = builderCls.getMethod("name", String.class, long.class).invoke(builder, "virtual-", 0L);
             final var factory = builderCls.getMethod("factory").invoke(builder);
 
-            virtualThreadExecutor =
-                (Executor) Executors.class.getDeclaredMethod("newThreadPerTaskExecutor", ThreadFactory.class)
-                    .invoke(null, factory);
+            virtualThreadExecutor = (Executor) Executors.class.getDeclaredMethod("newThreadPerTaskExecutor", ThreadFactory.class).invoke(null, factory);
         } //
         catch (final ClassNotFoundException | NoSuchMethodException ignored) { } //
         catch (final InvocationTargetException | IllegalAccessException e) {

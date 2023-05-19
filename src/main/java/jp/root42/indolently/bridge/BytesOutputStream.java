@@ -115,8 +115,7 @@ public abstract class BytesOutputStream
     private static class CommonsIOImpl
         extends BytesOutputStream {
 
-        private static final boolean avail =
-            ObjFactory.isPresent("org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream");
+        private static final boolean avail = ObjFactory.isPresent("org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream");
 
         public static boolean isAvailable() { return avail; }
 

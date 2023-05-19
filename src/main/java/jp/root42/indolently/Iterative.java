@@ -32,7 +32,7 @@ import static jp.root42.indolently.Indolently.*;
 public class Iterative {
 
     /** non private for subtyping. */
-    protected Iterative() {}
+    protected Iterative() { }
 
     /**
      * Generate infinite integer sequence.
@@ -192,8 +192,7 @@ public class Iterative {
      * @param next {@link Iterator#next} implementation
      * @return iterator as {@link $iter}
      */
-    public static <E, T> $iter<T> iterator(final E env, final Predicate<? super E> hasNext,
-        final Function<? super E, ? extends T> next) {
+    public static <E, T> $iter<T> iterator(final E env, final Predicate<? super E> hasNext, final Function<? super E, ? extends T> next) {
 
         return $iter.of(env, hasNext, next);
     }

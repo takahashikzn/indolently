@@ -61,8 +61,7 @@ public interface Reducible<T> {
      * @return result value
      * @throws NoSuchElementException if this collection is empty
      */
-    default <R> $<R> mapred(final Function<? super T, ? extends R> fm,
-        final BiFunction<? super R, ? super R, ? extends R> fr) {
+    default <R> $<R> mapred(final Function<? super T, ? extends R> fm, final BiFunction<? super R, ? super R, ? extends R> fr) {
 
         return this.mapred(fm, (x, y, z) -> fr.apply(y, z));
     }

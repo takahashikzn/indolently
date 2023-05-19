@@ -38,9 +38,7 @@ public abstract class BytesInputStream
     }
 
     public static InputStream create(final ByteArrayOutputStream baos) {
-        return (baos instanceof BytesOutputStream)
-            ? ((BytesOutputStream) baos).toInputStream()
-            : create(baos.toByteArray());
+        return (baos instanceof BytesOutputStream) ? ((BytesOutputStream) baos).toInputStream() : create(baos.toByteArray());
     }
 
     private static class JDKImpl
@@ -92,14 +90,13 @@ public abstract class BytesInputStream
         public long transferTo(final OutputStream out) throws IOException { return this.bais.transferTo(out); }
 
         @Override
-        public void close() {}
+        public void close() { }
     }
 
     private static class CommonsIOImpl
         extends BytesInputStream {
 
-        private static final boolean avail =
-            ObjFactory.isPresent("org.apache.commons.io.output.UnsynchronizedByteArrayInputStream");
+        private static final boolean avail = ObjFactory.isPresent("org.apache.commons.io.output.UnsynchronizedByteArrayInputStream");
 
         public static boolean isAvailable() { return avail; }
 
@@ -153,6 +150,6 @@ public abstract class BytesInputStream
         public long transferTo(final OutputStream out) throws IOException { return this.bais.transferTo(out); }
 
         @Override
-        public void close() {}
+        public void close() { }
     }
 }

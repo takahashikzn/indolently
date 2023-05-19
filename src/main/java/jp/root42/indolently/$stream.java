@@ -34,8 +34,7 @@ import jp.root42.indolently.trait.ReducibleIterable;
  * @author takahashikzn
  */
 public interface $stream<T>
-    extends Stream<T>, EdgeAwareIterable<T>, Loopable<T, $stream<T>>, Filterable<T, $stream<T>>, ReducibleIterable<T>,
-    Matchable<T> {
+    extends Stream<T>, EdgeAwareIterable<T>, Loopable<T, $stream<T>>, Filterable<T, $stream<T>>, ReducibleIterable<T>, Matchable<T> {
 
     @Deprecated
     @Override

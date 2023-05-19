@@ -79,8 +79,7 @@ final class ReMatcherAutomaton
     }
 
     private AutomatonMatcher matcher(final int start) {
-        if (this.matcher == null)
-            this.matcher = this.pattern.automaton.newMatcher(this.input, start, this.input.length());
+        if (this.matcher == null) this.matcher = this.pattern.automaton.newMatcher(this.input, start, this.input.length());
         return this.matcher;
     }
 
@@ -131,12 +130,10 @@ final class ReMatcherAutomaton
     }
 
     @Override
-    public ReMatcherAutomaton appendReplacement(final StringBuilder sb,
-        final String replacement) { throw new UnsupportedOperationException(); }
+    public ReMatcherAutomaton appendReplacement(final StringBuilder sb, final String replacement) { throw new UnsupportedOperationException(); }
 
     @Override
-    public ReMatcherAutomaton appendReplacement(final StringBuffer sb,
-        final String replacement) { throw new UnsupportedOperationException(); }
+    public ReMatcherAutomaton appendReplacement(final StringBuffer sb, final String replacement) { throw new UnsupportedOperationException(); }
 
     @Override
     public StringBuilder appendTail(final StringBuilder sb) { throw new UnsupportedOperationException(); }

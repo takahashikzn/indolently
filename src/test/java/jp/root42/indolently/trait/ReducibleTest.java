@@ -17,7 +17,7 @@ import java.util.function.BiFunction;
 
 import jp.root42.indolently.Indolently;
 
-import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.list;
 
 import org.junit.Test;
 

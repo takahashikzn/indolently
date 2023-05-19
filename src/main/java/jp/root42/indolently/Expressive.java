@@ -100,8 +100,7 @@ public class Expressive {
      * @param type type of exception
      * @return actually return nothing
      */
-    public static <T, E extends Throwable> T raise(final Supplier<? extends Throwable> f, final Class<E> type)
-        throws E { return raise(f.get(), type); }
+    public static <T, E extends Throwable> T raise(final Supplier<? extends Throwable> f, final Class<E> type) throws E { return raise(f.get(), type); }
 
     /**
      * Block statement.
@@ -175,8 +174,7 @@ public class Expressive {
      * @param then context conversion function used if the condition is {@code true}
      * @param other context conversion function used if the condition is {@code false}
      */
-    public static <T> void let(final T context, final Predicate<? super T> cond, final Consumer<? super T> then,
-        final Consumer<? super T> other) {
+    public static <T> void let(final T context, final Predicate<? super T> cond, final Consumer<? super T> then, final Consumer<? super T> other) {
 
         if (cond.test(context)) //
             then.accept(context);
@@ -205,8 +203,7 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T, R, E extends Exception> R evalTry(final T val, final FunctionE<? super T, ? extends R, E> expr)
-        throws E { return expr.apply(val); }
+    public static <T, R, E extends Exception> R evalTry(final T val, final FunctionE<? super T, ? extends R, E> expr) throws E { return expr.apply(val); }
 
     /**
      * In-line evaluation expression.
@@ -219,8 +216,9 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T1, T2, R> R eval(final T1 val1, final T2 val2,
-        final BiFunction<? super T1, ? super T2, ? extends R> expr) { return expr.apply(val1, val2); }
+    public static <T1, T2, R> R eval(final T1 val1, final T2 val2, final BiFunction<? super T1, ? super T2, ? extends R> expr) {
+        return expr.apply(val1, val2);
+    }
 
     /**
      * In-line evaluation expression.
@@ -234,8 +232,8 @@ public class Expressive {
      * @param expr expression body
      * @return the value function returned
      */
-    public static <T1, T2, R, E extends Exception> R evalTry(final T1 val1, final T2 val2,
-        final Function2E<? super T1, ? super T2, ? extends R, E> expr) throws E { return expr.apply(val1, val2); }
+    public static <T1, T2, R, E extends Exception> R evalTry(final T1 val1, final T2 val2, final Function2E<? super T1, ? super T2, ? extends R, E> expr)
+        throws E { return expr.apply(val1, val2); }
 
     /**
      * In-line evaluation expression.
@@ -302,8 +300,7 @@ public class Expressive {
      */
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     @SafeVarargs
-    public static <T, E extends Exception> T prog1E(final SupplierE<? extends T, E> first,
-        final ConsumerE<? super T, E>... forms) throws E {
+    public static <T, E extends Exception> T prog1E(final SupplierE<? extends T, E> first, final ConsumerE<? super T, E>... forms) throws E {
 
         final var val = first.get();
 
@@ -353,33 +350,37 @@ public class Expressive {
     }
 
     @FunctionalInterface
-    public interface WithBlock<X, Y> {
-
-        Y apply(X x) throws IOException;
-    }
+    public interface WithBlock<IN, OUT>
+        extends IOExpr<IN, OUT, IOException> { }
 
     @Deprecated
-    public static <T extends Closeable, R> R with(final T res, final WithBlock<T, R> f) throws IOException {
+    public static <IN extends Closeable, OUT> OUT with(final IN res, final WithBlock<IN, OUT> f) throws IOException {
         try (res) { return f.apply(res); }
     }
 
     @FunctionalInterface
-    public interface IOExpr<X, Y, E extends Exception> {
+    public interface IOExpr<IN, OUT, ERR extends Exception> {
 
-        Y apply(X x) throws E;
+        OUT apply(IN in) throws ERR;
     }
 
-    public static <T extends Closeable, R, E extends Exception> R IO(final T res, final IOExpr<T, R, E> f)
-        throws E, IOException { try (res) { return f.apply(res); } }
+    public static <IN extends Closeable, OUT, ERR extends Exception> OUT IO(final IN res, final IOExpr<IN, OUT, ERR> f) throws ERR, IOException {
+        try (res) {
+            return f.apply(res);
+        }
+    }
 
     @FunctionalInterface
-    public interface IOStmt<X, E extends Exception> {
+    public interface IOStmt<IN, ERR extends Exception> {
 
-        void accept(X x) throws E;
+        void accept(IN in) throws ERR;
     }
 
-    public static <T extends Closeable, E extends Exception> void IO_(final T res, final IOStmt<T, E> f)
-        throws E, IOException { try (res) { f.accept(res); } }
+    public static <IN extends Closeable, ERR extends Exception> void IO_(final IN res, final IOStmt<IN, ERR> f) throws ERR, IOException {
+        try (res) {
+            f.accept(res);
+        }
+    }
 
     /**
      * try-with-resource statement.
@@ -398,8 +399,7 @@ public class Expressive {
      * @param res the resource
      * @param stmt expression body
      */
-    public static <T extends AutoCloseable> void WITH_(final Supplier<? extends T> res,
-        final Consumer<? super T> stmt) {
+    public static <T extends AutoCloseable> void WITH_(final Supplier<? extends T> res, final Consumer<? super T> stmt) {
 
         WITH(res, x -> {
             stmt.accept(x);
@@ -427,8 +427,7 @@ public class Expressive {
      * @return the value function returned
      */
     @SuppressWarnings({ "try", "RedundantSuppression" })
-    public static <T extends AutoCloseable, R> R WITH(final Supplier<? extends T> res,
-        final Function<? super T, ? extends R> expr) {
+    public static <T extends AutoCloseable, R> R WITH(final Supplier<? extends T> res, final Function<? super T, ? extends R> expr) {
 
         return eval(() -> { try (final T x = res.get()) { return expr.apply(x); } });
     }
@@ -610,8 +609,7 @@ public class Expressive {
         default IntroCase<C> when(final Class<?> type) { return this.when(x -> type.isInstance(x)); }
 
         default <SC extends C, T> Then<C, T> type(final Function<SC, ? extends T> then) {
-            return eval(argTypeOf(then),
-                argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
+            return eval(argTypeOf(then), argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
         }
 
         interface IntroCase<C> {
@@ -633,8 +631,7 @@ public class Expressive {
 
             default <SC extends C> Then<C, T> type(final Function<SC, ? extends T> then) {
 
-                return eval(argTypeOf(then),
-                    argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
+                return eval(argTypeOf(then), argType -> this.when(argType::isInstance).then(ctx -> then.apply(argType.cast(ctx))));
             }
 
             default Case<C, T> when(final boolean when) { return this.when(fixed(when)); }

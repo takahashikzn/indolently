@@ -200,14 +200,12 @@ public class StreamDelegate<T>
     }
 
     @Override
-    public <U> U reduce(final U identity, final BiFunction<U, ? super T, U> accumulator,
-        final BinaryOperator<U> combiner) {
+    public <U> U reduce(final U identity, final BiFunction<U, ? super T, U> accumulator, final BinaryOperator<U> combiner) {
         return this.getDelegate().reduce(identity, accumulator, combiner);
     }
 
     @Override
-    public <R> R collect(final Supplier<R> supplier, final BiConsumer<R, ? super T> accumulator,
-        final BiConsumer<R, R> combiner) {
+    public <R> R collect(final Supplier<R> supplier, final BiConsumer<R, ? super T> accumulator, final BiConsumer<R, R> combiner) {
         return this.getDelegate().collect(supplier, accumulator, combiner);
     }
 

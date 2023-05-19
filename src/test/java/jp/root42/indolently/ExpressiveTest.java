@@ -232,13 +232,13 @@ public class ExpressiveTest {
         assertThat(f.apply(new Baz())).isEqualTo("BAZ!!");
     }
 
-    public static class Foo {}
+    public static class Foo { }
 
     public static class Bar
-        extends Foo {}
+        extends Foo { }
 
     public static class Baz
-        extends Foo {}
+        extends Foo { }
 
     /**
      * {@link Expressive#match(Object)}
@@ -363,8 +363,7 @@ public class ExpressiveTest {
      */
     @Parameters
     @Test
-    public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to,
-        final int step) {
+    public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to, final int step) {
 
         assertThat(list( //
             iterator( //

@@ -23,6 +23,7 @@ import jp.root42.indolently.ref.$int;
 import static jp.root42.indolently.Functional.*;
 import static jp.root42.indolently.Generator.*;
 import static jp.root42.indolently.Indolently.list;
+import static jp.root42.indolently.Indolently.tuple;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.iterator;
 import static jp.root42.indolently.Iterative.*;
@@ -211,8 +212,7 @@ public class IterativeTest {
      */
     @Parameters
     @Test
-    public void testRange(final String desc, final List<Integer> expected, final int from, final int to,
-        final int step) {
+    public void testRange(final String desc, final List<Integer> expected, final int from, final int to, final int step) {
 
         // SIter.each returns just a 'tapped' iterator.
         range(from, to, step).each(x -> fail());

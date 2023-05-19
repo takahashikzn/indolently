@@ -46,8 +46,7 @@ import static jp.root42.indolently.Indolently.*;
  * @see $set
  */
 public interface $collection<T, SELF extends $collection<T, SELF>>
-    extends Collection<T>, EdgeAwareIterable<T>, ReducibleIterable<T>, Freezable<SELF>, Identical<SELF>,
-    Loopable<T, SELF>, Filterable<T, SELF>, Matchable<T> {
+    extends Collection<T>, EdgeAwareIterable<T>, ReducibleIterable<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>, Filterable<T, SELF>, Matchable<T> {
 
     /**
      * add value then return this instance.
@@ -238,8 +237,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @param fval a function which convert element to map value
      * @return map instance.
      */
-    default <K, V> $map<K, V> mapmap(final Function<? super T, ? extends K> fkey,
-        final Function<? super T, ? extends V> fval) {
+    default <K, V> $map<K, V> mapmap(final Function<? super T, ? extends K> fkey, final Function<? super T, ? extends V> fval) {
 
         return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
     }
@@ -253,8 +251,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @param fval a function which convert element to map value
      * @return map instance.
      */
-    default <K, V> $map<K, V> flatMapMap(final Function<? super T, ? extends K> fkey,
-        final Function<? super T, $<? extends V>> fval) {
+    default <K, V> $map<K, V> flatMapMap(final Function<? super T, ? extends K> fkey, final Function<? super T, $<? extends V>> fval) {
 
         return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
     }

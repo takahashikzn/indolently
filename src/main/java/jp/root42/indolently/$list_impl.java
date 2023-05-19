@@ -110,8 +110,7 @@ class $list_impl<T>
     private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableList"));
 
     boolean frozen() {
-        return (this.store instanceof $list_impl) && (($list_impl<?>) this.store).frozen()
-            || this.store.getClass() == FROZEN;
+        return (this.store instanceof $list_impl) && (($list_impl<?>) this.store).frozen() || this.store.getClass() == FROZEN;
     }
 }
 
@@ -189,8 +188,7 @@ interface $list_optimized<T>
     }
 
     @Override
-    default <R> $<R> reduce(final $<? extends R> initial,
-        final Function3<Integer, ? super R, ? super T, ? extends R> f) {
+    default <R> $<R> reduce(final $<? extends R> initial, final Function3<Integer, ? super R, ? super T, ? extends R> f) {
 
         var rem = initial.orNull();
 

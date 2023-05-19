@@ -15,6 +15,7 @@ package jp.root42.indolently.regex;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import jp.root42.indolently.$list;
 

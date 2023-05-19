@@ -49,23 +49,20 @@ public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
     public mut<T1, T2, T3> mut() { return new mut<T1, T2, T3>().set(this._1, this._2, this._3); }
 
     @Override
-    public <S1, S2, S3> $3<S1, S2, S3> map(
-        final Function3<T1, T2, T3, ? extends tpl3<?, ? extends S1, ? extends S2, ? extends S3>> f) {
+    public <S1, S2, S3> $3<S1, S2, S3> map(final Function3<T1, T2, T3, ? extends tpl3<?, ? extends S1, ? extends S2, ? extends S3>> f) {
 
         final var x = f.apply(this._1, this._2, this._3);
         return x instanceof $3<?, ?, ?> ? cast(x) : tuple(x._1(), x._2(), x._3());
     }
 
     @Override
-    public <S1, S2, S3> $3<S1, S2, S3> map(final Function<T1, ? extends S1> f1, final Function<T2, ? extends S2> f2,
-        final Function<T3, ? extends S3> f3) {
+    public <S1, S2, S3> $3<S1, S2, S3> map(final Function<T1, ? extends S1> f1, final Function<T2, ? extends S2> f2, final Function<T3, ? extends S3> f3) {
 
         return this.map((__1, __2, __3) -> tuple(f1.apply(__1), f2.apply(__2), f3.apply(__3)));
     }
 
     public static final class mut<T1, T2, T3>
-        implements tpl3<mut<T1, T2, T3>, T1, T2, T3>, Serializable, Consumer3<T1, T2, T3>,
-        Consumer<tpl3<?, T1, T2, T3>> {
+        implements tpl3<mut<T1, T2, T3>, T1, T2, T3>, Serializable, Consumer3<T1, T2, T3>, Consumer<tpl3<?, T1, T2, T3>> {
 
         private mut() { }
 
@@ -79,16 +76,14 @@ public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
         public T3 _3; // NOPMD
 
         @Override
-        public <S1, S2, S3> mut<S1, S2, S3> map(
-            final Function3<T1, T2, T3, ? extends tpl3<?, ? extends S1, ? extends S2, ? extends S3>> f) {
+        public <S1, S2, S3> mut<S1, S2, S3> map(final Function3<T1, T2, T3, ? extends tpl3<?, ? extends S1, ? extends S2, ? extends S3>> f) {
 
             final var x = f.apply(this._1, this._2, this._3);
             return x instanceof mut<?, ?, ?> ? cast(x) : new mut<S1, S2, S3>().set(x._1(), x._2(), x._3());
         }
 
         @Override
-        public <S1, S2, S3> mut<S1, S2, S3> map(final Function<T1, ? extends S1> f1,
-            final Function<T2, ? extends S2> f2, final Function<T3, ? extends S3> f3) {
+        public <S1, S2, S3> mut<S1, S2, S3> map(final Function<T1, ? extends S1> f1, final Function<T2, ? extends S2> f2, final Function<T3, ? extends S3> f3) {
 
             return this.map((__1, __2, __3) -> tuple(f1.apply(__1), f2.apply(__2), f3.apply(__3)));
         }

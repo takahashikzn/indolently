@@ -169,7 +169,6 @@ class PromiseCFuture<T>
 
     @Override
     public <U> Promise<U> last(final BiFunction<? super T, Exception, ? extends U> f) {
-        return new PromiseCFuture<>(
-            this.delegate.handle((v, x) -> x instanceof Exception e ? f.apply(v, e) : raise(x)));
+        return new PromiseCFuture<>(this.delegate.handle((v, x) -> x instanceof Exception e ? f.apply(v, e) : raise(x)));
     }
 }

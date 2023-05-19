@@ -65,8 +65,7 @@ public class Functional {
         return (x0, x1) -> f.apply(x1);
     }
 
-    public static <X0, X1, X2, R> Function3<X0, X1, X2, R> unbound(
-        final BiFunction<? super X1, ? super X2, ? extends R> f) {
+    public static <X0, X1, X2, R> Function3<X0, X1, X2, R> unbound(final BiFunction<? super X1, ? super X2, ? extends R> f) {
         return (x0, x1, x2) -> f.apply(x1, x2);
     }
 
@@ -74,13 +73,11 @@ public class Functional {
         return () -> f.apply(x);
     }
 
-    public static <X0, X1, R> Function<X1, R> bind(final BiFunction<? super X0, ? super X1, ? extends R> f,
-        final X0 x0) {
+    public static <X0, X1, R> Function<X1, R> bind(final BiFunction<? super X0, ? super X1, ? extends R> f, final X0 x0) {
         return x1 -> f.apply(x0, x1);
     }
 
-    public static <X0, X1, X2, Y> BiFunction<X1, X2, Y> bind(
-        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f, final X0 x0) {
+    public static <X0, X1, X2, Y> BiFunction<X1, X2, Y> bind(final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f, final X0 x0) {
         return (x2, x3) -> f.apply(x0, x2, x3);
     }
 
@@ -92,8 +89,7 @@ public class Functional {
         return x1 -> f.test(x0, x1);
     }
 
-    public static <X0, X1, X2> BiPredicate<X1, X2> bind(final Predicate3<? super X0, ? super X1, ? super X2> f,
-        final X0 x0) {
+    public static <X0, X1, X2> BiPredicate<X1, X2> bind(final Predicate3<? super X0, ? super X1, ? super X2> f, final X0 x0) {
         return (x1, x2) -> f.test(x0, x1, x2);
     }
 
@@ -115,16 +111,14 @@ public class Functional {
         return (x0, x1) -> g.apply(x0, x1, "");
     }
 
-    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> memoize(
-        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) {
+    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> memoize(final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) {
 
         final Function4<X0, X1, X2, String, Y> g = memoize((x0, x1, x2, x3) -> f.apply(x0, x1, x2));
 
         return (x0, x1, x2) -> g.apply(x0, x1, x2, "");
     }
 
-    public static <X0, X1, X2, X3, Y> Function4<X0, X1, X2, X3, Y> memoize(
-        final Function4<? super X0, ? super X1, ? super X2, ? super X3, ? extends Y> f) {
+    public static <X0, X1, X2, X3, Y> Function4<X0, X1, X2, X3, Y> memoize(final Function4<? super X0, ? super X1, ? super X2, ? super X3, ? extends Y> f) {
 
         final Map<$2<$2<X0, X1>, $2<X2, X3>>, Y> memo = map();
 
@@ -151,19 +145,16 @@ public class Functional {
 
     public static <X0, X1, X2> Predicate3<X0, X1, X2> memoize(final Predicate3<? super X0, ? super X1, ? super X2> f) {
 
-        final Function3<X0, X1, X2, Boolean> memoized =
-            memoize(function4Of((final X0 x0, final X1 x1, final X2 x2) -> f.test(x0, x1, x2)));
+        final Function3<X0, X1, X2, Boolean> memoized = memoize(function4Of((final X0 x0, final X1 x1, final X2 x2) -> f.test(x0, x1, x2)));
 
         return memoized::apply;
     }
 
-    public static SBoolSuppl boolsuppl(final Consumer<? super BooleanSupplier> init,
-        final Predicate<? super BooleanSupplier> body) {
+    public static SBoolSuppl boolsuppl(final Consumer<? super BooleanSupplier> init, final Predicate<? super BooleanSupplier> body) {
         return function(init, body);
     }
 
-    public static SBoolSuppl function(final Consumer<? super BooleanSupplier> init,
-        final Predicate<? super BooleanSupplier> body) {
+    public static SBoolSuppl function(final Consumer<? super BooleanSupplier> init, final Predicate<? super BooleanSupplier> body) {
 
         requireNonNull(init, "init");
         requireNonNull(body, "body");
@@ -187,13 +178,11 @@ public class Functional {
         return suppl(self -> { }, self -> suppl.get());
     }
 
-    public static <T> SSuppl<T> suppl(final Consumer<? super Supplier<T>> init,
-        final Function<? super Supplier<? extends T>, ? extends T> body) {
+    public static <T> SSuppl<T> suppl(final Consumer<? super Supplier<T>> init, final Function<? super Supplier<? extends T>, ? extends T> body) {
         return function(init, body);
     }
 
-    public static <T> SSuppl<T> function(final Consumer<? super Supplier<T>> init,
-        final Function<? super Supplier<? extends T>, ? extends T> body) {
+    public static <T> SSuppl<T> function(final Consumer<? super Supplier<T>> init, final Function<? super Supplier<? extends T>, ? extends T> body) {
 
         requireNonNull(init, "init");
         requireNonNull(body, "body");
@@ -302,14 +291,12 @@ public class Functional {
         return pred(self -> { }, (self, x) -> pred.test(x));
     }
 
-    public static <X> SPred<X> pred(final Consumer<? super Predicate<X>> init,
-        final BiPredicate<? super Predicate<X>, ? super X> body) {
+    public static <X> SPred<X> pred(final Consumer<? super Predicate<X>> init, final BiPredicate<? super Predicate<X>, ? super X> body) {
 
         return function(init, body);
     }
 
-    public static <X> SPred<X> function(final Consumer<? super Predicate<X>> init,
-        final BiPredicate<? super Predicate<X>, ? super X> body) {
+    public static <X> SPred<X> function(final Consumer<? super Predicate<X>> init, final BiPredicate<? super Predicate<X>, ? super X> body) {
 
         requireNonNull(init, "init");
         requireNonNull(body, "body");
@@ -368,16 +355,13 @@ public class Functional {
         return cast(f);
     }
 
-    public static <X0, X1, X2> Consumer3<X0, X1, X2> consumer3Of(
-        final Consumer3<? super X0, ? super X1, ? super X2> f) { return cast(f); }
+    public static <X0, X1, X2> Consumer3<X0, X1, X2> consumer3Of(final Consumer3<? super X0, ? super X1, ? super X2> f) { return cast(f); }
 
     public static <X0, X1> Function<X0, X1> functionOf(final Function<? super X0, ? extends X1> f) { return cast(f); }
 
-    public static <X0, X1, Y> BiFunction<X0, X1, Y> function2Of(
-        final BiFunction<? super X0, ? super X1, ? extends Y> f) { return cast(f); }
+    public static <X0, X1, Y> BiFunction<X0, X1, Y> function2Of(final BiFunction<? super X0, ? super X1, ? extends Y> f) { return cast(f); }
 
-    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> function4Of(
-        final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) { return cast(f); }
+    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> function4Of(final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) { return cast(f); }
 
     public static <X> Predicate<X> predicateOf(final Predicate<? super X> f) { return cast(f); }
 
@@ -385,8 +369,7 @@ public class Functional {
         return cast(f);
     }
 
-    public static <X0, X1, X2> Predicate3<X0, X1, X2> predicate3Of(
-        final Predicate3<? super X0, ? super X1, ? super X2> f) { return cast(f); }
+    public static <X0, X1, X2> Predicate3<X0, X1, X2> predicate3Of(final Predicate3<? super X0, ? super X1, ? super X2> f) { return cast(f); }
 
     @FunctionalInterface
     public interface ThrowableFunction<X0, X1> {
@@ -442,8 +425,7 @@ public class Functional {
         X4 apply(X0 x0, X1 x1, X2 x2, X3 x3) throws Exception;
     }
 
-    public static <X0, X1, X2, X3, X4> Function4<X0, X1, X2, X3, X4> adapt(
-        final ThrowableFunction4<X0, X1, X2, X3, X4> f) {
+    public static <X0, X1, X2, X3, X4> Function4<X0, X1, X2, X3, X4> adapt(final ThrowableFunction4<X0, X1, X2, X3, X4> f) {
         return (x0, x1, x2, x3) -> {
             try {
                 return f.apply(x0, x1, x2, x3);

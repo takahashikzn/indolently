@@ -15,6 +15,7 @@ package jp.root42.indolently.ref;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -47,6 +48,10 @@ public record $$<L, R>($<L> l, $<R> r) {
     public <T> $<T> lmap(final Function<L, T> fn) { return this.l.map(fn); }
 
     public <T> $<T> rmap(final Function<R, T> fn) { return this.r.map(fn); }
+
+    public boolean ltest(final Predicate<L> fn) { return this.l.test(fn); }
+
+    public boolean rtest(final Predicate<R> fn) { return this.r.test(fn); }
 
     @Override
     public String toString() { return String.format("Either[%s,%s]", tostr(this.l), tostr(this.r)); }

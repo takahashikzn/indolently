@@ -128,8 +128,7 @@ public class Regexive {
 
     private static boolean isJDKRegex(final String p) { return JDK_REGEX.test(p); }
 
-    private static final String HORIZONTAL_SPACE =
-        regex1("[ \t\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000]").pattern();
+    private static final String HORIZONTAL_SPACE = regex1("[ \t\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000]").pattern();
 
     private static final String SPACE = regex1("[ \t\n\u000b\f\r]").pattern();
 

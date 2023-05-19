@@ -27,8 +27,7 @@ public interface ReducibleIterable<T>
     extends Iterable<T>, Reducible<T> {
 
     @Override
-    default <R> $<R> mapred(final Function<? super T, ? extends R> fm,
-        final Function3<Integer, ? super R, ? super R, ? extends R> fr) {
+    default <R> $<R> mapred(final Function<? super T, ? extends R> fm, final Function3<Integer, ? super R, ? super R, ? extends R> fr) {
 
         final var i = this.iterator();
 
@@ -45,8 +44,7 @@ public interface ReducibleIterable<T>
     }
 
     @Override
-    default <R> $<R> reduce(final $<? extends R> initial,
-        final Function3<Integer, ? super R, ? super T, ? extends R> f) {
+    default <R> $<R> reduce(final $<? extends R> initial, final Function3<Integer, ? super R, ? super T, ? extends R> f) {
 
         var rem = initial.orNull();
 
