@@ -21,6 +21,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 
 import jp.root42.indolently.$iter;
+import jp.root42.indolently.$list;
 import jp.root42.indolently.Iterative;
 import jp.root42.indolently.bridge.RegexMatcher;
 import jp.root42.indolently.ref.$void;
@@ -125,5 +126,15 @@ public interface ReMatcher<P, M>
             final var repl = f.apply(m, s);
             return contains(repl, '$') ? repl.replaceAll("(?<!\\\\)\\$", "\\\\\\$") : repl;
         });
+    }
+
+    default $list<String> groups() {
+
+        final $list<String> found = list();
+
+        for (int i = 0, Z = this.groupCount(); i < Z; i++)
+            found.add(this.group(i + 1));
+
+        return found;
     }
 }
