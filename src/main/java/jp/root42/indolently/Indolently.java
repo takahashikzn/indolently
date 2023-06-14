@@ -220,6 +220,33 @@ public class Indolently {
         if (!flag) throw new AssertionError("" + msg.get());
     }
 
+    /** for IDE's language injection */
+    public static String __SQL__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __JSON__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __VTL__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __CSS__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __HTML__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __XML__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __TYPESCRIPT__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __JAVASCRIPT__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __JAVA__(final String code) { return code; }
+
     private static final boolean assertive;
 
     static {
