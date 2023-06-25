@@ -3026,4 +3026,8 @@ public class Indolently {
 
         return file;
     }
+
+    public static Function<String, String> trims() { return x -> x.trim(); }
+
+    public static Function<String, String> strips() { return x -> x.strip(); }
 }
