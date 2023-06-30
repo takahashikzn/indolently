@@ -76,11 +76,15 @@ public record $<T>(Optional<T> opt)
     @Deprecated
     public $<T> filter(final Predicate<? super T> f) { return this.if_(f); }
 
-    public $<T> tap(final Consumer<? super T> f) { return this.tapTry(f::accept); }
+    public $<T> do_(final Consumer<? super T> f) { return this.doTry(f::accept); }
 
-    public $<T> tap(final Consumer<? super T> action, final Runnable orAction) {
-        return this.tapTry(action::accept, orAction::run);
-    }
+    public $<T> do_(final Consumer<? super T> action, final Runnable orAction) { return this.doTry(action::accept, orAction::run); }
+
+    // alias
+    public $<T> tap(final Consumer<? super T> f) { return this.do_(f); }
+
+    // alias
+    public $<T> tap(final Consumer<? super T> action, final Runnable orAction) { return this.do_(action, orAction); }
 
     // alias
     public $<T> then(final Consumer<? super T> f) { return this.tap(f); }
@@ -131,14 +135,14 @@ public record $<T>(Optional<T> opt)
     public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { return this.opt.orElseThrow(f); }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public <U, E extends Exception> $<T> tapTry(final ConsumerE<? super T, E> f) throws E {
+    public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f) throws E {
         if (this.empty()) return none();
         f.accept(this.opt.get());
         return this;
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public <U, E extends Exception> $<T> tapTry(final ConsumerE<? super T, E> f, final RunnableE<E> orAction) throws E {
+    public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f, final RunnableE<E> orAction) throws E {
         if (this.empty()) {
             orAction.run();
             return none();

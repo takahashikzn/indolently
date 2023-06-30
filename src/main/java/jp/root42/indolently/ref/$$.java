@@ -39,11 +39,14 @@ public record $$<L, R>($<L> l, $<R> r) {
         return this.l.map(lfn).or(() -> cast(this.r.map(rfn).get()));
     }
 
-    public $$<L, R> tap(final Consumer<L> lfn, final Consumer<R> rfn) {
+    public $$<L, R> do_(final Consumer<L> lfn, final Consumer<R> rfn) {
         this.l.tap(lfn);
         this.r.tap(rfn);
         return this;
     }
+
+    // alias
+    public $$<L, R> tap(final Consumer<L> lfn, final Consumer<R> rfn) { return this.do_(lfn, rfn); }
 
     public <T> $<T> lmap(final Function<L, T> fn) { return this.l.map(fn); }
 
