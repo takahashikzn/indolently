@@ -718,4 +718,13 @@ public class Expressive {
             }
         };
     }
+
+    public static <T0, T1, T2> T2 do_(final T0 in, final Function<T0, T1> f1, final Function<T1, T2> f2) { return do_(in, f1, f2, it()); }
+
+    public static <T0, T1, T2, T3> T3 do_(final T0 in, final Function<T0, T1> f1, final Function<T1, T2> f2, final Function<T2, T3> f3) {
+        return do_(in, f1, f2, f3, it());
+    }
+
+    public static <T0, T1, T2, T3, T4> T4 do_(final T0 in, final Function<T0, T1> f1, final Function<T1, T2> f2, final Function<T2, T3> f3,
+        final Function<T3, T4> f4) { return f4.apply(f3.apply(f2.apply(f1.apply(in)))); }
 }

@@ -478,4 +478,15 @@ public class Functional {
     public static <X0, X1> BiPredicate<X0, X1> asPredicate(final BiFunction<X0, X1, Boolean> pred) {
         return (x0, x1) -> pred.apply(x0, x1);
     }
+
+    public static <T0, T1, T2> Function<T0, T2> compose(final Function<T0, T1> f1, final Function<T1, T2> f2) {
+        return compose(f1, f2, it(), it());
+    }
+
+    public static <T0, T1, T2, T3> Function<T0, T3> compose(final Function<T0, T1> f1, final Function<T1, T2> f2, final Function<T2, T3> f3) {
+        return compose(f1, f2, f3, it());
+    }
+
+    public static <T0, T1, T2, T3, T4> Function<T0, T4> compose(final Function<T0, T1> f1, final Function<T1, T2> f2, final Function<T2, T3> f3,
+        final Function<T3, T4> f4) { return f1.andThen(f2).andThen(f3).andThen(f4); }
 }
