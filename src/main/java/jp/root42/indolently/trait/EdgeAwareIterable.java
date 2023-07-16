@@ -147,4 +147,16 @@ public interface EdgeAwareIterable<T>
 
         return ret;
     }
+
+    // alias
+    default T top() { return this.head(); }
+
+    // alias
+    default $<T> top(final Predicate<? super T> f) { return this.head(f); }
+
+    // alias
+    default T end() { return this.last(); }
+
+    // alias
+    default $<T> end(final Predicate<? super T> f) { return this.last(f); }
 }
