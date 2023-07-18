@@ -3,8 +3,9 @@
   <!ENTITY compile_conf "compile->master(*)">
   <!ENTITY runtime_conf "runtime->master(*)">
   <!ENTITY test_conf "test->master(*)">
-  <!ENTITY mockito_version "5.4.0">
-  <!ENTITY bytebuddy_version "1.14.5">
+  <!ENTITY mockito_version "5.5.0">
+  <!ENTITY bytebuddy_version "1.14.7">
+  <!ENTITY eclipsecollection_version "12.0.0.M3">
   ]>
 <!--
   Copyright 2014 takahashikzn
@@ -46,8 +47,8 @@
     <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="&test_conf;" />
     -->
     <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.11" conf="&compile_conf;" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="12.0.0.M1" conf="&compile_conf;" />
-    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="12.0.0.M1" conf="&compile_conf;" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="&eclipsecollection_version;" conf="&compile_conf;" />
+    <dependency org="org.eclipse.collections" name="eclipse-collections" rev="&eclipsecollection_version;" conf="&compile_conf;" />
 
     <dependency org="com.google.re2j" name="re2j" rev="1.7" conf="&compile_conf;" />
     <dependency org="dk.brics" name="automaton" rev="1.12-4" conf="&compile_conf;" />
@@ -59,7 +60,7 @@
     <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="&test_conf;" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="&test_conf;" />
     <dependency org="org.assertj" name="assertj-core" rev="3.24.2" conf="&test_conf;" />
-    <dependency org="org.opentest4j" name="opentest4j" rev="1.3.0-RC1" conf="&test_conf;" />
+    <dependency org="org.opentest4j" name="opentest4j" rev="1.3.0" conf="&test_conf;" />
     <dependency org="org.mockito" name="mockito-core" rev="&mockito_version;" conf="&test_conf;" />
     <dependency org="org.mockito" name="mockito-subclass" rev="&mockito_version;" conf="&test_conf;" />
     <dependency org="net.bytebuddy" name="byte-buddy" rev="&bytebuddy_version;" conf="&test_conf;" />
