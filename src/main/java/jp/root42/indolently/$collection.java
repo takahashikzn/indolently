@@ -298,6 +298,12 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
 
     default String join(final Function<T, ? extends CharSequence> f) { return this.join(f, null); }
 
+    default $<String> join$() { return this.empty() ? Indolently.none() : Indolently.opt(this.join()); }
+
+    default $<String> join$(final String sep) { return this.empty() ? Indolently.none() : Indolently.opt(this.join(sep)); }
+
+    default $<String> join$(final Function<T, ? extends CharSequence> f) { return this.empty() ? Indolently.none() : Indolently.opt(this.join(f)); }
+
     String join(Function<T, ? extends CharSequence> f, String sep);
 
     default SELF tap(final Consumer<SELF> f) {
