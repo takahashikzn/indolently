@@ -38,14 +38,10 @@ public class SPred2<X0, X1>
      *
      * @param body function body
      */
-    public SPred2(final Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body) {
-        this.body = Objects.requireNonNull(body);
-    }
+    public SPred2(final Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body) { this.body = Objects.requireNonNull(body); }
 
     @Override
-    public boolean test(final X0 x0, final X1 x1) {
-        return this.body.test(this, x0, x1);
-    }
+    public boolean test(final X0 x0, final X1 x1) { return this.body.test(this, x0, x1); }
 
     /**
      * bind parameter to this function.
@@ -53,9 +49,7 @@ public class SPred2<X0, X1>
      * @param x0 argument to bind
      * @return curried function
      */
-    public SPred<X1> bind(final X0 x0) {
-        return this.bind(() -> x0);
-    }
+    public SPred<X1> bind(final X0 x0) { return this.bind(() -> x0); }
 
     /**
      * bind parameter to this function.
@@ -63,9 +57,7 @@ public class SPred2<X0, X1>
      * @param x0 argument to bind
      * @return curried function
      */
-    public SPred<X1> bind(final Supplier<? extends X0> x0) {
-        return new SPred<>((self, x1) -> this.test(x0.get(), x1));
-    }
+    public SPred<X1> bind(final Supplier<? extends X0> x0) { return new SPred<>((self, x1) -> this.test(x0.get(), x1)); }
 
     /**
      * bind parameter to this function.
@@ -74,9 +66,7 @@ public class SPred2<X0, X1>
      * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SBoolSuppl bind(final X0 x0, final X1 x1) {
-        return this.bind(() -> x0, () -> x1);
-    }
+    public SBoolSuppl bind(final X0 x0, final X1 x1) { return this.bind(() -> x0, () -> x1); }
 
     /**
      * bind parameter to this function.
@@ -85,45 +75,26 @@ public class SPred2<X0, X1>
      * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SBoolSuppl bind(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1) {
-        return this.bind(x0).bind(x1);
-    }
+    public SBoolSuppl bind(final Supplier<? extends X0> x0, final Supplier<? extends X1> x1) { return this.bind(x0).bind(x1); }
 
     /**
      * return function body.
      *
      * @return function body
      */
-    public Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body() {
-        return this.body;
-    }
+    public Predicate3<? super BiPredicate<X0, X1>, ? super X0, ? super X1> body() { return this.body; }
 
     @Override
-    public SPred2<X0, X1> memoize() {
-        return new SPred2<>(Functional.memoize(this.body));
-    }
+    public SPred2<X0, X1> memoize() { return new SPred2<>(Functional.memoize(this.body)); }
 
     @Override
-    public String toString() {
-        return this.body.toString();
-    }
+    public String toString() { return this.body.toString(); }
+
+    private int hashCode = -1;
 
     @Override
-    public int hashCode() {
-        return this.body.hashCode();
-    }
+    public int hashCode() { return (this.hashCode != -1) ? this.hashCode : (this.hashCode = this.body.hashCode()); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof SPred2)) {
-            return false;
-        }
-
-        final SPred2<?, ?> that = (SPred2<?, ?>) o;
-        return this.body.equals(that.body);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof SPred2<?, ?> that && this.body.equals(that.body); }
 }

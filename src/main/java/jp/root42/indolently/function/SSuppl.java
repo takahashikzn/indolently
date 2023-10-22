@@ -37,50 +37,29 @@ public class SSuppl<T>
      *
      * @param body function body
      */
-    public SSuppl(final Function<? super Supplier<T>, ? extends T> body) {
-        this.body = Objects.requireNonNull(body);
-    }
+    public SSuppl(final Function<? super Supplier<T>, ? extends T> body) { this.body = Objects.requireNonNull(body); }
 
     @Override
-    public T get() {
-        return this.body.apply(this);
-    }
+    public T get() { return this.body.apply(this); }
 
     /**
      * return function body.
      *
      * @return function body
      */
-    public Function<? super Supplier<T>, ? extends T> body() {
-        return this.body;
-    }
+    public Function<? super Supplier<T>, ? extends T> body() { return this.body; }
 
     @Override
-    public SSuppl<T> memoize() {
-        return new SSuppl<>(Functional.memoize(this.body));
-    }
+    public SSuppl<T> memoize() { return new SSuppl<>(Functional.memoize(this.body)); }
 
     @Override
-    public String toString() {
-        return this.body.toString();
-    }
+    public String toString() { return this.body.toString(); }
+
+    private int hashCode = -1;
 
     @Override
-    public int hashCode() {
-        return this.body.hashCode();
-    }
+    public int hashCode() { return (this.hashCode != -1) ? this.hashCode : (this.hashCode = this.body.hashCode()); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof SSuppl)) {
-            return false;
-        }
-
-        final SSuppl<?> that = (SSuppl<?>) o;
-        return this.body.equals(that.body);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof SSuppl<?> that && this.body.equals(that.body); }
 }

@@ -44,9 +44,7 @@ public class SFunc3<X0, X1, X2, Y>
     }
 
     @Override
-    public Y apply(final X0 x0, final X1 x1, final X2 x2) {
-        return this.body.apply(this, x0, x1, x2);
-    }
+    public Y apply(final X0 x0, final X1 x1, final X2 x2) { return this.body.apply(this, x0, x1, x2); }
 
     /**
      * bind parameter to this function.
@@ -54,9 +52,7 @@ public class SFunc3<X0, X1, X2, Y>
      * @param x0 argument to bind
      * @return curried function
      */
-    public SFunc2<X1, X2, Y> bind(final X0 x0) {
-        return this.bind(() -> x0);
-    }
+    public SFunc2<X1, X2, Y> bind(final X0 x0) { return this.bind(() -> x0); }
 
     /**
      * bind parameter to this function.
@@ -75,9 +71,7 @@ public class SFunc3<X0, X1, X2, Y>
      * @param x1 2nd argument to bind
      * @return curried function
      */
-    public SFunc<X2, Y> bind(final X0 x0, final X1 x1) {
-        return this.bind(() -> x0, () -> x1);
-    }
+    public SFunc<X2, Y> bind(final X0 x0, final X1 x1) { return this.bind(() -> x0, () -> x1); }
 
     /**
      * bind parameter to this function.
@@ -119,36 +113,19 @@ public class SFunc3<X0, X1, X2, Y>
      *
      * @return function body
      */
-    public Function4<? super Function3<X0, X1, X2, Y>, ? super X0, ? super X1, ? super X2, ? extends Y> body() {
-        return this.body;
-    }
+    public Function4<? super Function3<X0, X1, X2, Y>, ? super X0, ? super X1, ? super X2, ? extends Y> body() { return this.body; }
 
     @Override
-    public SFunc3<X0, X1, X2, Y> memoize() {
-        return new SFunc3<>(Functional.memoize(this.body));
-    }
+    public SFunc3<X0, X1, X2, Y> memoize() { return new SFunc3<>(Functional.memoize(this.body)); }
 
     @Override
-    public String toString() {
-        return this.body.toString();
-    }
+    public String toString() { return this.body.toString(); }
+
+    private int hashCode = -1;
 
     @Override
-    public int hashCode() {
-        return this.body.hashCode();
-    }
+    public int hashCode() { return (this.hashCode != -1) ? this.hashCode : (this.hashCode = this.body.hashCode()); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof SFunc3)) {
-            return false;
-        }
-
-        final SFunc3<?, ?, ?, ?> that = (SFunc3<?, ?, ?, ?>) o;
-        return this.body.equals(that.body);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof SFunc3<?, ?, ?, ?> that && this.body.equals(that.body); }
 }

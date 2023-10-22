@@ -36,50 +36,29 @@ public class SBoolSuppl
      *
      * @param body function body
      */
-    public SBoolSuppl(final Predicate<? super BooleanSupplier> body) {
-        this.body = Objects.requireNonNull(body);
-    }
+    public SBoolSuppl(final Predicate<? super BooleanSupplier> body) { this.body = Objects.requireNonNull(body); }
 
     @Override
-    public boolean getAsBoolean() {
-        return this.body.test(this);
-    }
+    public boolean getAsBoolean() { return this.body.test(this); }
 
     /**
      * return function body.
      *
      * @return function body
      */
-    public Predicate<? super BooleanSupplier> body() {
-        return this.body;
-    }
+    public Predicate<? super BooleanSupplier> body() { return this.body; }
 
     @Override
-    public SBoolSuppl memoize() {
-        return new SBoolSuppl(Functional.memoize(this.body));
-    }
+    public SBoolSuppl memoize() { return new SBoolSuppl(Functional.memoize(this.body)); }
 
     @Override
-    public String toString() {
-        return this.body.toString();
-    }
+    public String toString() { return this.body.toString(); }
+
+    private int hashCode = -1;
 
     @Override
-    public int hashCode() {
-        return this.body.hashCode();
-    }
+    public int hashCode() { return (this.hashCode != -1) ? this.hashCode : (this.hashCode = this.body.hashCode()); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof SBoolSuppl)) {
-            return false;
-        }
-
-        final var that = (SBoolSuppl) o;
-        return this.body.equals(that.body);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof SBoolSuppl that && this.body.equals(that.body); }
 }

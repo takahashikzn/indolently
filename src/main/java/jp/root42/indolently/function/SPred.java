@@ -38,14 +38,10 @@ public class SPred<T>
      *
      * @param body function body
      */
-    public SPred(final BiPredicate<? super Predicate<T>, ? super T> body) {
-        this.body = Objects.requireNonNull(body);
-    }
+    public SPred(final BiPredicate<? super Predicate<T>, ? super T> body) { this.body = Objects.requireNonNull(body); }
 
     @Override
-    public boolean test(final T x) {
-        return this.body.test(this, x);
-    }
+    public boolean test(final T x) { return this.body.test(this, x); }
 
     /**
      * bind parameter to this function.
@@ -53,9 +49,7 @@ public class SPred<T>
      * @param x argument to bind
      * @return curried function
      */
-    public SBoolSuppl bind(final T x) {
-        return this.bind(() -> x);
-    }
+    public SBoolSuppl bind(final T x) { return this.bind(() -> x); }
 
     /**
      * bind parameter to this function.
@@ -63,45 +57,26 @@ public class SPred<T>
      * @param x argument to bind
      * @return curried function
      */
-    public SBoolSuppl bind(final Supplier<? extends T> x) {
-        return new SBoolSuppl(self -> this.test(x.get()));
-    }
+    public SBoolSuppl bind(final Supplier<? extends T> x) { return new SBoolSuppl(self -> this.test(x.get())); }
 
     /**
      * return function body.
      *
      * @return function body
      */
-    public BiPredicate<? super Predicate<T>, ? super T> body() {
-        return this.body;
-    }
+    public BiPredicate<? super Predicate<T>, ? super T> body() { return this.body; }
 
     @Override
-    public SPred<T> memoize() {
-        return new SPred<>(Functional.memoize(this.body));
-    }
+    public SPred<T> memoize() { return new SPred<>(Functional.memoize(this.body)); }
 
     @Override
-    public String toString() {
-        return this.body.toString();
-    }
+    public String toString() { return this.body.toString(); }
+
+    private int hashCode = -1;
 
     @Override
-    public int hashCode() {
-        return this.body.hashCode();
-    }
+    public int hashCode() { return (this.hashCode != -1) ? this.hashCode : (this.hashCode = this.body.hashCode()); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof SPred)) {
-            return false;
-        }
-
-        final SPred<?> that = (SPred<?>) o;
-        return this.body.equals(that.body);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof SPred<?> that && this.body.equals(that.body); }
 }

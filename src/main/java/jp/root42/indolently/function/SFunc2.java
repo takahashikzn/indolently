@@ -39,14 +39,10 @@ public class SFunc2<T, U, R>
      *
      * @param body function body
      */
-    public SFunc2(final Function3<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body) {
-        this.body = Objects.requireNonNull(body);
-    }
+    public SFunc2(final Function3<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body) { this.body = Objects.requireNonNull(body); }
 
     @Override
-    public R apply(final T x, final U y) {
-        return this.body.apply(this, x, y);
-    }
+    public R apply(final T x, final U y) { return this.body.apply(this, x, y); }
 
     /**
      * bind parameter to this function.
@@ -54,9 +50,7 @@ public class SFunc2<T, U, R>
      * @param x argument to bind
      * @return curried function
      */
-    public SFunc<U, R> bind(final T x) {
-        return this.bind(() -> x);
-    }
+    public SFunc<U, R> bind(final T x) { return this.bind(() -> x); }
 
     /**
      * bind parameter to this function.
@@ -64,9 +58,7 @@ public class SFunc2<T, U, R>
      * @param x argument to bind
      * @return curried function
      */
-    public SFunc<U, R> bind(final Supplier<? extends T> x) {
-        return new SFunc<>((self, y) -> this.apply(x.get(), y));
-    }
+    public SFunc<U, R> bind(final Supplier<? extends T> x) { return new SFunc<>((self, y) -> this.apply(x.get(), y)); }
 
     /**
      * bind parameter to this function.
@@ -75,9 +67,7 @@ public class SFunc2<T, U, R>
      * @param y 2nd argument to bind
      * @return curried function
      */
-    public SSuppl<R> bind(final T x, final U y) {
-        return this.bind(() -> x, () -> y);
-    }
+    public SSuppl<R> bind(final T x, final U y) { return this.bind(() -> x, () -> y); }
 
     /**
      * bind parameter to this function.
@@ -86,18 +76,14 @@ public class SFunc2<T, U, R>
      * @param y 2nd argument to bind
      * @return curried function
      */
-    public SSuppl<R> bind(final Supplier<? extends T> x, final Supplier<? extends U> y) {
-        return this.bind(x).bind(y);
-    }
+    public SSuppl<R> bind(final Supplier<? extends T> x, final Supplier<? extends U> y) { return this.bind(x).bind(y); }
 
     /**
      * return function body.
      *
      * @return function body
      */
-    public Function3<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body() {
-        return this.body;
-    }
+    public Function3<? super BiFunction<T, U, R>, ? super T, ? super U, ? extends R> body() { return this.body; }
 
     @Override
     public SFunc2<T, U, R> memoize() {
@@ -105,26 +91,13 @@ public class SFunc2<T, U, R>
     }
 
     @Override
-    public String toString() {
-        return this.body.toString();
-    }
+    public String toString() { return this.body.toString(); }
+
+    private int hashCode = -1;
 
     @Override
-    public int hashCode() {
-        return this.body.hashCode();
-    }
+    public int hashCode() { return (this.hashCode != -1) ? this.hashCode : (this.hashCode = this.body.hashCode()); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o == null) {
-            return false;
-        } else if (this == o) {
-            return true;
-        } else if (!(o instanceof SFunc2)) {
-            return false;
-        }
-
-        final SFunc2<?, ?, ?> that = (SFunc2<?, ?, ?>) o;
-        return this.body.equals(that.body);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof SFunc2<?, ?, ?> that && this.body.equals(that.body); }
 }
