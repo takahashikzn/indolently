@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.function.Function;
 
 import jp.root42.indolently.ref.$;
@@ -284,5 +285,28 @@ public final class Numeric {
         for (final var x: vals)
             n += x.longValue();
         return n;
+    }
+
+    public static int compareNumber(final Number x, final Number y) {
+
+        return switch (x) {
+            case null -> y == null ? 0 : -1;
+
+            case Long l -> Long.compare(l, y.longValue());
+            case Float f -> Float.compare(f, y.floatValue());
+            case Double d -> Double.compare(d, y.doubleValue());
+            case BigDecimal bdx -> bdx.compareTo(y instanceof BigDecimal bdy ? bdy : decimal(y.doubleValue()));
+
+            default -> switch (y) {
+                case Integer z -> true;
+                case Long z -> true;
+                case Short z -> true;
+                case Byte z -> true;
+                case BigInteger z -> true;
+                default -> false;
+            } //
+                ? Integer.compare(x.intValue(), y.intValue()) //
+                : -compareNumber(y, x);
+        };
     }
 }
