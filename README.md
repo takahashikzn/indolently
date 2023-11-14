@@ -14,7 +14,7 @@ This is also my study of English/GitHub/Java8-Lambda.
 
 # Requirement
 
-Java17. That is all.
+Java21. That is all.
 
 
 # Dependencies
@@ -199,7 +199,7 @@ final SFunc<Integer, Integer> fib = func(
     (self, x) -> (x <= 1) ? x : self.apply(x - 1) + self.apply(x - 2)
 );
 
-final Function<Integer, Integer> memoFib = fib.memoize();
+final Function<Integer, Integer> memoFib = this.fib.memoize();
 
 // print list of first 42nd fibonacci numbers
 range(0, 42)
