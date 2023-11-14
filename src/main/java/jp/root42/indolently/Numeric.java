@@ -289,24 +289,14 @@ public final class Numeric {
 
     public static int compareNumber(final Number x, final Number y) {
 
-        return switch (x) {
-            case null -> y == null ? 0 : -1;
+        if (x == null) return y == null ? 0 : -1;
+        if (x instanceof Long l) return Long.compare(l, y.longValue());
+        if (x instanceof Float f) return Float.compare(f, y.floatValue());
+        if (x instanceof Double d) return Double.compare(d, y.doubleValue());
+        if (x instanceof BigDecimal bdx) return bdx.compareTo(y instanceof BigDecimal bdy ? bdy : decimal(y.doubleValue()));
 
-            case Long l -> Long.compare(l, y.longValue());
-            case Float f -> Float.compare(f, y.floatValue());
-            case Double d -> Double.compare(d, y.doubleValue());
-            case BigDecimal bdx -> bdx.compareTo(y instanceof BigDecimal bdy ? bdy : decimal(y.doubleValue()));
-
-            default -> switch (y) {
-                case Integer z -> true;
-                case Long z -> true;
-                case Short z -> true;
-                case Byte z -> true;
-                case BigInteger z -> true;
-                default -> false;
-            } //
-                ? Integer.compare(x.intValue(), y.intValue()) //
-                : -compareNumber(y, x);
-        };
+        return (y instanceof Integer || y instanceof Long || y instanceof Short || y instanceof Byte || y instanceof BigInteger) //
+            ? Integer.compare(x.intValue(), y.intValue()) //
+            : -compareNumber(y, x);
     }
 }
