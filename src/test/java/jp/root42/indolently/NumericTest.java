@@ -30,5 +30,7 @@ public class NumericTest {
         assertThat(compareNumber(decimal(95.5), 95)).isEqualTo(1);
         assertThat(compareNumber(95, decimal(30.5))).isEqualTo(1);
         assertThat(compareNumber(95L, decimal(95.5))).isEqualTo(-1);
+        assertThat(compareNumber(95L, 95.5)).isEqualTo(-1);
+        assertThat(compareNumber(95.5, 95L)).isEqualTo(1);
     }
 }
