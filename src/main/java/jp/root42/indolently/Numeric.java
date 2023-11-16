@@ -14,7 +14,6 @@
 package jp.root42.indolently;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.function.Function;
 
 import jp.root42.indolently.ref.$;
@@ -29,7 +28,7 @@ import static jp.root42.indolently.Iterative.*;
 public final class Numeric {
 
     /** non private for subtyping. */
-    protected Numeric() { }
+    private Numeric() { }
 
     public static int str2int(final CharSequence s) {
         if (9 < s.length()) return Integer.parseInt(s.toString()); // avoid edge case
@@ -290,13 +289,17 @@ public final class Numeric {
     public static int compareNumber(final Number x, final Number y) {
 
         if (x == null) return y == null ? 0 : -1;
-        if (x instanceof Long l) return Long.compare(l, y.longValue());
-        if (x instanceof Float f) return Float.compare(f, y.floatValue());
-        if (x instanceof Double d) return Double.compare(d, y.doubleValue());
-        if (x instanceof BigDecimal bdx) return bdx.compareTo(y instanceof BigDecimal bdy ? bdy : decimal(y.doubleValue()));
+        if (x instanceof BigDecimal || y instanceof BigDecimal) return decimalOf(x).compareTo(decimalOf(y));
+        if (isDecimal(x) || isDecimal(y)) return Double.compare(x.doubleValue(), y.doubleValue());
 
-        return (y instanceof Integer || y instanceof Long || y instanceof Short || y instanceof Byte || y instanceof BigInteger) //
-            ? Integer.compare(x.intValue(), y.intValue()) //
-            : -compareNumber(y, x);
+        return Long.compare(x.longValue(), y.longValue());
+    }
+
+    private static BigDecimal decimalOf(final Number n) {
+        return n instanceof BigDecimal bdy ? bdy : decimal(n.doubleValue());
+    }
+
+    private static boolean isDecimal(final Number n) {
+        return n instanceof Double || n instanceof Float || n instanceof BigDecimal;
     }
 }
