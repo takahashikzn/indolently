@@ -193,7 +193,8 @@ abstract class _ref_num<T extends Number, SELF extends _ref_num<T, SELF>>
 
     @Override
     public boolean equals(final Object o) {
-        return o == this || (o instanceof _ref_num that && this.get().equals(that.get()));
+        return o == this || o instanceof _ref_num<?, ?> that //
+                            && Objects.equals(this.get(), that.get());
     }
 
     @Override
@@ -208,15 +209,10 @@ abstract class _ref_nonNum<T, S extends _ref_nonNum<T, S>>
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!o.getClass().isInstance(o)) return false;
-
-        @SuppressWarnings("unchecked")
-        final var that = (_ref_nonNum<T, ?>) o;
-
-        return Objects.equals(this.get(), that.get());
+        return this == o || o instanceof _ref_nonNum<?, ?> that //
+                            && Objects.equals(this.get(), that.get());
     }
 
     @Override
-    public String toString() { return String.format("%s(%s)", this.getClass().getSimpleName(), this.get()); }
+    public String toString() { return "%s(%s)".formatted(this.getClass().getSimpleName(), this.get()); }
 }
