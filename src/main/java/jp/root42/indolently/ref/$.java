@@ -38,16 +38,13 @@ import static jp.root42.indolently.Indolently.*;
  * @param <T> element type
  * @author takahashikzn
  */
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public record $<T>(Optional<T> opt)
     implements Serializable, Supplier<T> {
 
     public static <T> $<T> of(final T val) { return (val == null) ? none() : new $<>(val); }
 
     @SuppressWarnings("OptionalAssignedToNull")
-    public static <T> $<T> of(final Optional<? extends T> val) {
-        return (val == null) || val.isEmpty() ? none() : new $<>(Indolently.cast(val));
-    }
+    public static <T> $<T> of(final Optional<? extends T> val) { return (val == null) || val.isEmpty() ? none() : new $<>(Indolently.cast(val)); }
 
     private static final $<?> NONE = new $<>(Optional.empty());
 
@@ -65,9 +62,7 @@ public record $<T>(Optional<T> opt)
 
     public boolean present() { return !this.empty(); }
 
-    public $<T> if_(final Predicate<? super T> f) {
-        return this.empty() ? none() : this.opt.filter(f).map($::of).orElse(none());
-    }
+    public $<T> if_(final Predicate<? super T> f) { return this.test(f) ? this : none(); }
 
     // alias
     public $<T> when(final Predicate<? super T> f) { return this.if_(f); }
@@ -98,7 +93,7 @@ public record $<T>(Optional<T> opt)
 
     public $<Boolean> test$(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? T : F; }
 
-    public boolean test(final Predicate<? super T> f) { return !this.empty() && this.if_(f).present(); }
+    public boolean test(final Predicate<? super T> f) { return !this.empty() && f.test(this.get()); }
 
     public <U> $<U> cast(final Class<U> type) { return this.if_(type::isInstance).map(type::cast); }
 
@@ -197,9 +192,7 @@ public record $<T>(Optional<T> opt)
     @Override
     public boolean equals(final Object o) { return this == o || (o instanceof $<?> that && this.equals0(that)); }
 
-    private boolean equals0(final $<?> that) {
-        return (this == that) || ((that != null) && equiv(this.opt, that.opt));
-    }
+    private boolean equals0(final $<?> that) { return (this == that) || ((that != null) && equiv(this.opt, that.opt)); }
 
     @Override
     public String toString() { return this.present() ? "$(" + this.get() + ")" : "$<empty>"; }
