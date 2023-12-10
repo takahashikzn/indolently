@@ -31,6 +31,7 @@ import jp.root42.indolently.function.FunctionE;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.SupplierE;
+import jp.root42.indolently.ref.$$;
 import net.jodah.typetools.TypeResolver;
 
 import static jp.root42.indolently.Indolently.*;
@@ -268,6 +269,16 @@ public class Expressive {
     public static <T1, T2, T3, R, E extends Exception> R evalTry(final T1 val1, final T2 val2, final T3 val3,
         final Function3E<? super T1, ? super T2, ? super T3, ? extends R, E> expr) throws E {
         return expr.apply(val1, val2, val3);
+    }
+
+    public static <T> $$<T, Exception> try__(final Supplier<T> f) {
+        try { return $$.left(f.get()); } //
+        catch (final Exception e) { return $$.right(e); }
+    }
+
+    public static <T> $$<T, Exception> try_(final SupplierE<T, ? extends Exception> f) {
+        try { return $$.left(f.get()); } //
+        catch (final Exception e) { return $$.right(e); }
     }
 
     /**
