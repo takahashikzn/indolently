@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.$map.$entry;
 import jp.root42.indolently.bridge.ObjFactory;
+import jp.root42.indolently.function.Consumer3;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
 import jp.root42.indolently.trait.Filterable;
@@ -34,6 +35,7 @@ import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
 
 import static java.util.Objects.*;
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -312,6 +314,18 @@ public interface $map<K, V>
      */
     default $map<K, V> each(final BiConsumer<? super K, ? super V> f) {
         this.forEach(f);
+        return this;
+    }
+
+    /**
+     * internal iterator.
+     *
+     * @param f function
+     * @return {@code this} instance
+     */
+    default $map<K, V> each(final Consumer3<Integer, ? super K, ? super V> f) {
+        final var idx = ref(0);
+        this.forEach(x -> f.accept(idx.$++, x.key, x.val));
         return this;
     }
 
