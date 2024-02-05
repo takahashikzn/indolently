@@ -3,7 +3,7 @@
   <!ENTITY compile_conf "compile->master(*)">
   <!ENTITY runtime_conf "runtime->master(*)">
   <!ENTITY test_conf "test->master(*)">
-  <!ENTITY mockito_version "5.9.0">
+  <!ENTITY mockito_version "5.10.0">
   <!ENTITY bytebuddy_version "1.14.11">
   <!ENTITY eclipsecollection_version "12.0.0.M3">
   ]>
@@ -46,7 +46,7 @@
     <!--
     <dependency org="com.koloboke" name="koloboke-impl-jdk8" rev="1.0.0" conf="&test_conf;" />
     -->
-    <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.11" conf="&compile_conf;" />
+    <dependency org="it.unimi.dsi" name="fastutil-core" rev="8.5.13" conf="&compile_conf;" />
     <dependency org="org.eclipse.collections" name="eclipse-collections-api" rev="&eclipsecollection_version;" conf="&compile_conf;" />
     <dependency org="org.eclipse.collections" name="eclipse-collections" rev="&eclipsecollection_version;" conf="&compile_conf;" />
 
@@ -59,7 +59,7 @@
     <dependency org="junit" name="junit" rev="4.13.2" conf="&test_conf;" />
     <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="&test_conf;" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="&test_conf;" />
-    <dependency org="org.assertj" name="assertj-core" rev="3.25.0" conf="&test_conf;" />
+    <dependency org="org.assertj" name="assertj-core" rev="3.25.3" conf="&test_conf;" />
     <dependency org="org.opentest4j" name="opentest4j" rev="1.3.0" conf="&test_conf;" />
     <dependency org="org.mockito" name="mockito-core" rev="&mockito_version;" conf="&test_conf;" />
     <dependency org="org.mockito" name="mockito-subclass" rev="&mockito_version;" conf="&test_conf;" />
