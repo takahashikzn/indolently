@@ -51,7 +51,7 @@ public interface $iter<T>
     @Override
     default boolean any(final Predicate<? super T> f) {
 
-        for (final T val: this)
+        for (final var val: this)
             if (f.test(val)) return true;
 
         return false;
@@ -69,17 +69,14 @@ public interface $iter<T>
 
         Objects.requireNonNull(next);
 
-        return new $iter<T>() {
+        return new $iter<>() {
 
             @Override
             public boolean hasNext() { return hasNext.test(env); }
 
+            @SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
             @Override
-            public T next() {
-                if (!this.hasNext()) throw new NoSuchElementException();
-
-                return next.apply(env);
-            }
+            public T next() { return this.hasNext() ? next.apply(env) : Expressive.raise(NoSuchElementException::new); }
         };
     }
 
@@ -95,7 +92,7 @@ public interface $iter<T>
     @Override
     default $iter<T> take(final Predicate<? super T> f) {
 
-        return new $iter<T>() {
+        return new $iter<>() {
 
             private $<T> cur;
 
@@ -133,9 +130,7 @@ public interface $iter<T>
      * @param f function
      * @return newly constructed iterator which iterates converted values
      */
-    default <R> $iter<R> map(final Function<? super T, ? extends R> f) {
-        return of(this, x -> x.hasNext(), x -> f.apply(x.next()));
-    }
+    default <R> $iter<R> map(final Function<? super T, ? extends R> f) { return of(this, x -> x.hasNext(), x -> f.apply(x.next())); }
 
     /**
      * construct new list which contains all elements contained by this instance.
@@ -150,9 +145,7 @@ public interface $iter<T>
      * @return {@link Stream} view of this iterator
      * @see Collection#stream()
      */
-    default $stream<T> stream() {
-        return Indolently.$(StreamSupport.stream(this.spliterator(), false));
-    }
+    default $stream<T> stream() { return Indolently.$(StreamSupport.stream(this.spliterator(), false)); }
 
     /**
      * create a parallelized {@link Stream} view of this iterator.
@@ -160,9 +153,7 @@ public interface $iter<T>
      * @return parallelized {@link Stream} view of this iterator
      * @see Collection#parallelStream()
      */
-    default $stream<T> parallelStream() {
-        return Indolently.$(StreamSupport.stream(this.spliterator(), true));
-    }
+    default $stream<T> parallelStream() { return Indolently.$(StreamSupport.stream(this.spliterator(), true)); }
 
     default <R> $iter<R> aggregate(final Function<? super Iterable<? extends T>, ? extends Iterable<? extends R>> f) {
         return Indolently.$(f.apply(this).iterator());
@@ -171,7 +162,7 @@ public interface $iter<T>
     default <R> $iter<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) {
         Objects.requireNonNull(f);
 
-        return new $iter<R>() {
+        return new $iter<>() {
 
             private Iterator<? extends R> cur = Iterative.iterator();
 
@@ -190,9 +181,7 @@ public interface $iter<T>
             }
 
             @Override
-            public R next() {
-                return this.hasNext() ? this.cur.next() : Expressive.raise(NoSuchElementException::new);
-            }
+            public R next() { return this.hasNext() ? this.cur.next() : Expressive.raise(NoSuchElementException::new); }
         };
     }
 }
