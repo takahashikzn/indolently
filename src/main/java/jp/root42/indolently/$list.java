@@ -458,4 +458,6 @@ public interface $list<T>
     }
 
     default <U extends T> $list<U> only(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
+
+    default boolean randomAccessible() { return true; }
 }

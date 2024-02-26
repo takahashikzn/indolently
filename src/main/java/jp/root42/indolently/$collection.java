@@ -175,8 +175,9 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     default SELF each(final Consumer<? super T> f) { return this.eachTry(f::accept); }
 
     default <E extends Exception> SELF eachTry(final ConsumerE<? super T, E> f) throws E {
-        for (final T val: this)
-            f.accept(val);
+        if (!this.isEmpty()) //
+            for (final T val: this)
+                f.accept(val);
 
         return this.identity();
     }
@@ -196,8 +197,9 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
 
     @Override
     default boolean any(final Predicate<? super T> f) {
-        for (final var x: this)
-            if (f.test(x)) return true;
+        if (!this.isEmpty()) //
+            for (final var x: this)
+                if (f.test(x)) return true;
 
         return false;
     }

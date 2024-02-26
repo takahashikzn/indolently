@@ -15,6 +15,7 @@ package jp.root42.indolently;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Consumer;
@@ -28,6 +29,7 @@ import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -45,9 +47,17 @@ class $list_impl<T>
 
     private final List<T> store;
 
+    private final boolean randomAccessible;
+
     public $list_impl() { this(newList()); }
 
-    public $list_impl(final List<T> store) { this.store = store; }
+    public $list_impl(final List<T> store) {
+        this.store = store;
+        this.randomAccessible = store instanceof $list<?> x ? x.randomAccessible() : !(store instanceof LinkedList);
+    }
+
+    @Override
+    public boolean randomAccessible() { return this.randomAccessible; }
 
     private static <T> List<T> newList() { return ObjFactory.getInstance().newList(); }
 
@@ -109,92 +119,129 @@ class $list_impl<T>
 
     private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableList"));
 
-    boolean frozen() {
-        return (this.store instanceof $list_impl) && (($list_impl<?>) this.store).frozen() || this.store.getClass() == FROZEN;
-    }
+    boolean frozen() { return (this.store instanceof $list_impl) && (($list_impl<?>) this.store).frozen() || this.store.getClass() == FROZEN; }
 }
 
-@SuppressWarnings("ForLoopReplaceableByForEach")
 interface $list_optimized<T>
     extends $list<T> {
 
     @Override
     default $<T> head(final Predicate<? super T> f) {
+        if (!this.randomAccessible()) return $list.super.head(f);
 
-        for (int i = 0, Z = this.size(); i < Z; i++) {
-            final var val = this.get(i);
-            if (f.test(val)) return $.of(val);
-        }
+        final var size = this.size();
+        if (size != 0) //
+            for (int i = 0; i < size; i++) {
+                final var val = this.get(i);
+                if (f.test(val)) return $.of(val);
+            }
 
         return $.none();
     }
 
     @Override
     default $<T> last(final Predicate<? super T> f) {
+        if (!this.randomAccessible()) return $list.super.last(f);
 
-        for (int i = this.size() - 1; 0 <= i; i--) {
-            final var val = this.get(i);
-            if (f.test(val)) return $.of(val);
-        }
+        final int size = this.size();
+        if (size != 0) //
+            for (int i = size - 1; 0 <= i; i--) {
+                final var val = this.get(i);
+                if (f.test(val)) return $.of(val);
+            }
 
         return $.none();
     }
 
     @Override
     default <R> $<R> fhead(final Function<T, $<R>> f) {
+        if (!this.randomAccessible()) return $list.super.fhead(f);
 
-        for (int i = 0, Z = this.size(); i < Z; i++) {
-            final var x = f.apply(this.get(i));
-            if (x.present()) return x;
-        }
+        final int size = this.size();
+        if (size != 0) //
+            for (int i = 0; i < size; i++) {
+                final var x = f.apply(this.get(i));
+                if (x.present()) return x;
+            }
 
         return $.none();
     }
 
     @Override
     default <R> $<R> flast(final Function<T, $<R>> f) {
+        if (!this.randomAccessible()) return $list.super.flast(f);
 
-        for (int i = this.size() - 1; 0 <= i; i--) {
-            final var x = f.apply(this.get(i));
-            if (x.present()) return x;
-        }
+        final int size = this.size();
+        if (size != 0) //
+            for (int i = size - 1; 0 <= i; i--) {
+                final var x = f.apply(this.get(i));
+                if (x.present()) return x;
+            }
 
         return $.none();
     }
 
     @Override
-    default void forEach(final Consumer<? super T> f) {
-
-        for (int i = 0, Z = this.size(); i < Z; i++)
-            f.accept(this.get(i));
-    }
+    default void forEach(final Consumer<? super T> f) { this.eachTry(f::accept); }
 
     @Override
     default <E extends Exception> $list<T> eachTry(final ConsumerE<? super T, E> f) throws E {
+        if (!this.randomAccessible()) return $list.super.eachTry(f);
 
-        for (int i = 0, Z = this.size(); i < Z; i++)
-            f.accept(this.get(i));
+        final int size = this.size();
+        switch (size) {
+            case 0 -> { }
+            case 1 -> f.accept(this.get(0));
+            default -> {
+                for (int i = 0; i < size; i++)
+                    f.accept(this.get(i));
+            }
+        }
 
         return this.identity();
     }
 
     @Override
     default boolean any(final Predicate<? super T> f) {
+        if (!this.randomAccessible()) return $list.super.any(f);
 
-        for (int i = 0, Z = this.size(); i < Z; i++)
-            if (f.test(this.get(i))) return true;
+        final int size = this.size();
+        if (size != 0) //
+            for (int i = 0; i < size; i++)
+                if (f.test(this.get(i))) return true;
 
         return false;
     }
 
     @Override
     default <R> $<R> reduce(final $<? extends R> initial, final Function3<Integer, ? super R, ? super T, ? extends R> f) {
+        if (!this.randomAccessible()) return $list.super.reduce(initial, f);
 
-        var rem = initial.orNull();
+        final int size = this.size();
+        return switch (size) {
+            case 0 -> cast(initial);
+            case 1 -> $.of(f.apply(0, initial.orNull(), this.get(0)));
+            default -> {
+                var rem = initial.orNull();
+                for (int i = 0; i < size; i++)
+                    rem = f.apply(i, rem, this.get(i));
 
-        for (int i = 0, Z = this.size(); i < Z; i++)
-            rem = f.apply(i, rem, this.get(i));
+                yield $.of(rem);
+            }
+        };
+    }
 
-        return $.of(rem);
+    @Override
+    default <R> $list<R> map(final Function<? super T, ? extends R> f) {
+        if (!this.randomAccessible()) return $list.super.map(f);
+
+        final $list<R> ret = Indolently.list();
+
+        final int size = this.size();
+        if (size != 0) //
+            for (int i = 0; i < size; i++)
+                ret.add(f.apply(this.get(i)));
+
+        return ret;
     }
 }
