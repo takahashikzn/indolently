@@ -25,7 +25,7 @@ import jp.root42.indolently.function.Consumer2E;
 import jp.root42.indolently.function.ConsumerE;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
-import jp.root42.indolently.trait.Filterable;
+import jp.root42.indolently.trait.FilterableWhile;
 import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
 import jp.root42.indolently.trait.Loopable;
@@ -46,7 +46,8 @@ import static jp.root42.indolently.Indolently.*;
  * @see $set
  */
 public interface $collection<T, SELF extends $collection<T, SELF>>
-    extends Collection<T>, EdgeAwareIterable<T>, ReducibleIterable<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>, Filterable<T, SELF>, Matchable<T> {
+    extends Collection<T>, EdgeAwareIterable<T>, ReducibleIterable<T>, Freezable<SELF>, Identical<SELF>, Loopable<T, SELF>, FilterableWhile<T, SELF>,
+    Matchable<T> {
 
     /**
      * add value then return this instance.

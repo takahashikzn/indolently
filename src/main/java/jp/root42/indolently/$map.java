@@ -28,7 +28,7 @@ import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.function.Consumer3;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
-import jp.root42.indolently.trait.Filterable;
+import jp.root42.indolently.trait.FilterableWhile;
 import jp.root42.indolently.trait.Freezable;
 import jp.root42.indolently.trait.Identical;
 import jp.root42.indolently.trait.Loopable;
@@ -47,7 +47,7 @@ import static jp.root42.indolently.Indolently.*;
  * @author takahashikzn
  */
 public interface $map<K, V>
-    extends Map<K, V>, Freezable<$map<K, V>>, Identical<$map<K, V>>, Loopable<V, $map<K, V>>, Filterable<V, $map<K, V>>, EdgeAwareIterable<$entry<K, V>>,
+    extends Map<K, V>, Freezable<$map<K, V>>, Identical<$map<K, V>>, Loopable<V, $map<K, V>>, FilterableWhile<V, $map<K, V>>, EdgeAwareIterable<$entry<K, V>>,
     Matchable<V>, Cloneable {
 
     /**

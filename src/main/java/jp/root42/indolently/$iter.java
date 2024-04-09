@@ -26,7 +26,7 @@ import java.util.stream.StreamSupport;
 
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.EdgeAwareIterable;
-import jp.root42.indolently.trait.Filterable;
+import jp.root42.indolently.trait.FilterableWhile;
 import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
 import jp.root42.indolently.trait.ReducibleIterable;
@@ -40,7 +40,7 @@ import jp.root42.indolently.trait.ReducibleIterable;
  * @author takahashikzn
  */
 public interface $iter<T>
-    extends Iterator<T>, Supplier<T>, EdgeAwareIterable<T>, Loopable<T, $iter<T>>, Filterable<T, $iter<T>>, ReducibleIterable<T>, Matchable<T> {
+    extends Iterator<T>, Supplier<T>, EdgeAwareIterable<T>, Loopable<T, $iter<T>>, FilterableWhile<T, $iter<T>>, ReducibleIterable<T>, Matchable<T> {
 
     @Override
     default T get() { return this.next(); }
