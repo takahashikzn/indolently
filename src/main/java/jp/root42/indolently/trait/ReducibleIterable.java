@@ -36,9 +36,8 @@ public interface ReducibleIterable<T>
         R rem = fm.apply(i.next());
 
         int idx = 0;
-        while (i.hasNext()) {
+        while (i.hasNext()) //
             rem = fr.apply(idx++, rem, fm.apply(i.next()));
-        }
 
         return $.of(rem);
     }
@@ -49,9 +48,8 @@ public interface ReducibleIterable<T>
         var rem = initial.orNull();
 
         int idx = 0;
-        for (final T val: this) {
+        for (final T val: this)
             rem = f.apply(idx++, rem, val);
-        }
 
         return $.of(rem);
     }
