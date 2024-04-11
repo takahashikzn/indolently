@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.trait;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static jp.root42.indolently.Indolently.*;
@@ -24,13 +25,12 @@ import static jp.root42.indolently.Indolently.*;
 public interface FilterableWhile<T, SELF extends Filterable<T, SELF>>
     extends Filterable<T, SELF> {
 
-    default SELF takeWhile(final Predicate<? super T> f) {
-        final var state = ref(true);
-        return this.take(x -> state.$ && (state.$ = f.test(x)));
-    }
+    default SELF takeWhile(final Predicate<? super T> f) { return this.doWhile(f, this::take); }
 
-    default SELF dropWhile(final Predicate<? super T> f) {
+    default SELF dropWhile(final Predicate<? super T> f) { return this.doWhile(f, this::drop); }
+
+    private SELF doWhile(final Predicate<? super T> cond, final Function<Predicate<? super T>, SELF> func) {
         final var state = ref(true);
-        return this.drop(x -> state.$ && (state.$ = f.test(x)));
+        return func.apply(x -> state.$ && (state.$ = cond.test(x)));
     }
 }
