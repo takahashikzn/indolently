@@ -58,6 +58,10 @@ public record $<T>(Optional<T> opt)
     @Override
     public T get() throws NoSuchElementException { return this.opt.get(); }
 
+    public <U> U done(final Function<? super T, ? extends U> f) { return this.doneTry(f::apply); }
+
+    public <U, E extends Exception> U doneTry(final FunctionE<? super T, ? extends U, E> f) throws E { return this.mapTry(f).get(); }
+
     public boolean empty() { return this == NONE || this.opt.isEmpty(); }
 
     public boolean present() { return !this.empty(); }
