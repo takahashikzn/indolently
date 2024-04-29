@@ -366,7 +366,8 @@ public class Expressive {
 
     @Deprecated
     public static <IN extends Closeable, OUT> OUT with(final IN res, final WithBlock<IN, OUT> f) throws IOException {
-        try (res) { return f.apply(res); }
+        try (res) { return f.apply(res); } //
+        catch (final Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
     }
 
     @FunctionalInterface
@@ -375,10 +376,9 @@ public class Expressive {
         OUT apply(IN in) throws ERR;
     }
 
-    public static <IN extends Closeable, OUT, ERR extends Exception> OUT IO(final IN res, final IOExpr<IN, OUT, ERR> f) throws ERR, IOException {
-        try (res) {
-            return f.apply(res);
-        }
+    public static <IN extends AutoCloseable, OUT, ERR extends Exception> OUT IO(final IN res, final IOExpr<IN, OUT, ERR> f) throws ERR, IOException {
+        try (res) { return f.apply(res); } //
+        catch (final Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
     }
 
     @FunctionalInterface
@@ -387,10 +387,9 @@ public class Expressive {
         void accept(IN in) throws ERR;
     }
 
-    public static <IN extends Closeable, ERR extends Exception> void IO_(final IN res, final IOStmt<IN, ERR> f) throws ERR, IOException {
-        try (res) {
-            f.accept(res);
-        }
+    public static <IN extends AutoCloseable, ERR extends Exception> void IO_(final IN res, final IOStmt<IN, ERR> f) throws ERR, IOException {
+        try (res) { f.accept(res); } //
+        catch (final Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
     }
 
     /**
