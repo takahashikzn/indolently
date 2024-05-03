@@ -55,6 +55,7 @@ import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -222,6 +223,12 @@ public class Indolently {
 
     /** for IDE's language injection */
     public static String __SQL__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __SQLITE__(final String code) { return code; }
+
+    /** for IDE's language injection */
+    public static String __MYSQL__(final String code) { return code; }
 
     /** for IDE's language injection */
     public static String __JSON__(final String code) { return code; }
@@ -2415,11 +2422,11 @@ public class Indolently {
     /** To avoid compile-time optimization */
     public static final boolean FALSE = !TRUE;
 
-    private static final Function<?, ?> itself = x -> x;
+    private static final UnaryOperator<?> itself = x -> x;
 
-    public static <T> Function<T, T> it() { return itself(); }
+    public static <T> UnaryOperator<T> it() { return itself(); }
 
-    public static <T> Function<T, T> itself() { return cast(itself); }
+    public static <T> UnaryOperator<T> itself() { return cast(itself); }
 
     public static <T, S> Function<T, S> fixed(final S val) { return x -> val; }
 
@@ -3027,7 +3034,7 @@ public class Indolently {
         return file;
     }
 
-    public static Function<String, String> trims() { return String::trim; }
+    public static UnaryOperator<String> trims() { return String::trim; }
 
-    public static Function<String, String> strips() { return String::strip; }
+    public static UnaryOperator<String> strips() { return String::strip; }
 }
