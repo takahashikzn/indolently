@@ -449,9 +449,7 @@ public class Indolently {
      * @param other2 default value
      * @return value or default value
      */
-    public static <T> T elv(final T value, final T other0, final T other1, final T other2) {
-        return elv(elv(value, other0, other1), other2);
-    }
+    public static <T> T elv(final T value, final T other0, final T other1, final T other2) { return elv(elv(value, other0, other1), other2); }
 
     /**
      * SQL's coalesce function. The name comes from ELVis operator.
@@ -469,9 +467,7 @@ public class Indolently {
 
     public static <T> T elv(final T value, final Supplier<T> other) { return (value == null) ? other.get() : value; }
 
-    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1) {
-        return elv(elv(value, other0), other1);
-    }
+    public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1) { return elv(elv(value, other0), other1); }
 
     public static <T> T elv(final T value, final Supplier<T> other0, final Supplier<T> other1, final Supplier<T> other2) {
         return elv(elv(value, other0, other1), other2);
@@ -489,9 +485,7 @@ public class Indolently {
      * @param other default value
      * @return mapped value or default value
      */
-    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final S other) {
-        return opt(value).map(mapper).or(other);
-    }
+    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final S other) { return opt(value).map(mapper).or(other); }
 
     /**
      * A shortcut notation of {@code Optional.ofNullable(value).map(mapper).orElseGet(other)}.
@@ -501,9 +495,7 @@ public class Indolently {
      * @param other default value supplier
      * @return mapped value or default value
      */
-    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final Supplier<S> other) {
-        return opt(value).map(mapper).or(other);
-    }
+    public static <T, S> S optional(final T value, final Function<? super T, S> mapper, final Supplier<S> other) { return opt(value).map(mapper).or(other); }
 
     /**
      * Just an alias of {@link #list(Object...)} but not overloaded one.
@@ -517,9 +509,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> $list<T> listOf(final T... elems) {
-        return list(elems);
-    }
+    public static <T> $list<T> listOf(final T... elems) { return list(elems); }
 
     /**
      * Just an alias of {@link #list(Object...)} but not overloaded one.
@@ -531,9 +521,7 @@ public class Indolently {
      * @return new list
      * @see #list(Object...)
      */
-    public static <T> $list<T> newList(final Class<T> type) {
-        return list();
-    }
+    public static <T> $list<T> newList(final Class<T> type) { return list(); }
 
     /**
      * construct new list which contains specified elements.
@@ -542,9 +530,7 @@ public class Indolently {
      * @param elem element of the list
      * @return new list
      */
-    public static <T> $list<T> list(final $<? extends T> elem) {
-        return new $list_impl<T>().push(elem);
-    }
+    public static <T> $list<T> list(final $<? extends T> elem) { return new $list_impl<T>().push(elem); }
 
     /**
      * construct new list which contains specified elements.
@@ -553,8 +539,19 @@ public class Indolently {
      * @param elems elements of the list
      * @return new list
      */
-    public static <T> $list<T> list(final Iterable<? extends T> elems) {
-        return new $list_impl<T>().pushAll(opt(elems));
+    public static <T> $list<T> list(final Iterable<? extends T> elems) { return new $list_impl<T>().pushAll(opt(elems)); }
+
+    /**
+     * construct new list which contains specified elements.
+     *
+     * @param <T> type of value
+     * @param elems elements of the list
+     * @return new list
+     */
+    public static <T> $list<T> list(final Iterator<? extends T> elems) {
+        final $list<T> ret = new $list_impl<>();
+        if (elems != null) while (elems.hasNext()) ret.add(elems.next());
+        return ret;
     }
 
     /**
@@ -567,25 +564,17 @@ public class Indolently {
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <T> $list<T> list(final T... elems) {
-
-        final $list<T> list = new $list_impl<>();
-
-        if (elems != null) {
-            Collections.addAll(list, elems);
-        }
-
-        return list;
+        final $list<T> ret = new $list_impl<>();
+        if (elems != null) Collections.addAll(ret, elems);
+        return ret;
     }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <V, T extends Predicate<V>> $<T> find(final V cond, final T... preds) {
 
-        for (final T p: preds) {
-            if (p.test(cond)) {
-                return $.of(p);
-            }
-        }
+        for (final var p: preds)
+            if (p.test(cond)) return $.of(p);
 
         return $.none();
     }
@@ -600,9 +589,7 @@ public class Indolently {
      * @throws IllegalArgumentException iterable don't contain any element.
      */
     public static <T> T[] array(final Iterable<? extends T> elems) {
-        if (empty(elems)) {
-            throw new IllegalArgumentException("can't infer empty array type");
-        }
+        if (empty(elems)) throw new IllegalArgumentException("can't infer empty array type");
 
         final $list<? extends T> list = list(elems);
 

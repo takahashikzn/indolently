@@ -307,7 +307,7 @@ public interface $list<T>
      * @return newly constructed flatten list
      */
     default <R> $list<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return list(this.iterator().flat(f));
+        return list((Iterable<R>) this.iterator().flat(f));
     }
 
     @Deprecated

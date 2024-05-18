@@ -366,7 +366,7 @@ public class ExpressiveTest {
     public void testComplicatedTypeInference(final List<Integer> expected, final int from, final int to, final int step) {
 
         assertThat(list( //
-            iterator( //
+            (Iterable<Integer>) iterator( //
                 ref(from), //
                 ref -> when(from < to).then(() -> ref.$ <= to) //
                     .when(to < from).then(() -> to <= ref.$) //
@@ -379,7 +379,7 @@ public class ExpressiveTest {
             .isEqualTo(expected);
 
         assertThat(list( //
-            iterator( //
+            (Iterable<Integer>) iterator( //
                 ref(from), //
                 ref -> when(from < to).then(() -> ref.$ <= to) //
                     .when(to < from).then(() -> to <= ref.$) //

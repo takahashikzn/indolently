@@ -137,7 +137,7 @@ public interface $iter<T>
      *
      * @return a list
      */
-    default $list<T> list() { return Indolently.list(this); }
+    default $list<T> list() { return Indolently.list((Iterable<T>) this); }
 
     /**
      * create a {@link Stream} view of this iterator.
