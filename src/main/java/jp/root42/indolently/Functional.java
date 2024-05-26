@@ -25,8 +25,11 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.function.Consumer3;
 import jp.root42.indolently.function.Expression;
+import jp.root42.indolently.function.Function2E;
 import jp.root42.indolently.function.Function3;
+import jp.root42.indolently.function.Function3E;
 import jp.root42.indolently.function.Function4;
+import jp.root42.indolently.function.FunctionE;
 import jp.root42.indolently.function.Predicate3;
 import jp.root42.indolently.function.SBoolSuppl;
 import jp.root42.indolently.function.SFunc;
@@ -36,6 +39,7 @@ import jp.root42.indolently.function.SPred;
 import jp.root42.indolently.function.SPred2;
 import jp.root42.indolently.function.SSuppl;
 import jp.root42.indolently.function.Statement;
+import jp.root42.indolently.function.SupplierE;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 
@@ -442,10 +446,24 @@ public class Functional {
         };
     }
 
+    public static <X> Supplier<$<X>> soften(final SupplierE<X, ? extends Exception> f) {
+        return () -> {
+            try { return opt(f.get()); } //
+            catch (final Exception e) { return none(); }
+        };
+    }
+
     public static <X0, X1> Function<X0, $<X1>> soften(final Function<X0, X1> f) {
         return x -> {
             try { return opt(f.apply(x)); } //
             catch (final RuntimeException e) { return none(); }
+        };
+    }
+
+    public static <X0, X1> Function<X0, $<X1>> soften(final FunctionE<X0, X1, ? extends Exception> f) {
+        return x -> {
+            try { return opt(f.apply(x)); } //
+            catch (final Exception e) { return none(); }
         };
     }
 
@@ -456,10 +474,24 @@ public class Functional {
         };
     }
 
+    public static <X0, X1, X2> BiFunction<X0, X1, $<X2>> soften(final Function2E<X0, X1, X2, ? extends Exception> f) {
+        return (x0, x1) -> {
+            try { return opt(f.apply(x0, x1)); } //
+            catch (final Exception e) { return none(); }
+        };
+    }
+
     public static <X0, X1, X2, X3> Function3<X0, X1, X2, $<X3>> soften(final Function3<X0, X1, X2, X3> f) {
         return (x0, x1, x2) -> {
             try { return opt(f.apply(x0, x1, x2)); } //
             catch (final RuntimeException e) { return none(); }
+        };
+    }
+
+    public static <X0, X1, X2, X3> Function3<X0, X1, X2, $<X3>> soften(final Function3E<X0, X1, X2, X3, ? extends Exception> f) {
+        return (x0, x1, x2) -> {
+            try { return opt(f.apply(x0, x1, x2)); } //
+            catch (final Exception e) { return none(); }
         };
     }
 

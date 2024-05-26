@@ -4,7 +4,7 @@
   <!ENTITY runtime_conf "runtime->master(*)">
   <!ENTITY test_conf "test->master(*)">
   <!ENTITY mockito_version "5.12.0">
-  <!ENTITY bytebuddy_version "1.14.14">
+  <!ENTITY bytebuddy_version "1.14.18">
   <!ENTITY eclipsecollection_version "12.0.0.M3">
   ]>
 <!--
@@ -54,12 +54,12 @@
     <dependency org="dk.brics" name="automaton" rev="1.12-4" conf="&compile_conf;" />
     <!--dependency org="com.gliwka.hyperscan" name="hyperscan" rev="0.6.2" conf="&compile_conf;" /-->
 
-    <dependency org="commons-io" name="commons-io" rev="2.15.0" conf="&compile_conf;" />
+    <dependency org="commons-io" name="commons-io" rev="2.16.1" conf="&compile_conf;" />
 
     <dependency org="junit" name="junit" rev="4.13.2" conf="&test_conf;" />
-    <dependency org="org.hamcrest" name="hamcrest" rev="2.2" conf="&test_conf;" />
+    <dependency org="org.hamcrest" name="hamcrest" rev="3.0" conf="&test_conf;" />
     <dependency org="org.hamcrest" name="hamcrest-junit" rev="2.0.0.0" conf="&test_conf;" />
-    <dependency org="org.assertj" name="assertj-core" rev="3.25.3" conf="&test_conf;" />
+    <dependency org="org.assertj" name="assertj-core" rev="3.26.3" conf="&test_conf;" />
     <dependency org="org.opentest4j" name="opentest4j" rev="1.3.0" conf="&test_conf;" />
     <dependency org="org.mockito" name="mockito-core" rev="&mockito_version;" conf="&test_conf;" />
     <dependency org="org.mockito" name="mockito-subclass" rev="&mockito_version;" conf="&test_conf;" />
