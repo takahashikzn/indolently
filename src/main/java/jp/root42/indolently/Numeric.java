@@ -30,6 +30,12 @@ public final class Numeric {
     /** non private for subtyping. */
     private Numeric() { }
 
+    private static boolean fastParseFail;
+
+    public static void fastParseFail(final boolean x) { fastParseFail = x; }
+
+    private static final NumberFormatException cachedNFE = new NumberFormatException("cached");
+
     public static int str2int(final CharSequence s) {
         if (9 < s.length()) return Integer.parseInt(s.toString()); // avoid edge case
 
@@ -48,7 +54,7 @@ public final class Numeric {
                         continue;
                     }
                 }
-                throw new NumberFormatException(s.toString());
+                throw fastParseFail ? cachedNFE : new NumberFormatException(s.toString());
             }
 
             num = num * 10 + (isHalfDigit ? (c - '0') : (c - '０'));
@@ -79,7 +85,7 @@ public final class Numeric {
                         continue;
                     }
                 }
-                throw new NumberFormatException(s.toString());
+                throw fastParseFail ? cachedNFE : new NumberFormatException(s.toString());
             }
 
             num = num * 10 + (isHalfDigit ? (c - '0') : (c - '０'));
