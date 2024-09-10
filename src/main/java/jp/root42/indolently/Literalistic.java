@@ -422,5 +422,14 @@ public final class Literalistic {
             default -> c;
         };
     }
-}
 
+    public static String toAscii(final String s) {
+
+        final var sb = new StringBuilder(s.length());
+
+        for (final var c: s.toCharArray())
+            sb.append(toAscii(c));
+
+        return sb.toString();
+    }
+}
