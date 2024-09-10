@@ -20,6 +20,7 @@ import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.*;
+import static jp.root42.indolently.Literalistic.*;
 
 
 /**
@@ -37,6 +38,7 @@ public final class Numeric {
     private static final NumberFormatException cachedNFE = new NumberFormatException("cached");
 
     public static int str2int(final CharSequence s) {
+
         if (9 < s.length()) return Integer.parseInt(s.toString()); // avoid edge case
 
         var minus = false;
@@ -44,9 +46,9 @@ public final class Numeric {
 
         for (int i = 0, Z = s.length(); i < Z; i++) {
             final var c = s.charAt(i);
-            final var isHalfDigit = isHalfDigit(c);
+            final var isHalfDigit = isDigit(c);
 
-            if (!isHalfDigit && !isFullDigit(c)) {
+            if (!isHalfDigit && !isZenkakuDigit(c)) {
                 if (i == 0) {
                     if (c == '+') continue;
                     if (c == '-') {
@@ -63,11 +65,8 @@ public final class Numeric {
         return minus ? -num : num;
     }
 
-    private static boolean isFullDigit(final char c) { return '０' <= c && c <= '９'; }
-
-    private static boolean isHalfDigit(final char c) { return '0' <= c && c <= '9'; }
-
     public static long str2long(final CharSequence s) {
+
         if (18 < s.length()) return Long.parseLong(s.toString()); // avoid edge case
 
         var minus = false;
@@ -75,9 +74,9 @@ public final class Numeric {
 
         for (int i = 0, Z = s.length(); i < Z; i++) {
             final var c = s.charAt(i);
-            final var isHalfDigit = isHalfDigit(c);
+            final var isHalfDigit = isDigit(c);
 
-            if (!isHalfDigit && !isFullDigit(c)) {
+            if (!isHalfDigit && !isZenkakuDigit(c)) {
                 if (i == 0) {
                     if (c == '+') continue;
                     if (c == '-') {
@@ -301,11 +300,7 @@ public final class Numeric {
         return Long.compare(x.longValue(), y.longValue());
     }
 
-    private static BigDecimal decimalOf(final Number n) {
-        return n instanceof BigDecimal bdy ? bdy : decimal(n.doubleValue());
-    }
+    private static BigDecimal decimalOf(final Number n) { return n instanceof BigDecimal bdy ? bdy : decimal(n.doubleValue()); }
 
-    private static boolean isDecimal(final Number n) {
-        return n instanceof Double || n instanceof Float || n instanceof BigDecimal;
-    }
+    private static boolean isDecimal(final Number n) { return n instanceof Double || n instanceof Float || n instanceof BigDecimal; }
 }
