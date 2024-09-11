@@ -2629,11 +2629,11 @@ public class Indolently {
     public static ReTest refind(final String regex) {
         final var ptest = retest(regex);
 
-        if (ptest instanceof AutomatonTest) {
+        if (ptest instanceof AutomatonTest at) {
             if (ASSERTIVE()) {
                 final var pregex = re(regex);
                 return ReTest.of(x -> {
-                    final var actual = ((AutomatonTest) ptest).find(x);
+                    final var actual = at.find(x);
                     final var expected = pregex.matcher(x).find();
                     assert actual == expected : String.format("original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex,
                         ((AutomatonTest) ptest).regex(), expected, actual, x);
@@ -2641,7 +2641,7 @@ public class Indolently {
                 }, regex);
             }
 
-            return ReTest.of(x -> ((AutomatonTest) ptest).find(x), regex);
+            return ReTest.of(x -> at.find(x), regex);
         }
 
         final var pregex = re(regex);
