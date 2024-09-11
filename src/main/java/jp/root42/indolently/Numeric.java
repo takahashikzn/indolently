@@ -257,7 +257,23 @@ public final class Numeric {
 
     // public static char asChar(final String s) { return s.charAt(0); }
 
-    public static BigDecimal decimal(final String s) { return new BigDecimal(s); }
+    public static BigDecimal decimal(final String s) {
+        interface $static {
+
+            BigDecimal ONE_TENTH = new BigDecimal("0.1");
+
+            BigDecimal ONE_HALF = new BigDecimal("0.5");
+        }
+
+        return switch (s) {
+            case "0" -> BigDecimal.ZERO;
+            case "0.1" -> $static.ONE_TENTH;
+            case "0.5" -> $static.ONE_HALF;
+            case "1" -> BigDecimal.ONE;
+            case "10" -> BigDecimal.TEN;
+            default -> new BigDecimal(s);
+        };
+    }
 
     public static BigDecimal decimal(final long l) { return BigDecimal.valueOf(l); }
 
