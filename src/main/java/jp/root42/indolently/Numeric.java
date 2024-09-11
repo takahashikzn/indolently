@@ -95,6 +95,7 @@ public final class Numeric {
 
     public static int asInt(final String s) {
         return switch (s) {
+            case "-1" -> -1;
             case "0" -> 0;
             case "1" -> 1;
             case "2" -> 2;
@@ -133,6 +134,7 @@ public final class Numeric {
 
     public static long asLong(final String s) {
         return switch (s) {
+            case "-1" -> -1;
             case "0" -> 0;
             case "1" -> 1;
             case "2" -> 2;
@@ -173,9 +175,41 @@ public final class Numeric {
 
     public static byte asByte(final String s) { return Byte.parseByte(s); }
 
-    public static float asFloat(final String s) { return Float.parseFloat(s); }
+    public static float asFloat(final String s) {
+        return switch (s) {
+            case "-1.0" -> -1f;
+            case "0.0" -> 0;
+            case "0.1" -> 0.1f;
+            case "0.2" -> 0.2f;
+            case "0.3" -> 0.3f;
+            case "0.4" -> 0.4f;
+            case "0.5" -> 0.5f;
+            case "0.6" -> 0.6f;
+            case "0.7" -> 0.7f;
+            case "0.8" -> 0.8f;
+            case "0.9" -> 0.9f;
+            case "1.0" -> 1;
+            default -> Float.parseFloat(s);
+        };
+    }
 
-    public static double asDouble(final String s) { return Double.parseDouble(s); }
+    public static double asDouble(final String s) {
+        return switch (s) {
+            case "-1.0" -> -1;
+            case "0.0" -> 0;
+            case "0.1" -> 0.1;
+            case "0.2" -> 0.2;
+            case "0.3" -> 0.3;
+            case "0.4" -> 0.4;
+            case "0.5" -> 0.5;
+            case "0.6" -> 0.6;
+            case "0.7" -> 0.7;
+            case "0.8" -> 0.8;
+            case "0.9" -> 0.9;
+            case "1.0" -> 1;
+            default -> Double.parseDouble(s);
+        };
+    }
 
     public static boolean asBool(final String s) { return Boolean.parseBoolean(s); }
 
@@ -188,18 +222,18 @@ public final class Numeric {
 
     public static $<Integer> parseInt(final String s) {
         final var i = intCache.get(s);
-        return (i != null) ? $.of(i) : parseX(s, Numeric::str2int);
+        return (i != null) ? $.of(i) : parseX(s, Numeric::asInt);
     }
 
-    public static $<Long> parseLong(final String s) { return parseX(s, Numeric::str2long); }
+    public static $<Long> parseLong(final String s) { return parseX(s, Numeric::asLong); }
 
     public static $<Short> parseShort(final String s) { return parseX(s, Short::parseShort); }
 
     public static $<Byte> parseByte(final String s) { return parseX(s, Byte::parseByte); }
 
-    public static $<Float> parseFloat(final String s) { return parseX(s, Float::parseFloat); }
+    public static $<Float> parseFloat(final String s) { return parseX(s, Numeric::asFloat); }
 
-    public static $<Double> parseDouble(final String s) { return parseX(s, Double::parseDouble); }
+    public static $<Double> parseDouble(final String s) { return parseX(s, Numeric::asDouble); }
 
     public static $<Boolean> parseBool(final String s) { return parseX(s, Boolean::parseBoolean); }
 
