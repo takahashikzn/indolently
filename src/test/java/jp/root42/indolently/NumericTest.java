@@ -26,7 +26,12 @@ import static org.assertj.core.api.Assertions.*;
 public class NumericTest {
 
     @Test
-    public void compare() {
+    public void _asInt() {
+        assertThat(asInt("001")).isEqualTo(1);
+    }
+
+    @Test
+    public void _compare() {
         assertThat(compareNumber(decimal(95.5), 95)).isEqualTo(1);
         assertThat(compareNumber(95, decimal(30.5))).isEqualTo(1);
         assertThat(compareNumber(95L, decimal(95.5))).isEqualTo(-1);
