@@ -46,8 +46,22 @@ public class PrioritySemaphore {
 
     public boolean acquire(final int priority) throws InterruptedException { return this.acquire(FOREVER, priority); }
 
-    private record Ticket(int priority, long timestamp)
+    @SuppressWarnings({ "ComparableImplementedButEqualsNotOverridden", "ClassCanBeRecord" })
+    private static final class Ticket
         implements Comparable<Ticket> {
+
+        private final int priority;
+
+        private final long timestamp;
+
+        public int priority() { return this.priority; }
+
+        public long timestamp() { return this.timestamp; }
+
+        Ticket(final int priority, final long timestamp) {
+            this.priority = priority;
+            this.timestamp = timestamp;
+        }
 
         @Override
         public int compareTo(final Ticket that) { return Comparator.comparingInt(Ticket::priority).thenComparingLong(Ticket::timestamp).compare(this, that); }
