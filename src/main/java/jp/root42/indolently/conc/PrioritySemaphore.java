@@ -18,6 +18,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 /**
@@ -46,30 +47,24 @@ public class PrioritySemaphore {
 
     public boolean acquire(final int priority) throws InterruptedException { return this.acquire(FOREVER, priority); }
 
-    @SuppressWarnings({ "ComparableImplementedButEqualsNotOverridden", "ClassCanBeRecord" })
-    private static final class Ticket
+    private final AtomicLong ticketSeq = new AtomicLong();
+
+    private long nextTicketSeq() {
+        final var seq = this.ticketSeq.getAndIncrement();
+        if (seq < 0) throw new AssertionError();
+        return seq;
+    }
+
+    private record Ticket(long seq, int priority)
         implements Comparable<Ticket> {
 
-        private final int priority;
-
-        private final long timestamp;
-
-        public int priority() { return this.priority; }
-
-        public long timestamp() { return this.timestamp; }
-
-        Ticket(final int priority, final long timestamp) {
-            this.priority = priority;
-            this.timestamp = timestamp;
-        }
-
         @Override
-        public int compareTo(final Ticket that) { return Comparator.comparingInt(Ticket::priority).thenComparingLong(Ticket::timestamp).compare(this, that); }
+        public int compareTo(final Ticket that) { return Comparator.comparingInt(Ticket::priority).thenComparingLong(Ticket::seq).compare(this, that); }
     }
 
     public boolean acquire(final long timeout, final int priority) throws InterruptedException {
 
-        final var ticket = new Ticket(priority, now());
+        final var ticket = new Ticket(this.nextTicketSeq(), priority);
 
         if (!this.waitingThreads.offer(ticket)) return false;
 
@@ -80,7 +75,9 @@ public class PrioritySemaphore {
             for (var wait = this.interval; //
                  0 < (wait = Math.min(waitUntil - now(), wait)); )
                 //
-                if (this.sem.tryAcquire(wait, TimeUnit.MILLISECONDS)) //
+                if (this.sem.tryAcquire()) //
+                    return true;
+                else if (this.sem.tryAcquire(wait, TimeUnit.MILLISECONDS)) //
                     if (this.waitingThreads.peek() == ticket) return true;
                     else this.sem.release();
 
