@@ -45,13 +45,13 @@ public class PrioritySemaphore {
 
     private static final long FOREVER = Long.MAX_VALUE;
 
-    public boolean acquire(final int priority) throws InterruptedException { return this.acquire(FOREVER, priority); }
+    public boolean acquire(final int priority) throws InterruptedException { return this.acquire(priority, FOREVER); }
 
     private final AtomicLong ticketSeq = new AtomicLong();
 
     private long nextTicketSeq() {
         final var seq = this.ticketSeq.getAndIncrement();
-        if (seq < 0) throw new AssertionError();
+        if (seq < 0) throw new AssertionError("overflow");
         return seq;
     }
 
@@ -62,7 +62,7 @@ public class PrioritySemaphore {
         public int compareTo(final Ticket that) { return Comparator.comparingInt(Ticket::priority).thenComparingLong(Ticket::seq).compare(this, that); }
     }
 
-    public boolean acquire(final long timeout, final int priority) throws InterruptedException {
+    public boolean acquire(final int priority, final long timeout) throws InterruptedException {
 
         final var ticket = new Ticket(this.nextTicketSeq(), priority);
 
