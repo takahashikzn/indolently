@@ -404,9 +404,7 @@ public interface $map<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> $map<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) {
-        return this.map((k, v) -> k, f);
-    }
+    default <R> $map<K, R> map(final BiFunction<? super K, ? super V, ? extends R> f) { return this.map((k, v) -> k, f); }
 
     /**
      * Map operation: map value to another type value.
@@ -452,9 +450,7 @@ public interface $map<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> $map<K, R> flatMap(final Function<? super V, $<? extends R>> f) {
-        return this.flatMap((k, v) -> f.apply(v));
-    }
+    default <R> $map<K, R> flatMap(final Function<? super V, $<? extends R>> f) { return this.flatMap((k, v) -> f.apply(v)); }
 
     /**
      * Map operation: map value to another type value.
@@ -464,9 +460,7 @@ public interface $map<K, V>
      * @param f function
      * @return new converted map
      */
-    default <R> $map<K, R> flatMap(final BiFunction<? super K, ? super V, $<? extends R>> f) {
-        return this.flatMap((k, v) -> k, f);
-    }
+    default <R> $map<K, R> flatMap(final BiFunction<? super K, ? super V, $<? extends R>> f) { return this.flatMap((k, v) -> k, f); }
 
     /**
      * Map operation: map value to another type value.
@@ -560,9 +554,7 @@ public interface $map<K, V>
      * @param f function
      * @return newly constructed map
      */
-    default $map<K, V> map(final K key, final Function<? super V, ? extends V> f) {
-        return this.clone().update(key, f);
-    }
+    default $map<K, V> map(final K key, final Function<? super V, ? extends V> f) { return this.clone().update(key, f); }
 
     /**
      * Flatten this map.
@@ -575,13 +567,9 @@ public interface $map<K, V>
         return this.entries().reduce(Indolently.map(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
     }
 
-    default <C extends Comparable<? super C>> $map<K, V> order(final Function<? super K, C> f) {
-        return this.order(Comparator.comparing(f));
-    }
+    default <C extends Comparable<? super C>> $map<K, V> order(final Function<? super K, C> f) { return this.order(Comparator.comparing(f)); }
 
-    default $map<K, V> order(final Comparator<? super K> comp) {
-        return Indolently.$(ObjFactory.getInstance().<K, V> newSortedMap(comp)).pushAll(this);
-    }
+    default $map<K, V> order(final Comparator<? super K> comp) { return Indolently.$(ObjFactory.getInstance().<K, V> newSortedMap(comp)).pushAll(this); }
 
     @Destructive
     default $map<K, V> pushIfAbsent(final K key, final Supplier<? extends V> value) {

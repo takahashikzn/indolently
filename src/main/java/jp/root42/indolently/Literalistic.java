@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import jp.root42.indolently.ref.$;
+
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -431,5 +433,17 @@ public final class Literalistic {
             sb.append(toAscii(c));
 
         return sb.toString();
+    }
+
+    public static $<String> firstLine(final String s) {
+        if (empty(s)) return none();
+        final int idx = s.indexOf('\n');
+        return idx < 0 ? none() : opt(s.substring(0, idx));
+    }
+
+    public static $<String> lastLine(final String s) {
+        if (empty(s)) return none();
+        final int idx = s.lastIndexOf('\n');
+        return idx < 0 ? none() : opt(s.substring(idx));
     }
 }

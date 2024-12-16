@@ -16,6 +16,7 @@ package jp.root42.indolently;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -241,8 +242,22 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @return map instance.
      */
     default <K, V> $map<K, V> mapmap(final Function<? super T, ? extends K> fkey, final Function<? super T, ? extends V> fval) {
+        return this.mapmap((i, e) -> fkey.apply(e), (i, e) -> fval.apply(e));
+    }
 
-        return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(e), fval.apply(e)));
+    /**
+     * Convert this collection to map.
+     *
+     * @param <K> key type
+     * @param <V> value type
+     * @param fkey a function which convert element to map key
+     * @param fval a function which convert element to map value
+     * @return map instance.
+     */
+    default <K, V> $map<K, V> mapmap(final BiFunction<Integer, ? super T, ? extends K> fkey, final BiFunction<Integer, ? super T, ? extends V> fval) {
+
+        final var idx = ref(0);
+        return this.reduce(map(), (rslt, e) -> rslt.push(fkey.apply(idx.$, e), fval.apply(idx.$++, e)));
     }
 
     /**

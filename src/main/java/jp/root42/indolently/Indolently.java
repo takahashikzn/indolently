@@ -2534,6 +2534,10 @@ public class Indolently {
 
     public static Predicate<$<?>> present() { return present; }
 
+    private static final Function<$<?>, Object> get_ = $::get;
+
+    public static <T, R> Function<T, R> get_() { return cast(get_); }
+
     private static final Predicate<? extends CharSequence> blank = blank(it());
 
     public static <T extends CharSequence> Predicate<T> blank() { return cast(blank); }
