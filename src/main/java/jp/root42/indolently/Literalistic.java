@@ -13,6 +13,8 @@
 // limitations under the License.
 package jp.root42.indolently;
 
+import java.util.function.IntPredicate;
+
 import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
@@ -445,5 +447,13 @@ public final class Literalistic {
         if (empty(s)) return none();
         final int idx = s.lastIndexOf('\n');
         return idx < 0 ? none() : opt(s.substring(idx));
+    }
+
+    public static int countHeadChars(final String s, final IntPredicate test) {
+        if (empty(s)) return 0;
+        final int len = s.length();
+        for (int i = 0; i < len; i++)
+            if (!test.test(s.charAt(i))) return i;
+        return len;
     }
 }
