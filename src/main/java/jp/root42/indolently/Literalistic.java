@@ -449,7 +449,7 @@ public final class Literalistic {
         return idx < 0 ? none() : opt(s.substring(idx));
     }
 
-    public static int countHeadChars(final String s, final IntPredicate test) {
+    public static int countWhile(final String s, final IntPredicate test) {
         if (empty(s)) return 0;
         final int len = s.length();
         for (int i = 0; i < len; i++)
