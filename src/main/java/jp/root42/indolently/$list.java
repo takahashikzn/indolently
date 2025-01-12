@@ -413,9 +413,7 @@ public interface $list<T>
      * @param f function
      * @return newly constructed list
      */
-    default $list<T> map(final int idx, final Function<? super T, ? extends T> f) {
-        return this.clone().update(idx, f);
-    }
+    default $list<T> map(final int idx, final Function<? super T, ? extends T> f) { return this.clone().update(idx, f); }
 
     /**
      * Test this list starts with given elements or not.
@@ -423,9 +421,7 @@ public interface $list<T>
      * @param col elements
      * @return {@code true} when this list starts with given elements
      */
-    default boolean startsWith(final Collection<T> col) {
-        return (col != null) && this.narrow(0, col.size()).equals(col);
-    }
+    default boolean startsWith(final Collection<T> col) { return (col != null) && this.narrow(0, col.size()).equals(col); }
 
     /**
      * Test this list ends with given elements or not.
@@ -433,9 +429,7 @@ public interface $list<T>
      * @param col elements
      * @return {@code true} when this list ends with given elements
      */
-    default boolean endsWith(final Collection<T> col) {
-        return (col != null) && this.narrow(-col.size(), 0).equals(col);
-    }
+    default boolean endsWith(final Collection<T> col) { return (col != null) && this.narrow(-col.size(), 0).equals(col); }
 
     /**
      * Find first index of the element which satisfies given predication.
@@ -443,8 +437,13 @@ public interface $list<T>
      * @param f predication
      * @return found index
      */
-    default OptionalInt indexOf(final Predicate<T> f) {
-        return this.head(f).map(this::indexOf).map(OptionalInt::of).or(OptionalInt::empty);
+    default OptionalInt indexOf(final Predicate<T> f) { return this.indexOf(f, 0); }
+
+    default OptionalInt indexOf(final Predicate<T> cond, final int pos) {
+        for (int i = idx(this, pos), Z = this.size(); i < Z; i++)
+            if (cond.test(this.get(i))) return OptionalInt.of(i);
+
+        return OptionalInt.empty();
     }
 
     /**
@@ -454,7 +453,10 @@ public interface $list<T>
      * @return found index
      */
     default OptionalInt lastIndexOf(final Predicate<T> f) {
-        return this.last(f).map(this::lastIndexOf).map(OptionalInt::of).or(OptionalInt::empty);
+        for (int i = this.size() - 1; 0 <= i; i--)
+            if (f.test(this.get(i))) return OptionalInt.of(i);
+
+        return OptionalInt.empty();
     }
 
     default <U extends T> $list<U> only(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
