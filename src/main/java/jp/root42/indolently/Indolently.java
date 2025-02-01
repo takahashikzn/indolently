@@ -411,6 +411,8 @@ public class Indolently {
 
     public static <L, R> $$<L, R> right(final R val) { return $$.right(val); }
 
+    public static <L, Void> $$<L, Void> fakeLeft() { return $$.rightNone(); }
+
     public static Predicate<$$<?, ?>> isLeft() { return x -> x.isL(); }
 
     public static Predicate<$$<?, ?>> isRight() { return x -> x.isR(); }
@@ -418,8 +420,6 @@ public class Indolently {
     public static <L, R> Function<L, $$<L, R>> left() { return Indolently::left; }
 
     public static <L, R> Function<R, $$<L, R>> right() { return Indolently::right; }
-
-    public static final $$.None NONE = $$.None.NONE;
 
     /**
      * SQL's coalesce function. The name comes from ELVis operator.
@@ -2871,15 +2871,11 @@ public class Indolently {
 
     public static Promise<Void> async(final RunnableE<? super Exception> run) { return Promissory.async(run); }
 
-    public static Promise<Void> async(final RunnableE<? super Exception> run, final Executor exec) {
-        return Promissory.async(run, exec);
-    }
+    public static Promise<Void> async(final RunnableE<? super Exception> run, final Executor exec) { return Promissory.async(run, exec); }
 
     public static <T> Promise<T> async(final Callable<? extends T> run) { return Promissory.async(run); }
 
-    public static <T> Promise<T> async(final Callable<? extends T> run, final Executor exec) {
-        return Promissory.async(run, exec);
-    }
+    public static <T> Promise<T> async(final Callable<? extends T> run, final Executor exec) { return Promissory.async(run, exec); }
 
     public static <T> T await(final Future<? extends T> promise) { return Promissory.await(promise); }
 
@@ -2887,29 +2883,21 @@ public class Indolently {
 
     public static Consumer<? super Future<?>> fawait() { return (Future<?> f) -> let(() -> f.get()); }
 
-    public static <T> $$<T, $$.None> await(final Future<? extends T> promise, final long timeout) {
-        return Promissory.await(promise, timeout);
-    }
+    public static <T> $$<T, Void> await(final Future<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
 
     public static <T> T await(final Promise<? extends T> promise) { return Promissory.await(promise); }
 
-    public static <T> $$<T, $$.None> await(final Promise<? extends T> promise, final long timeout) {
-        return Promissory.await(promise, timeout);
-    }
+    public static <T> $$<T, Void> await(final Promise<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
 
     @SafeVarargs
     public static <T> List<T> await(final Promise<? extends T>... promise) { return await(list(promise)); }
 
     @SafeVarargs
-    public static <T> $$<List<T>, $$.None> await(final long timeout, final Promise<? extends T>... promise) {
-        return await(list(promise), timeout);
-    }
+    public static <T> $$<List<T>, Void> await(final long timeout, final Promise<? extends T>... promise) { return await(list(promise), timeout); }
 
-    public static <T> List<T> await(final Iterable<? extends Promise<? extends T>> promise) {
-        return Promissory.await(Promise.all(promise));
-    }
+    public static <T> List<T> await(final Iterable<? extends Promise<? extends T>> promise) { return Promissory.await(Promise.all(promise)); }
 
-    public static <T> $$<List<T>, $$.None> await(final Iterable<? extends Promise<? extends T>> promise, final long timeout) {
+    public static <T> $$<List<T>, Void> await(final Iterable<? extends Promise<? extends T>> promise, final long timeout) {
         return Promissory.await(Promise.all(promise), timeout);
     }
 
@@ -2924,9 +2912,7 @@ public class Indolently {
 
     public static <T> Function<Promise<? extends T>, T> await() { return Indolently::await; }
 
-    public static <T> Function<Promise<? extends T>, $$<T, $$.None>> await(final long timeout) {
-        return x -> await(x, timeout);
-    }
+    public static <T> Function<Promise<? extends T>, $$<T, Void>> await(final long timeout) { return x -> await(x, timeout); }
 
     public static double i2d(final int x) { return x; }
 

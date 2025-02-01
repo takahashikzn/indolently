@@ -68,9 +68,7 @@ public class Promissory {
 
     public static void useVirtualThread(final boolean x) { useVirtualThread = x; }
 
-    public static Executor executor() {
-        return virtualThreadAvailable() && useVirtualThread ? virtualThreadExecutor : platformThreadExecutor;
-    }
+    public static Executor executor() { return virtualThreadAvailable() && useVirtualThread ? virtualThreadExecutor : platformThreadExecutor; }
 
     public static void executor(final Executor x) { platformThreadExecutor = Objects.requireNonNull(x); }
 
@@ -94,9 +92,7 @@ public class Promissory {
 
     public static <T> T await(final Promise<? extends T> promise) { return promise.resolve(); }
 
-    public static <T> $$<T, $$.None> await(final Promise<? extends T> promise, final long timeout) {
-        return cast(promise.resolve(timeout));
-    }
+    public static <T> $$<T, Void> await(final Promise<? extends T> promise, final long timeout) { return cast(promise.resolve(timeout)); }
 
     public static <T> T await(final Future<? extends T> promise) {
         try { return promise.get(); } //
@@ -104,9 +100,9 @@ public class Promissory {
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }
 
-    public static <T> $$<T, $$.None> await(final Future<? extends T> promise, final long timeout) {
+    public static <T> $$<T, Void> await(final Future<? extends T> promise, final long timeout) {
         try { return left(promise.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return right(NONE); } //
+        catch (final TimeoutException e) { return fakeLeft(); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }

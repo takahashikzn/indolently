@@ -17,47 +17,104 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static jp.root42.indolently.Indolently.*;
+import static java.util.Objects.*;
 
 
 /**
  * @author takahashikzn
  */
-public record $$<L, R>($<L> l, $<R> r) {
+@SuppressWarnings("InstanceofThis")
+public sealed interface $$<L, R>
+    permits $$.Left, $$.Right {
 
-    public enum None { NONE }
+    final class Left<L, R>
+        implements $$<L, R> {
 
-    public static <L, R> $$<L, R> left(final L l) { return new $$<>($.of(l), none()); }
+        private final L l;
 
-    public static <L, R> $$<L, R> right(final R r) { return new $$<>(none(), $.of(r)); }
+        private Left(final L l) { this.l = requireNonNull(l); }
 
-    public boolean isL() { return this.l.present(); }
+        @Override
+        public L value() { return this.l(); }
 
-    public boolean isR() { return this.r.present(); }
+        @Override
+        public L l() { return this.l; }
 
-    public <T> T map(final Function<L, ? extends T> lfn, final Function<R, ? extends T> rfn) {
-        return this.l.map(lfn).or(() -> cast(this.r.map(rfn).get()));
+        @Deprecated
+        @Override
+        public R r() { throw new UnsupportedOperationException(); }
+
+        @Override
+        public String toString() { return String.format("Left[%s]", this.l); }
     }
 
-    public $$<L, R> do_(final Consumer<L> lfn, final Consumer<R> rfn) {
-        this.l.tap(lfn);
-        this.r.tap(rfn);
+    final class Right<L, R>
+        implements $$<L, R> {
+
+        private final R r;
+
+        private Right() { this.r = null; }
+
+        private Right(final R r) { this.r = requireNonNull(r); }
+
+        @Override
+        public R value() { return this.r(); }
+
+        @Deprecated
+        @Override
+        public L l() { throw new UnsupportedOperationException(); }
+
+        @Override
+        public R r() {
+            if (this.r == null) throw new UnsupportedOperationException();
+            return this.r;
+        }
+
+        @Override
+        public String toString() { return String.format("Right[%s]", this.r); }
+    }
+
+    static <L, R> Left<L, R> left(final L l) { return new Left<>(l); }
+
+    static <L, R> Right<L, R> right(final R r) { return new Right<>(r); }
+
+    static <L, R> Right<L, R> rightNone() { return new Right<>(); }
+
+    Object value();
+
+    L l();
+
+    R r();
+
+    default boolean isL() { return this instanceof Left; }
+
+    default boolean isR() { return this instanceof Right; }
+
+    default <T> T flat(final Function<L, ? extends T> lfn, final Function<R, ? extends T> rfn) {
+        return this instanceof Left<?, ?> ? lfn.apply(this.l()) : rfn.apply(this.r());
+    }
+
+    default <L2, R2> $$<L2, R2> map(final Function<L, ? extends L2> lfn, final Function<R, ? extends R2> rfn) {
+        return this instanceof Left<?, ?> ? left(lfn.apply(this.l())) : right(rfn.apply(this.r()));
+    }
+
+    default $$<L, R> do_(final Consumer<L> lfn, final Consumer<R> rfn) {
+        if (this instanceof Left<?, ?>) lfn.accept(this.l());
+        else rfn.accept(this.r());
+
         return this;
     }
 
     // alias
-    public $$<L, R> tap(final Consumer<L> lfn, final Consumer<R> rfn) { return this.do_(lfn, rfn); }
+    default $$<L, R> tap(final Consumer<L> lfn, final Consumer<R> rfn) { return this.do_(lfn, rfn); }
 
-    public <T> $<T> lmap(final Function<L, T> fn) { return this.l.map(fn); }
+    default <T> $<T> lmap(final Function<L, T> fn) { return this instanceof Left ? $.of(this.l()).map(fn) : $.none(); }
 
-    public <T> $<T> rmap(final Function<R, T> fn) { return this.r.map(fn); }
+    default <T> $<T> rmap(final Function<R, T> fn) { return this instanceof Right ? $.of(this.r()).map(fn) : $.none(); }
 
-    public boolean ltest(final Predicate<L> fn) { return this.l.test(fn); }
+    default boolean ltest(final Predicate<L> fn) { return this instanceof Left && fn.test(this.l()); }
 
-    public boolean rtest(final Predicate<R> fn) { return this.r.test(fn); }
+    default boolean rtest(final Predicate<R> fn) { return this instanceof Right && fn.test(this.r()); }
 
-    @Override
-    public String toString() { return String.format("Either[%s,%s]", tostr(this.l), tostr(this.r)); }
-
-    private static Object tostr(final $<?> x) { return x.empty() ? "_" : x.get(); }
+    default boolean test(final Predicate<L> lfn, final Predicate<R> rfn) { return this instanceof Left ? this.ltest(lfn) : this.rtest(rfn); }
 }

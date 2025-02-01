@@ -26,7 +26,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.$$;
-import jp.root42.indolently.ref.$$.None;
 
 import static java.util.Objects.*;
 import static jp.root42.indolently.Expressive.*;
@@ -44,7 +43,7 @@ public interface Promise<T>
 
     T resolve();
 
-    $$<T, None> resolve(long timeout);
+    $$<T, Void> resolve(long timeout);
 
     boolean cancel();
 
@@ -118,9 +117,9 @@ abstract class PromiseFuture<T, F extends Future<T>>
     }
 
     @Override
-    public $$<T, $$.None> resolve(final long timeout) {
+    public $$<T, Void> resolve(final long timeout) {
         try { return left(this.delegate.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return right(NONE); } //
+        catch (final TimeoutException e) { return fakeLeft(); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); } //
     }
@@ -153,14 +152,10 @@ class PromiseCFuture<T>
     public boolean failed() { return this.delegate.isCompletedExceptionally(); }
 
     @Override
-    public <U> Promise<U> thenAsync(final Function<? super T, ? extends U> f) {
-        return new PromiseCFuture<>(this.delegate.thenApplyAsync(f));
-    }
+    public <U> Promise<U> thenAsync(final Function<? super T, ? extends U> f) { return new PromiseCFuture<>(this.delegate.thenApplyAsync(f)); }
 
     @Override
-    public <U> Promise<U> then(final Function<? super T, ? extends U> f) {
-        return new PromiseCFuture<>(this.delegate.thenApply(f));
-    }
+    public <U> Promise<U> then(final Function<? super T, ? extends U> f) { return new PromiseCFuture<>(this.delegate.thenApply(f)); }
 
     @Override
     public Promise<T> fail(final Function<? super Exception, ? extends T> f) {
