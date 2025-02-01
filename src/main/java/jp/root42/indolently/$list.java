@@ -49,6 +49,9 @@ public interface $list<T>
     @SuppressWarnings("MethodDoesntCallSuperMethod")
     default $list<T> clone() { return list((Iterable<T>) this); }
 
+    @Override
+    default $list<T> copy() { return this.clone(); }
+
     /**
      * Wrap a list.
      * This method is an alias of {@link Indolently#$(List)}.

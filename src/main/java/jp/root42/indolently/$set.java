@@ -44,6 +44,9 @@ public interface $set<T>
     @SuppressWarnings("MethodDoesntCallSuperMethod")
     default $set<T> clone() { return set((Iterable<T>) this); }
 
+    @Override
+    default $set<T> copy() { return this.clone(); }
+
     /**
      * Wrap a set.
      * This method is an alias of {@link Indolently#$(Set)}.

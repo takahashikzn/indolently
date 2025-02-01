@@ -98,9 +98,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @return {@code this} instance
      */
     @Destructive
-    default SELF push(final $<? extends T> value) {
-        return Indolently.empty(value) ? this.identity() : this.push(value.get());
-    }
+    default SELF push(final $<? extends T> value) { return Indolently.empty(value) ? this.identity() : this.push(value.get()); }
 
     /**
      * add all values then return this instance only if values exists.
@@ -110,9 +108,7 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
      * @return {@code this} instance
      */
     @Destructive
-    default SELF pushAll(final $<? extends Iterable<? extends T>> values) {
-        return Indolently.empty(values) ? this.identity() : this.pushAll(values.get());
-    }
+    default SELF pushAll(final $<? extends Iterable<? extends T>> values) { return Indolently.empty(values) ? this.identity() : this.pushAll(values.get()); }
 
     /**
      * remove values then return this instance.
@@ -335,4 +331,29 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
     default boolean present() { return !this.isEmpty(); }
 
     default $<SELF> present$() { return this.empty() ? Indolently.none() : Indolently.opt(this.identity()); }
+
+    SELF copy();
+
+    default SELF concat(final Iterable<? extends T> i) { return this.copy().pushAll(i); }
+
+    default SELF concat(final Iterable<? extends T> i1, final Iterable<? extends T> i2) { return this.concat(i1).pushAll(i2); }
+
+    default SELF concat(final Iterable<? extends T> i1, final Iterable<? extends T> i2, final Iterable<? extends T> i3) {
+        return this.concat(i1, i2).pushAll(i3);
+    }
+
+    default SELF concat(final Iterable<? extends T> i1, final Iterable<? extends T> i2, final Iterable<? extends T> i3,
+        final Iterable<? extends T> i4) { return this.concat(i1, i2, i3).pushAll(i4); }
+
+    default SELF mapcat(final Function<SELF, SELF> f, final Iterable<? extends T> i) { return f.apply(cast(this)).concat(i); }
+
+    static <T, C extends $collection<T, C>> C concat(final C x, final Iterable<? extends T> i) { return x.concat(i); }
+
+    static <T, C extends $collection<T, C>> C concat(final C x, final Iterable<? extends T> i1, final Iterable<? extends T> i2) { return x.concat(i1, i2); }
+
+    static <T, C extends $collection<T, C>> C concat(final C x, final Iterable<? extends T> i1, final Iterable<? extends T> i2,
+        final Iterable<? extends T> i3) { return x.concat(i1, i2, i3); }
+
+    static <T, C extends $collection<T, C>> C concat(final C x, final Iterable<? extends T> i1, final Iterable<? extends T> i2, final Iterable<? extends T> i3,
+        final Iterable<? extends T> i4) { return x.concat(i1, i2, i3, i4); }
 }
