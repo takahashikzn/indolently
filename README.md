@@ -149,15 +149,15 @@ int sumOfRange(final int from, final int to) {
 
             ref ->
                 when(from < to).
-                    then(() -> ref.val <= to).
+                    then(() -> ref.$ <= to).
                 when(to < from).
-                    then(() -> to <= ref.val).
-                none(() -> ref.val == from),
+                    then(() -> to <= ref.$).
+                none(() -> ref.$ == from),
 
             ref ->
                 when(from < to).
-                    then(() -> ref.getThen(self -> self.val += step)).
-                none(() -> prog1(ref::get, () -> ref.val -= step))
+                    then(() -> ref.getThen(self -> self.$ += step)).
+                none(() -> prog1(ref::get, () -> ref.$ -= step))
         )
     ).reduce((l, r) -> l + r);
 }
