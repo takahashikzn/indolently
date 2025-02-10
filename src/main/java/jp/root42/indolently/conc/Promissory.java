@@ -29,7 +29,7 @@ import java.util.concurrent.TimeoutException;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.ref.$$;
 
-import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Expressive.raise;
 import static jp.root42.indolently.Indolently.*;
 
 

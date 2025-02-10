@@ -23,8 +23,8 @@ import java.nio.charset.Charset;
 
 import org.apache.commons.io.output.UnsynchronizedByteArrayOutputStream;
 
-import static jp.root42.indolently.Expressive.*;
-import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Expressive.let;
+import static jp.root42.indolently.Indolently.cast;
 
 
 /**

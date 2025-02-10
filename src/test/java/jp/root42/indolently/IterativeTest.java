@@ -20,12 +20,9 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.$int;
 
-import static jp.root42.indolently.Functional.*;
-import static jp.root42.indolently.Generator.*;
-import static jp.root42.indolently.Indolently.list;
-import static jp.root42.indolently.Indolently.tuple;
+import static jp.root42.indolently.Functional.consumerOf;
+import static jp.root42.indolently.Generator.breaks;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterative.iterator;
 import static jp.root42.indolently.Iterative.*;
 
 import junitparams.JUnitParamsRunner;
@@ -34,7 +31,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.*;
 
 

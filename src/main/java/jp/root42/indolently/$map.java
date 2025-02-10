@@ -34,7 +34,7 @@ import jp.root42.indolently.trait.Identical;
 import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 import static jp.root42.indolently.Indolently.*;
 
 

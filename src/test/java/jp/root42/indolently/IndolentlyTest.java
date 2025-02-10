@@ -28,14 +28,9 @@ import java.util.function.BiPredicate;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.trait.Freezable;
 
-import static jp.root42.indolently.Indolently.array;
-import static jp.root42.indolently.Indolently.list;
-import static jp.root42.indolently.Indolently.map;
-import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterative.iterator;
 import static jp.root42.indolently.Iterative.*;
-import static jp.root42.indolently.TestHelper.*;
+import static jp.root42.indolently.TestHelper.assertThat$;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -44,7 +39,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.*;
 
 

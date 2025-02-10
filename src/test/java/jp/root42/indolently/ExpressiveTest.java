@@ -24,9 +24,6 @@ import jp.root42.indolently.ref.$bool;
 import jp.root42.indolently.ref.$int;
 
 import static jp.root42.indolently.Expressive.*;
-import static jp.root42.indolently.Indolently.in;
-import static jp.root42.indolently.Indolently.list;
-import static jp.root42.indolently.Indolently.not;
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.iterator;
 
@@ -36,7 +33,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.*;
 
 

@@ -88,7 +88,7 @@ import jp.root42.indolently.regex.Regex;
 import jp.root42.indolently.regex.RegexJDK;
 import jp.root42.indolently.regex.RegexRe2;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 import static jp.root42.indolently.Expressive.*;
 
 

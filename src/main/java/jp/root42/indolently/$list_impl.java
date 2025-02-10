@@ -28,8 +28,8 @@ import jp.root42.indolently.function.ConsumerE;
 import jp.root42.indolently.function.Function3;
 import jp.root42.indolently.ref.$;
 
-import static jp.root42.indolently.Expressive.*;
-import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Expressive.eval;
+import static jp.root42.indolently.Indolently.cast;
 
 
 /**

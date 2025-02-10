@@ -19,7 +19,7 @@ import java.util.Map;
 import jp.root42.indolently.bridge.MapDelegate;
 import jp.root42.indolently.bridge.ObjFactory;
 
-import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Expressive.eval;
 
 
 /**

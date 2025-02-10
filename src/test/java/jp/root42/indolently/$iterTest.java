@@ -18,13 +18,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
-import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterative.*;
+import static jp.root42.indolently.Iterative.range;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**

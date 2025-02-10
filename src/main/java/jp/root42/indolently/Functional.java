@@ -43,8 +43,8 @@ import jp.root42.indolently.function.SupplierE;
 import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$2;
 
-import static java.util.Objects.*;
-import static jp.root42.indolently.Expressive.*;
+import static java.util.Objects.requireNonNull;
+import static jp.root42.indolently.Expressive.raise;
 import static jp.root42.indolently.Indolently.*;
 
 

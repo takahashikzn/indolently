@@ -15,7 +15,7 @@ package jp.root42.indolently.function;
 
 import java.util.function.Function;
 
-import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Expressive.eval;
 
 
 /**

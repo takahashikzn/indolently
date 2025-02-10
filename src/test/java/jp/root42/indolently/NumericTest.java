@@ -17,7 +17,7 @@ import static jp.root42.indolently.Numeric.*;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**

@@ -16,11 +16,11 @@ package jp.root42.indolently;
 import jp.root42.indolently.regex.ReMatcher;
 
 import static jp.root42.indolently.Indolently.list;
-import static jp.root42.indolently.Regexive.*;
+import static jp.root42.indolently.Regexive.regex;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**

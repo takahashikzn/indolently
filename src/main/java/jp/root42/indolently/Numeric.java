@@ -19,7 +19,7 @@ import java.util.function.Function;
 import jp.root42.indolently.ref.$;
 
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterative.*;
+import static jp.root42.indolently.Iterative.range;
 import static jp.root42.indolently.Literalistic.*;
 
 

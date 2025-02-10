@@ -23,17 +23,16 @@ import jp.root42.indolently.function.SFunc3;
 import jp.root42.indolently.ref.$3;
 import jp.root42.indolently.ref.$int;
 
-import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Expressive.when;
 import static jp.root42.indolently.Functional.*;
-import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.*;
-import static jp.root42.indolently.Iterative.*;
+import static jp.root42.indolently.Iterative.range;
 
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**

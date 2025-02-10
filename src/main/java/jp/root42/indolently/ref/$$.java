@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 
 
 /**

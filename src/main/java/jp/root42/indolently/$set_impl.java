@@ -24,7 +24,7 @@ import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.bridge.SetDelegate;
 import jp.root42.indolently.ref.$;
 
-import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Expressive.eval;
 
 
 /**

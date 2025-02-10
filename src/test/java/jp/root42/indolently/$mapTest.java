@@ -11,12 +11,11 @@ import java.util.Set;
 
 import jp.root42.indolently.$map.$entry;
 
-import static jp.root42.indolently.Indolently.list;
 import static jp.root42.indolently.Indolently.*;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 

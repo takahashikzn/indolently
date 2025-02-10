@@ -21,7 +21,7 @@ import java.io.OutputStream;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 
-import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Expressive.eval;
 
 
 /**

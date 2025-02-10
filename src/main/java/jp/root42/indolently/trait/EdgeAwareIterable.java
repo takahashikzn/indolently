@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.$;
 
-import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.vrai;
 
 
 /**

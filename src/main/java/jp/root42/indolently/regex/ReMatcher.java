@@ -27,7 +27,7 @@ import jp.root42.indolently.bridge.RegexMatcher;
 import jp.root42.indolently.ref.$void;
 import jp.root42.indolently.trait.Loopable;
 
-import static jp.root42.indolently.Expressive.*;
+import static jp.root42.indolently.Expressive.prog1;
 import static jp.root42.indolently.Indolently.*;
 
 
