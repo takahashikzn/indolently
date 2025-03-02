@@ -35,7 +35,7 @@ import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
 
 import static java.util.Objects.requireNonNull;
-import static jp.root42.indolently.Indolently.*;
+import static jp.root42.indolently.Indolently.ref;
 
 
 /**
@@ -585,9 +585,4 @@ public interface $map<K, V>
     default boolean present() { return !this.isEmpty(); }
 
     default $<$map<K, V>> present$() { return this.empty() ? Indolently.none() : Indolently.opt(this); }
-
-    default $map<K, V> do_(final Consumer<? super Map<K, V>> f) {
-        f.accept(cast(this));
-        return this;
-    }
 }

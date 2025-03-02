@@ -15,7 +15,7 @@ package jp.root42.indolently.trait;
 
 import java.util.function.Consumer;
 
-import jp.root42.indolently.Indolently;
+import static jp.root42.indolently.Indolently.cast;
 
 
 /**
@@ -31,20 +31,16 @@ public interface Identical<SELF extends Identical<SELF>> {
      *
      * @return {@code this} instance.
      */
-    default SELF identity() {
-        return Indolently.cast(this);
-    }
+    default SELF identity() { return cast(this); }
 
     /**
-     * return this instance.
+     * do something then return itself.
      *
      * @param f 'tap' operator
      * @return {@code this} instance.
      */
-    default SELF identity(final Consumer<? super SELF> f) {
-        @SuppressWarnings("unchecked")
-        final var self = (SELF) this;
-        f.accept(self);
-        return self;
+    default SELF do_(final Consumer<? super SELF> f) {
+        f.accept(cast(this));
+        return this.identity();
     }
 }
