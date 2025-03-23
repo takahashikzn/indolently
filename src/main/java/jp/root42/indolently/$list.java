@@ -292,6 +292,16 @@ public interface $list<T>
         return this.reduce(list(), (x, y) -> f.test(y) ? x.push(y) : x);
     }
 
+    default $list<T> takeWhile(final BiPredicate<$list<T>, ? super T> f) {
+        final var state = ref(true);
+        return this.reduce(list(), (x, y) -> {
+            if (state.$) //
+                if (f.test(x, y)) return x.push(y);
+                else state.$ = false;
+            return x;
+        });
+    }
+
     /**
      * Reverse this list.
      *
