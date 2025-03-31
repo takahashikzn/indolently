@@ -4,7 +4,7 @@
   <!ENTITY runtime_conf "runtime->master(*)">
   <!ENTITY test_conf "test->master(*)">
   <!ENTITY mockito_version "5.15.2">
-  <!ENTITY bytebuddy_version "1.17.1">
+  <!ENTITY bytebuddy_version "1.17.5">
   <!ENTITY eclipsecollection_version "12.0.0.M3">
   ]>
 <!--
