@@ -92,7 +92,7 @@ public class Promissory {
 
     public static <T> T await(final Promise<? extends T> promise) { return promise.resolve(); }
 
-    public static <T> $$<T, Void> await(final Promise<? extends T> promise, final long timeout) { return cast(promise.resolve(timeout)); }
+    public static <T> $$<Void, T> await(final Promise<? extends T> promise, final long timeout) { return cast(promise.resolve(timeout)); }
 
     public static <T> T await(final Future<? extends T> promise) {
         try { return promise.get(); } //
@@ -100,9 +100,9 @@ public class Promissory {
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }
 
-    public static <T> $$<T, Void> await(final Future<? extends T> promise, final long timeout) {
-        try { return left(promise.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return fakeLeft(); } //
+    public static <T> $$<Void, T> await(final Future<? extends T> promise, final long timeout) {
+        try { return right(promise.get(timeout, TimeUnit.MILLISECONDS)); } //
+        catch (final TimeoutException e) { return fakeRight(); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }

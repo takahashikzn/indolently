@@ -271,14 +271,14 @@ public class Expressive {
         return expr.apply(val1, val2, val3);
     }
 
-    public static <T> $$<T, Exception> try__(final Supplier<T> f) {
-        try { return $$.left(f.get()); } //
-        catch (final Exception e) { return $$.right(e); }
+    public static <T> $$<Exception, T> try__(final Supplier<T> f) {
+        try { return $$.right(f.get()); } //
+        catch (final Exception e) { return $$.left(e); }
     }
 
-    public static <T> $$<T, Exception> try_(final SupplierE<T, ? extends Exception> f) {
-        try { return $$.left(f.get()); } //
-        catch (final Exception e) { return $$.right(e); }
+    public static <T> $$<Exception, T> try_(final SupplierE<T, ? extends Exception> f) {
+        try { return $$.right(f.get()); } //
+        catch (final Exception e) { return $$.left(e); }
     }
 
     /**

@@ -103,18 +103,14 @@ public class Indolently {
     /** non private for subtyping. */
     protected Indolently() { }
 
-    static int idx(final List<?> list, final int idx) {
-        return 0 <= idx ? idx : list.size() + idx;
-    }
+    static int idx(final List<?> list, final int idx) { return 0 <= idx ? idx : list.size() + idx; }
 
     /**
      * A shortcut of {@code System.currentTimeMillis()}.
      *
      * @return current time in milliseconds.
      */
-    public static long now() {
-        return System.currentTimeMillis();
-    }
+    public static long now() { return System.currentTimeMillis(); }
 
     /**
      * Cast the value.
@@ -125,13 +121,9 @@ public class Indolently {
     @SuppressWarnings("unchecked")
     public static <T> T cast(final Object o) { return (T) o; }
 
-    public static <IN, OUT> Function<IN, $<OUT>> castTo(final Class<OUT> type) {
-        return x -> opt(x).if_(type::isInstance).map(type::cast);
-    }
+    public static <IN, OUT> Function<IN, $<OUT>> castTo(final Class<OUT> type) { return x -> opt(x).if_(type::isInstance).map(type::cast); }
 
-    public static <IN, OUT> Function<IN, $<? extends OUT>> castAs(final Class<OUT> type) {
-        return x -> opt(x).if_(type::isInstance).map(type::cast);
-    }
+    public static <IN, OUT> Function<IN, $<? extends OUT>> castAs(final Class<OUT> type) { return x -> opt(x).if_(type::isInstance).map(type::cast); }
 
     /**
      * null-safe wrapper to primitive conversion.
@@ -217,9 +209,7 @@ public class Indolently {
 
     public static void ASSERT(final boolean flag, final Object msg) { if (!flag) throw new AssertionError("" + msg); }
 
-    public static void ASSERT(final boolean flag, final Supplier<?> msg) {
-        if (!flag) throw new AssertionError("" + msg.get());
-    }
+    public static void ASSERT(final boolean flag, final Supplier<?> msg) { if (!flag) throw new AssertionError("" + msg.get()); }
 
     /** for IDE's language injection */
     public static String __SQL__(final String code) { return code; }
@@ -297,9 +287,7 @@ public class Indolently {
      * @param value string value
      * @return Optional representation of string
      */
-    public static <T extends CharSequence> $<T> nonEmpty(final T value) {
-        return empty(value) ? $.none() : $.of(value);
-    }
+    public static <T extends CharSequence> $<T> nonEmpty(final T value) { return empty(value) ? $.none() : $.of(value); }
 
     /**
      * {@link Optional} representation of string.
@@ -309,9 +297,7 @@ public class Indolently {
      * @param value string value
      * @return Optional representation of string
      */
-    public static <T extends CharSequence> $<T> nonBlank(final T value) {
-        return blank(value) ? $.none() : $.of(value);
-    }
+    public static <T extends CharSequence> $<T> nonBlank(final T value) { return blank(value) ? $.none() : $.of(value); }
 
     /**
      * An alias of {@link #opt(Object)}.
@@ -321,13 +307,6 @@ public class Indolently {
      * @return Optional representation of value
      */
     public static <T> $<T> nonNull(final T value) { return opt(value); }
-
-    /**
-     * An alias of {@link $#none()}.
-     *
-     * @return Optional representation of nothing
-     */
-    public static <T> $<T> none() { return $.none(); }
 
     /**
      * An alias of {@link Optional#empty()}.
@@ -348,6 +327,10 @@ public class Indolently {
      * @return Optional representation of value
      */
     public static <T> $<T> opt(final T value) { return $.of(value); }
+
+    public static <T> $.Just<T> just(final T value) { return $.just(value); }
+
+    public static <T> $.None<T> none() { return $.none(); }
 
     /**
      * An alias of {@link Optional#ofNullable(Object)}.
@@ -407,19 +390,21 @@ public class Indolently {
     public static <T1, T2, T3, T4, T5, T6, R> $<R> opt(final T1 root, final Function<T1, T2> c1, final Function<T2, T3> c2, final Function<T3, T4> c3,
         final Function<T4, T5> c4, final Function<T5, T6> c5, final Function<T6, R> last) { return opt(opt(root), c1, c2, c3, c4, c5, last); }
 
-    public static <L, R> $$<L, R> left(final L val) { return $$.left(val); }
+    public static <L, R> $$.Left<L, R> left(final L val) { return $$.left(val); }
 
-    public static <L, R> $$<L, R> right(final R val) { return $$.right(val); }
+    public static <L, R> $$.Right<L, R> right(final R val) { return $$.right(val); }
 
     public static <L, Void> $$<L, Void> fakeLeft() { return $$.rightNone(); }
+
+    public static <L, Void> $$<L, Void> fakeRight() { return $$.leftNone(); }
 
     public static Predicate<$$<?, ?>> isLeft() { return x -> x.isL(); }
 
     public static Predicate<$$<?, ?>> isRight() { return x -> x.isR(); }
 
-    public static <L, R> Function<L, $$<L, R>> left() { return Indolently::left; }
+    public static <L, R> Function<L, $$.Left<L, R>> left() { return Indolently::left; }
 
-    public static <L, R> Function<R, $$<L, R>> right() { return Indolently::right; }
+    public static <L, R> Function<R, $$.Right<L, R>> right() { return Indolently::right; }
 
     /**
      * SQL's coalesce function. The name comes from ELVis operator.
@@ -2639,8 +2624,8 @@ public class Indolently {
                 return ReTest.of(x -> {
                     final var actual = at.find(x);
                     final var expected = pregex.matcher(x).find();
-                    assert actual == expected : String.format("original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex,
-                        ((AutomatonTest) ptest).regex(), expected, actual, x);
+                    assert actual == expected : String.format("original: %s, automaton: %s, expected: %s, actual: %s, input: %s", regex, at.regex(), expected,
+                        actual, x);
                     return actual;
                 }, regex);
             }
@@ -2883,21 +2868,21 @@ public class Indolently {
 
     public static Consumer<? super Future<?>> fawait() { return (Future<?> f) -> let(() -> f.get()); }
 
-    public static <T> $$<T, Void> await(final Future<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
+    public static <T> $$<Void, T> await(final Future<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
 
     public static <T> T await(final Promise<? extends T> promise) { return Promissory.await(promise); }
 
-    public static <T> $$<T, Void> await(final Promise<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
+    public static <T> $$<Void, T> await(final Promise<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
 
     @SafeVarargs
     public static <T> List<T> await(final Promise<? extends T>... promise) { return await(list(promise)); }
 
     @SafeVarargs
-    public static <T> $$<List<T>, Void> await(final long timeout, final Promise<? extends T>... promise) { return await(list(promise), timeout); }
+    public static <T> $$<Void, List<T>> await(final long timeout, final Promise<? extends T>... promise) { return await(list(promise), timeout); }
 
     public static <T> List<T> await(final Iterable<? extends Promise<? extends T>> promise) { return Promissory.await(Promise.all(promise)); }
 
-    public static <T> $$<List<T>, Void> await(final Iterable<? extends Promise<? extends T>> promise, final long timeout) {
+    public static <T> $$<Void, List<T>> await(final Iterable<? extends Promise<? extends T>> promise, final long timeout) {
         return Promissory.await(Promise.all(promise), timeout);
     }
 
@@ -2912,7 +2897,7 @@ public class Indolently {
 
     public static <T> Function<Promise<? extends T>, T> await() { return Indolently::await; }
 
-    public static <T> Function<Promise<? extends T>, $$<T, Void>> await(final long timeout) { return x -> await(x, timeout); }
+    public static <T> Function<Promise<? extends T>, $$<Void, T>> await(final long timeout) { return x -> await(x, timeout); }
 
     public static double i2d(final int x) { return x; }
 

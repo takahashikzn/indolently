@@ -43,7 +43,7 @@ public interface Promise<T>
 
     T resolve();
 
-    $$<T, Void> resolve(long timeout);
+    $$<Void, T> resolve(long timeout);
 
     boolean cancel();
 
@@ -117,9 +117,9 @@ abstract class PromiseFuture<T, F extends Future<T>>
     }
 
     @Override
-    public $$<T, Void> resolve(final long timeout) {
-        try { return left(this.delegate.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return fakeLeft(); } //
+    public $$<Void, T> resolve(final long timeout) {
+        try { return right(this.delegate.get(timeout, TimeUnit.MILLISECONDS)); } //
+        catch (final TimeoutException e) { return fakeRight(); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); } //
     }

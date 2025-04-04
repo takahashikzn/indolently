@@ -29,7 +29,7 @@ import jp.root42.indolently.function.FunctionE;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.SupplierE;
 
-import static jp.root42.indolently.Indolently.*;
+import static java.util.Objects.requireNonNull;
 
 
 /**
@@ -38,166 +38,229 @@ import static jp.root42.indolently.Indolently.*;
  * @param <T> element type
  * @author takahashikzn
  */
-public record $<T>(Optional<T> opt)
-    implements Serializable, Supplier<T> {
+public sealed interface $<T>
+    extends Serializable, Supplier<T>
+    permits $.Just, $.None {
 
-    public static <T> $<T> of(final T val) { return (val == null) ? none() : new $<>(val); }
+    record Just<T>(T val)
+        implements $<T> {
+
+        @Deprecated
+        public Just(final T val) { this.val = requireNonNull(val); }
+
+        @Override
+        public T get() { return this.val; }
+
+        @Override
+        public boolean empty() { return false; }
+
+        @Override
+        public T orElse(final T or) { return this.val; }
+
+        @Override
+        public T orElseGet(final Supplier<? extends T> f) { return this.val; }
+
+        @Override
+        public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { return this.val; }
+
+        @Override
+        public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f) throws E {
+            f.accept(this.val);
+            return this;
+        }
+
+        @Override
+        public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f, final RunnableE<E> orAction) throws E {
+            f.accept(this.val);
+            return this;
+        }
+
+        @Override
+        public <U, E extends Exception> $<U> mapTry(final FunctionE<? super T, ? extends U, E> f) throws E { return $.of(f.apply(this.val)); }
+
+        @Override
+        public <U, E extends Exception> $<U> fmapTry(final FunctionE<? super T, ? extends $<? extends U>, E> f) throws E {
+            final var x = f.apply(this.val);
+            return (x == null) ? none() : Indolently.cast(x);
+        }
+
+        @Override
+        public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E { return this.val; }
+
+        public boolean equals(final $<? extends T> that) { return this.equals0(that); }
+
+        private boolean equals0(final $<?> that) { return (this == that) || (that instanceof $.Just<?> j && Indolently.equiv(this.val, j.val)); }
+
+        @Override
+        public int hashCode() { return Objects.hash(this.getClass(), this.val); }
+
+        @Deprecated
+        @Override
+        public boolean equals(final Object o) { return this == o || (o instanceof $<?> that && this.equals0(that)); }
+
+        @Override
+        public String toString() { return "$(" + this.get() + ")"; }
+
+        private static final $<Boolean> T = of(true);
+
+        private static final $<Boolean> F = of(false);
+    }
+
+    final class None<T>
+        implements $<T> {
+
+        private static final None<?> NONE = new None<>();
+
+        private None() { }
+
+        @Override
+        public T get() throws NoSuchElementException { throw new NoSuchElementException("No value present"); }
+
+        @Override
+        public boolean empty() { return true; }
+
+        @Override
+        public T orElse(final T or) { return or; }
+
+        @Override
+        public T orElseGet(final Supplier<? extends T> f) { return f.get(); }
+
+        @Override
+        public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { throw f.get(); }
+
+        @Override
+        public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f) throws E { return this; }
+
+        @Override
+        public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f, final RunnableE<E> orAction) throws E {
+            orAction.run();
+            return this;
+        }
+
+        @Override
+        public <U, E extends Exception> $<U> mapTry(final FunctionE<? super T, ? extends U, E> f) throws E { return none(); }
+
+        @Override
+        public <U, E extends Exception> $<U> fmapTry(final FunctionE<? super T, ? extends $<? extends U>, E> f) throws E { return none(); }
+
+        @Override
+        public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E { return f.get(); }
+
+        @Override
+        public String toString() { return "$<empty>"; }
+    }
+
+    static <T> Just<T> just(final T val) { return new Just<>(val); }
+
+    static <T> None<T> none() { return Indolently.cast(None.NONE); }
+
+    static <T> $<T> of(final T val) { return (val == null) ? none() : just(val); }
 
     @SuppressWarnings("OptionalAssignedToNull")
-    public static <T> $<T> of(final Optional<? extends T> val) { return (val == null) || val.isEmpty() ? none() : new $<>(Indolently.cast(val)); }
+    static <T> $<T> of(final Optional<? extends T> val) { return (val == null) || val.isEmpty() ? none() : just(Indolently.cast(val)); }
 
-    private static final $<?> NONE = new $<>(Optional.empty());
+    default Optional<T> unwrap() { return this.empty() ? Optional.empty() : Optional.of(this.get()); }
 
-    public static <T> $<T> none() { return Indolently.cast(NONE); }
-
-    private $(final T val) { this(Optional.ofNullable(val)); }
-
-    public Optional<T> unwrap() { return this.opt; }
-
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
-    public T get() throws NoSuchElementException { return this.opt.get(); }
+    T get() throws NoSuchElementException;
 
-    public <U> U done(final Function<? super T, ? extends U> f) { return this.doneTry(f::apply); }
+    default T orFail() { return this.get(); }
 
-    public <U, E extends Exception> U doneTry(final FunctionE<? super T, ? extends U, E> f) throws E { return this.mapTry(f).get(); }
+    default <U> U done(final Function<? super T, ? extends U> f) { return this.doneTry(f::apply); }
 
-    public boolean empty() { return this == NONE || this.opt.isEmpty(); }
+    default <U, E extends Exception> U doneTry(final FunctionE<? super T, ? extends U, E> f) throws E { return this.mapTry(f).get(); }
 
-    public boolean present() { return !this.empty(); }
+    boolean empty();
 
-    public $<T> if_(final Predicate<? super T> f) { return this.test(f) ? this : none(); }
+    default boolean present() { return !this.empty(); }
+
+    default $<T> if_(final Predicate<? super T> f) { return this.test(f) ? this : none(); }
 
     // alias
-    public $<T> when(final Predicate<? super T> f) { return this.if_(f); }
+    default $<T> when(final Predicate<? super T> f) { return this.if_(f); }
 
     // alias
     @Deprecated
-    public $<T> filter(final Predicate<? super T> f) { return this.if_(f); }
+    default $<T> filter(final Predicate<? super T> f) { return this.if_(f); }
 
-    public $<T> do_(final Consumer<? super T> f) { return this.doTry(f::accept); }
+    default $<T> do_(final Consumer<? super T> f) { return this.doTry(f::accept); }
 
-    public $<T> do_(final Consumer<? super T> action, final Runnable orAction) { return this.doTry(action::accept, orAction::run); }
-
-    // alias
-    public $<T> tap(final Consumer<? super T> f) { return this.do_(f); }
+    default $<T> do_(final Consumer<? super T> action, final Runnable orAction) { return this.doTry(action::accept, orAction::run); }
 
     // alias
-    public $<T> tap(final Consumer<? super T> action, final Runnable orAction) { return this.do_(action, orAction); }
+    default $<T> tap(final Consumer<? super T> f) { return this.do_(f); }
 
     // alias
-    public $<T> then(final Consumer<? super T> f) { return this.tap(f); }
+    default $<T> tap(final Consumer<? super T> action, final Runnable orAction) { return this.do_(action, orAction); }
 
     // alias
-    public $<T> then(final Consumer<? super T> action, final Runnable orAction) { return this.tap(action, orAction); }
+    default $<T> then(final Consumer<? super T> f) { return this.tap(f); }
 
-    private static final $<Boolean> T = of(true);
+    // alias
+    default $<T> then(final Consumer<? super T> action, final Runnable orAction) { return this.tap(action, orAction); }
 
-    private static final $<Boolean> F = of(false);
+    default $<Boolean> test$(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? Just.T : Just.F; }
 
-    public $<Boolean> test$(final Predicate<? super T> f) { return this.empty() ? none() : this.test(f) ? T : F; }
+    default boolean test(final Predicate<? super T> f) { return this.present() && f.test(this.get()); }
 
-    public boolean test(final Predicate<? super T> f) { return !this.empty() && f.test(this.get()); }
+    default <U> $<U> cast(final Class<U> type) { return this.if_(type::isInstance).map(type::cast); }
 
-    public <U> $<U> cast(final Class<U> type) { return this.if_(type::isInstance).map(type::cast); }
+    default <U> $<U> map(final Function<? super T, ? extends U> f) { return this.mapTry(f::apply); }
 
-    public <U> $<U> map(final Function<? super T, ? extends U> f) { return this.mapTry(f::apply); }
+    default <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
 
-    public <U> $<U> fmap(final Function<? super T, ? extends $<? extends U>> f) { return this.fmapTry(f::apply); }
+    default $<T> fold(final Function<? super T, ? extends $<? extends T>> f) { return this.foldTry(f::apply); }
 
-    public $<T> fold(final Function<? super T, ? extends $<? extends T>> f) { return this.foldTry(f::apply); }
+    default <S> $<$2<T, S>> and$(final Supplier<? extends $<? extends S>> f) { return this.and$Try(f::get); }
 
-    public <S> $<$2<T, S>> and$(final Supplier<? extends $<? extends S>> f) { return this.and$Try(f::get); }
+    default <S> $<$2<T, S>> and$(final $<? extends S> and) { return this.and$(() -> and); }
 
-    public <S> $<$2<T, S>> and$(final $<? extends S> and) { return this.and$(() -> and); }
+    default $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.or$Try(f::get); }
 
-    public $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.or$Try(f::get); }
+    default $<T> or$(final $<? extends T> or) { return this.present() ? this : Indolently.cast(or); }
 
-    public $<T> or$(final $<? extends T> or) { return this.present() ? this : Indolently.cast(or); }
+    default Stream<T> stream() { return this.empty() ? Stream.empty() : Stream.of(this.get()); }
 
-    public Stream<T> stream() { return this.opt.stream(); }
+    default T or(final T or) { return this.orElse(or); }
 
-    public T or(final T or) { return this.orElse(or); }
+    T orElse(final T or);
 
-    public T orElse(final T or) { return this.opt.orElse(or); }
+    default T orNull() { return this.orElse(null); }
 
-    public T orNull() { return this.orElse(null); }
+    default T or(final Supplier<? extends T> f) { return this.orElseGet(f); }
 
-    public T or(final Supplier<? extends T> f) { return this.orElseGet(f); }
+    T orElseGet(final Supplier<? extends T> f);
 
-    public T orElseGet(final Supplier<? extends T> f) { return this.opt.orElseGet(f); }
+    default <E extends Exception> T orTry(final SupplierE<? extends T, E> f) throws E { return this.orElseTry(f); }
 
-    public <E extends Exception> T orTry(final SupplierE<? extends T, E> f) throws E { return this.orElseTry(f); }
+    <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X;
 
-    public T orFail() { return this.opt.orElseThrow(); }
+    <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f) throws E;
 
-    public <X extends Throwable> T orFail(final Supplier<? extends X> f) throws X { return this.opt.orElseThrow(f); }
+    <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f, final RunnableE<E> orAction) throws E;
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f) throws E {
-        if (this.empty()) return none();
-        f.accept(this.opt.get());
-        return this;
-    }
+    <U, E extends Exception> $<U> mapTry(final FunctionE<? super T, ? extends U, E> f) throws E;
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public <U, E extends Exception> $<T> doTry(final ConsumerE<? super T, E> f, final RunnableE<E> orAction) throws E {
-        if (this.empty()) {
-            orAction.run();
-            return none();
-        } else {
-            f.accept(this.opt.get());
-            return this;
-        }
-    }
+    <U, E extends Exception> $<U> fmapTry(final FunctionE<? super T, ? extends $<? extends U>, E> f) throws E;
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public <U, E extends Exception> $<U> mapTry(final FunctionE<? super T, ? extends U, E> f) throws E {
-        return this.empty() ? none() : of(f.apply(this.opt.get()));
-    }
-
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public <U, E extends Exception> $<U> fmapTry(final FunctionE<? super T, ? extends $<? extends U>, E> f) throws E {
-        if (this.empty()) return none();
-        final var x = f.apply(this.opt.get());
-        return (x == null) ? none() : Indolently.cast(x);
-    }
-
-    public <E extends Exception> $<T> foldTry(final FunctionE<? super T, ? extends $<? extends T>, E> f) throws E {
+    default <E extends Exception> $<T> foldTry(final FunctionE<? super T, ? extends $<? extends T>, E> f) throws E {
         final var ret = this.fmapTry(f::apply);
         return ret.empty() ? this : Indolently.cast(ret);
     }
 
-    public <E extends Exception> $<T> or$Try(final SupplierE<? extends $<? extends T>, E> f) throws E {
+    default <E extends Exception> $<T> or$Try(final SupplierE<? extends $<? extends T>, E> f) throws E {
         if (this.present()) return this;
         final var x = f.get();
-        return (x == null) ? none() : of(x.opt);
+        return (x == null || x.empty()) ? none() : Indolently.cast(x);
     }
 
-    public <S, E extends Exception> $<$2<T, S>> and$Try(final SupplierE<? extends $<? extends S>, E> f) throws E {
+    default <S, E extends Exception> $<$2<T, S>> and$Try(final SupplierE<? extends $<? extends S>, E> f) throws E {
         if (this.empty()) return none();
         final var x = f.get();
-        return (x == null) ? none() : x.map(y -> tuple(this.get(), y));
+        return (x == null) ? none() : x.map(y -> Indolently.tuple(this.get(), y));
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E {
-        return this.present() ? this.opt.get() : f.get();
-    }
+    <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E;
 
-    @Override
-    public int hashCode() { return Objects.hash(this.getClass(), this.opt); }
-
-    public boolean eq(final T that) { return this.test(x -> x.equals(that)); }
-
-    public boolean equals(final $<? extends T> that) { return this.equals0(that); }
-
-    @Deprecated
-    @Override
-    public boolean equals(final Object o) { return this == o || (o instanceof $<?> that && this.equals0(that)); }
-
-    private boolean equals0(final $<?> that) { return (this == that) || ((that != null) && equiv(this.opt, that.opt)); }
-
-    @Override
-    public String toString() { return this.present() ? "$(" + this.get() + ")" : "$<empty>"; }
+    default boolean eq(final T that) { return this.test(x -> x.equals(that)); }
 }

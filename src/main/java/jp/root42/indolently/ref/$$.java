@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -27,60 +28,63 @@ import static java.util.Objects.requireNonNull;
 public sealed interface $$<L, R>
     permits $$.Left, $$.Right {
 
-    final class Left<L, R>
+    record Left<L, R>(L val)
         implements $$<L, R> {
 
-        private final L l;
-
-        private Left(final L l) { this.l = requireNonNull(l); }
-
-        @Override
-        public L value() { return this.l(); }
+        @SuppressWarnings("RedundantRecordConstructor")
+        @Deprecated
+        public Left(final L val) { this.val = val; }
 
         @Override
-        public L l() { return this.l; }
+        public L val() { return this.l(); }
+
+        @Override
+        public L l() {
+            if (this.val == null) throw new NoSuchElementException();
+            return this.val;
+        }
 
         @Deprecated
         @Override
-        public R r() { throw new UnsupportedOperationException(); }
+        public R r() { throw new NoSuchElementException(); }
 
         @Override
-        public String toString() { return String.format("Left[%s]", this.l); }
+        public String toString() { return "Left[%s]".formatted(this.val); }
     }
 
-    final class Right<L, R>
+    record Right<L, R>(R val)
         implements $$<L, R> {
 
-        private final R r;
-
-        private Right() { this.r = null; }
-
-        private Right(final R r) { this.r = requireNonNull(r); }
+        @SuppressWarnings("RedundantRecordConstructor")
+        @Deprecated
+        public Right(final R val) { this.val = val; }
 
         @Override
-        public R value() { return this.r(); }
+        public R val() { return this.r(); }
 
         @Deprecated
         @Override
-        public L l() { throw new UnsupportedOperationException(); }
+        public L l() { throw new NoSuchElementException(); }
 
         @Override
         public R r() {
-            if (this.r == null) throw new UnsupportedOperationException();
-            return this.r;
+            if (this.val == null) throw new NoSuchElementException();
+            return this.val;
         }
 
         @Override
-        public String toString() { return String.format("Right[%s]", this.r); }
+        public String toString() { return "Right[%s]".formatted(this.val); }
     }
 
-    static <L, R> Left<L, R> left(final L l) { return new Left<>(l); }
+    static <L, R> Left<L, R> left(final L l) { return new Left<>(requireNonNull(l)); }
 
-    static <L, R> Right<L, R> right(final R r) { return new Right<>(r); }
+    static <L, R> Right<L, R> right(final R r) { return new Right<>(requireNonNull(r)); }
 
-    static <L, R> Right<L, R> rightNone() { return new Right<>(); }
+    static <L, R> Right<L, R> rightNone() { return new Right<>(null); }
 
-    Object value();
+    static <L, R> Left<L, R> leftNone() { return new Left<>(null); }
+
+    Object val();
 
     L l();
 
