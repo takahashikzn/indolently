@@ -13,10 +13,12 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,14 +28,18 @@ import static java.util.Objects.requireNonNull;
  */
 @SuppressWarnings("InstanceofThis")
 public sealed interface $$<L, R>
+    extends Serializable
     permits $$.Left, $$.Right {
 
     record Left<L, R>(L val)
-        implements $$<L, R> {
+        implements $$<L, R>, Supplier<L> {
 
         @SuppressWarnings("RedundantRecordConstructor")
         @Deprecated
         public Left(final L val) { this.val = val; }
+
+        @Override
+        public L get() { return this.val(); }
 
         @Override
         public L val() { return this.l(); }
@@ -53,11 +59,14 @@ public sealed interface $$<L, R>
     }
 
     record Right<L, R>(R val)
-        implements $$<L, R> {
+        implements $$<L, R>, Supplier<R> {
 
         @SuppressWarnings("RedundantRecordConstructor")
         @Deprecated
         public Right(final R val) { this.val = val; }
+
+        @Override
+        public R get() { return this.val(); }
 
         @Override
         public R val() { return this.r(); }
