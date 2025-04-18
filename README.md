@@ -1,6 +1,8 @@
 <!-- @author takahashikzn -->
 
-[![TravisCI](http://travis-ci.org/takahashikzn/indolently.svg?branch=develop)](http://travis-ci.org/takahashikzn/indolently)
+<img src="logo.png" width="256" />
+
+<span style="font: small;">(Illustration generated with assistance of ChatGPT)</span>
 
 # What this is
 
