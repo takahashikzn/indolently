@@ -475,4 +475,20 @@ public interface $list<T>
     default <U extends T> $list<U> only(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
 
     default boolean randomAccessible() { return true; }
+
+    default $<T> prevOf(final T val) {
+        final var i = this.lookup(val);
+        return i <= 0 ? $.none() : this.opt(i - 1);
+    }
+
+    default $<T> nextOf(final T val) {
+        final var i = this.lookup(val);
+        return !between(0, i, this.size() - 2) ? $.none() : this.opt(i + 1);
+    }
+
+    private int lookup(final T val) {
+        for (int i = 0, Z = this.size(); i < Z; i++)
+            if (this.get(i) == val) return i;
+        return -1;
+    }
 }

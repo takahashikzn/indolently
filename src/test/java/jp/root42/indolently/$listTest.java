@@ -278,4 +278,22 @@ public class $listTest {
         assertThat(list().chunk(2)).isEmpty();
         assertThat(list(1, 2, 3, 4, 5, 6, 7, 8, 9).subList(3).chunk(2)).isEqualTo(listOf(list(4, 5), list(6, 7), list(8, 9)));
     }
+
+    @Test
+    public void prevOf() {
+
+        assertThat(list(1, 2, 3).prevOf(1)).isEqualTo(none());
+        assertThat(list(1, 2, 3).prevOf(2)).isEqualTo(just(1));
+        assertThat(list(1, 2, 3).prevOf(3)).isEqualTo(just(2));
+        assertThat(list(1, 2, 3).prevOf(4)).isEqualTo(none());
+    }
+
+    @Test
+    public void nextOf() {
+
+        assertThat(list(1, 2, 3).nextOf(0)).isEqualTo(none());
+        assertThat(list(1, 2, 3).nextOf(1)).isEqualTo(just(2));
+        assertThat(list(1, 2, 3).nextOf(2)).isEqualTo(just(3));
+        assertThat(list(1, 2, 3).nextOf(3)).isEqualTo(none());
+    }
 }
