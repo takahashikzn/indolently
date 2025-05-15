@@ -87,6 +87,7 @@ public sealed interface $<T>
         @Override
         public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E { return this.val; }
 
+        @Override
         public boolean equals(final $<? extends T> that) { return this.equals0(that); }
 
         private boolean equals0(final $<?> that) { return (this == that) || (that instanceof $.Just<?> j && Indolently.equiv(this.val, j.val)); }
@@ -146,6 +147,12 @@ public sealed interface $<T>
 
         @Override
         public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E { return f.get(); }
+
+        @Override
+        public boolean equals(final $<? extends T> that) {
+            assert that == null || this == that;
+            return this == that;
+        }
 
         @Override
         public String toString() { return "$<empty>"; }
@@ -264,4 +271,10 @@ public sealed interface $<T>
     <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E;
 
     default boolean eq(final T that) { return this.test(x -> x.equals(that)); }
+
+    boolean equals($<? extends T> that);
+
+    @Override
+    @Deprecated
+    boolean equals(Object that);
 }
