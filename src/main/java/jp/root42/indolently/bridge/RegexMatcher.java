@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.bridge;
 
+import java.util.function.Function;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -112,9 +113,19 @@ public interface RegexMatcher<P, M>
     String replaceAll(String replacement);
 
     /**
+     * delegate for {@link Matcher#replaceAll(Function)}
+     */
+    String replaceAll(Function<MatchResult, String> replacement);
+
+    /**
      * delegate for {@link Matcher#replaceFirst(String)}
      */
     String replaceFirst(String replacement);
+
+    /**
+     * delegate for {@link Matcher#replaceFirst(Function)}
+     */
+    String replaceFirst(Function<MatchResult, String> replacement);
 
     /**
      * delegate for {@link Matcher#region(int, int)}

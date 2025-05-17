@@ -14,6 +14,7 @@
 package jp.root42.indolently.regex;
 
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,50 +33,28 @@ public final class RegexJDK
 
     private final Pattern pattern;
 
-    public RegexJDK(final Pattern pattern) {
-        this.pattern = pattern;
-    }
+    public RegexJDK(final Pattern pattern) { this.pattern = pattern; }
 
     @Override
-    public Pattern ptrn() {
-        return this.pattern;
-    }
+    public Pattern ptrn() { return this.pattern; }
 
     @Override
-    public String pattern() {
-        return this.ptrn().pattern();
-    }
+    public String pattern() { return this.ptrn().pattern(); }
 
     @Override
-    public ReMatcherJDK matcher(final CharSequence cs) {
-        return new ReMatcherJDK(this.ptrn().matcher(cs), cs);
-    }
+    public ReMatcherJDK matcher(final CharSequence cs) { return new ReMatcherJDK(this.ptrn().matcher(cs), cs); }
 
     @Override
-    public $list<String> split(final CharSequence cs, final int limit) {
-        return Indolently.list(this.ptrn().split(cs, limit));
-    }
+    public $list<String> split(final CharSequence cs, final int limit) { return Indolently.list(this.ptrn().split(cs, limit)); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        } else if (!(o instanceof Regex)) {
-            return false;
-        }
-
-        return this.ptrn().equals(((Regex) o).ptrn());
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof Regex && this.ptrn().equals(((Regex) o).ptrn()); }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.getClass(), this.pattern);
-    }
+    public int hashCode() { return Objects.hash(this.getClass(), this.pattern); }
 
     @Override
-    public String toString() {
-        return this.pattern.toString();
-    }
+    public String toString() { return this.pattern.toString(); }
 }
 
 final class ReMatcherJDK
@@ -91,196 +70,122 @@ final class ReMatcherJDK
     }
 
     @Override
-    public int hashCode() {
-        return this.matcher.hashCode();
-    }
+    public int hashCode() { return this.matcher.hashCode(); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        } else if (!(o instanceof ReMatcherJDK)) {
-            return false;
-        }
-
-        return ((ReMatcherJDK) o).matcher.equals(this.matcher);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof ReMatcherJDK && ((ReMatcherJDK) o).matcher.equals(this.matcher); }
 
     @Override
     public String toString() { return this.matcher.toString(); }
 
     @Override
-    public String text() {
-        return this.text;
-    }
+    public String text() { return this.text; }
 
     @Override
-    public Pattern pattern() {
-        return this.matcher.pattern();
-    }
+    public Pattern pattern() { return this.matcher.pattern(); }
 
     @Override
-    public MatchResult toMatchResult() {
-        return this.matcher.toMatchResult();
-    }
+    public MatchResult toMatchResult() { return this.matcher.toMatchResult(); }
 
     @Override
-    public Matcher usePattern(final Pattern newPattern) {
-        return this.matcher.usePattern(newPattern);
-    }
+    public Matcher usePattern(final Pattern newPattern) { return this.matcher.usePattern(newPattern); }
 
     @Override
-    public Matcher reset() {
-        return this.matcher.reset();
-    }
+    public Matcher reset() { return this.matcher.reset(); }
 
     @Override
-    public Matcher reset(final CharSequence input) {
-        return this.matcher.reset(input);
-    }
+    public Matcher reset(final CharSequence input) { return this.matcher.reset(input); }
 
     @Override
-    public int start() {
-        return this.matcher.start();
-    }
+    public int start() { return this.matcher.start(); }
 
     @Override
-    public int start(final int group) {
-        return this.matcher.start(group);
-    }
+    public int start(final int group) { return this.matcher.start(group); }
 
     @Override
-    public int start(final String name) {
-        return this.matcher.start(name);
-    }
+    public int start(final String name) { return this.matcher.start(name); }
 
     @Override
-    public int end() {
-        return this.matcher.end();
-    }
+    public int end() { return this.matcher.end(); }
 
     @Override
-    public int end(final int group) {
-        return this.matcher.end(group);
-    }
+    public int end(final int group) { return this.matcher.end(group); }
 
     @Override
-    public int end(final String name) {
-        return this.matcher.end(name);
-    }
+    public int end(final String name) { return this.matcher.end(name); }
 
     @Override
-    public String group() {
-        return this.matcher.group();
-    }
+    public String group() { return this.matcher.group(); }
 
     @Override
-    public String group(final int group) {
-        return this.matcher.group(group);
-    }
+    public String group(final int group) { return this.matcher.group(group); }
 
     @Override
-    public String group(final String name) {
-        return this.matcher.group(name);
-    }
+    public String group(final String name) { return this.matcher.group(name); }
 
     @Override
-    public int groupCount() {
-        return this.matcher.groupCount();
-    }
+    public int groupCount() { return this.matcher.groupCount(); }
 
     @Override
-    public boolean matches() {
-        return this.matcher.matches();
-    }
+    public boolean matches() { return this.matcher.matches(); }
 
     @Override
-    public boolean find() {
-        return this.matcher.find();
-    }
+    public boolean find() { return this.matcher.find(); }
 
     @Override
-    public boolean find(final int start) {
-        return this.matcher.find(start);
-    }
+    public boolean find(final int start) { return this.matcher.find(start); }
 
     @Override
-    public boolean lookingAt() {
-        return this.matcher.lookingAt();
-    }
+    public boolean lookingAt() { return this.matcher.lookingAt(); }
 
     @Override
-    public Matcher appendReplacement(final StringBuilder sb, final String replacement) {
-        return this.matcher.appendReplacement(sb, replacement);
-    }
+    public Matcher appendReplacement(final StringBuilder sb, final String replacement) { return this.matcher.appendReplacement(sb, replacement); }
 
     @Override
-    public Matcher appendReplacement(final StringBuffer sb, final String replacement) {
-        return this.matcher.appendReplacement(sb, replacement);
-    }
+    public Matcher appendReplacement(final StringBuffer sb, final String replacement) { return this.matcher.appendReplacement(sb, replacement); }
 
     @Override
-    public StringBuilder appendTail(final StringBuilder sb) {
-        return this.matcher.appendTail(sb);
-    }
+    public StringBuilder appendTail(final StringBuilder sb) { return this.matcher.appendTail(sb); }
 
     @Override
-    public StringBuffer appendTail(final StringBuffer sb) {
-        return this.matcher.appendTail(sb);
-    }
+    public StringBuffer appendTail(final StringBuffer sb) { return this.matcher.appendTail(sb); }
 
     @Override
-    public String replaceAll(final String replacement) {
-        return this.matcher.replaceAll(replacement);
-    }
+    public String replaceAll(final String replacement) { return this.matcher.replaceAll(replacement); }
 
     @Override
-    public String replaceFirst(final String replacement) {
-        return this.matcher.replaceFirst(replacement);
-    }
+    public String replaceAll(final Function<MatchResult, String> replacement) { return this.matcher.replaceAll(replacement); }
 
     @Override
-    public Matcher region(final int start, final int end) {
-        return this.matcher.region(start, end);
-    }
+    public String replaceFirst(final String replacement) { return this.matcher.replaceFirst(replacement); }
 
     @Override
-    public int regionStart() {
-        return this.matcher.regionStart();
-    }
+    public String replaceFirst(final Function<MatchResult, String> replacement) { return this.matcher.replaceFirst(replacement); }
 
     @Override
-    public int regionEnd() {
-        return this.matcher.regionEnd();
-    }
+    public Matcher region(final int start, final int end) { return this.matcher.region(start, end); }
 
     @Override
-    public boolean hasTransparentBounds() {
-        return this.matcher.hasTransparentBounds();
-    }
+    public int regionStart() { return this.matcher.regionStart(); }
 
     @Override
-    public Matcher useTransparentBounds(final boolean b) {
-        return this.matcher.useTransparentBounds(b);
-    }
+    public int regionEnd() { return this.matcher.regionEnd(); }
 
     @Override
-    public boolean hasAnchoringBounds() {
-        return this.matcher.hasAnchoringBounds();
-    }
+    public boolean hasTransparentBounds() { return this.matcher.hasTransparentBounds(); }
 
     @Override
-    public Matcher useAnchoringBounds(final boolean b) {
-        return this.matcher.useAnchoringBounds(b);
-    }
+    public Matcher useTransparentBounds(final boolean b) { return this.matcher.useTransparentBounds(b); }
 
     @Override
-    public boolean hitEnd() {
-        return this.matcher.hitEnd();
-    }
+    public boolean hasAnchoringBounds() { return this.matcher.hasAnchoringBounds(); }
 
     @Override
-    public boolean requireEnd() {
-        return this.matcher.requireEnd();
-    }
+    public Matcher useAnchoringBounds(final boolean b) { return this.matcher.useAnchoringBounds(b); }
+
+    @Override
+    public boolean hitEnd() { return this.matcher.hitEnd(); }
+
+    @Override
+    public boolean requireEnd() { return this.matcher.requireEnd(); }
 }

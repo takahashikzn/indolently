@@ -14,6 +14,7 @@
 package jp.root42.indolently.regex;
 
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.regex.MatchResult;
 
 import com.google.re2j.Matcher;
@@ -32,55 +33,31 @@ public final class RegexRe2
 
     private final Pattern pattern;
 
-    public RegexRe2(final Pattern pattern) {
-        this.pattern = pattern;
-    }
+    public RegexRe2(final Pattern pattern) { this.pattern = pattern; }
 
     @Override
-    public Pattern ptrn() {
-        return this.pattern;
-    }
+    public Pattern ptrn() { return this.pattern; }
 
     @Override
-    public String pattern() {
-        return this.ptrn().pattern();
-    }
+    public String pattern() { return this.ptrn().pattern(); }
 
     @Override
-    public boolean test(final CharSequence cs) {
-        return this.matcher(cs).matches();
-    }
+    public boolean test(final CharSequence cs) { return this.matcher(cs).matches(); }
 
     @Override
-    public ReMatcherRE2 matcher(final CharSequence cs) {
-        return new ReMatcherRE2(this.ptrn().matcher(cs), cs);
-    }
+    public ReMatcherRE2 matcher(final CharSequence cs) { return new ReMatcherRE2(this.ptrn().matcher(cs), cs); }
 
     @Override
-    public $list<String> split(final CharSequence cs, final int limit) {
-        return Indolently.list(this.ptrn().split(cs.toString(), limit));
-    }
+    public $list<String> split(final CharSequence cs, final int limit) { return Indolently.list(this.ptrn().split(cs.toString(), limit)); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        } else if (!(o instanceof Regex)) {
-            return false;
-        }
-
-        return this.ptrn().equals(((Regex) o).ptrn());
-    }
+    public boolean equals(final Object o) { return this == o && o instanceof Regex && this.ptrn().equals(((Regex) o).ptrn()); }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.getClass(), this.pattern);
-    }
+    public int hashCode() { return Objects.hash(this.getClass(), this.pattern); }
 
     @Override
-    public String toString() {
-        return this.pattern.toString();
-    }
+    public String toString() { return this.pattern.toString(); }
 }
 
 final class ReMatcherRE2
@@ -96,28 +73,16 @@ final class ReMatcherRE2
     }
 
     @Override
-    public int hashCode() {
-        return this.matcher.hashCode();
-    }
+    public int hashCode() { return this.matcher.hashCode(); }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        } else if (!(o instanceof ReMatcherRE2)) {
-            return false;
-        }
-
-        return ((ReMatcherRE2) o).matcher.equals(this.matcher);
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof ReMatcherRE2 && ((ReMatcherRE2) o).matcher.equals(this.matcher); }
 
     @Override
     public String toString() { return this.matcher.toString(); }
 
     @Override
-    public String text() {
-        return this.text;
-    }
+    public String text() { return this.text; }
 
     @Override
     public Pattern pattern() { return this.matcher.pattern(); }
@@ -173,14 +138,10 @@ final class ReMatcherRE2
     public static String quoteReplacement(final String s) { return Matcher.quoteReplacement(s); }
 
     @Override
-    public Matcher appendReplacement(final StringBuffer sb, final String replacement) {
-        return this.matcher.appendReplacement(sb, replacement);
-    }
+    public Matcher appendReplacement(final StringBuffer sb, final String replacement) { return this.matcher.appendReplacement(sb, replacement); }
 
     @Override
-    public Matcher appendReplacement(final StringBuilder sb, final String replacement) {
-        return this.matcher.appendReplacement(sb, replacement);
-    }
+    public Matcher appendReplacement(final StringBuilder sb, final String replacement) { return this.matcher.appendReplacement(sb, replacement); }
 
     @Override
     public StringBuffer appendTail(final StringBuffer sb) { return this.matcher.appendTail(sb); }
@@ -192,70 +153,54 @@ final class ReMatcherRE2
     public String replaceAll(final String replacement) { return this.matcher.replaceAll(replacement); }
 
     @Override
+    public String replaceAll(final Function<MatchResult, String> replacement) { throw new UnsupportedOperationException(); }
+
+    @Override
     public String replaceFirst(final String replacement) { return this.matcher.replaceFirst(replacement); }
 
     @Override
-    public MatchResult toMatchResult() {
-        return this;
-    }
+    public String replaceFirst(final Function<MatchResult, String> replacement) { throw new UnsupportedOperationException(); }
+
+    @Override
+    public MatchResult toMatchResult() { return this; }
 
     @Deprecated
     @Override
-    public Matcher usePattern(final Pattern newPattern) {
-        throw new UnsupportedOperationException();
-    }
+    public Matcher usePattern(final Pattern newPattern) { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public Matcher region(final int start, final int end) {
-        throw new UnsupportedOperationException();
-    }
+    public Matcher region(final int start, final int end) { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public int regionStart() {
-        throw new UnsupportedOperationException();
-    }
+    public int regionStart() { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public int regionEnd() {
-        throw new UnsupportedOperationException();
-    }
+    public int regionEnd() { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public boolean hasTransparentBounds() {
-        throw new UnsupportedOperationException();
-    }
+    public boolean hasTransparentBounds() { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public Matcher useTransparentBounds(final boolean b) {
-        throw new UnsupportedOperationException();
-    }
+    public Matcher useTransparentBounds(final boolean b) { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public boolean hasAnchoringBounds() {
-        throw new UnsupportedOperationException();
-    }
+    public boolean hasAnchoringBounds() { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public Matcher useAnchoringBounds(final boolean b) {
-        throw new UnsupportedOperationException();
-    }
+    public Matcher useAnchoringBounds(final boolean b) { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public boolean hitEnd() {
-        throw new UnsupportedOperationException();
-    }
+    public boolean hitEnd() { throw new UnsupportedOperationException(); }
 
     @Deprecated
     @Override
-    public boolean requireEnd() {
-        throw new UnsupportedOperationException();
-    }
+    public boolean requireEnd() { throw new UnsupportedOperationException(); }
 }

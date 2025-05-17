@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.regex;
 
+import java.util.function.Function;
 import java.util.regex.MatchResult;
 
 import dk.brics.automaton.AutomatonMatcher;
@@ -32,9 +33,7 @@ public class AutomatonTest
 
     private final String pattern;
 
-    public AutomatonTest(final RegExp re, final String pattern) {
-        this(re, new RunAutomaton(re.toAutomaton()), pattern);
-    }
+    public AutomatonTest(final RegExp re, final String pattern) { this(re, new RunAutomaton(re.toAutomaton()), pattern); }
 
     public AutomatonTest(final RegExp re, final RunAutomaton automaton, final String pattern) {
         this.re = re;
@@ -145,7 +144,13 @@ final class ReMatcherAutomaton
     public String replaceAll(final String replacement) { throw new UnsupportedOperationException(); }
 
     @Override
+    public String replaceAll(final Function<MatchResult, String> replacement) { throw new UnsupportedOperationException(); }
+
+    @Override
     public String replaceFirst(final String replacement) { throw new UnsupportedOperationException(); }
+
+    @Override
+    public String replaceFirst(final Function<MatchResult, String> replacement) { throw new UnsupportedOperationException(); }
 
     @Override
     public ReMatcherAutomaton region(final int start, final int end) { throw new UnsupportedOperationException(); }
