@@ -14,6 +14,7 @@
 package jp.root42.indolently.trait;
 
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static jp.root42.indolently.Indolently.*;
 
@@ -33,7 +34,12 @@ public class MatchableTest {
      * Test of {@link Matchable#any(Predicate)}
      */
     @Test
-    public void some() {
+    public void any() {
+
+        assertFalse(Stream.of().anyMatch(x -> true));
+        assertFalse(Stream.of().anyMatch(x -> false));
+        assertFalse(list().any(vrai()));
+        assertFalse(list().any(faux()));
 
         assertTrue(map("123", 1, "456", 2).keys().any(x -> x.matches("\\d+")));
         assertFalse(map("123", 1, "456", 2).keys().any(x -> x.matches("[A-Za-z]+")));
@@ -46,7 +52,12 @@ public class MatchableTest {
      * Test of {@link Matchable#all(Predicate)}
      */
     @Test
-    public void every() {
+    public void all() {
+
+        assertTrue(Stream.of().allMatch(x -> true));
+        assertTrue(Stream.of().allMatch(x -> false));
+        assertTrue(list().all(vrai()));
+        assertTrue(list().all(faux()));
 
         assertTrue(map("123", 1, "456", 2).keys().all(x -> x.matches("\\d+")));
         assertFalse(map("123", 1, "456", 2).keys().all(x -> x.matches("[A-Za-z]+")));
@@ -60,7 +71,12 @@ public class MatchableTest {
      * Test of {@link Matchable#non(Predicate)}
      */
     @Test
-    public void none() {
+    public void non() {
+
+        assertTrue(Stream.of().noneMatch(x -> true));
+        assertTrue(Stream.of().noneMatch(x -> false));
+        assertTrue(list().non(vrai()));
+        assertTrue(list().non(faux()));
 
         assertFalse(map("123", 1, "456", 2).keys().non(x -> x.matches("\\d+")));
         assertTrue(map("123", 1, "456", 2).keys().non(x -> x.matches("[A-Za-z]+")));

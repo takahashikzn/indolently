@@ -2939,9 +2939,7 @@ public class Indolently {
 
     public static String ucase(final String s) { return s == null ? null : s.toUpperCase(); }
 
-    public static String substr(final String s, final int from) {
-        return s == null ? null : substr(s, from, s.length());
-    }
+    public static String substr(final String s, final int from) { return s == null ? null : substr(s, from, s.length()); }
 
     public static String substr(final String s, final int from, final int to) {
         if (s == null) return null;
