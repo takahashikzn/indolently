@@ -441,13 +441,8 @@ public class IndolentlyTest {
             .isExactlyInstanceOf(Number[].class);
     }
 
-    private static class SortKey {
+    private record SortKey(int val) {
 
-        public final int val;
-
-        public SortKey(final int val) {
-            this.val = val;
-        }
     }
 
     /**
@@ -985,5 +980,13 @@ public class IndolentlyTest {
         assertThat(split("foo" + sep + "bar" + sep, sep)).isEqualTo(list("foo", "bar", ""));
         assertThat(split(sep + sep, sep)).isEqualTo(list("", "", ""));
         assertThat(split("foo", sep)).isEqualTo(list("foo"));
+    }
+
+    @Test
+    public void testOmit() {
+        assertThat(omit("foobar", 16)).isEqualTo("foobar");
+        assertThat(omit("foobar", 3)).isEqualTo("foo...");
+        assertThat(omit("", 3)).isEqualTo("");
+        assertThat(omit(null, 3)).isEqualTo(null);
     }
 }

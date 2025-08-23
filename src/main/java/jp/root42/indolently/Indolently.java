@@ -2955,6 +2955,11 @@ public class Indolently {
         return (start < 0 || end < 0 || !between(start, narrow(0, end, len), len)) ? null : s.substring(start, narrow(0, end, len));
     }
 
+    public static String omit(final String s, final int len) {
+        final var ss = substr(s, 0, len);
+        return ss == null ? null : s.length() == ss.length() ? ss : ss + "...";
+    }
+
     public static $<byte[]> readClassResource(final Class<?> cls, final String suffix) throws IOException {
 
         final var path = '/' + cls.getName().replace('.', '/') + suffix;
