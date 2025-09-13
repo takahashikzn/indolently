@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -1722,13 +1723,9 @@ public class Indolently {
         return min(list(rest)).map(x -> min(x, min(first, second))).or(() -> min(first, second));
     }
 
-    public static <T extends Comparable<T>> $<T> max(final Iterable<T> values) {
-        return list(values).reduce((l, r) -> max(l, r));
-    }
+    public static <T extends Comparable<T>> $<T> max(final Iterable<T> values) { return list(values).reduce((l, r) -> max(l, r)); }
 
-    public static <T extends Comparable<T>> $<T> min(final Iterable<T> values) {
-        return list(values).reduce((l, r) -> min(l, r));
-    }
+    public static <T extends Comparable<T>> $<T> min(final Iterable<T> values) { return list(values).reduce((l, r) -> min(l, r)); }
 
     public static Class<?> typed(final Class cls) { return cls; }
 
@@ -1738,11 +1735,11 @@ public class Indolently {
 
     public static Set<?> typed(final Set raw) { return raw; }
 
-    public static <K, V> $map<K, V> map(final Map<? extends K, ? extends V> map) {
-        return new $map_impl<K, V>().pushAll(opt(map));
-    }
+    public static <K, V> $map<K, V> map(final Map<? extends K, ? extends V> map) { return new $map_impl<K, V>().pushAll(opt(map)); }
 
     public static <K, V> $map<K, V> map() { return new $map_impl<>(); }
+
+    public static <K, V> $map<K, V> orderedMap() { return $(new LinkedHashMap<>()); }
 
     /**
      * Just for producing compilation warning.

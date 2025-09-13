@@ -43,6 +43,7 @@ public interface Promise<T>
 
     T resolve();
 
+    /** Use {@link $$} to distinguish cases where null is correctly returned. */
     $$<Void, T> resolve(long timeout);
 
     boolean cancel();
