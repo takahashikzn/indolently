@@ -14,6 +14,7 @@
 package jp.root42.indolently;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import jp.root42.indolently.bridge.MapDelegate;
@@ -47,9 +48,14 @@ final class $map_impl<K, V>
     @Override
     public $map<K, V> clone() { return $map.super.clone(); }
 
+    @Override
+    public boolean isFifo() {
+        return this.getDelegate() instanceof $map<?, ?> m ? m.isFifo()
+            // TODO LinkedHashMap -> SequencedMap
+            : this.getDelegate() instanceof LinkedHashMap;
+    }
+
     private static final Class<?> FROZEN = eval(() -> Class.forName("java.util.Collections$UnmodifiableMap"));
 
-    boolean frozen() {
-        return (this.store instanceof $map_impl) && (($map_impl<?, ?>) this.store).frozen() || this.store.getClass() == FROZEN;
-    }
+    boolean frozen() { return (this.store instanceof $map_impl) && (($map_impl<?, ?>) this.store).frozen() || this.store.getClass() == FROZEN; }
 }

@@ -142,9 +142,7 @@ public interface $map<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default $map<K, V> push(final K key, final $<? extends V> value) {
-        return Indolently.empty(value) ? this : this.push(key, value.get());
-    }
+    default $map<K, V> push(final K key, final $<? extends V> value) { return Indolently.empty(value) ? this : this.push(key, value.get()); }
 
     /**
      * put all key/value pairs then return this instance only if map exists.
@@ -154,9 +152,7 @@ public interface $map<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default $map<K, V> pushAll(final $<? extends Map<? extends K, ? extends V>> map) {
-        return Indolently.empty(map) ? this : this.pushAll(map.get());
-    }
+    default $map<K, V> pushAll(final $<? extends Map<? extends K, ? extends V>> map) { return Indolently.empty(map) ? this : this.pushAll(map.get()); }
 
     /**
      * remove keys then return this instance.
@@ -177,9 +173,7 @@ public interface $map<K, V>
      * @return {@code this} instance
      */
     @Destructive
-    default $map<K, V> delete(final BiPredicate<? super K, ? super V> f) {
-        return this.delete(this.keys().take(x -> f.test(x, this.get(x))));
-    }
+    default $map<K, V> delete(final BiPredicate<? super K, ? super V> f) { return this.delete(this.keys().take(x -> f.test(x, this.get(x)))); }
 
     /**
      * Almost same as {@link Map#keySet()} but returns newly constructed, detached one.
@@ -293,9 +287,7 @@ public interface $map<K, V>
      * @param keys keys to extract
      * @return extracted new map
      */
-    default $map<K, V> slice(final Iterable<? extends K> keys) {
-        return this.delete(this.keys().delete(keys));
-    }
+    default $map<K, V> slice(final Iterable<? extends K> keys) { return this.delete(this.keys().delete(keys)); }
 
     /**
      * internal iterator.
@@ -375,7 +367,7 @@ public interface $map<K, V>
             .entries() //
             .take(e -> f.test(e.key, e.val)) //
             .reduce( //
-                Indolently.map(), //
+                this._newMap(), //
                 (map, e) -> map.push(e.key, e.val));
     }
 
@@ -436,7 +428,7 @@ public interface $map<K, V>
         return this //
             .entries() //
             .reduce( //
-                Indolently.map(), //
+                this._newMap(), //
                 (map, e) -> map.push( //
                     fk.apply(e.key, e.val), //
                     fv.apply(e.key, e.val)));
@@ -492,7 +484,7 @@ public interface $map<K, V>
         return this //
             .entries() //
             .reduce( //
-                Indolently.map(), //
+                this._newMap(), //
                 (map, e) -> map.push( //
                     fk.apply(e.key, e.val), //
                     fv.apply(e.key, e.val)));
@@ -564,7 +556,7 @@ public interface $map<K, V>
      */
     default <RK, RV> $map<RK, RV> flat(final BiFunction<? super K, ? super V, ? extends Map<? extends RK, ? extends RV>> f) {
 
-        return this.entries().reduce(Indolently.map(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
+        return this.entries().reduce(this._newMap(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
     }
 
     default <C extends Comparable<? super C>> $map<K, V> order(final Function<? super K, C> f) { return this.order(Comparator.comparing(f)); }
@@ -585,4 +577,8 @@ public interface $map<K, V>
     default boolean present() { return !this.isEmpty(); }
 
     default $<$map<K, V>> present$() { return this.empty() ? Indolently.none() : Indolently.opt(this); }
+
+    default boolean isFifo() { return false; }
+
+    private <_K, _V> $map<_K, _V> _newMap() { return this.isFifo() ? Indolently.fifomap() : Indolently.map(); }
 }
