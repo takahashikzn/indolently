@@ -56,7 +56,6 @@ public class $mapTest {
     /**
      * {@link $map#entries()}
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void entries() {
 
@@ -67,5 +66,6 @@ public class $mapTest {
         map.put("0", "0");
 
         assertThat(new $map_impl<>(map).entries().list().map(x -> x.key)).isEqualTo(list("3", "2", "1", "0"));
+        assertThat(new $map_impl<>(map).take(gt("1")).keys().list()).isEqualTo(list("3", "2"));
     }
 }

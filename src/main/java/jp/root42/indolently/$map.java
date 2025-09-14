@@ -182,7 +182,7 @@ public interface $map<K, V>
      *
      * @return keys
      */
-    default $set<K> keys() { return Indolently.set(this.keySet()); }
+    default $set<K> keys() { return this.isFifo() ? Indolently.list(this.keySet()).set() : Indolently.set(this.keySet()); }
 
     /**
      * Almost same as {@link Map#values()} but returns newly constructed, detached one.
@@ -363,8 +363,7 @@ public interface $map<K, V>
      */
     default $map<K, V> take(final BiPredicate<? super K, ? super V> f) {
 
-        return this //
-            .entries() //
+        return this._entriesForReduce() //
             .take(e -> f.test(e.key, e.val)) //
             .reduce( //
                 this._newMap(), //
@@ -425,8 +424,7 @@ public interface $map<K, V>
      */
     default <K2, V2> $map<K2, V2> map(final BiFunction<? super K, ? super V, ? extends K2> fk, final BiFunction<? super K, ? super V, ? extends V2> fv) {
 
-        return this //
-            .entries() //
+        return this._entriesForReduce() //
             .reduce( //
                 this._newMap(), //
                 (map, e) -> map.push( //
@@ -481,8 +479,7 @@ public interface $map<K, V>
      */
     default <K2, V2> $map<K2, V2> flatMap(final BiFunction<? super K, ? super V, ? extends K2> fk, final BiFunction<? super K, ? super V, $<? extends V2>> fv) {
 
-        return this //
-            .entries() //
+        return this._entriesForReduce() //
             .reduce( //
                 this._newMap(), //
                 (map, e) -> map.push( //
@@ -556,7 +553,7 @@ public interface $map<K, V>
      */
     default <RK, RV> $map<RK, RV> flat(final BiFunction<? super K, ? super V, ? extends Map<? extends RK, ? extends RV>> f) {
 
-        return this.entries().reduce(this._newMap(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
+        return this._entriesForReduce().reduce(this._newMap(), (ret, e) -> ret.pushAll(f.apply(e.key, e.val)));
     }
 
     default <C extends Comparable<? super C>> $map<K, V> order(final Function<? super K, C> f) { return this.order(Comparator.comparing(f)); }
@@ -579,6 +576,8 @@ public interface $map<K, V>
     default $<$map<K, V>> present$() { return this.empty() ? Indolently.none() : Indolently.opt(this); }
 
     default boolean isFifo() { return false; }
+
+    private $collection<$entry<K, V>, ?> _entriesForReduce() { return this.isFifo() ? this.entries().list() : this.entries(); }
 
     private <_K, _V> $map<_K, _V> _newMap() { return this.isFifo() ? Indolently.fifomap() : Indolently.map(); }
 }
