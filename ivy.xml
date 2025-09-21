@@ -3,7 +3,7 @@
   <!ENTITY compile_conf "compile->master(*)">
   <!ENTITY runtime_conf "runtime->master(*)">
   <!ENTITY test_conf "test->master(*)">
-  <!ENTITY mockito_version "5.19.0">
+  <!ENTITY mockito_version "5.20.0">
   <!ENTITY bytebuddy_version "1.17.7">
   <!ENTITY eclipsecollection_version "13.0.0">
   ]>
