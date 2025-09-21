@@ -89,8 +89,10 @@ public class Promissory {
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }
 
+    private static final long SPIN_PARK = TimeUnit.MILLISECONDS.toNanos(10L);
+
     static void onSpinWait() {
         Thread.onSpinWait();
-        LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(10L));
+        LockSupport.parkNanos(SPIN_PARK);
     }
 }
