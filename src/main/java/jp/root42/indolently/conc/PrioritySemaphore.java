@@ -1,4 +1,4 @@
-// Copyright 2024 takahashikzn
+// Copyright 2025 takahashikzn
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,74 +20,152 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import jp.root42.indolently.ref.$;
+
+import static jp.root42.indolently.Indolently.*;
+
 
 /**
  * @author takahashikzn
  */
-public class PrioritySemaphore {
+public interface PrioritySemaphore {
 
-    private final Semaphore sem;
+    int drainPermits();
 
-    private final long interval;
+    int availablePermits();
 
-    private final BlockingQueue<Ticket> waitingThreads = new PriorityBlockingQueue<>();
+    default void acquire() throws InterruptedException { this.acquire(Long.MAX_VALUE); }
 
-    public PrioritySemaphore(final int capacity) { this(capacity, 50); }
+    int NO_NICE = 0;
 
-    public PrioritySemaphore(final int capacity, final long interval) {
-        if (interval <= 0) throw new IllegalArgumentException("interval must be positive");
-
-        this.sem = new Semaphore(capacity, true);
-        this.interval = interval;
-    }
-
-    public void acquire() throws InterruptedException { this.sem.acquire(); }
-
-    private static final long FOREVER = Long.MAX_VALUE;
-
-    public boolean acquire(final int priority) throws InterruptedException { return this.acquire(priority, FOREVER); }
-
-    private final AtomicLong ticketSeq = new AtomicLong();
-
-    private long nextTicketSeq() {
-        final var seq = this.ticketSeq.getAndIncrement();
-        if (seq < 0) throw new AssertionError("overflow");
-        return seq;
-    }
-
-    private record Ticket(long seq, int priority)
-        implements Comparable<Ticket> {
-
-        @Override
-        public int compareTo(final Ticket that) { return Comparator.comparingInt(Ticket::priority).thenComparingLong(Ticket::seq).compare(this, that); }
-    }
-
-    public boolean acquire(final int priority, final long timeout) throws InterruptedException {
-
-        final var ticket = new Ticket(this.nextTicketSeq(), priority);
-
-        if (!this.waitingThreads.offer(ticket)) return false;
-
-        try {
-            var waitUntil = now() + timeout;
-            if (waitUntil < 0) waitUntil = FOREVER;
-
-            for (var wait = this.interval; //
-                 0 < (wait = Math.min(waitUntil - now(), wait)); )
-                //
-                if (this.sem.tryAcquire()) //
-                    return true;
-                else if (this.sem.tryAcquire(wait, TimeUnit.MILLISECONDS)) //
-                    if (this.waitingThreads.peek() == ticket) return true;
-                    else this.sem.release();
-
+    default boolean tryAcquire() {
+        try { return this.acquire(0L); } //
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             return false;
-        } finally {
-            this.waitingThreads.remove(ticket);
         }
     }
 
-    public void release() { this.sem.release(); }
+    default boolean tryAcquire(final int nice) {
+        try { return this.acquire(nice, 0L); } //
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return false;
+        }
+    }
 
-    private static long now() { return System.currentTimeMillis(); }
+    default boolean acquire(final long timeoutMs) throws InterruptedException { return this.acquire(NO_NICE, timeoutMs); }
+
+    default void acquire(final int nice) throws InterruptedException { this.acquire(nice, Long.MAX_VALUE); }
+
+    boolean acquire(int nice, long timeoutMs) throws InterruptedException;
+
+    interface _Permit
+        extends AutoCloseable {
+
+        @Override
+        void close();
+    }
+
+    default _Permit lease() throws InterruptedException {
+        this.acquire();
+        return this::release;
+    }
+
+    default $<_Permit> lease(final long timeoutMs) throws InterruptedException { return this.acquire(timeoutMs) ? just(this::release) : none(); }
+
+    default _Permit lease(final int nice) throws InterruptedException {
+        this.acquire(nice);
+        return this::release;
+    }
+
+    default $<_Permit> lease(final int nice, final long timeoutMs) throws InterruptedException {
+        return this.acquire(nice, timeoutMs) ? just(this::release) : none();
+    }
+
+    default $<_Permit> tryLease() { return this.tryAcquire() ? just(this::release) : none(); }
+
+    default $<_Permit> tryLease(final int nice) { return this.tryAcquire(nice) ? just(this::release) : none(); }
+
+    void release();
+
+    void release(int permits);
+
+    static PrioritySemaphore of(final int capacity) { return of(capacity, 50); }
+
+    static PrioritySemaphore of(final int capacity, final long intervalMs) {
+
+        if (capacity <= 0) throw new IllegalArgumentException("capacity must be positive");
+        if (intervalMs <= 0) throw new IllegalArgumentException("interval must be positive");
+
+        return new PrioritySemaphore() {
+
+            private final Semaphore sem = new Semaphore(capacity, true);
+
+            private final long intervalNs = TimeUnit.MILLISECONDS.toNanos(intervalMs);
+
+            private final BlockingQueue<Ticket> waitingThreads = new PriorityBlockingQueue<>();
+
+            @Override
+            public int drainPermits() { return this.sem.drainPermits(); }
+
+            @Override
+            public int availablePermits() { return this.sem.availablePermits(); }
+
+            @Override
+            public void acquire() throws InterruptedException { this.sem.acquire(); }
+
+            @Override
+            public boolean tryAcquire() { return this.sem.tryAcquire(); }
+
+            @Override
+            public boolean acquire(final long timeoutMs) throws InterruptedException { return this.sem.tryAcquire(timeoutMs, TimeUnit.MILLISECONDS); }
+
+            private static final long FOREVER = Long.MAX_VALUE;
+
+            @Override
+            public void acquire(final int nice) throws InterruptedException { this.acquire(nice, FOREVER); }
+
+            private final AtomicLong ticketSeq = new AtomicLong();
+
+            private long nextTicketSeq() {
+                final var seq = this.ticketSeq.getAndIncrement();
+                if (seq < 0) throw new AssertionError("overflow");
+                return seq;
+            }
+
+            private record Ticket(long seq, int nice)
+                implements Comparable<Ticket> {
+
+                @Override
+                public int compareTo(final Ticket that) { return Comparator.comparingInt(Ticket::nice).thenComparingLong(Ticket::seq).compare(this, that); }
+            }
+
+            @Override
+            public boolean acquire(final int nice, final long timeoutMs) throws InterruptedException {
+
+                final var ticket = new Ticket(this.nextTicketSeq(), narrow(-20, nice, 19));
+
+                if (this.waitingThreads.offer(ticket)) {
+                    var waitUntilNs = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutMs);
+                    if (waitUntilNs < 0) waitUntilNs = FOREVER;
+
+                    try {
+                        for (var waitNs = this.intervalNs; //
+                             0 < (waitNs = Math.min(waitUntilNs - System.nanoTime(), waitNs)); Promissory.onSpinWait()) //
+                            if (this.sem.tryAcquire() || (this.waitingThreads.peek() == ticket && this.sem.tryAcquire(waitNs, TimeUnit.NANOSECONDS)))
+                                return true;
+                    } finally { this.waitingThreads.remove(ticket); }
+                }
+
+                return false;
+            }
+
+            @Override
+            public void release() { this.sem.release(); }
+
+            @Override
+            public void release(final int permits) { this.sem.release(permits); }
+        };
+    }
 }

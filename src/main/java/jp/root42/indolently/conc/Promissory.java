@@ -13,18 +13,17 @@
 // limitations under the License.
 package jp.root42.indolently.conc;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.locks.LockSupport;
 
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.ref.$$;
@@ -43,34 +42,17 @@ public class Promissory {
 
     private static boolean useVirtualThread = true;
 
-    private static Executor virtualThreadExecutor;
+    private static final ExecutorService virtualThreadExecutor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("vt-", 0L).factory());
 
-    private static Executor platformThreadExecutor = ForkJoinPool.commonPool();
+    private static final ExecutorService platformThreadExecutor = ForkJoinPool.commonPool();
 
-    static {
-        try {
-            final var builderCls = Class.forName("java.lang.Thread$Builder");
-            var builder = Thread.class.getDeclaredMethod("ofVirtual").invoke(null);
-            builder = builderCls.getMethod("name", String.class, long.class).invoke(builder, "virtual-", 0L);
-            final var factory = builderCls.getMethod("factory").invoke(builder);
-
-            virtualThreadExecutor = (Executor) Executors.class.getDeclaredMethod("newThreadPerTaskExecutor", ThreadFactory.class).invoke(null, factory);
-        } //
-        catch (final ClassNotFoundException | NoSuchMethodException ignored) { } //
-        catch (final InvocationTargetException | IllegalAccessException e) {
-            if (!e.getCause().getMessage().contains("--enable-preview")) e.printStackTrace();
-        }
-    }
-
-    public static boolean virtualThreadAvailable() { return virtualThreadExecutor != null; }
+    public static boolean virtualThreadAvailable() { return true; }
 
     public static boolean useVirtualThread() { return useVirtualThread; }
 
     public static void useVirtualThread(final boolean x) { useVirtualThread = x; }
 
-    public static Executor executor() { return virtualThreadAvailable() && useVirtualThread ? virtualThreadExecutor : platformThreadExecutor; }
-
-    public static void executor(final Executor x) { platformThreadExecutor = Objects.requireNonNull(x); }
+    public static ExecutorService executor() { return virtualThreadAvailable() && useVirtualThread ? virtualThreadExecutor : platformThreadExecutor; }
 
     public static Promise<Void> async(final RunnableE<? super Exception> run) { return async(run, executor()); }
 
@@ -105,5 +87,10 @@ public class Promissory {
         catch (final TimeoutException e) { return fakeRight(); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); }
+    }
+
+    static void onSpinWait() {
+        Thread.onSpinWait();
+        LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(10L));
     }
 }
