@@ -92,7 +92,7 @@ public class Promissory {
     private static final long SPIN_PARK = TimeUnit.MILLISECONDS.toNanos(10L);
 
     static void onSpinWait() {
-        Thread.onSpinWait();
+        //Thread.onSpinWait();
         LockSupport.parkNanos(SPIN_PARK);
     }
 }
