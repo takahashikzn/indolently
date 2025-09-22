@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.LockSupport;
 
+import jp.root42.indolently.conc.Promise.Timeout;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.ref.$$;
 
@@ -74,7 +75,7 @@ public class Promissory {
 
     public static <T> T await(final Promise<? extends T> promise) { return promise.resolve(); }
 
-    public static <T> $$<Void, T> await(final Promise<? extends T> promise, final long timeout) { return cast(promise.resolve(timeout)); }
+    public static <T> $$<Timeout, T> await(final Promise<? extends T> promise, final long timeout) { return cast(promise.resolve(timeout)); }
 
     public static <T> T await(final Future<? extends T> promise) {
         try { return promise.get(); } //
@@ -82,9 +83,9 @@ public class Promissory {
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }
 
-    public static <T> $$<Void, T> await(final Future<? extends T> promise, final long timeout) {
+    public static <T> $$<Timeout, T> await(final Future<? extends T> promise, final long timeout) {
         try { return right(promise.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return fakeRight(); } //
+        catch (final TimeoutException e) { return left(Timeout.unit); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); }
     }

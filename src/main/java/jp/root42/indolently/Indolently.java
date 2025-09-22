@@ -63,6 +63,7 @@ import jp.root42.indolently.bridge.BytesInputStream;
 import jp.root42.indolently.bridge.BytesOutputStream;
 import jp.root42.indolently.bridge.ObjFactory;
 import jp.root42.indolently.conc.Promise;
+import jp.root42.indolently.conc.Promise.Timeout;
 import jp.root42.indolently.conc.Promissory;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
@@ -393,10 +394,6 @@ public class Indolently {
     public static <L, R> $$.Left<L, R> left(final L val) { return $$.left(val); }
 
     public static <L, R> $$.Right<L, R> right(final R val) { return $$.right(val); }
-
-    public static <L, Void> $$<L, Void> fakeLeft() { return $$.rightNone(); }
-
-    public static <L, Void> $$<L, Void> fakeRight() { return $$.leftNone(); }
 
     public static Predicate<$$<?, ?>> isLeft() { return x -> x.isL(); }
 
@@ -3093,9 +3090,7 @@ public class Indolently {
         catch (final IllegalArgumentException e) { return none(); }
     }
 
-    public static <E extends Enum<E>> Function<String, $<E>> enumOf(final Class<E> type) {
-        return x -> enumOf(type, x);
-    }
+    public static <E extends Enum<E>> Function<String, $<E>> enumOf(final Class<E> type) { return x -> enumOf(type, x); }
 
     public static <E extends Enum<E>> E[] enumValues(final Class<E> type) {
         //noinspection unchecked
@@ -3109,9 +3104,7 @@ public class Indolently {
         return none();
     }
 
-    public static <E extends Enum<E>> Function<String, $<E>> ienumOf(final Class<E> type) {
-        return x -> ienumOf(type, x);
-    }
+    public static <E extends Enum<E>> Function<String, $<E>> ienumOf(final Class<E> type) { return x -> ienumOf(type, x); }
 
     public static InputStream bytesIn(final byte[] bin) { return BytesInputStream.create(bin); }
 
@@ -3166,21 +3159,21 @@ public class Indolently {
 
     public static Consumer<? super Future<?>> fawait() { return (Future<?> f) -> let(() -> f.get()); }
 
-    public static <T> $$<Void, T> await(final Future<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
+    public static <T> $$<Timeout, T> await(final Future<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
 
     public static <T> T await(final Promise<? extends T> promise) { return Promissory.await(promise); }
 
-    public static <T> $$<Void, T> await(final Promise<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
+    public static <T> $$<Timeout, T> await(final Promise<? extends T> promise, final long timeout) { return Promissory.await(promise, timeout); }
 
     @SafeVarargs
     public static <T> List<T> await(final Promise<? extends T>... promise) { return await(list(promise)); }
 
     @SafeVarargs
-    public static <T> $$<Void, List<T>> await(final long timeout, final Promise<? extends T>... promise) { return await(list(promise), timeout); }
+    public static <T> $$<Timeout, List<T>> await(final long timeout, final Promise<? extends T>... promise) { return await(list(promise), timeout); }
 
     public static <T> List<T> await(final Iterable<? extends Promise<? extends T>> promise) { return Promissory.await(Promise.all(promise)); }
 
-    public static <T> $$<Void, List<T>> await(final Iterable<? extends Promise<? extends T>> promise, final long timeout) {
+    public static <T> $$<Timeout, List<T>> await(final Iterable<? extends Promise<? extends T>> promise, final long timeout) {
         return Promissory.await(Promise.all(promise), timeout);
     }
 
@@ -3195,7 +3188,7 @@ public class Indolently {
 
     public static <T> Function<Promise<? extends T>, T> await() { return Indolently::await; }
 
-    public static <T> Function<Promise<? extends T>, $$<Void, T>> await(final long timeout) { return x -> await(x, timeout); }
+    public static <T> Function<Promise<? extends T>, $$<Timeout, T>> await(final long timeout) { return x -> await(x, timeout); }
 
     public static double i2d(final int x) { return x; }
 

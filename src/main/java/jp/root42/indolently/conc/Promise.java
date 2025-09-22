@@ -43,8 +43,18 @@ public interface Promise<T>
 
     T resolve();
 
+    final class Timeout {
+
+        static final Timeout unit = new Timeout();
+
+        private Timeout() { }
+
+        @Override
+        public String toString() { return "timeout"; }
+    }
+
     /** Use {@link $$} to distinguish cases where null is correctly returned. */
-    $$<Void, T> resolve(long timeout);
+    $$<Timeout, T> resolve(long timeout);
 
     boolean cancel();
 
@@ -118,9 +128,9 @@ abstract class PromiseFuture<T, F extends Future<T>>
     }
 
     @Override
-    public $$<Void, T> resolve(final long timeout) {
+    public $$<Timeout, T> resolve(final long timeout) {
         try { return right(this.delegate.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return fakeRight(); } //
+        catch (final TimeoutException e) { return left(Timeout.unit); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); } //
     }

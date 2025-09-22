@@ -31,6 +31,7 @@ import jp.root42.indolently.function.FunctionE;
 import jp.root42.indolently.function.RunnableE;
 import jp.root42.indolently.function.Statement;
 import jp.root42.indolently.function.SupplierE;
+import jp.root42.indolently.ref.$;
 import jp.root42.indolently.ref.$$;
 import net.jodah.typetools.TypeResolver;
 
@@ -728,6 +729,24 @@ public class Expressive {
             }
         };
     }
+
+    public static void if_(final boolean cond, final Runnable r) { if (cond) r.run(); }
+
+    public static void if_(final boolean cond, final Runnable then, final Runnable els) {
+        if (cond) then.run();
+        else els.run();
+    }
+
+    public static <T> $<T> if_(final boolean cond, final Supplier<T> r) { return cond ? just(r.get()) : none(); }
+
+    public static <E extends Exception> void if_try(final boolean cond, final RunnableE<E> r) throws E { if (cond) r.run(); }
+
+    public static <E extends Exception> void if_try(final boolean cond, final RunnableE<E> then, final RunnableE<E> els) throws E {
+        if (cond) then.run();
+        else els.run();
+    }
+
+    public static <T, E extends Exception> $<T> if_try(final boolean cond, final SupplierE<T, E> r) throws E { return cond ? just(r.get()) : none(); }
 
     public static <T0, T1, T2> T2 do_(final T0 in, final Function<T0, T1> f1, final Function<T1, T2> f2) { return do_(in, f1, f2, it()); }
 

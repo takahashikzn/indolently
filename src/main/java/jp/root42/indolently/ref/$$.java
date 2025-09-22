@@ -34,9 +34,8 @@ public sealed interface $$<L, R>
     record Left<L, R>(L val)
         implements $$<L, R>, Supplier<L> {
 
-        @SuppressWarnings("RedundantRecordConstructor")
         @Deprecated
-        public Left(final L val) { this.val = val; }
+        public Left(final L val) { this.val = requireNonNull(val); }
 
         @Override
         public L get() { return this.val(); }
@@ -45,10 +44,7 @@ public sealed interface $$<L, R>
         public L val() { return this.l(); }
 
         @Override
-        public L l() {
-            if (this.val == null) throw new NoSuchElementException();
-            return this.val;
-        }
+        public L l() { return this.val; }
 
         @Deprecated
         @Override
@@ -61,9 +57,8 @@ public sealed interface $$<L, R>
     record Right<L, R>(R val)
         implements $$<L, R>, Supplier<R> {
 
-        @SuppressWarnings("RedundantRecordConstructor")
         @Deprecated
-        public Right(final R val) { this.val = val; }
+        public Right(final R val) { this.val = requireNonNull(val); }
 
         @Override
         public R get() { return this.val(); }
@@ -76,22 +71,15 @@ public sealed interface $$<L, R>
         public L l() { throw new NoSuchElementException(); }
 
         @Override
-        public R r() {
-            if (this.val == null) throw new NoSuchElementException();
-            return this.val;
-        }
+        public R r() { return this.val; }
 
         @Override
         public String toString() { return "Right[%s]".formatted(this.val); }
     }
 
-    static <L, R> Left<L, R> left(final L l) { return new Left<>(requireNonNull(l)); }
+    static <L, R> Left<L, R> left(final L l) { return new Left<>(l); }
 
-    static <L, R> Right<L, R> right(final R r) { return new Right<>(requireNonNull(r)); }
-
-    static <L, R> Right<L, R> rightNone() { return new Right<>(null); }
-
-    static <L, R> Left<L, R> leftNone() { return new Left<>(null); }
+    static <L, R> Right<L, R> right(final R r) { return new Right<>(r); }
 
     Object val();
 
