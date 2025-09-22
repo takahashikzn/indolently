@@ -165,7 +165,7 @@ public sealed interface $<T>
     static <T> $<T> of(final T val) { return (val == null) ? none() : just(val); }
 
     @SuppressWarnings({ "OptionalAssignedToNull", "OptionalUsedAsFieldOrParameterType" })
-    static <T> $<T> of(final Optional<? extends T> val) { return (val == null) || val.isEmpty() ? none() : just(Indolently.cast(val)); }
+    static <T> $<T> of(final Optional<? extends T> val) { return (val == null) || val.isEmpty() ? none() : just(val.get()); }
 
     default Optional<T> unwrap() { return this.empty() ? Optional.empty() : Optional.of(this.get()); }
 
