@@ -36,7 +36,7 @@ public final class AsyncIO {
     private AsyncIO() { }
 
     public static void transfer(final InputStream in, final OutputStream out, final Predicate<Long> cancelled)
-        throws IOException, CancellationException { transfer(in, out, cancelled, 100, 5000); }
+        throws IOException, CancellationException { transfer(in, out, cancelled, 25, 5000); }
 
     private static final Semaphore sem = new Semaphore(2048, true);
 

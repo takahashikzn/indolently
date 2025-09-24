@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 
 import jp.root42.indolently.ref.$;
 
+import static jp.root42.indolently.Expressive.eval;
 import static jp.root42.indolently.Indolently.*;
 
 
@@ -109,9 +110,7 @@ public interface $set<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> $set<R> flatMap(final Function<? super T, $<? extends R>> f) {
-        return this.reduce(set(), (x, y) -> x.push(f.apply(y)));
-    }
+    default <R> $set<R> flatMap(final Function<? super T, $<? extends R>> f) { return this.reduce(set(), (x, y) -> x.push(f.apply(y))); }
 
     default <R> $set<R> fmap(final Function<? super T, $<? extends R>> f) { return this.flatMap(f); }
 
@@ -131,9 +130,7 @@ public interface $set<T>
     default <R> $set<R> fmap(final BiFunction<Integer, ? super T, $<? extends R>> f) { return this.flatMap(f); }
 
     @Override
-    default $set<T> take(final Predicate<? super T> f) {
-        return this.reduce(set(), (x, y) -> f.test(y) ? x.push(y) : x);
-    }
+    default $set<T> take(final Predicate<? super T> f) { return this.reduce(set(), (x, y) -> f.test(y) ? x.push(y) : x); }
 
     /**
      * compute union of set.
@@ -149,9 +146,7 @@ public interface $set<T>
      * @param values values
      * @return newly constructed set as a computed intersection.
      */
-    default $set<T> intersect(final Iterable<? extends T> values) {
-        return this.union(values).delete(this.diff(values));
-    }
+    default $set<T> intersect(final Iterable<? extends T> values) { return this.union(values).delete(this.diff(values)); }
 
     /**
      * compute difference of set.
@@ -160,9 +155,7 @@ public interface $set<T>
      * @return newly constructed set as a computed difference.
      */
     @SuppressWarnings("unchecked")
-    default $set<T> diff(final Iterable<? extends T> values) {
-        return this.clone().delete(values).union(set(values).delete((Set) this));
-    }
+    default $set<T> diff(final Iterable<? extends T> values) { return this.clone().delete(values).union(set(values).delete((Set) this)); }
 
     /**
      * Flatten this set.
@@ -170,9 +163,7 @@ public interface $set<T>
      * @param f value generator
      * @return newly constructed flatten set
      */
-    default <R> $set<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return set(this.iterator().flat(f));
-    }
+    default <R> $set<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) { return set(this.iterator().flat(f)); }
 
     @Deprecated
     default <R> $set<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) { return this.flat(f); }
@@ -191,14 +182,12 @@ public interface $set<T>
      * @param other alternative value supplier
      * @return this instance or other
      */
-    default $set<T> orElseGet(final Supplier<? extends Set<? extends T>> other) {
-        return this.isEmpty() ? set(other.get()) : this;
-    }
+    default $set<T> orElseGet(final Supplier<? extends Set<? extends T>> other) { return this.isEmpty() ? set(other.get()) : this; }
 
     @Override
     default <K> $map<K, $set<T>> group(final Function<? super T, ? extends K> fkey) {
 
-        return Expressive.eval( //
+        return eval( //
             this.list().group(fkey), //
             (final $map<K, $list<T>> grp) -> grp.map((k, v) -> v.set()));
     }
@@ -207,9 +196,7 @@ public interface $set<T>
     default $set<T> order(final Comparator<? super T> comp) { return sort(this, comp); }
 
     @Override
-    default String join(final Function<T, ? extends CharSequence> f, final String sep) {
-        return Indolently.join(this.map(f), sep);
-    }
+    default String join(final Function<T, ? extends CharSequence> f, final String sep) { return Indolently.join(this.map(f), sep); }
 
     default <U extends T> $set<U> only(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
 }
