@@ -560,6 +560,15 @@ public interface $map<K, V>
 
     default $map<K, V> order(final Comparator<? super K> comp) { return Indolently.$(ObjFactory.getInstance().<K, V> newSortedMap(comp)).pushAll(this); }
 
+    default <C extends Comparable<? super C>> $map<K, V> orderByVal(final Function<? super V, C> f) { return this.orderByVal(Comparator.comparing(f)); }
+
+    default $map<K, V> orderByVal(final Comparator<? super V> comp) {
+
+        final $map<K, V> ret = Indolently.fifomap();
+        this.entries().order((x, y) -> comp.compare(x.val, y.val)).forEach(ret::push);
+        return ret;
+    }
+
     @Destructive
     default $map<K, V> pushIfAbsent(final K key, final Supplier<? extends V> value) {
         if (!this.containsKey(key)) //
