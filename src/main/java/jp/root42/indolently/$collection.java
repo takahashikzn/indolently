@@ -356,4 +356,11 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
 
     static <T, C extends $collection<T, C>> C concat(final C x, final Iterable<? extends T> i1, final Iterable<? extends T> i2, final Iterable<? extends T> i3,
         final Iterable<? extends T> i4) { return x.concat(i1, i2, i3, i4); }
+
+    default SELF drain() {
+        if (this.empty()) return this.identity();
+        final var ret = this.copy();
+        this.clear();
+        return ret;
+    }
 }
