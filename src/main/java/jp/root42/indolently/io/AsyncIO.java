@@ -22,7 +22,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
 
 import static java.lang.System.nanoTime;
 import static jp.root42.indolently.Expressive.if_;
@@ -35,14 +36,17 @@ public final class AsyncIO {
 
     private AsyncIO() { }
 
-    public static void transfer(final InputStream in, final OutputStream out, final Predicate<Long> cancelled)
+    public static void transfer(final InputStream in, final OutputStream out, final BooleanSupplier cancelled)
+        throws IOException, CancellationException { transfer(in, out, (_1, _2) -> cancelled.getAsBoolean(), 25, 5000); }
+
+    public static void transfer(final InputStream in, final OutputStream out, final BiPredicate<Long, Long> cancelled)
         throws IOException, CancellationException { transfer(in, out, cancelled, 25, 5000); }
 
     private static final Semaphore sem = new Semaphore(2048, true);
 
     @SuppressWarnings("CallToPrintStackTrace")
-    public static void transfer(final InputStream in, final OutputStream out, final Predicate<Long> cancelled, final int pollIntervalMs, final long ioTimeoutMs)
-        throws IOException, CancellationException {
+    public static void transfer(final InputStream in, final OutputStream out, final BiPredicate<Long, Long> cancelled, final int pollIntervalMs,
+        final long ioTimeoutMs) throws IOException, CancellationException {
 
         final var pollingInterval = Duration.ofMillis(Math.max(1, pollIntervalMs));
         final var ioTimeoutNano = ioTimeoutMs < 0 ? Long.MAX_VALUE : TimeUnit.MILLISECONDS.toNanos(ioTimeoutMs);
@@ -56,7 +60,7 @@ public final class AsyncIO {
 
             try {
                 final var pump = Thread.ofVirtual() //
-                    .name("async-io") //
+                    .name("async-io-", 0) //
                     .uncaughtExceptionHandler((__, t) -> if_(!failure.compareAndSet(null, t), () -> t.printStackTrace())) //
                     .start(() -> {
                         final var buf = new byte[1024 * 256];
@@ -79,12 +83,15 @@ public final class AsyncIO {
                     });
 
                 while (!pump.join(pollingInterval)) {
-                    final var tick = nanoTime();
+                    final var lastProg = progress.get();
+                    final var now = nanoTime();
+                    final var lastProgSince = now - lastProg;
+                    final var totalElapsed = now - startAt;
 
-                    if (cancelled.test(tick - startAt)) {
+                    if (cancelled.test(totalElapsed, lastProgSince)) {
                         pump.interrupt();
                         failure.compareAndSet(null, new CancellationException("cancel requested"));
-                    } else if (ioTimeoutNano < tick - progress.get()) {
+                    } else if (ioTimeoutNano < lastProgSince) {
                         pump.interrupt();
                         failure.compareAndSet(null, new CancellationException("io timeout (no progress)"));
                     }
@@ -104,6 +111,7 @@ public final class AsyncIO {
 
         switch (failure.get()) {
             case RuntimeException e when e.getCause() instanceof IOException io -> throw io;
+            case RuntimeException e when e.getCause() instanceof CancellationException co -> throw co;
             case RuntimeException e -> throw e;
             case IOException e -> throw e;
             case Error e -> throw e;
