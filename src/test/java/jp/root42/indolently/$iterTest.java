@@ -16,7 +16,6 @@ package jp.root42.indolently;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 import static jp.root42.indolently.Indolently.*;
 import static jp.root42.indolently.Iterative.range;
@@ -27,16 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
- * @author root42 Inc.
- * @version $Id$
+ * @author takahashikzn
  */
 public class $iterTest {
 
-    /**
-     * test of {@link $iter#take(java.util.function.Predicate)}
-     */
     @Test
-    public void filter() {
+    public void take() {
 
         assertThat(range(1, 1).take(x -> x < 0).hasNext()).isFalse();
         assertThat(range(1, 2).take(x -> x > 0).hasNext()).isTrue();
@@ -47,17 +42,14 @@ public class $iterTest {
         }
     }
 
-    /**
-     * test of {@link $iter#flat(Function)}
-     */
     @Test
-    public void flatten() {
+    public void flat() {
 
-        assertThat(list(list(1), list(2, 3), list(4)).flat(it())).isEqualTo(list(1, 2, 3, 4));
+        assertThat(list(list(1), list(2, 3), list(4)).iterator().flat(it()).list()).isEqualTo(list(1, 2, 3, 4));
 
         final $list<$list<Integer>> list = list(list(1), list(), list(2, 3), list(), list(), list(4));
-        assertThat(list.flat(it())).isEqualTo(list(1, 2, 3, 4));
+        assertThat(list.iterator().flat(it()).list()).isEqualTo(list(1, 2, 3, 4));
 
-        assertThat($(new ArrayList<List<Integer>>()).flat(it())).isEqualTo(list());
+        assertThat($(new ArrayList<List<Integer>>()).iterator().flat(it()).hasNext()).isFalse();
     }
 }

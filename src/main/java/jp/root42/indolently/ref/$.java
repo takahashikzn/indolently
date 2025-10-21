@@ -149,10 +149,7 @@ public sealed interface $<T>
         public <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E { return f.get(); }
 
         @Override
-        public boolean equals(final $<? extends T> that) {
-            assert that == null || this == that;
-            return this == that;
-        }
+        public boolean equals(final $<? extends T> that) { return this == that; }
 
         @Override
         public String toString() { return "$<empty>"; }

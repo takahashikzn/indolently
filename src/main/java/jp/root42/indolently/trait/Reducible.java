@@ -36,9 +36,7 @@ public interface Reducible<T> {
      * @return result value
      * @throws NoSuchElementException if the result not present
      */
-    default <R> R reduce(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) {
-        return this.reduce(initial, (x, y, z) -> f.apply(y, z));
-    }
+    default <R> R reduce(final R initial, final BiFunction<? super R, ? super T, ? extends R> f) { return this.reduce(initial, (x, y, z) -> f.apply(y, z)); }
 
     /**
      * Reduce operation.
@@ -48,9 +46,7 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      * @see #mapred(Function, BiFunction)
      */
-    default $<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) {
-        return this.reduce((x, y, z) -> f.apply(y, z));
-    }
+    default $<T> reduce(final BiFunction<? super T, ? super T, ? extends T> f) { return this.reduce((x, y, z) -> f.apply(y, z)); }
 
     /**
      * Map then Reduce operation.
@@ -62,7 +58,6 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      */
     default <R> $<R> mapred(final Function<? super T, ? extends R> fm, final BiFunction<? super R, ? super R, ? extends R> fr) {
-
         return this.mapred(fm, (x, y, z) -> fr.apply(y, z));
     }
 
@@ -75,9 +70,7 @@ public interface Reducible<T> {
      * @return result value
      * @throws NoSuchElementException if the result not present
      */
-    default <R> R reduce(final R initial, final Function3<Integer, ? super R, ? super T, ? extends R> f) {
-        return this.reduce($.of(initial), f).get();
-    }
+    default <R> R reduce(final R initial, final Function3<Integer, ? super R, ? super T, ? extends R> f) { return this.reduce($.of(initial), f).get(); }
 
     /**
      * Map then Reduce operation with initial value.
@@ -97,9 +90,7 @@ public interface Reducible<T> {
      * @throws NoSuchElementException if this collection is empty
      * @see #mapred(Function, BiFunction)
      */
-    default $<T> reduce(final Function3<Integer, ? super T, ? super T, ? extends T> f) {
-        return this.mapred(x -> x, f);
-    }
+    default $<T> reduce(final Function3<Integer, ? super T, ? super T, ? extends T> f) { return this.mapred(x -> x, f); }
 
     /**
      * Map then Reduce operation.

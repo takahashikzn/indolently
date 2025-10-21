@@ -31,6 +31,8 @@ import jp.root42.indolently.trait.Loopable;
 import jp.root42.indolently.trait.Matchable;
 import jp.root42.indolently.trait.ReducibleIterable;
 
+import static jp.root42.indolently.Expressive.raise;
+
 
 /**
  * Extended {@link Iterable}/{@link Iterator} class for indolent person.
@@ -76,7 +78,7 @@ public interface $iter<T>
 
             @SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
             @Override
-            public T next() { return this.hasNext() ? next.apply(env) : Expressive.raise(NoSuchElementException::new); }
+            public T next() { return this.hasNext() ? next.apply(env) : raise(NoSuchElementException::new); }
         };
     }
 
@@ -181,7 +183,7 @@ public interface $iter<T>
             }
 
             @Override
-            public R next() { return this.hasNext() ? this.cur.next() : Expressive.raise(NoSuchElementException::new); }
+            public R next() { return this.hasNext() ? this.cur.next() : raise(NoSuchElementException::new); }
         };
     }
 }

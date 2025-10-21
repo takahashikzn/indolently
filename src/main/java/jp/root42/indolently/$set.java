@@ -175,7 +175,7 @@ public interface $set<T>
      */
     @Override
     default <S extends T> $set<T> flat(final Class<S> type, final Function<S, ? extends Iterable<? extends T>> f) {
-        return this.reduce(set(), (a, v) -> type.isInstance(v) ? a.pushAll(f.apply(cast(v))) : a.push(v));
+        return this.reduce(set(), (a, v) -> type.isInstance(v) ? a.pushAll(f.apply(type.cast(v))) : a.push(v));
     }
 
     @Deprecated
