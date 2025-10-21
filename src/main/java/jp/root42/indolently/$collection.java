@@ -363,4 +363,8 @@ public interface $collection<T, SELF extends $collection<T, SELF>>
         this.clear();
         return ret;
     }
+
+    <R> $collection<R, ?> flat(Function<? super T, ? extends Iterable<? extends R>> f);
+
+    <S extends T> SELF flat(Class<S> type, Function<S, ? extends Iterable<? extends T>> f);
 }

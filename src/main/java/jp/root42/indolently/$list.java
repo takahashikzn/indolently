@@ -267,9 +267,7 @@ public interface $list<T>
      * @param f function
      * @return newly constructed list which contains converted values
      */
-    default <R> $list<R> flatMap(final Function<? super T, $<? extends R>> f) {
-        return this.reduce(list(), (x, y) -> x.push(f.apply(y)));
-    }
+    default <R> $list<R> flatMap(final Function<? super T, $<? extends R>> f) { return this.reduce(list(), (x, y) -> x.push(f.apply(y))); }
 
     default <R> $list<R> fmap(final Function<? super T, $<? extends R>> f) { return this.flatMap(f); }
 
@@ -288,9 +286,7 @@ public interface $list<T>
     default <R> $list<R> fmap(final BiFunction<Integer, ? super T, $<? extends R>> f) { return this.flatMap(f); }
 
     @Override
-    default $list<T> take(final Predicate<? super T> f) {
-        return this.reduce(list(), (x, y) -> f.test(y) ? x.push(y) : x);
-    }
+    default $list<T> take(final Predicate<? super T> f) { return this.reduce(list(), (x, y) -> f.test(y) ? x.push(y) : x); }
 
     default $list<T> takeWhile(final BiPredicate<$list<T>, ? super T> f) {
         final var state = ref(true);
@@ -319,8 +315,19 @@ public interface $list<T>
      * @param f value generator
      * @return newly constructed flatten list
      */
-    default <R> $list<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) {
-        return list((Iterable<R>) this.iterator().flat(f));
+    @Override
+    default <R> $list<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) { return list((Iterable<R>) this.iterator().flat(f)); }
+
+    /**
+     * Flatten this list.
+     *
+     * @param type target type
+     * @param f value generator
+     * @return newly constructed flatten list
+     */
+    @Override
+    default <S extends T> $list<T> flat(final Class<S> type, final Function<S, ? extends Iterable<? extends T>> f) {
+        return this.reduce(list(), (a, v) -> type.isInstance(v) ? a.pushAll(f.apply(type.cast(v))) : a.push(v));
     }
 
     @Deprecated
@@ -340,9 +347,7 @@ public interface $list<T>
      * @param other alternative value supplier
      * @return {@code this} instance or other
      */
-    default $list<T> orElseGet(final Supplier<? extends List<? extends T>> other) {
-        return this.present$().or(() -> list(other.get()));
-    }
+    default $list<T> orElseGet(final Supplier<? extends List<? extends T>> other) { return this.present$().or(() -> list(other.get())); }
 
     @Override
     default <K> $map<K, $list<T>> group(final Function<? super T, ? extends K> fkey) {

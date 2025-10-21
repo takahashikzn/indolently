@@ -163,7 +163,20 @@ public interface $set<T>
      * @param f value generator
      * @return newly constructed flatten set
      */
+    @Override
     default <R> $set<R> flat(final Function<? super T, ? extends Iterable<? extends R>> f) { return set(this.iterator().flat(f)); }
+
+    /**
+     * Flatten this set.
+     *
+     * @param type target type
+     * @param f value generator
+     * @return newly constructed flatten set
+     */
+    @Override
+    default <S extends T> $set<T> flat(final Class<S> type, final Function<S, ? extends Iterable<? extends T>> f) {
+        return this.reduce(set(), (a, v) -> type.isInstance(v) ? a.pushAll(f.apply(cast(v))) : a.push(v));
+    }
 
     @Deprecated
     default <R> $set<R> flatten(final Function<? super T, ? extends Iterable<? extends R>> f) { return this.flat(f); }
