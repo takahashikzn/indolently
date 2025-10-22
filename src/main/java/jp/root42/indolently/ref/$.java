@@ -267,7 +267,7 @@ public sealed interface $<T>
 
     <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E;
 
-    default boolean eq(final T that) { return this.test(x -> x.equals(that)); }
+    default boolean is(final T that) { return this.test(x -> x.equals(that)); }
 
     boolean equals($<? extends T> that);
 
