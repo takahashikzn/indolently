@@ -15,7 +15,9 @@ package jp.root42.indolently.conc.exec;
 
 import java.util.concurrent.Executor;
 
-import jp.root42.indolently.conc.PrioritySemaphore;
+import jp.root42.indolently.conc.Concurrentive;
+import jp.root42.indolently.conc.lock.PriorityGate;
+import jp.root42.indolently.conc.lock.PriorityGate.Nice;
 
 
 /**
@@ -24,14 +26,29 @@ import jp.root42.indolently.conc.PrioritySemaphore;
 public interface PriorityExecutor
     extends Executor {
 
-    void execute(Runnable task, int nice);
+    @Override
+    default void execute(final Runnable task) { this.execute(task, task instanceof PriorityRunnable pr ? pr.nice() : PriorityGate.NO_NICE); }
+
+    default void execute(final Runnable task, final int nice) { this.execute(task, Nice.of(nice)); }
+
+    void execute(Runnable task, Nice nice);
 
     interface PriorityRunnable
         extends Runnable {
 
-        int nice();
+        Nice nice();
     }
 
-    @Override
-    default void execute(final Runnable task) { this.execute(task, task instanceof PriorityRunnable pr ? pr.nice() : PrioritySemaphore.NO_NICE); }
+    static PriorityExecutor of(final Executor exec, final int limit) {
+
+        final var gate = PriorityGate.of(limit);
+
+        return (task, nice) -> Concurrentive.execute( //
+            () -> gate.acquire(nice) //
+            , () -> exec.execute(() -> {
+                try { task.run(); } //
+                finally { gate.release(); }
+            }) //
+            , gate::release);
+    }
 }

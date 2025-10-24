@@ -23,7 +23,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.locks.LockSupport;
 
 import jp.root42.indolently.conc.Promise.Timeout;
 import jp.root42.indolently.function.RunnableE;
@@ -88,12 +87,5 @@ public class Promissory {
         catch (final TimeoutException e) { return left(Timeout.unit); } //
         catch (final InterruptedException e) { return raise(e); } //
         catch (final ExecutionException e) { return raise(e.getCause()); }
-    }
-
-    private static final long SPIN_PARK = TimeUnit.MILLISECONDS.toNanos(10L);
-
-    static void onSpinWait() {
-        //Thread.onSpinWait();
-        LockSupport.parkNanos(SPIN_PARK);
     }
 }

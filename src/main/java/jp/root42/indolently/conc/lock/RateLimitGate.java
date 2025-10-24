@@ -11,26 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package jp.root42.indolently.conc.exec;
+package jp.root42.indolently.conc.lock;
 
 import java.time.Duration;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 
 /**
- * @author takahashikzn
+ * @author Docurain Inc.
  */
-public interface RateLimitExecutor
-    extends Executor {
+public interface RateLimitGate
+    extends Gate {
 
-    default void rateLimit(final int limit, final TimeUnit unit) { this.rateLimit(limit, unit, Duration.ofNanos(Long.MAX_VALUE)); }
-
-    boolean rateLimit(int limit, TimeUnit unit, Duration timeout);
-
-    enum RateLimitBase { TIMEUNIT, COMPLETION }
-
-    static RateLimitExecutor of(final Executor exec) { return of(exec, RateLimitBase.TIMEUNIT); }
-
-    static RateLimitExecutor of(final Executor exec, final RateLimitBase base) { return PriorityRateLimitExecutor.of(exec, base); }
+    boolean rateLimit(int newLimit, TimeUnit unit, Duration timeout);
 }

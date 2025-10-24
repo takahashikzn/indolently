@@ -13,7 +13,12 @@
 // limitations under the License.
 package jp.root42.indolently.conc.exec;
 
+import java.time.Duration;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import jp.root42.indolently.conc.Concurrentive;
+import jp.root42.indolently.conc.lock.Gate;
 
 
 /**
@@ -22,5 +27,33 @@ import java.util.concurrent.Executor;
 public interface ConcurrencyLimitExecutor
     extends Executor {
 
-    void concurrency(int x);
+    default void concurrency(final int limit) { this.concurrency(limit, Duration.ofNanos(Long.MAX_VALUE)); }
+
+    boolean concurrency(int limit, Duration timeout);
+
+    static ConcurrencyLimitExecutor of(final Executor exec, final int limit) {
+
+        final var gate = Gate.of(limit);
+        final var lastLimit = new AtomicInteger(limit);
+
+        return new ConcurrencyLimitExecutor() {
+
+            @Override
+            public boolean concurrency(final int newLimit, final Duration timeout) {
+                return Concurrentive.setPermits(lastLimit.get(), newLimit, timeout, gate, lastLimit::set);
+            }
+
+            @Override
+            public void execute(final Runnable task) {
+
+                Concurrentive.execute( //
+                    gate::acquire //
+                    , () -> exec.execute(() -> {
+                        try { task.run(); } //
+                        finally { gate.release(); }
+                    }) //
+                    , gate::release);
+            }
+        };
+    }
 }

@@ -37,16 +37,54 @@ public final class AsyncIO {
     private AsyncIO() { }
 
     public static void transfer(final InputStream in, final OutputStream out, final BooleanSupplier cancelled)
-        throws IOException, CancellationException { transfer(in, out, (_1, _2) -> cancelled.getAsBoolean(), 25, 5000); }
+        throws IOException, CancellationException { transfer(IOExchange.of(in, out), cancelled); }
 
     public static void transfer(final InputStream in, final OutputStream out, final BiPredicate<Long, Long> cancelled)
-        throws IOException, CancellationException { transfer(in, out, cancelled, 25, 5000); }
+        throws IOException, CancellationException { transfer(IOExchange.of(in, out), cancelled); }
+
+    public static void transfer(final InputStream in, final OutputStream out, final BiPredicate<Long, Long> cancelled, final int pollIntervalMs,
+        final long ioTimeoutMs) throws IOException, CancellationException { transfer(IOExchange.of(in, out), cancelled, pollIntervalMs, ioTimeoutMs); }
+
+    public interface IOExchange {
+
+        int read() throws IOException;
+
+        void write() throws IOException;
+
+        void finish() throws IOException;
+
+        static IOExchange of(final InputStream in, final OutputStream out) {
+            return new IOExchange() {
+
+                private int len;
+
+                private final byte[] buf = new byte[1024 * 256];
+
+                @Override
+                public int read() throws IOException { return this.len = in.read(this.buf); }
+
+                @Override
+                public void write() throws IOException { out.write(this.buf, 0, this.len); }
+
+                @Override
+                public void finish() throws IOException { out.flush(); }
+            };
+        }
+    }
+
+    public static void transfer(final IOExchange ex, final BooleanSupplier cancelled) throws IOException, CancellationException {
+        transfer(ex, (_1, _2) -> cancelled.getAsBoolean(), 25, 5000);
+    }
+
+    public static void transfer(final IOExchange ex, final BiPredicate<Long, Long> cancelled) throws IOException, CancellationException {
+        transfer(ex, cancelled, 25, 5000);
+    }
 
     private static final Semaphore sem = new Semaphore(2048, true);
 
     @SuppressWarnings("CallToPrintStackTrace")
-    public static void transfer(final InputStream in, final OutputStream out, final BiPredicate<Long, Long> cancelled, final int pollIntervalMs,
-        final long ioTimeoutMs) throws IOException, CancellationException {
+    public static void transfer(final IOExchange ex, final BiPredicate<Long, Long> cancelled, final int pollIntervalMs, final long ioTimeoutMs)
+        throws IOException, CancellationException {
 
         final var pollingInterval = Duration.ofMillis(Math.max(1, pollIntervalMs));
         final var ioTimeoutNano = ioTimeoutMs < 0 ? Long.MAX_VALUE : TimeUnit.MILLISECONDS.toNanos(ioTimeoutMs);
@@ -63,20 +101,18 @@ public final class AsyncIO {
                     .name("async-io-", 0) //
                     .uncaughtExceptionHandler((__, t) -> if_(!failure.compareAndSet(null, t), () -> t.printStackTrace())) //
                     .start(() -> {
-                        final var buf = new byte[1024 * 256];
-
                         try {
-                            for (int n; (n = in.read(buf)) != -1; ) {
+                            for (int n; (n = ex.read()) != -1; ) {
                                 if (failure.get() != null) return;
                                 if (0 < n) {
                                     progress.set(nanoTime());
-                                    out.write(buf, 0, n);
+                                    ex.write();
                                     progress.set(nanoTime());
                                 }
                                 if (failure.get() != null) return;
                             }
 
-                            out.flush();
+                            ex.finish();
                         } catch (Throwable t) {
                             if_(!failure.compareAndSet(null, t), () -> t.printStackTrace());
                         }

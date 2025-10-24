@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
-import jp.root42.indolently.conc.PriorityRateLimitSemaphore;
+import jp.root42.indolently.conc.lock.PriorityGate.Nice;
 
 
 /**
@@ -33,14 +33,9 @@ public class QoSExecutor
 
     private final ConcurrencyLimitExecutor concLimit;
 
-    private interface PriorityRateLimitExecutor
-        extends PriorityExecutor, RateLimitExecutor { }
-
     private final PriorityRateLimitExecutor rateLimit;
 
     private final Runnable closeAction;
-
-    public QoSExecutor(final Function<ExecutorService, ConcurrencyLimitExecutor> factory) { this(chooseES(), factory); }
 
     private static ExecutorService chooseES() {
 
@@ -59,16 +54,18 @@ public class QoSExecutor
             });
     }
 
-    private interface CloseableConcurrencyLimitExecutor
-        extends ConcurrencyLimitExecutor, AutoCloseable { }
+    private static ConcurrencyLimitExecutor asCloseableExecutor(final ExecutorService es,
+        final Function<ExecutorService, ConcurrencyLimitExecutor> concLimitFactory) {
 
-    public QoSExecutor(final ExecutorService es, final Function<ExecutorService, ConcurrencyLimitExecutor> concLimitFactory) {
-        this(new CloseableConcurrencyLimitExecutor() {
+        interface CloseableConcurrencyLimitExecutor
+            extends ConcurrencyLimitExecutor, AutoCloseable { }
+
+        return new CloseableConcurrencyLimitExecutor() {
 
             private final ConcurrencyLimitExecutor delegate = concLimitFactory.apply(es);
 
             @Override
-            public void concurrency(final int x) { this.delegate.concurrency(x); }
+            public boolean concurrency(final int limit, final Duration timeout) { return this.delegate.concurrency(limit, timeout); }
 
             @Override
             public void execute(final Runnable command) { this.delegate.execute(command); }
@@ -78,39 +75,16 @@ public class QoSExecutor
                 if (this.delegate instanceof AutoCloseable c) try { c.close(); } catch (Exception e) { e.printStackTrace(); }
                 es.close();
             }
-        });
+        };
     }
+
+    public QoSExecutor(final Function<ExecutorService, ConcurrencyLimitExecutor> factory) { this(chooseES(), factory); }
+
+    public QoSExecutor(final ExecutorService es, final Function<ExecutorService, ConcurrencyLimitExecutor> factory) { this(asCloseableExecutor(es, factory)); }
 
     @SuppressWarnings("CallToPrintStackTrace")
     public QoSExecutor(final ConcurrencyLimitExecutor concLimit) {
-        this.concLimit = concLimit;
-        this.rateLimit = new PriorityRateLimitExecutor() {
-
-            private final PriorityRateLimitSemaphore window = new PriorityRateLimitSemaphore(60, TimeUnit.MINUTES);
-
-            @Override
-            public boolean rateLimit(final int newLimit, final TimeUnit unit, final Duration timeout) { return this.window.rateLimit(newLimit, unit, timeout); }
-
-            @Override
-            public void execute(final Runnable task, final int nice) {
-
-                try { this.window.acquire(nice); } //
-                catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
-                }
-
-                try {
-                    concLimit.execute(() -> {
-                        this.window.release();
-                        task.run();
-                    });
-                } catch (Exception e) {
-                    this.window.release();
-                    throw e;
-                }
-            }
-        };
+        this.rateLimit = PriorityRateLimitExecutor.of(this.concLimit = concLimit);
 
         this.closeAction = () -> {
             if (this.concLimit instanceof AutoCloseable c) try { c.close(); } catch (Exception e) { e.printStackTrace(); }
@@ -118,17 +92,17 @@ public class QoSExecutor
     }
 
     @Override
-    public void concurrency(final int x) {
-        if (x <= 0) throw new IllegalArgumentException("concurrency must be positive: " + x);
-        if (HARD_LIMIT < x) throw new IllegalArgumentException("concurrency must be <= " + HARD_LIMIT + ": " + x);
-        this.concLimit.concurrency(x);
+    public boolean concurrency(final int limit, final Duration timeout) {
+        if (limit <= 0) throw new IllegalArgumentException("concurrency must be positive: " + limit);
+        if (HARD_LIMIT < limit) throw new IllegalArgumentException("concurrency must be <= " + HARD_LIMIT + ": " + limit);
+        return this.concLimit.concurrency(limit, timeout);
     }
 
     @Override
     public boolean rateLimit(final int limit, final TimeUnit unit, final Duration timeout) { return this.rateLimit.rateLimit(limit, unit, timeout); }
 
     @Override
-    public void execute(final Runnable task, final int nice) { this.rateLimit.execute(task, nice); }
+    public void execute(final Runnable task, final Nice nice) { this.rateLimit.execute(task, nice); }
 
     @Override
     public void execute(final Runnable task) { this.rateLimit.execute(task); }
