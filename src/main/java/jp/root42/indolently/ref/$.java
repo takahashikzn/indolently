@@ -181,22 +181,15 @@ public sealed interface $<T>
 
     default $<T> if_(final Predicate<? super T> f) { return this.test(f) ? this : none(); }
 
-    final class Tee<S, T> {
+    interface Tee<S, T> {
 
-        private final $<$<S>> val;
-
-        private final $<T> it;
-
-        private Tee(final $<$<S>> val, final $<T> it) {
-            this.val = val;
-            this.it = it;
-        }
-
-        public $<S> alt(final Function<$<T>, $<S>> f) { return this.val.or(() -> f.apply(this.it)); }
+        $<S> alt(Function<$<T>, $<S>> f);
     }
 
     default <S> Tee<S, T> tee(final Predicate<? super T> f, final Function<? super T, $<S>> then) {
-        return new Tee<>(this.test(f) ? this.map(then) : none(), this);
+
+        final $<$<S>> val = this.test(f) ? this.map(then) : none();
+        return g -> val.or(() -> g.apply(this));
     }
 
     // alias
