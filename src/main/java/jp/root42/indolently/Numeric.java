@@ -215,7 +215,7 @@ public final class Numeric {
 
     private static <T> $<T> parseX(final String s, final Function<String, T> f) {
         try { return empty(s) ? $.none() : $.of(f.apply(s)); } //
-        catch (final IllegalArgumentException e) { return $.none(); }
+        catch (IllegalArgumentException e) { return $.none(); }
     }
 
     private static final $map<String, Integer> intCache = range(0, 256).list().mapmap(x -> "" + x, it()).freeze();

@@ -68,7 +68,7 @@ public class Promissory {
     public static <T> Promise<T> async(final Callable<? extends T> run, final Executor exec) {
         return new PromiseCFuture<T>(CompletableFuture.supplyAsync(() -> {
             try { return run.call(); } //
-            catch (final Exception e) { return raise(e); }
+            catch (Exception e) { return raise(e); }
         }, exec));
     }
 
@@ -78,14 +78,14 @@ public class Promissory {
 
     public static <T> T await(final Future<? extends T> promise) {
         try { return promise.get(); } //
-        catch (final InterruptedException e) { return raise(e); } //
-        catch (final ExecutionException e) { return raise(e.getCause()); }
+        catch (InterruptedException e) { return raise(e); } //
+        catch (ExecutionException e) { return raise(e.getCause()); }
     }
 
     public static <T> $$<Timeout, T> await(final Future<? extends T> promise, final long timeout) {
         try { return right(promise.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return left(Timeout.unit); } //
-        catch (final InterruptedException e) { return raise(e); } //
-        catch (final ExecutionException e) { return raise(e.getCause()); }
+        catch (TimeoutException e) { return left(Timeout.unit); } //
+        catch (InterruptedException e) { return raise(e); } //
+        catch (ExecutionException e) { return raise(e.getCause()); }
     }
 }

@@ -38,17 +38,17 @@ public abstract class ObjFactory {
         try {
             instance = new EclipseObjFactory();
             return;
-        } catch (final UnsupportedOperationException ignored) { }
+        } catch (UnsupportedOperationException ignored) { }
 
         try {
             instance = new FastutilObjFactory();
             return;
-        } catch (final UnsupportedOperationException ignored) { }
+        } catch (UnsupportedOperationException ignored) { }
 
         try {
             instance = new KolobokeObjFactory();
             return;
-        } catch (final UnsupportedOperationException ignored) { }
+        } catch (UnsupportedOperationException ignored) { }
 
         instance = new JdkObjFactory();
     }
@@ -57,7 +57,7 @@ public abstract class ObjFactory {
         //noinspection UnusedCatchParameter
         try {
             return Class.forName(fqcn) != null;
-        } catch (final ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }

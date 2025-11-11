@@ -78,7 +78,7 @@ public class Iterative {
      *     consumerOf((final Long x) -> System.out.println(Instant.ofEpochMilli(x))).andThen(x -> {
      *         try {
      *             Thread.sleep(10000);
-     *         } catch (final InterruptedException e) {
+     *         } catch (InterruptedException e) {
      *             Generator.breaks(); // stop generator gently
      *     }
      * }   ));
@@ -116,7 +116,7 @@ public class Iterative {
      *     .andThen(x -> {
      *         try {
      *             Thread.sleep(10000);
-     *         } catch (final InterruptedException e) {
+     *         } catch (InterruptedException e) {
      *             Generator.breaks(); // stop generator gently
      *         }
      *     }
@@ -278,7 +278,7 @@ public class Iterative {
             Exception last = null;
             for (final var r: this.list.pushAll(list(this.iter)))
                 try { r.close(); } //
-                catch (final Exception e) {
+                catch (Exception e) {
                     //noinspection CallToPrintStackTrace
                     (last = e).printStackTrace();
                 }

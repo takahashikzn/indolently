@@ -15,7 +15,7 @@ package jp.root42.indolently.function;
 
 import java.util.Objects;
 
-import jp.root42.indolently.Expressive;
+import static jp.root42.indolently.Expressive.raise;
 
 
 /**
@@ -43,8 +43,8 @@ public interface Statement
     default void run() {
         try {
             this.exec();
-        } catch (final Exception e) {
-            Expressive.raise(e);
+        } catch (Exception e) {
+            raise(e);
         }
     }
 

@@ -274,12 +274,12 @@ public class Expressive {
 
     public static <T> $$<Exception, T> try__(final Supplier<T> f) {
         try { return $$.right(f.get()); } //
-        catch (final Exception e) { return $$.left(e); }
+        catch (Exception e) { return $$.left(e); }
     }
 
     public static <T> $$<Exception, T> try_(final SupplierE<T, ? extends Exception> f) {
         try { return $$.right(f.get()); } //
-        catch (final Exception e) { return $$.left(e); }
+        catch (Exception e) { return $$.left(e); }
     }
 
     /**
@@ -368,7 +368,7 @@ public class Expressive {
     @Deprecated
     public static <IN extends Closeable, OUT> OUT with(final IN res, final WithBlock<IN, OUT> f) throws IOException {
         try (res) { return f.apply(res); } //
-        catch (final Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
+        catch (Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
     }
 
     @FunctionalInterface
@@ -379,7 +379,7 @@ public class Expressive {
 
     public static <IN extends AutoCloseable, OUT, ERR extends Exception> OUT IO(final IN res, final IOExpr<IN, OUT, ERR> f) throws ERR, IOException {
         try (res) { return f.apply(res); } //
-        catch (final Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
+        catch (Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
     }
 
     @FunctionalInterface
@@ -390,7 +390,7 @@ public class Expressive {
 
     public static <IN extends AutoCloseable, ERR extends Exception> void IO_(final IN res, final IOStmt<IN, ERR> f) throws ERR, IOException {
         try (res) { f.accept(res); } //
-        catch (final Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
+        catch (Exception e) { throw e instanceof IOException ioe ? ioe : new IOException(e); }
     }
 
     /**

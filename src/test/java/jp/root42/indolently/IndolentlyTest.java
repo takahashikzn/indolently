@@ -735,21 +735,21 @@ public class IndolentlyTest {
         try {
             frozen.put("level1.1", map("level2.1", listOf(set(43))));
             fail();
-        } catch (final UnsupportedOperationException ignored) {
+        } catch (UnsupportedOperationException ignored) {
             assert true;
         }
 
         try {
             frozen.get("level1").put("level2.1", listOf(set(43)));
             fail();
-        } catch (final UnsupportedOperationException ignored) {
+        } catch (UnsupportedOperationException ignored) {
             assert true;
         }
 
         try {
             frozen.get("level1").get("level2").get(0).add(43);
             fail();
-        } catch (final UnsupportedOperationException ignored) {
+        } catch (UnsupportedOperationException ignored) {
             assert true;
         }
     }
@@ -773,14 +773,14 @@ public class IndolentlyTest {
         try {
             list0.add(new Object());
             fail();
-        } catch (final UnsupportedOperationException ignored) {
+        } catch (UnsupportedOperationException ignored) {
             assert true;
         }
 
         try {
             list1.add(new Object());
             fail();
-        } catch (final UnsupportedOperationException ignored) {
+        } catch (UnsupportedOperationException ignored) {
             assert true;
         }
     }

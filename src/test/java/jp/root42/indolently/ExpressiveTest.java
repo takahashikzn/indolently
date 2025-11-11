@@ -54,7 +54,7 @@ public class ExpressiveTest {
 
         try {
             fail(eval(() -> raise(e)));
-        } catch (final RaisedException err) {
+        } catch (RaisedException err) {
             assertThat(err.getCause()).isSameAs(e);
         }
     }
@@ -123,7 +123,7 @@ public class ExpressiveTest {
             });
 
             fail();
-        } catch (final RaisedException err) {
+        } catch (RaisedException err) {
             assertThat(err.getCause()).isSameAs(e);
         }
     }
@@ -155,7 +155,7 @@ public class ExpressiveTest {
             });
 
             fail();
-        } catch (final RaisedException err) {
+        } catch (RaisedException err) {
             assertThat(err.getCause()).isSameAs(e);
         }
     }
@@ -266,7 +266,7 @@ public class ExpressiveTest {
             match(1) //
                 .when(eq(1)) //
                 .then(() -> "NG").fatal("OK");
-        } catch (final AssertionError e) {
+        } catch (AssertionError e) {
             assertThat(e.getMessage()).isEqualTo("OK");
         }
     }
@@ -280,7 +280,7 @@ public class ExpressiveTest {
         //noinspection ErrorNotRethrown
         try {
             when(false).then("NG").fatal("OK");
-        } catch (final AssertionError e) {
+        } catch (AssertionError e) {
             assertThat(e.getMessage()).isEqualTo("OK");
         }
     }
@@ -412,7 +412,7 @@ public class ExpressiveTest {
         try {
             f.apply(42);
             fail();
-        } catch (final RuntimeException e) {
+        } catch (RuntimeException e) {
             assertThat(e.getMessage()).contains("THE TEST OF 42");
         }
     }

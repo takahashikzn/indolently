@@ -15,7 +15,7 @@ package jp.root42.indolently.function;
 
 import java.util.function.Supplier;
 
-import jp.root42.indolently.Expressive;
+import static jp.root42.indolently.Expressive.raise;
 
 
 /**
@@ -44,8 +44,8 @@ public interface Expression<T> {
     default T get() {
         try {
             return this.eval();
-        } catch (final Exception e) {
-            return Expressive.raise(e);
+        } catch (Exception e) {
+            return raise(e);
         }
     }
 

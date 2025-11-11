@@ -385,7 +385,7 @@ public class Functional {
         return x -> {
             try {
                 return f.apply(x);
-            } catch (final Exception e) {
+            } catch (Exception e) {
                 return raise(e);
             }
         };
@@ -401,7 +401,7 @@ public class Functional {
         return (x0, x1) -> {
             try {
                 return f.apply(x0, x1);
-            } catch (final Exception e) {
+            } catch (Exception e) {
                 return raise(e);
             }
         };
@@ -417,7 +417,7 @@ public class Functional {
         return (x0, x1, x2) -> {
             try {
                 return f.apply(x0, x1, x2);
-            } catch (final Exception e) {
+            } catch (Exception e) {
                 return raise(e);
             }
         };
@@ -433,7 +433,7 @@ public class Functional {
         return (x0, x1, x2, x3) -> {
             try {
                 return f.apply(x0, x1, x2, x3);
-            } catch (final Exception e) {
+            } catch (Exception e) {
                 return raise(e);
             }
         };
@@ -442,56 +442,56 @@ public class Functional {
     public static <X> Supplier<$<X>> soften(final Supplier<X> f) {
         return () -> {
             try { return opt(f.get()); } //
-            catch (final RuntimeException e) { return none(); }
+            catch (RuntimeException e) { return none(); }
         };
     }
 
     public static <X> Supplier<$<X>> soften(final SupplierE<X, ? extends Exception> f) {
         return () -> {
             try { return opt(f.get()); } //
-            catch (final Exception e) { return none(); }
+            catch (Exception e) { return none(); }
         };
     }
 
     public static <X0, X1> Function<X0, $<X1>> soften(final Function<X0, X1> f) {
         return x -> {
             try { return opt(f.apply(x)); } //
-            catch (final RuntimeException e) { return none(); }
+            catch (RuntimeException e) { return none(); }
         };
     }
 
     public static <X0, X1> Function<X0, $<X1>> soften(final FunctionE<X0, X1, ? extends Exception> f) {
         return x -> {
             try { return opt(f.apply(x)); } //
-            catch (final Exception e) { return none(); }
+            catch (Exception e) { return none(); }
         };
     }
 
     public static <X0, X1, X2> BiFunction<X0, X1, $<X2>> soften(final BiFunction<X0, X1, X2> f) {
         return (x0, x1) -> {
             try { return opt(f.apply(x0, x1)); } //
-            catch (final RuntimeException e) { return none(); }
+            catch (RuntimeException e) { return none(); }
         };
     }
 
     public static <X0, X1, X2> BiFunction<X0, X1, $<X2>> soften(final Function2E<X0, X1, X2, ? extends Exception> f) {
         return (x0, x1) -> {
             try { return opt(f.apply(x0, x1)); } //
-            catch (final Exception e) { return none(); }
+            catch (Exception e) { return none(); }
         };
     }
 
     public static <X0, X1, X2, X3> Function3<X0, X1, X2, $<X3>> soften(final Function3<X0, X1, X2, X3> f) {
         return (x0, x1, x2) -> {
             try { return opt(f.apply(x0, x1, x2)); } //
-            catch (final RuntimeException e) { return none(); }
+            catch (RuntimeException e) { return none(); }
         };
     }
 
     public static <X0, X1, X2, X3> Function3<X0, X1, X2, $<X3>> soften(final Function3E<X0, X1, X2, X3, ? extends Exception> f) {
         return (x0, x1, x2) -> {
             try { return opt(f.apply(x0, x1, x2)); } //
-            catch (final Exception e) { return none(); }
+            catch (Exception e) { return none(); }
         };
     }
 

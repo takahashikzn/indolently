@@ -73,7 +73,7 @@ public interface Generator<T>
                 try {
                     this.cur = opt(next.apply(env));
                     return true;
-                } catch (final Break s) {
+                } catch (Break s) {
                     this.stopped = true;
                     return false;
                 }

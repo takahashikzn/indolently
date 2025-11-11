@@ -123,16 +123,16 @@ abstract class PromiseFuture<T, F extends Future<T>>
     @Override
     public T resolve() {
         try { return this.delegate.get(); } //
-        catch (final InterruptedException e) { return raise(e); } //
-        catch (final ExecutionException e) { return raise(e.getCause()); } //
+        catch (InterruptedException e) { return raise(e); } //
+        catch (ExecutionException e) { return raise(e.getCause()); } //
     }
 
     @Override
     public $$<Timeout, T> resolve(final long timeout) {
         try { return right(this.delegate.get(timeout, TimeUnit.MILLISECONDS)); } //
-        catch (final TimeoutException e) { return left(Timeout.unit); } //
-        catch (final InterruptedException e) { return raise(e); } //
-        catch (final ExecutionException e) { return raise(e.getCause()); } //
+        catch (TimeoutException e) { return left(Timeout.unit); } //
+        catch (InterruptedException e) { return raise(e); } //
+        catch (ExecutionException e) { return raise(e.getCause()); } //
     }
 
     @Override

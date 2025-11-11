@@ -252,7 +252,7 @@ public class Indolently {
         try {
             assert false;
             b = false;
-        } catch (final AssertionError ignored) {
+        } catch (AssertionError ignored) {
             b = true;
         }
         assertive = b;
@@ -736,7 +736,7 @@ public class Indolently {
                 //noinspection ProhibitedExceptionCaught
                 try {
                     return cs.charAt(this.pos++);
-                } catch (final IndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException e) {
                     throw new NoSuchElementException(e);
                 }
             }
@@ -3087,7 +3087,7 @@ public class Indolently {
 
     public static <E extends Enum<E>> $<E> enumOf(final Class<E> type, final String name) {
         try { return opt(Enum.valueOf(type, name)); } //
-        catch (final IllegalArgumentException e) { return none(); }
+        catch (IllegalArgumentException e) { return none(); }
     }
 
     public static <E extends Enum<E>> Function<String, $<E>> enumOf(final Class<E> type) { return x -> enumOf(type, x); }
@@ -3127,7 +3127,7 @@ public class Indolently {
     public static void shut(final AutoCloseable c) {
         if (c != null) //
             try { c.close(); } //
-            catch (final Exception e) { raise(e); }
+            catch (Exception e) { raise(e); }
     }
 
     public static Consumer<AutoCloseable> shut() { return Indolently::shut; }
@@ -3135,7 +3135,7 @@ public class Indolently {
     public static void qshut(final AutoCloseable c) {
         if (c != null) //
             try { c.close(); } //
-            catch (final Exception e) {
+            catch (Exception e) {
                 //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
@@ -3283,8 +3283,8 @@ public class Indolently {
                 System.getLogger(FQCN(Indolently.class)).log(System.Logger.Level.WARNING, "delete disposed tempfile: path = {0}", file.toAbsolutePath());
 
             try { Files.deleteIfExists(file); } //
-            catch (final NoSuchFileException ignored) { } //
-            catch (final IOException e) { e.printStackTrace(); }
+            catch (NoSuchFileException ignored) { } //
+            catch (IOException e) { e.printStackTrace(); }
         });
 
         return file;

@@ -144,7 +144,7 @@ public class $listTest {
         try {
             list(1, 2, 3).subList(4);
             Assert.fail();
-        } catch (final IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException ignored) {
             assert true;
         }
 
@@ -152,14 +152,14 @@ public class $listTest {
         try {
             list(1, 2, 3).subList(0, 4);
             Assert.fail();
-        } catch (final IndexOutOfBoundsException ignored) {
+        } catch (IndexOutOfBoundsException ignored) {
             assert true;
         }
 
         try {
             list(1, 2, 3).subList(2, 1);
             Assert.fail();
-        } catch (final IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException ignored) {
             assert true;
         }
 

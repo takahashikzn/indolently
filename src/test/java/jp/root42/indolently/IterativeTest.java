@@ -61,7 +61,7 @@ public class IterativeTest {
         try {
             g.next();
             fail();
-        } catch (final NoSuchElementException ignored) {
+        } catch (NoSuchElementException ignored) {
             assert true;
         }
     }
@@ -148,7 +148,7 @@ public class IterativeTest {
         try {
             g.next();
             fail();
-        } catch (final NoSuchElementException ignored) {
+        } catch (NoSuchElementException ignored) {
             assert true;
         }
     }
@@ -171,7 +171,7 @@ public class IterativeTest {
         try {
             i.next();
             fail();
-        } catch (final NoSuchElementException ignored) {
+        } catch (NoSuchElementException ignored) {
             assert true;
         }
     }

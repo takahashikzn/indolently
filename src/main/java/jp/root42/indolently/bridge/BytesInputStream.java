@@ -78,7 +78,7 @@ public abstract class BytesInputStream
         @Override
         public byte[] readNBytes(final int len) {
             try { return this.bais.readNBytes(len); } //
-            catch (final IOException e) { throw new RuntimeException(e); }
+            catch (IOException e) { throw new RuntimeException(e); }
         }
 
         @Override
@@ -131,19 +131,19 @@ public abstract class BytesInputStream
         @Override
         public byte[] readAllBytes() {
             try { return this.bais.readAllBytes(); } //
-            catch (final IOException e) { throw new RuntimeException(e); }
+            catch (IOException e) { throw new RuntimeException(e); }
         }
 
         @Override
         public byte[] readNBytes(final int len) {
             try { return this.bais.readNBytes(len); } //
-            catch (final IOException e) { throw new RuntimeException(e); }
+            catch (IOException e) { throw new RuntimeException(e); }
         }
 
         @Override
         public int readNBytes(final byte[] b, final int off, final int len) {
             try { return this.bais.readNBytes(b, off, len); } //
-            catch (final IOException e) { throw new RuntimeException(e); }
+            catch (IOException e) { throw new RuntimeException(e); }
         }
 
         @Override

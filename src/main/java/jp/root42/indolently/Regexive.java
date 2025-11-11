@@ -59,7 +59,7 @@ public class Regexive {
     public static RegexRe2 regex2(final String pattern) {
         try {
             return regex2(com.google.re2j.Pattern.compile(pattern));
-        } catch (final com.google.re2j.PatternSyntaxException e) {
+        } catch (com.google.re2j.PatternSyntaxException e) {
             throw new java.util.regex.PatternSyntaxException(e.getDescription(), e.getPattern(), e.getIndex());
         }
     }
@@ -92,7 +92,7 @@ public class Regexive {
                 final var pred = automatonTester(pattern);
 
                 if (pred != null) return pred;
-            } catch (final IllegalArgumentException ignored) { }
+            } catch (IllegalArgumentException ignored) { }
         }
 
         return ReTest.of(regex(pattern));
