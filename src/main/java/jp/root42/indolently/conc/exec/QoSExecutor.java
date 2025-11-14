@@ -16,8 +16,9 @@ package jp.root42.indolently.conc.exec;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 import jp.root42.indolently.conc.lock.PriorityGate.Nice;
@@ -41,17 +42,8 @@ public class QoSExecutor
 
         return Runtime.version().feature() >= 25
             ? Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name("qos-vexec-", 0L).factory())
-            : Executors.newCachedThreadPool(r -> {
-                interface $static {
-
-                    AtomicLong seq = new AtomicLong(0);
-                }
-
-                final var t = new Thread(r);
-                t.setName("qos-exec-" + $static.seq.incrementAndGet());
-                t.setDaemon(true);
-                return t;
-            });
+            : new ThreadPoolExecutor(1, HARD_LIMIT, 60, TimeUnit.SECONDS, new SynchronousQueue<>(),
+                Thread.ofPlatform().name("qos-exec-", 0L).daemon(true).factory());
     }
 
     private static ConcurrencyLimitExecutor asCloseableExecutor(final ExecutorService es,
