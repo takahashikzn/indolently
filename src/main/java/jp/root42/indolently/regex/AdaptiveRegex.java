@@ -23,10 +23,11 @@ import jp.root42.indolently.Indolently;
 /**
  * @author takahashikzn.
  */
+@SuppressWarnings("ClassEscapesDefinedScope")
 public final class AdaptiveRegex
-    implements RegexBase<Regex.Ptrn, ReMatcher<?, ?>> {
+    implements RegexBase<AdaptiveRegex, Regex.Ptrn, ReMatcher<?, ?>> {
 
-    private final List<? extends RegexBase<?, ?>> patterns;
+    private final List<? extends RegexBase<?, ?, ?>> patterns;
 
     private final List<Long> times;
 
@@ -34,42 +35,35 @@ public final class AdaptiveRegex
 
     private int current;
 
-    private RegexBase<?, ?> fastest;
+    private RegexBase<?, ?, ?> fastest;
 
-    public AdaptiveRegex(final List<? extends RegexBase<?, ?>> patterns) {
-        this(patterns, 100);
-    }
+    public AdaptiveRegex(final List<? extends RegexBase<?, ?, ?>> patterns) { this(patterns, 100); }
 
-    public AdaptiveRegex(final List<? extends RegexBase<?, ?>> patterns, final int trial) {
+    public AdaptiveRegex(final List<? extends RegexBase<?, ?, ?>> patterns, final int trial) {
         this.patterns = patterns;
         this.times = Indolently.list(patterns).map(x -> 0L);
         this.trial = trial;
     }
 
     @Override
-    public String toString() {
-        return this.patterns.get(0).pattern();
-    }
+    public String toString() { return this.patterns.get(0).pattern(); }
 
-    private RegexBase<?, ?> select() {
+    private RegexBase<?, ?, ?> select() {
         this.determineFastest();
 
         return (this.fastest == null) ? this.patterns.get(this.current % this.patterns.size()) : this.fastest;
     }
 
     private void determineFastest() {
-        if ((this.fastest == null) && (this.trial < this.current)) {
+        if ((this.fastest == null) && (this.trial < this.current)) //
             this.fastest = this.patterns.get(this.times.indexOf(Collections.min(this.times)));
-        }
     }
 
     @Override
     public boolean test(final CharSequence cs) {
         this.determineFastest();
 
-        if (this.fastest != null) {
-            return this.fastest.test(cs);
-        }
+        if (this.fastest != null) return this.fastest.test(cs);
 
         final var now = System.nanoTime();
         final int pos = this.current % this.patterns.size();
@@ -87,15 +81,11 @@ public final class AdaptiveRegex
     public Regex.Ptrn ptrn() { return this::pattern; }
 
     @Override
-    public ReMatcher<?, ?> matcher(final CharSequence cs) {
-        return this.select().matcher(cs);
-    }
+    public ReMatcher<?, ?> matcher(final CharSequence cs) { return this.select().matcher(cs); }
 
     @Override
     public String pattern() { return this.select().pattern(); }
 
     @Override
-    public $list<String> split(final CharSequence cs, final int limit) {
-        return this.select().split(cs, limit);
-    }
+    public $list<String> split(final CharSequence cs, final int limit) { return this.select().split(cs, limit); }
 }

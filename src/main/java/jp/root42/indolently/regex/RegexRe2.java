@@ -29,7 +29,7 @@ import jp.root42.indolently.Indolently;
  * @author takahashikzn
  */
 public final class RegexRe2
-    implements RegexBase<Pattern, ReMatcherRE2> {
+    implements RegexBase<RegexRe2, Pattern, ReMatcherRE2> {
 
     private final Pattern pattern;
 
@@ -51,7 +51,7 @@ public final class RegexRe2
     public $list<String> split(final CharSequence cs, final int limit) { return Indolently.list(this.ptrn().split(cs.toString(), limit)); }
 
     @Override
-    public boolean equals(final Object o) { return this == o && o instanceof Regex && this.ptrn().equals(((Regex) o).ptrn()); }
+    public boolean equals(final Object o) { return this == o || o instanceof RegexBase<?, ?, ?> && this.ptrn().equals(((RegexBase<?, ?, ?>) o).ptrn()); }
 
     @Override
     public int hashCode() { return Objects.hash(this.getClass(), this.pattern); }

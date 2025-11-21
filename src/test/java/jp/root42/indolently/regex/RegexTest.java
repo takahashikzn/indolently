@@ -13,7 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.regex;
 
-import static jp.root42.indolently.Indolently.re;
+import static jp.root42.indolently.Indolently.*;
 
 import org.junit.Test;
 
@@ -29,5 +29,13 @@ public class RegexTest {
     public void equals() {
         assertThat(re("foo")).isNotEqualTo(re("bar"));
         assertThat(re("foo")).isEqualTo(re("foo"));
+    }
+
+    @Test
+    public void group() {
+        assertThat(re("(\\d+)([a-z]+)").group("_123foo-", 0)).isEqualTo(just("123foo"));
+        assertThat(re("(\\d+)([a-z]+)").group("_123foo-", 1)).isEqualTo(just("123"));
+        assertThat(re("(\\d+)([a-z]+)").group("_123foo-", 2)).isEqualTo(just("foo"));
+        assertThat(re("(\\d+)([a-z]+)").group("_123foo-", 3)).isEqualTo(none());
     }
 }

@@ -18,6 +18,9 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import jp.root42.indolently.$list;
+import jp.root42.indolently.ref.$;
+
+import static jp.root42.indolently.Indolently.*;
 
 
 /**
@@ -25,22 +28,20 @@ import jp.root42.indolently.$list;
  *
  * @author takahashikzn.
  */
+@SuppressWarnings("ClassEscapesDefinedScope")
 public final class Regex
-    implements RegexBase<Regex.Ptrn, ReMatcher<?, ?>> {
+    implements RegexBase<Regex, Regex.Ptrn, ReMatcher<?, ?>> {
 
     interface Ptrn {
 
         String pattern();
     }
 
-    private final RegexBase<?, ?> pattern;
+    private final RegexBase<?, ?, ?> pattern;
 
-    public Regex(final RegexBase<?, ?> pattern) { this.pattern = pattern; }
+    public Regex(final RegexBase<?, ?, ?> pattern) { this.pattern = pattern; }
 
-    public <T extends RegexBase<?, ?>> T unwrap() {
-        //noinspection unchecked
-        return (T) this.pattern;
-    }
+    public <T extends RegexBase<?, ?, ?>> T unwrap() { return cast(this.pattern); }
 
     @Override
     public String toString() { return this.pattern.toString(); }
@@ -49,9 +50,7 @@ public final class Regex
     public int hashCode() { return this.pattern.hashCode(); }
 
     @Override
-    public boolean equals(final Object o) {
-        return this == o || (o instanceof RegexBase<?, ?> that && this.pattern().equals(that.pattern()));
-    }
+    public boolean equals(final Object o) { return this == o || o instanceof RegexBase<?, ?, ?> that && this.pattern().equals(that.pattern()); }
 
     @Override
     public Ptrn ptrn() { return this::pattern; }
@@ -69,7 +68,7 @@ public final class Regex
     public $list<String> split(final CharSequence cs, final int limit) { return this.pattern.split(cs, limit); }
 }
 
-interface RegexBase<P, M extends ReMatcher<?, ?>>
+interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
     extends ReTest, ReFindable {
 
     /**
@@ -92,6 +91,23 @@ interface RegexBase<P, M extends ReMatcher<?, ?>>
 
     @Override
     default boolean find(final CharSequence cs) { return this.matcher(cs).find(); }
+
+    default $<String> apply(final CharSequence cs, final BiFunction<R, String, String> f) {
+        return cs != null && this.test(cs) ? opt(f.apply(cast(this), cs.toString())) : none();
+    }
+
+    default $<String> fapply(final CharSequence cs, final BiFunction<R, String, $<String>> f) {
+        return cs != null && this.test(cs) ? f.apply(cast(this), cs.toString()) : none();
+    }
+
+    default $<String> group1(final CharSequence cs) { return this.group(cs, 1); }
+
+    default $<String> group(final CharSequence cs, final int grp) {
+        if (cs == null) return none();
+
+        final var m = this.matcher(cs);
+        return (m.find() && between(0, grp, m.groupCount())) ? opt(m.group(grp)) : none();
+    }
 
     /**
      * Tokenize string by the regex pattern which this object expresses.

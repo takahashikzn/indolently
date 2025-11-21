@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 /**
  * @author takahashikzn
  */
+@SuppressWarnings("ClassEscapesDefinedScope")
 public interface ReTest
     extends Predicate<CharSequence> {
 
@@ -29,7 +30,7 @@ public interface ReTest
      */
     String pattern();
 
-    static ReTest of(final RegexBase<?, ?> ptrn) { return of(ptrn, ptrn.pattern()); }
+    static ReTest of(final RegexBase<?, ?, ?> ptrn) { return of(ptrn, ptrn.pattern()); }
 
     static ReTest of(final Predicate<CharSequence> pred, final String pattern) {
         return new ReTest() {
