@@ -92,23 +92,6 @@ interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
     @Override
     default boolean find(final CharSequence cs) { return this.matcher(cs).find(); }
 
-    default $<String> apply(final CharSequence cs, final BiFunction<R, String, String> f) {
-        return cs != null && this.test(cs) ? opt(f.apply(cast(this), cs.toString())) : none();
-    }
-
-    default $<String> fapply(final CharSequence cs, final BiFunction<R, String, $<String>> f) {
-        return cs != null && this.test(cs) ? f.apply(cast(this), cs.toString()) : none();
-    }
-
-    default $<String> group1(final CharSequence cs) { return this.group(cs, 1); }
-
-    default $<String> group(final CharSequence cs, final int grp) {
-        if (cs == null) return none();
-
-        final var m = this.matcher(cs);
-        return (m.find() && between(0, grp, m.groupCount())) ? opt(m.group(grp)) : none();
-    }
-
     /**
      * Tokenize string by the regex pattern which this object expresses.
      * This method is equivalent to {@code ptrn.split(cs, 0)}.
@@ -135,9 +118,7 @@ interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
      * @param replacement replacement string
      * @return replaced string
      */
-    default String replaceAll(final CharSequence cs, final String replacement) {
-        return this.matcher(cs).replaceAll(replacement);
-    }
+    default String replaceAll(final CharSequence cs, final String replacement) { return this.matcher(cs).replaceAll(replacement); }
 
     /**
      * delegate for {@link java.util.regex.Matcher#replaceFirst(String)}
@@ -146,9 +127,7 @@ interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
      * @param replacement replacement string
      * @return replaced string
      */
-    default String replaceFirst(final CharSequence cs, final String replacement) {
-        return this.matcher(cs).replaceFirst(replacement);
-    }
+    default String replaceFirst(final CharSequence cs, final String replacement) { return this.matcher(cs).replaceFirst(replacement); }
 
     /**
      * replace matched character sequence.
@@ -158,9 +137,7 @@ interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
      * @return replaced string
      * @see java.util.regex.Matcher#replaceAll(String)
      */
-    default String replace(final CharSequence cs, final Function<String, String> f) {
-        return this.matcher(cs).replace(f);
-    }
+    default String replace(final CharSequence cs, final Function<String, String> f) { return this.matcher(cs).replace(f); }
 
     /**
      * replace matched character sequence.
@@ -170,13 +147,24 @@ interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
      * @return replaced string
      * @see java.util.regex.Matcher#replaceAll(String)
      */
-    default String replace(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
-        return this.matcher(cs).replace(f);
-    }
+    default String replace(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) { return this.matcher(cs).replace(f); }
 
     default String subst(final CharSequence cs, final Function<String, String> f) { return this.matcher(cs).subst(f); }
 
-    default String subst(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) {
-        return this.matcher(cs).subst(f);
+    default String subst(final CharSequence cs, final BiFunction<? super ReMatcher<?, ?>, String, String> f) { return this.matcher(cs).subst(f); }
+
+    default $<String> apply(final CharSequence cs, final BiFunction<R, String, String> f) { return this.fapply(cs, (r, s) -> opt(f.apply(r, s))); }
+
+    default $<String> fapply(final CharSequence cs, final BiFunction<R, String, $<String>> f) {
+        return cs != null && this.test(cs) ? f.apply(cast(this), cs.toString()) : none();
+    }
+
+    default $<String> group1(final CharSequence cs) { return this.group(cs, 1); }
+
+    default $<String> group(final CharSequence cs, final int grp) {
+        if (cs == null) return none();
+
+        final var m = this.matcher(cs);
+        return (m.find() && between(0, grp, m.groupCount())) ? just(m.group(grp)) : none();
     }
 }
