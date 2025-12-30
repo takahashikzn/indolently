@@ -35,6 +35,11 @@ public abstract class ObjFactory {
 
     private static void init() {
 
+        //        try {
+        //            instance = new HashSmithObjFactory();
+        //            return;
+        //        } catch (UnsupportedOperationException ignored) { }
+
         try {
             instance = new EclipseObjFactory();
             return;
