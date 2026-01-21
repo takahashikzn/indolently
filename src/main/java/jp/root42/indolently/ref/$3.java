@@ -179,9 +179,7 @@ public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
         public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2, this._3); }
 
         @Override
-        public boolean equals(final Object o) {
-            return this == o || (o instanceof mut<?, ?, ?> that && this.equiv(that));
-        }
+        public boolean equals(final Object o) { return this == o || (o instanceof mut<?, ?, ?> that && this.equiv(that)); }
 
         @Override
         public String toString() { return "(%s, %s, %s)".formatted(this._1, this._2, this._3); }

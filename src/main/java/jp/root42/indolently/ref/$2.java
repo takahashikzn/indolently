@@ -84,9 +84,7 @@ public record $2<T1, T2>(T1 _1, T2 _2)
         }
 
         @Destructive
-        public mut<T1, T2> set(final mut<? extends T1, ? extends T2> that) {
-            return (that == null) ? this.set(null, null) : this.set(that._1, that._2);
-        }
+        public mut<T1, T2> set(final mut<? extends T1, ? extends T2> that) { return (that == null) ? this.set(null, null) : this.set(that._1, that._2); }
 
         @Destructive
         public mut<T1, T2> set(final T1 _1, final T2 _2) {
@@ -127,9 +125,7 @@ public record $2<T1, T2>(T1 _1, T2 _2)
         public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2); }
 
         @Override
-        public boolean equals(final Object o) {
-            return this == o || (o instanceof mut<?, ?> that && this.equiv(that));
-        }
+        public boolean equals(final Object o) { return this == o || (o instanceof mut<?, ?> that && this.equiv(that)); }
 
         @Override
         public String toString() { return "(%s, %s)".formatted(this._1, this._2); }

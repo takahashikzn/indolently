@@ -92,16 +92,24 @@ public sealed interface $$<L, R>
     default boolean isR() { return this instanceof Right; }
 
     default <T> T flat(final Function<L, ? extends T> lfn, final Function<R, ? extends T> rfn) {
-        return this instanceof Left<?, ?> ? lfn.apply(this.l()) : rfn.apply(this.r());
+        return switch (this) {
+            case Left<L, ?>(var l) -> lfn.apply(l);
+            case Right<?, R>(var r) -> rfn.apply(r);
+        };
     }
 
     default <L2, R2> $$<L2, R2> map(final Function<L, ? extends L2> lfn, final Function<R, ? extends R2> rfn) {
-        return this instanceof Left<?, ?> ? left(lfn.apply(this.l())) : right(rfn.apply(this.r()));
+        return switch (this) {
+            case Left<L, ?>(var l) -> left(lfn.apply(l));
+            case Right<?, R>(var r) -> right(rfn.apply(r));
+        };
     }
 
     default $$<L, R> do_(final Consumer<L> lfn, final Consumer<R> rfn) {
-        if (this instanceof Left<?, ?>) lfn.accept(this.l());
-        else rfn.accept(this.r());
+        switch (this) {
+            case Left<L, ?>(var l) -> lfn.accept(l);
+            case Right<?, R>(var r) -> rfn.accept(r);
+        }
 
         return this;
     }
@@ -109,13 +117,38 @@ public sealed interface $$<L, R>
     // alias
     default $$<L, R> tap(final Consumer<L> lfn, final Consumer<R> rfn) { return this.do_(lfn, rfn); }
 
-    default <T> $<T> lmap(final Function<L, T> fn) { return this instanceof Left ? $.of(this.l()).map(fn) : $.none(); }
+    default <T> $<T> lmap(final Function<L, T> fn) {
+        return switch (this) {
+            case Left<L, ?>(var l) -> $.of(l).map(fn);
+            case Right<?, R>(var __) -> $.none();
+        };
+    }
 
-    default <T> $<T> rmap(final Function<R, T> fn) { return this instanceof Right ? $.of(this.r()).map(fn) : $.none(); }
+    default <T> $<T> rmap(final Function<R, T> fn) {
+        return switch (this) {
+            case Left<L, ?>(var __) -> $.none();
+            case Right<?, R>(var r) -> $.of(r).map(fn);
+        };
+    }
 
-    default boolean ltest(final Predicate<L> fn) { return this instanceof Left && fn.test(this.l()); }
+    default boolean ltest(final Predicate<L> fn) {
+        return switch (this) {
+            case Left<L, ?>(var l) -> fn.test(l);
+            case Right<?, R>(var __) -> false;
+        };
+    }
 
-    default boolean rtest(final Predicate<R> fn) { return this instanceof Right && fn.test(this.r()); }
+    default boolean rtest(final Predicate<R> fn) {
+        return switch (this) {
+            case Left<L, ?>(var __) -> false;
+            case Right<?, R>(var r) -> fn.test(r);
+        };
+    }
 
-    default boolean test(final Predicate<L> lfn, final Predicate<R> rfn) { return this instanceof Left ? this.ltest(lfn) : this.rtest(rfn); }
+    default boolean test(final Predicate<L> lfn, final Predicate<R> rfn) {
+        return switch (this) {
+            case Left<L, ?>(var l) -> lfn.test(l);
+            case Right<?, R>(var r) -> rfn.test(r);
+        };
+    }
 }
