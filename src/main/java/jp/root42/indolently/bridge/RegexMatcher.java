@@ -53,21 +53,6 @@ public interface RegexMatcher<P, M>
     M reset(CharSequence input);
 
     /**
-     * delegate for {@link Matcher#start(String)}
-     */
-    int start(String name);
-
-    /**
-     * delegate for {@link Matcher#end(String)}
-     */
-    int end(String name);
-
-    /**
-     * delegate for {@link Matcher#group(String)}
-     */
-    String group(String name);
-
-    /**
      * delegate for {@link Matcher#matches()}
      */
     boolean matches();

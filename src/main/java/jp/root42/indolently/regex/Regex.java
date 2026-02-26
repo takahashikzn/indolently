@@ -167,4 +167,10 @@ interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
         final var m = this.matcher(cs);
         return (m.find() && between(0, grp, m.groupCount())) ? just(m.group(grp)) : none();
     }
+
+    default int count(final CharSequence cs) {
+        int count = 0;
+        for (final var m = this.matcher(cs); m.find(); ) count++;
+        return count;
+    }
 }
