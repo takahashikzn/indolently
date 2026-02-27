@@ -169,6 +169,8 @@ interface RegexBase<R extends RegexBase<R, P, M>, P, M extends ReMatcher<?, ?>>
     }
 
     default int count(final CharSequence cs) {
+        if (cs == null) return 0;
+
         int count = 0;
         for (final var m = this.matcher(cs); m.find(); ) count++;
         return count;
