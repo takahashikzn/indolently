@@ -162,7 +162,7 @@ public interface $map<K, V>
      */
     @Destructive
     default $map<K, V> delete(final Iterable<? extends K> keys) {
-        this.keySet().removeAll(Indolently.set(keys));
+        keys.forEach(this::remove);
         return this;
     }
 
