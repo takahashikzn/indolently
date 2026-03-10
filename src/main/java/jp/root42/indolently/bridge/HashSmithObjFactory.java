@@ -13,6 +13,11 @@
 // limitations under the License.
 package jp.root42.indolently.bridge;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collections;
@@ -79,15 +84,45 @@ public final class HashSmithObjFactory
 }
 
 final class NullSupportedSwissMap<K, V>
-    extends AbstractMap<K, V> {
+    extends AbstractMap<K, V>
+    implements Serializable {
 
     private static final Object NULL = new Object();
 
-    private final SwissMap<K, V> map;
+    private transient SwissMap<K, V> map;
 
-    private Object nullVal = NULL;
+    private transient Object nullVal = NULL;
 
     public NullSupportedSwissMap(final int size) { this.map = new SwissMap<>(size); }
+
+    @SuppressWarnings("unchecked")
+    @Serial
+    private void readObject(final ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+
+        {
+            final var hasNullVal = ois.readBoolean();
+            final var val = ois.readObject();
+
+            if (hasNullVal) this.nullVal = val;
+        }
+
+        {
+            final var m = (Map) ois.readObject();
+            final var map = new SwissMap(m.size());
+            map.putAll(m);
+            this.map = map;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Serial
+    private void writeObject(final ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject();
+        oos.writeBoolean(this.nullVal != NULL);
+        oos.writeObject(this.nullVal != NULL ? this.nullVal : null);
+        oos.writeObject(new HashMap(this.map));
+    }
 
     @Override
     @SuppressWarnings("unchecked")
