@@ -103,17 +103,16 @@ public interface PriorityGate
 
                 final var ticket = new Ticket(this.nextTicketSeq(), narrow(-20, nice.val(), 19));
 
-                if (this.waitingThreads.offer(ticket)) {
-                    var waitUntilNs = System.nanoTime() + unit.toNanos(timeout);
-                    if (waitUntilNs < 0) waitUntilNs = Long.MAX_VALUE; // forever
-
+                if (this.waitingThreads.offer(ticket)) //
                     try {
+                        var waitUntilNs = System.nanoTime() + unit.toNanos(timeout);
+                        if (waitUntilNs < 0) waitUntilNs = Long.MAX_VALUE; // forever
+
                         for (var waitNs = this.intervalNs; //
                              0 < (waitNs = Math.min(waitUntilNs - System.nanoTime(), waitNs)); Concurrentive.onSpinWait()) //
                             if (this.gate.tryAcquire() || (this.waitingThreads.peek() == ticket && this.gate.tryAcquire(waitNs, TimeUnit.NANOSECONDS)))
                                 return true;
                     } finally { this.waitingThreads.remove(ticket); }
-                }
 
                 return false;
             }
