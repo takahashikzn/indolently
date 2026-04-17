@@ -26,6 +26,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RegexTest {
 
     @Test
+    public void test() {
+        //assertThat(Pattern.compile("[\\d\\[\\]]+").matcher("[420]12345[92]14991234567812345671").matches()).isTrue();
+        assertThat(retest("[\\d\\[\\]]+").test("[420]12345[92]14991234567812345671")).isTrue();
+    }
+
+    @Test
     public void equals() {
         assertThat(re("foo")).isNotEqualTo(re("bar"));
         assertThat(re("foo")).isEqualTo(re("foo"));
