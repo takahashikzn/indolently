@@ -29,9 +29,7 @@ public interface Predicate3<T, U, V> {
         return (t, u, v) -> this.test(t, u, v) && other.test(t, u, v);
     }
 
-    default Predicate3<T, U, V> negate() {
-        return (t, u, v) -> !this.test(t, u, v);
-    }
+    default Predicate3<T, U, V> negate() { return (t, u, v) -> !this.test(t, u, v); }
 
     default Predicate3<T, U, V> or(final Predicate3<? super T, ? super U, ? super V> other) {
         Objects.requireNonNull(other);

@@ -98,6 +98,13 @@ public sealed interface $$<L, R>
         };
     }
 
+    default $$<R, L> swap() {
+        return switch (this) {
+            case Left<L, ?>(var l) -> right(l);
+            case Right<?, R>(var r) -> left(r);
+        };
+    }
+
     default <L2, R2> $$<L2, R2> map(final Function<L, ? extends L2> lfn, final Function<R, ? extends R2> rfn) {
         return switch (this) {
             case Left<L, ?>(var l) -> left(lfn.apply(l));

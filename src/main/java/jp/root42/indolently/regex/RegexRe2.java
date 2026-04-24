@@ -51,10 +51,12 @@ public final class RegexRe2
     public $list<String> split(final CharSequence cs, final int limit) { return Indolently.list(this.ptrn().split(cs.toString(), limit)); }
 
     @Override
-    public boolean equals(final Object o) { return this == o || o instanceof RegexBase<?, ?, ?> && this.ptrn().equals(((RegexBase<?, ?, ?>) o).ptrn()); }
+    public boolean equals(final Object o) {
+        return this == o || o instanceof RegexRe2 that && this.pattern.pattern().equals(that.pattern.pattern());
+    }
 
     @Override
-    public int hashCode() { return Objects.hash(this.getClass(), this.pattern); }
+    public int hashCode() { return Objects.hash(this.getClass(), this.pattern.pattern()); }
 
     @Override
     public String toString() { return this.pattern.toString(); }

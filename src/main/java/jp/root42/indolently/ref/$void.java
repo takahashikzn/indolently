@@ -17,7 +17,7 @@ package jp.root42.indolently.ref;
  * @param <T> value type
  * @author takahashikzn
  */
-public class $void<T>
+public final class $void<T>
     extends _ref_nonNum<T, $void<T>> {
 
     @SuppressWarnings("PublicField")

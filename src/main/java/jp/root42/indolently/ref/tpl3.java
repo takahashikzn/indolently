@@ -51,6 +51,6 @@ public interface tpl3<SELF extends tpl3<SELF, T1, T2, T3>, T1, T2, T3> {
     }
 
     default boolean equiv(final tpl3<?, ?, ?, ?> that) {
-        return this == that || (equal(this._1(), that._1()) && equal(this._2(), that._2()) && equal(this._3(), that._3()));
+        return this == that || (that != null && equal(this._1(), that._1()) && equal(this._2(), that._2()) && equal(this._3(), that._3()));
     }
 }

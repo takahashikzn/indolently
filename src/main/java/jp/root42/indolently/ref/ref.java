@@ -205,12 +205,13 @@ abstract class _ref_nonNum<T, S extends _ref_nonNum<T, S>>
     implements Serializable, ref<T, S> {
 
     @Override
-    public int hashCode() { return this.getClass().hashCode() ^ Objects.hashCode(this.get()) ^ 13; }
+    public int hashCode() { return Objects.hash(this.getClass(), this.get()); }
 
     @Override
     public boolean equals(final Object o) {
-        return this == o || o instanceof _ref_nonNum<?, ?> that //
-                            && Objects.equals(this.get(), that.get());
+        return this == o || o != null //
+                            && this.getClass() == o.getClass() //
+                            && Objects.equals(this.get(), ((_ref_nonNum<?, ?>) o).get());
     }
 
     @Override

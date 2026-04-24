@@ -57,20 +57,35 @@ public final class $long
     public int compareTo(final long that) { return Long.compare(this.$, that); }
 
     @Override
-    public $long add(final Long $) {
-        this.$ += $;
+    public $long add(final Long v) {
+        this.$ += v;
+        return this;
+    }
+
+    public $long add(final long v) {
+        this.$ += v;
         return this;
     }
 
     @Override
-    public $long mul(final Long $) {
-        this.$ *= $;
+    public $long mul(final Long v) {
+        this.$ *= v;
+        return this;
+    }
+
+    public $long mul(final long v) {
+        this.$ *= v;
         return this;
     }
 
     @Override
-    public $long div(final Long $) {
-        this.$ /= $;
+    public $long div(final Long v) {
+        this.$ /= v;
+        return this;
+    }
+
+    public $long div(final long v) {
+        this.$ /= v;
         return this;
     }
 

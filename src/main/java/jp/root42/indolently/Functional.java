@@ -149,7 +149,7 @@ public class Functional {
 
     public static <X0, X1, X2> Predicate3<X0, X1, X2> memoize(final Predicate3<? super X0, ? super X1, ? super X2> f) {
 
-        final Function3<X0, X1, X2, Boolean> memoized = memoize(function4Of((final X0 x0, final X1 x1, final X2 x2) -> f.test(x0, x1, x2)));
+        final Function3<X0, X1, X2, Boolean> memoized = memoize(function3Of((final X0 x0, final X1 x1, final X2 x2) -> f.test(x0, x1, x2)));
 
         return memoized::apply;
     }
@@ -365,7 +365,7 @@ public class Functional {
 
     public static <X0, X1, Y> BiFunction<X0, X1, Y> function2Of(final BiFunction<? super X0, ? super X1, ? extends Y> f) { return cast(f); }
 
-    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> function4Of(final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) { return cast(f); }
+    public static <X0, X1, X2, Y> Function3<X0, X1, X2, Y> function3Of(final Function3<? super X0, ? super X1, ? super X2, ? extends Y> f) { return cast(f); }
 
     public static <X> Predicate<X> predicateOf(final Predicate<? super X> f) { return cast(f); }
 

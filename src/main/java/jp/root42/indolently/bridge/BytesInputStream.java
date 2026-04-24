@@ -21,8 +21,6 @@ import java.io.OutputStream;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
 
-import static jp.root42.indolently.Expressive.eval;
-
 
 /**
  * @author takahashikzn
@@ -55,7 +53,7 @@ public abstract class BytesInputStream
         public int read() { return this.bais.read(); }
 
         @Override
-        public int read(final byte[] b) { return eval(() -> this.bais.read(b)); }
+        public int read(final byte[] b) { return this.bais.read(b, 0, b.length); }
 
         @Override
         public int read(final byte[] b, final int off, final int len) { return this.bais.read(b, off, len); }

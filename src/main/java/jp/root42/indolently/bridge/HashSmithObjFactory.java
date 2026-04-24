@@ -100,6 +100,8 @@ final class NullSupportedSwissMap<K, V>
     private void readObject(final ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
 
+        this.nullVal = NULL;
+
         {
             final var hasNullVal = ois.readBoolean();
             final var val = ois.readObject();

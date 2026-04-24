@@ -109,10 +109,10 @@ public interface ReMatcher<P, M>
         Objects.requireNonNull(f);
 
         final var sb = new StringBuilder();
-        while (this.find()) {
-            this.appendReplacement(sb, f.apply(this, this.group()));
-        }
-        return this.appendTail(sb).toString();
+        while (this.find()) this.appendReplacement(sb, f.apply(this, this.group()));
+        final var ret = this.appendTail(sb).toString();
+        this.reset();
+        return ret;
     }
 
     default String subst(final Function<String, String> f) {

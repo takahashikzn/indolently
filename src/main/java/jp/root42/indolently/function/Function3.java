@@ -27,6 +27,6 @@ public interface Function3<X0, X1, X2, Y> {
 
     default <Z> Function3<X0, X1, X2, Z> andThen(final Function<? super Y, ? extends Z> after) {
         Objects.requireNonNull(after);
-        return (x0, x2, x3) -> after.apply(this.apply(x0, x2, x3));
+        return (x0, x1, x2) -> after.apply(this.apply(x0, x1, x2));
     }
 }

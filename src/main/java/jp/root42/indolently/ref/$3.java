@@ -98,7 +98,7 @@ public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
 
         @Destructive
         public mut<T1, T2, T3> set(final mut<? extends T1, ? extends T2, ? extends T3> that) {
-            return (that == null) ? this.set(null, null, null) : this.set(that._1, that._2, that._3);
+            return this.set(Objects.requireNonNull(that)._1, that._2, that._3);
         }
 
         @Destructive
@@ -176,7 +176,7 @@ public record $3<T1, T2, T3>(T1 _1, T2 _2, T3 _3)
         public $3<T1, T2, T3> immut() { return tuple(this._1, this._2, this._3); }
 
         @Override
-        public int hashCode() { return Objects.hash(this.getClass(), this._1, this._2, this._3); }
+        public int hashCode() { return Objects.hash(this._1, this._2, this._3); }
 
         @Override
         public boolean equals(final Object o) { return this == o || (o instanceof mut<?, ?, ?> that && this.equiv(that)); }

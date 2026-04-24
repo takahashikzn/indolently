@@ -64,7 +64,7 @@ public interface $map<K, V>
      * @see Cloneable
      */
     @SuppressWarnings("MethodDoesntCallSuperMethod")
-    default $map<K, V> clone() { return Indolently.<K, V> map().pushAll(this); }
+    default $map<K, V> clone() { return this.<K, V> _newMap().pushAll(this); }
 
     /**
      * Wrap a map.

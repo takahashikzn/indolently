@@ -45,20 +45,35 @@ public final class $short
     public int compareTo(final short that) { return Short.compare(this.$, that); }
 
     @Override
-    public $short add(final Short $) {
-        this.$ += $;
+    public $short add(final Short v) {
+        this.$ += v;
+        return this;
+    }
+
+    public $short add(final short v) { // NOPMD
+        this.$ += v;
         return this;
     }
 
     @Override
-    public $short mul(final Short $) {
-        this.$ *= $;
+    public $short mul(final Short v) {
+        this.$ *= v;
+        return this;
+    }
+
+    public $short mul(final short v) { // NOPMD
+        this.$ *= v;
         return this;
     }
 
     @Override
-    public $short div(final Short $) {
-        this.$ /= $;
+    public $short div(final Short v) {
+        this.$ /= v;
+        return this;
+    }
+
+    public $short div(final short v) { // NOPMD
+        this.$ /= v;
         return this;
     }
 

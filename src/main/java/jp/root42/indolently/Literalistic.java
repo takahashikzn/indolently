@@ -65,8 +65,22 @@ public final class Literalistic {
             case 'e', 'E' -> 14;
             case 'f', 'F' -> 15;
 
-            default -> -1;
+            default -> throw new NumberFormatException("" + c);
         });
+    }
+
+    public static boolean isHex(final char c) {
+        return switch (c) {
+            case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F' -> true;
+            default -> false;
+        };
+    }
+
+    public static boolean isNum(final char c) {
+        return switch (c) {
+            case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> true;
+            default -> false;
+        };
     }
 
     public static char toZenkakuUpper(final char c) {
@@ -446,7 +460,7 @@ public final class Literalistic {
     public static $<String> lastLine(final String s) {
         if (empty(s)) return none();
         final int idx = s.lastIndexOf('\n');
-        return idx < 0 ? none() : opt(s.substring(idx));
+        return idx < 0 ? none() : opt(s.substring(idx + 1));
     }
 
     public static int countWhile(final String s, final IntPredicate test) {

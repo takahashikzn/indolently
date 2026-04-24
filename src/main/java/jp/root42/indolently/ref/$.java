@@ -13,6 +13,7 @@
 // limitations under the License.
 package jp.root42.indolently.ref;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -115,6 +116,12 @@ public sealed interface $<T>
 
         private None() { }
 
+        @Serial
+        private static final long serialVersionUID = 1L;
+
+        @Serial
+        private Object readResolve() { return NONE; }
+
         @Deprecated
         @Override
         public T get() throws NoSuchElementException { throw new NoSuchElementException("No value present"); }
@@ -182,6 +189,16 @@ public sealed interface $<T>
 
     default $<T> if_(final Predicate<? super T> f) { return this.test(f) ? this : none(); }
 
+    default $<T> elif(final BooleanSupplier test, final Supplier<? extends T> or) { return this.or$(() -> test.getAsBoolean() ? just(or.get()) : none()); }
+
+    default $<T> elif$(final BooleanSupplier test, final Supplier<? extends $<? extends T>> or) {
+        return this.or$(() -> test.getAsBoolean() ? or.get() : none());
+    }
+
+    default $<T> elif(final boolean test, final Supplier<? extends T> or) { return this.elif(() -> test, or); }
+
+    default $<T> elif$(final boolean test, final Supplier<? extends $<? extends T>> or) { return this.elif$(() -> test, or); }
+
     interface Tee<S, T> {
 
         $<S> alt(Function<$<T>, $<S>> f);
@@ -234,7 +251,7 @@ public sealed interface $<T>
 
     default $<T> or$(final Supplier<? extends $<? extends T>> f) { return this.or$Try(f::get); }
 
-    default $<T> or$(final $<? extends T> or) { return this.present() ? this : Indolently.cast(or); }
+    default $<T> or$(final $<? extends T> or) { return this.present() ? this : (or == null) ? none() : Indolently.cast(or); }
 
     default Stream<T> stream() { return this.empty() ? Stream.empty() : Stream.of(this.get()); }
 
@@ -245,18 +262,6 @@ public sealed interface $<T>
     default T orNull() { return this.orElse(null); }
 
     default T or(final Supplier<? extends T> f) { return this.orElseGet(f); }
-
-    default $<T> elif(final BooleanSupplier test, final Supplier<? extends T> or) {
-        return this.present() ? this : test.getAsBoolean() ? just(or.get()) : none();
-    }
-
-    default $<T> elif$(final BooleanSupplier test, final Supplier<? extends $<? extends T>> or) {
-        return this.present() ? this : test.getAsBoolean() ? Indolently.cast(or.get()) : none();
-    }
-
-    default $<T> elif(final boolean test, final Supplier<? extends T> or) { return this.elif(() -> test, or); }
-
-    default $<T> elif$(final boolean test, final Supplier<? extends $<? extends T>> or) { return this.elif$(() -> test, or); }
 
     T orElseGet(final Supplier<? extends T> f);
 
@@ -291,7 +296,7 @@ public sealed interface $<T>
 
     <E extends Exception> T orElseTry(final SupplierE<? extends T, E> f) throws E;
 
-    default boolean is(final T that) { return this.test(x -> x.equals(that)); }
+    default boolean is(final T that) { return this.test(x -> Indolently.equiv(x, that)); }
 
     boolean equals($<? extends T> that);
 

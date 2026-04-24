@@ -34,7 +34,7 @@ abstract class SerializableList<T>
 
     private List<T> list;
 
-    public SerializableList(final List<T> list) {
+    public SerializableList() {
         this.list = this.newList();
     }
 

@@ -31,20 +31,27 @@ public final class Numeric {
     /** non private for subtyping. */
     private Numeric() { }
 
-    private static boolean fastParseFail;
+    private static volatile boolean fastParseFail;
 
     public static void fastParseFail(final boolean x) { fastParseFail = x; }
 
     private static final NumberFormatException cachedNFE = new NumberFormatException("cached");
 
+    private static NumberFormatException _nfe(final CharSequence s) {
+        return fastParseFail ? cachedNFE : new NumberFormatException(s.toString());
+    }
+
     public static int str2int(final CharSequence s) {
 
-        if (9 < s.length()) return Integer.parseInt(s.toString()); // avoid edge case
+        final int len = s.length();
+        if (9 < len) return Integer.parseInt(s.toString()); // avoid edge case
+        if (len == 0) throw _nfe("\"\"");
 
         var minus = false;
         var num = 0;
+        var sawDigit = false;
 
-        for (int i = 0, Z = s.length(); i < Z; i++) {
+        for (int i = 0; i < len; i++) {
             final var c = s.charAt(i);
             final var isHalfDigit = isDigit(c);
 
@@ -56,23 +63,29 @@ public final class Numeric {
                         continue;
                     }
                 }
-                throw fastParseFail ? cachedNFE : new NumberFormatException(s.toString());
+                throw _nfe(s);
             }
 
+            sawDigit = true;
             num = num * 10 + (isHalfDigit ? (c - '0') : (c - '０'));
         }
+
+        if (!sawDigit) throw _nfe(s);
 
         return minus ? -num : num;
     }
 
     public static long str2long(final CharSequence s) {
 
-        if (18 < s.length()) return Long.parseLong(s.toString()); // avoid edge case
+        final int len = s.length();
+        if (18 < len) return Long.parseLong(s.toString()); // avoid edge case
+        if (len == 0) throw _nfe("\"\"");
 
         var minus = false;
         var num = 0L;
+        var sawDigit = false;
 
-        for (int i = 0, Z = s.length(); i < Z; i++) {
+        for (int i = 0; i < len; i++) {
             final var c = s.charAt(i);
             final var isHalfDigit = isDigit(c);
 
@@ -84,11 +97,14 @@ public final class Numeric {
                         continue;
                     }
                 }
-                throw fastParseFail ? cachedNFE : new NumberFormatException(s.toString());
+                throw _nfe(s);
             }
 
+            sawDigit = true;
             num = num * 10 + (isHalfDigit ? (c - '0') : (c - '０'));
         }
+
+        if (!sawDigit) throw _nfe(s);
 
         return minus ? -num : num;
     }
@@ -344,6 +360,7 @@ public final class Numeric {
     public static int compareNumber(final Number x, final Number y) {
 
         if (x == null) return y == null ? 0 : -1;
+        if (y == null) return 1;
         if (x instanceof BigDecimal || y instanceof BigDecimal) return decimalOf(x).compareTo(decimalOf(y));
         if (isDecimal(x) || isDecimal(y)) return Double.compare(x.doubleValue(), y.doubleValue());
 

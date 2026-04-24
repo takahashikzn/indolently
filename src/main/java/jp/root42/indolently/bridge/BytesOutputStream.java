@@ -35,7 +35,10 @@ public abstract class BytesOutputStream
 
     final OutputStream sink;
 
-    protected BytesOutputStream(final OutputStream sink) { this.sink = sink; }
+    protected BytesOutputStream(final OutputStream sink) {
+        super(0); // suppress 32-byte default buffer; we delegate to sink
+        this.sink = sink;
+    }
 
     @Override
     public void write(final byte[] b, final int off, final int len) { let(() -> this.sink.write(b, off, len)); }

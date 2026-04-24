@@ -267,16 +267,22 @@ public class Iterative {
     public static class ResourceIterable<T extends AutoCloseable>
         implements Iterable<T>, AutoCloseable {
 
-        private final Iterable<T> iter;
+        private final Iterator<T> source;
 
-        private final $list<T> list = list();
+        private final $list<T> opened = list();
 
-        public ResourceIterable(final Iterable<T> iter) { this.iter = iter; }
+        private boolean iteratorTaken;
+
+        public ResourceIterable(final Iterable<T> iter) { this.source = iter.iterator(); }
 
         @Override
         public void close() throws Exception {
+
+            // drain whatever is left so every yielded resource gets closed
+            while (this.source.hasNext()) this.opened.add(this.source.next());
+
             Exception last = null;
-            for (final var r: this.list.pushAll(list(this.iter)))
+            for (final var r: this.opened)
                 try { r.close(); } //
                 catch (Exception e) {
                     //noinspection CallToPrintStackTrace
@@ -289,17 +295,18 @@ public class Iterative {
         @Override
         public Iterator<T> iterator() {
 
+            if (this.iteratorTaken) throw new IllegalStateException("ResourceIterable.iterator() already called");
+            this.iteratorTaken = true;
+
             return new Iterator<>() {
 
-                private final Iterator<T> i = ResourceIterable.this.iter.iterator();
-
                 @Override
-                public boolean hasNext() { return this.i.hasNext(); }
+                public boolean hasNext() { return ResourceIterable.this.source.hasNext(); }
 
                 @Override
                 public T next() {
-                    final var x = this.i.next();
-                    ResourceIterable.this.list.add(x);
+                    final var x = ResourceIterable.this.source.next();
+                    ResourceIterable.this.opened.add(x);
                     return x;
                 }
             };

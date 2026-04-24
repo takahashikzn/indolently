@@ -21,6 +21,12 @@ import jp.root42.indolently.Indolently;
 
 
 /**
+ * Selects the fastest among multiple regex engines after a benchmarking trial period.
+ * <p>
+ * <b>Not thread-safe.</b> {@code current}, {@code times}, and {@code fastest} are mutated without synchronization;
+ * concurrent calls to {@link #test(CharSequence)} (or any method that triggers it) will corrupt the trial state. Use
+ * from a single thread, or wrap externally.
+ *
  * @author takahashikzn.
  */
 @SuppressWarnings("ClassEscapesDefinedScope")
@@ -84,7 +90,7 @@ public final class AdaptiveRegex
     public ReMatcher<?, ?> matcher(final CharSequence cs) { return this.select().matcher(cs); }
 
     @Override
-    public String pattern() { return this.select().pattern(); }
+    public String pattern() { return this.patterns.get(0).pattern(); }
 
     @Override
     public $list<String> split(final CharSequence cs, final int limit) { return this.select().split(cs, limit); }

@@ -46,6 +46,6 @@ public interface tpl2<SELF extends tpl2<SELF, T1, T2>, T1, T2> {
     }
 
     default boolean equiv(final tpl2<?, ?, ?> that) {
-        return this == that || (equal(this._1(), that._1()) && equal(this._2(), that._2()));
+        return this == that || (that != null && equal(this._1(), that._1()) && equal(this._2(), that._2()));
     }
 }

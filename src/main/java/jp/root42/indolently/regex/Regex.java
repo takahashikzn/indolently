@@ -50,7 +50,7 @@ public final class Regex
     public int hashCode() { return this.pattern.hashCode(); }
 
     @Override
-    public boolean equals(final Object o) { return this == o || o instanceof RegexBase<?, ?, ?> that && this.pattern().equals(that.pattern()); }
+    public boolean equals(final Object o) { return this == o || o instanceof Regex that && this.pattern.equals(that.pattern); }
 
     @Override
     public Ptrn ptrn() { return this::pattern; }

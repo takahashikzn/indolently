@@ -87,10 +87,8 @@ public final class $bool
      * @param f a procedure
      */
     public void ifThen(final Predicate<Boolean> cond, final Statement f) {
-        synchronized (this) {
-            if (cond.test(this.$)) {
-                f.run();
-            }
+        if (cond.test(this.$)) {
+            f.run();
         }
     }
 }

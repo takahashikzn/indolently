@@ -493,7 +493,7 @@ public interface $list<T>
 
     private int lookup(final T val) {
         for (int i = 0, Z = this.size(); i < Z; i++)
-            if (this.get(i) == val) return i;
+            if (equiv(this.get(i), val)) return i;
         return -1;
     }
 }

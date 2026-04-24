@@ -33,7 +33,7 @@ final class KolobokeObjFactory
      * @throws UnsupportedOperationException if Koloboke isn't available.
      */
     public KolobokeObjFactory() throws UnsupportedOperationException {
-        if (!isPresent("net.openhft.koloboke.collect.impl.hash.ObjHash")) {
+        if (!isPresent("com.koloboke.collect.map.hash.HashObjObjMaps")) {
             throw new UnsupportedOperationException();
         }
     }

@@ -78,7 +78,7 @@ public interface Gate {
     default $<Permit> tryLease(final int permits, final long timeout, final TimeUnit unit) {
 
         try {
-            if ((timeout == 0 && this.tryAcquire(permits)) || this.tryAcquire(permits, timeout, unit)) //
+            if ((timeout == 0) ? this.tryAcquire(permits) : this.tryAcquire(permits, timeout, unit)) //
                 return just(this.permit(permits));
         } catch (InterruptedException ignored) { Thread.currentThread().interrupt(); }
 

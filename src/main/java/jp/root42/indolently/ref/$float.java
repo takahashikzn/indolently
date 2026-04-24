@@ -45,20 +45,35 @@ public final class $float
     public int compareTo(final float that) { return Float.compare(this.$, that); }
 
     @Override
-    public $float add(final Float $) {
-        this.$ += $;
+    public $float add(final Float v) {
+        this.$ += v;
+        return this;
+    }
+
+    public $float add(final float v) {
+        this.$ += v;
         return this;
     }
 
     @Override
-    public $float mul(final Float $) {
-        this.$ *= $;
+    public $float mul(final Float v) {
+        this.$ *= v;
+        return this;
+    }
+
+    public $float mul(final float v) {
+        this.$ *= v;
         return this;
     }
 
     @Override
-    public $float div(final Float $) {
-        this.$ /= $;
+    public $float div(final Float v) {
+        this.$ /= v;
+        return this;
+    }
+
+    public $float div(final float v) {
+        this.$ /= v;
         return this;
     }
 

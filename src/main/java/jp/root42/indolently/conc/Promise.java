@@ -105,7 +105,14 @@ public interface Promise<T>
 
     @SuppressWarnings("ConstantConditions")
     static <T> Promise<T> any(final Iterable<? extends Promise<? extends T>> promises) {
-        return cast(of(CompletableFuture.anyOf(cast(promises))));
+
+        final var cfs = list(promises) //
+            .map(p -> p.future() instanceof CompletableFuture<?> cf //
+                ? (CompletableFuture<?>) cf //
+                : CompletableFuture.supplyAsync(p::resolve, Promissory.executor())) //
+            .toArray(CompletableFuture<?>[]::new);
+
+        return cast(of(CompletableFuture.anyOf(cfs)));
     }
 
     static <T> Promise<T> of(final CompletableFuture<T> f) { return new PromiseCFuture<>(f); }

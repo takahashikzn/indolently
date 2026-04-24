@@ -56,20 +56,35 @@ public final class $double
     public int compareTo(final double that) { return Double.compare(this.$, that); }
 
     @Override
-    public $double add(final Double $) {
-        this.$ += $;
+    public $double add(final Double v) {
+        this.$ += v;
+        return this;
+    }
+
+    public $double add(final double v) {
+        this.$ += v;
         return this;
     }
 
     @Override
-    public $double mul(final Double $) {
-        this.$ *= $;
+    public $double mul(final Double v) {
+        this.$ *= v;
+        return this;
+    }
+
+    public $double mul(final double v) {
+        this.$ *= v;
         return this;
     }
 
     @Override
-    public $double div(final Double $) {
-        this.$ /= $;
+    public $double div(final Double v) {
+        this.$ /= v;
+        return this;
+    }
+
+    public $double div(final double v) {
+        this.$ /= v;
         return this;
     }
 

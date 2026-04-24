@@ -26,10 +26,10 @@ public final class $byte
     $byte(final byte $) { this.$ = $; }
 
     @Override
-    public void accept(final Byte ＄) { this.$ = ＄; }
+    public void accept(final Byte v) { this.$ = v; }
 
-    public $byte set(final byte ＄) {
-        this.$ = ＄;
+    public $byte set(final byte v) {
+        this.$ = v;
         return this;
     }
 
@@ -45,20 +45,35 @@ public final class $byte
     public int compareTo(final byte that) { return Byte.compare(this.$, that); }
 
     @Override
-    public $byte add(final Byte ＄) {
-        this.$ += ＄;
+    public $byte add(final Byte v) {
+        this.$ += v;
+        return this;
+    }
+
+    public $byte add(final byte v) {
+        this.$ += v;
         return this;
     }
 
     @Override
-    public $byte mul(final Byte ＄) {
-        this.$ *= ＄;
+    public $byte mul(final Byte v) {
+        this.$ *= v;
+        return this;
+    }
+
+    public $byte mul(final byte v) {
+        this.$ *= v;
         return this;
     }
 
     @Override
-    public $byte div(final Byte ＄) {
-        this.$ /= ＄;
+    public $byte div(final Byte v) {
+        this.$ /= v;
+        return this;
+    }
+
+    public $byte div(final byte v) {
+        this.$ /= v;
         return this;
     }
 

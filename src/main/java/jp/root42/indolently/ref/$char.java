@@ -44,4 +44,18 @@ public final class $char
     public int compareTo(final $char that) { return this.compareTo(that.$); }
 
     public int compareTo(final char that) { return Character.compare(this.$, that); }
+
+    public $char add(final int v) {
+        this.$ = (char) (this.$ + v);
+        return this;
+    }
+
+    public $char sub(final int v) {
+        this.$ = (char) (this.$ - v);
+        return this;
+    }
+
+    public $char incr() { return this.add(1); }
+
+    public $char decr() { return this.sub(1); }
 }

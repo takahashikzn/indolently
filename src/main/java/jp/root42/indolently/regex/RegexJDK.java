@@ -48,10 +48,12 @@ public final class RegexJDK
     public $list<String> split(final CharSequence cs, final int limit) { return Indolently.list(this.ptrn().split(cs, limit)); }
 
     @Override
-    public boolean equals(final Object o) { return this == o || o instanceof RegexBase<?, ?, ?> that && this.ptrn().equals(that.ptrn()); }
+    public boolean equals(final Object o) {
+        return this == o || o instanceof RegexJDK that && this.pattern.pattern().equals(that.pattern.pattern());
+    }
 
     @Override
-    public int hashCode() { return Objects.hash(this.getClass(), this.pattern); }
+    public int hashCode() { return Objects.hash(this.getClass(), this.pattern.pattern()); }
 
     @Override
     public String toString() { return this.pattern.toString(); }
