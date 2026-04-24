@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -244,6 +245,18 @@ public sealed interface $<T>
     default T orNull() { return this.orElse(null); }
 
     default T or(final Supplier<? extends T> f) { return this.orElseGet(f); }
+
+    default $<T> elif(final BooleanSupplier test, final Supplier<? extends T> or) {
+        return this.present() ? this : test.getAsBoolean() ? just(or.get()) : none();
+    }
+
+    default $<T> elif$(final BooleanSupplier test, final Supplier<? extends $<? extends T>> or) {
+        return this.present() ? this : test.getAsBoolean() ? Indolently.cast(or.get()) : none();
+    }
+
+    default $<T> elif(final boolean test, final Supplier<? extends T> or) { return this.elif(() -> test, or); }
+
+    default $<T> elif$(final boolean test, final Supplier<? extends $<? extends T>> or) { return this.elif$(() -> test, or); }
 
     T orElseGet(final Supplier<? extends T> f);
 
