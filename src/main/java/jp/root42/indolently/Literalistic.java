@@ -69,19 +69,9 @@ public final class Literalistic {
         });
     }
 
-    public static boolean isHex(final char c) {
-        return switch (c) {
-            case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F' -> true;
-            default -> false;
-        };
-    }
+    public static boolean isHex(final char c) { return isNum(c) || between('a', c, 'f') || between('A', c, 'F'); }
 
-    public static boolean isNum(final char c) {
-        return switch (c) {
-            case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> true;
-            default -> false;
-        };
-    }
+    public static boolean isNum(final char c) { return between('0', c, '9'); }
 
     public static char toZenkakuUpper(final char c) {
 

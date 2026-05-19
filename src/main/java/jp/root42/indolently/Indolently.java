@@ -1521,9 +1521,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gtle(final double l, final double m, final double u) {
-        return lt(l, m) && le(m, u);
-    }
+    public static boolean gtle(final double l, final double m, final double u) { return lt(l, m) && le(m, u); }
 
     /**
      * Test that the value is gerater equal lower and less equal upper.
@@ -1534,9 +1532,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gele(final double l, final double m, final double u) {
-        return le(l, m) && le(m, u);
-    }
+    public static boolean gele(final double l, final double m, final double u) { return le(l, m) && le(m, u); }
 
     /**
      * An alias of {@link #gele(Comparable, Comparable, Comparable)}.
@@ -1546,9 +1542,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean between(final T l, final T m, final T u) {
-        return gele(l, m, u);
-    }
+    public static <T extends Comparable<T>> boolean between(final T l, final T m, final T u) { return gele(l, m, u); }
 
     /**
      * An alias of {@link #gele(long, long, long)}.
@@ -1558,9 +1552,9 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean between(final long l, final long m, final long u) {
-        return gele(l, m, u);
-    }
+    public static boolean between(final long l, final long m, final long u) { return l <= m && m <= u; }
+
+    public static boolean between(final int l, final int m, final int u) { return l <= m && m <= u; }
 
     /**
      * An alias of {@link #gele(double, double, double)}.
@@ -1570,13 +1564,9 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean between(final double l, final double m, final double u) {
-        return gele(l, m, u);
-    }
+    public static boolean between(final double l, final double m, final double u) { return gele(l, m, u); }
 
-    public static boolean equal(final long l, final long r) {
-        return l == r;
-    }
+    public static boolean equal(final long l, final long r) { return l == r; }
 
     public static boolean equal(final long l, final long r, final long... rest) {
 
