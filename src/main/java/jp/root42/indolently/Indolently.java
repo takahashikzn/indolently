@@ -1388,9 +1388,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gtlt(final T l, final T m, final T u) {
-        return lt(l, m) && lt(m, u);
-    }
+    public static <T extends Comparable<T>> boolean gtlt(final T l, final T m, final T u) { return lt(l, m) && lt(m, u); }
 
     /**
      * Test that the value is gerater equal lower and less than upper.
@@ -1402,9 +1400,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gelt(final T l, final T m, final T u) {
-        return le(l, m) && lt(m, u);
-    }
+    public static <T extends Comparable<T>> boolean gelt(final T l, final T m, final T u) { return le(l, m) && lt(m, u); }
 
     /**
      * Test that the value is gerater than lower and less equal upper.
@@ -1416,9 +1412,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gtle(final T l, final T m, final T u) {
-        return lt(l, m) && le(m, u);
-    }
+    public static <T extends Comparable<T>> boolean gtle(final T l, final T m, final T u) { return lt(l, m) && le(m, u); }
 
     /**
      * Test that the value is gerater equal lower and less equal upper.
@@ -1430,9 +1424,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static <T extends Comparable<T>> boolean gele(final T l, final T m, final T u) {
-        return le(l, m) && le(m, u);
-    }
+    public static <T extends Comparable<T>> boolean gele(final T l, final T m, final T u) { return le(l, m) && le(m, u); }
 
     /**
      * Test that the value is gerater than lower and less than upper.
@@ -1443,9 +1435,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gtlt(final long l, final long m, final long u) {
-        return lt(l, m) && lt(m, u);
-    }
+    public static boolean gtlt(final long l, final long m, final long u) { return lt(l, m) && lt(m, u); }
 
     /**
      * Test that the value is gerater equal lower and less than upper.
@@ -1456,9 +1446,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gelt(final long l, final long m, final long u) {
-        return le(l, m) && lt(m, u);
-    }
+    public static boolean gelt(final long l, final long m, final long u) { return le(l, m) && lt(m, u); }
 
     /**
      * Test that the value is gerater than lower and less equal upper.
@@ -1469,9 +1457,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gtle(final long l, final long m, final long u) {
-        return lt(l, m) && le(m, u);
-    }
+    public static boolean gtle(final long l, final long m, final long u) { return lt(l, m) && le(m, u); }
 
     /**
      * Test that the value is gerater equal lower and less equal upper.
@@ -1482,9 +1468,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gele(final long l, final long m, final long u) {
-        return le(l, m) && le(m, u);
-    }
+    public static boolean gele(final long l, final long m, final long u) { return le(l, m) && le(m, u); }
 
     /**
      * Test that the value is gerater than lower and less than upper.
@@ -1495,9 +1479,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gtlt(final double l, final double m, final double u) {
-        return lt(l, m) && lt(m, u);
-    }
+    public static boolean gtlt(final double l, final double m, final double u) { return lt(l, m) && lt(m, u); }
 
     /**
      * Test that the value is gerater equal lower and less than upper.
@@ -1508,9 +1490,7 @@ public class Indolently {
      * @param u upper value
      * @return test result
      */
-    public static boolean gelt(final double l, final double m, final double u) {
-        return le(l, m) && lt(m, u);
-    }
+    public static boolean gelt(final double l, final double m, final double u) { return le(l, m) && lt(m, u); }
 
     /**
      * Test that the value is gerater than lower and less equal upper.
@@ -1603,21 +1583,15 @@ public class Indolently {
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T extends Comparable<T>> boolean equal(final T l, final T r, final T... rest) {
-        return list(r).pushAll(list(rest)).all(x -> equal(l, x));
-    }
+    public static <T extends Comparable<T>> boolean equal(final T l, final T r, final T... rest) { return list(r).pushAll(list(rest)).all(x -> equal(l, x)); }
 
-    public static boolean equal(final Object l, final Object r, final Object... rest) {
-        return list(r).pushAll(list(rest)).all(x -> equal(l, x));
-    }
+    public static boolean equal(final Object l, final Object r, final Object... rest) { return list(r).pushAll(list(rest)).all(x -> equal(l, x)); }
 
     public static <T extends Comparable<T>> boolean equal(final T l, final T r) {
         return (l == null) ? (r == null) : (r != null) && ((r == l) || (l.compareTo(r) == 0));
     }
 
-    public static boolean equal(final Object l, final Object r) {
-        return (l == null) ? (r == null) : (r != null) && ((l == r) || l.equals(r));
-    }
+    public static boolean equal(final Object l, final Object r) { return (l == null) ? (r == null) : (r != null) && ((l == r) || l.equals(r)); }
 
     public static boolean eql(final Object l, final Object r) { return equal(l, r); }
 
@@ -1689,9 +1663,7 @@ public class Indolently {
     @TypeUnsafe
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> boolean equiv(final T l, final T r, final T... rest) {
-        return list(r).pushAll(list(rest)).all(x -> equiv(l, x));
-    }
+    public static <T> boolean equiv(final T l, final T r, final T... rest) { return list(r).pushAll(list(rest)).all(x -> equiv(l, x)); }
 
     public static <T extends Comparable<T>> T max(final T l, final T r) { return ge(l, r) ? l : r; }
 
@@ -1851,9 +1823,7 @@ public class Indolently {
      * @param val value to put
      * @return wrapped map
      */
-    public static <K, V> $map<K, V> $(final Map<K, V> map, final K key, final V val) {
-        return $(requireNonNull(map, "map")).push(key, val);
-    }
+    public static <K, V> $map<K, V> $(final Map<K, V> map, final K key, final V val) { return $(requireNonNull(map, "map")).push(key, val); }
 
     /**
      * Wrap a list.
@@ -1864,9 +1834,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> $list<T> $(final List<T> list, final T... elems) {
-        return $(requireNonNull(list, "list")).pushAll(list(elems));
-    }
+    public static <T> $list<T> $(final List<T> list, final T... elems) { return $(requireNonNull(list, "list")).pushAll(list(elems)); }
 
     /**
      * Wrap a set.
@@ -1877,9 +1845,7 @@ public class Indolently {
      */
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
-    public static <T> $set<T> $(final Set<T> set, final T... elems) {
-        return $(requireNonNull(set, "set")).pushAll(list(elems));
-    }
+    public static <T> $set<T> $(final Set<T> set, final T... elems) { return $(requireNonNull(set, "set")).pushAll(list(elems)); }
 
     /**
      * Wrap a iterator.
@@ -1966,9 +1932,7 @@ public class Indolently {
      * @param tuple two element tuple
      * @return list of tuple elements
      */
-    public static <T> $list<T> list(final $2.mut<? extends T, ? extends T> tuple) {
-        return list(tuple._1, tuple._2);
-    }
+    public static <T> $list<T> list(final $2.mut<? extends T, ? extends T> tuple) { return list(tuple._1, tuple._2); }
 
     /**
      * Convert tuple to list.
@@ -1976,9 +1940,7 @@ public class Indolently {
      * @param tuple three element tuple
      * @return list of tuple elements
      */
-    public static <T> $list<T> list(final $3.mut<? extends T, ? extends T, ? extends T> tuple) {
-        return list(tuple._1, tuple._2, tuple._3);
-    }
+    public static <T> $list<T> list(final $3.mut<? extends T, ? extends T, ? extends T> tuple) { return list(tuple._1, tuple._2, tuple._3); }
 
     /**
      * create a reference of value.
@@ -2880,17 +2842,13 @@ public class Indolently {
 
     public static RegexJDK re1(final String regex) { return re1(regex, "`"); }
 
-    public static RegexJDK re1(final String regex, final String escape) {
-        return Regexive.regex1(empty(escape) ? regex : regex.replaceAll(escape, "\\\\"));
-    }
+    public static RegexJDK re1(final String regex, final String escape) { return Regexive.regex1(empty(escape) ? regex : regex.replaceAll(escape, "\\\\")); }
 
     public static Function<String, RegexRe2> re2() { return regex -> re2(regex); }
 
     public static RegexRe2 re2(final String regex) { return re2(regex, "`"); }
 
-    public static RegexRe2 re2(final String regex, final String escape) {
-        return Regexive.regex2(empty(escape) ? regex : regex.replaceAll(escape, "\\\\"));
-    }
+    public static RegexRe2 re2(final String regex, final String escape) { return Regexive.regex2(empty(escape) ? regex : regex.replaceAll(escape, "\\\\")); }
 
     public static RegexJDK re(final Pattern regex) { return Regexive.regex1(regex); }
 
@@ -2924,31 +2882,21 @@ public class Indolently {
 
     public static <X, T> Predicate<X> nil(final Function<X, ? extends T> f) { return x -> f.apply(x) == null; }
 
-    public static <X, T> Predicate<X> isa(final Function<X, ? extends T> f, final Class<?> cls) {
-        return x -> cls.isInstance(f.apply(x));
-    }
+    public static <X, T> Predicate<X> isa(final Function<X, ? extends T> f, final Class<?> cls) { return x -> cls.isInstance(f.apply(x)); }
 
-    public static <X> Predicate<X> assignable(final Function<X, Class<?>> f, final Class<?> cls) {
-        return x -> f.apply(x).isAssignableFrom(cls);
-    }
+    public static <X> Predicate<X> assignable(final Function<X, Class<?>> f, final Class<?> cls) { return x -> f.apply(x).isAssignableFrom(cls); }
 
     @SuppressWarnings("overloads")
-    public static <X, T> Predicate<X> eq(final Function<X, ? extends T> f, final T val) {
-        return x -> equal(val, f.apply(x));
-    }
+    public static <X, T> Predicate<X> eq(final Function<X, ? extends T> f, final T val) { return x -> equal(val, f.apply(x)); }
 
     @SuppressWarnings("overloads")
-    public static <X, T extends Comparable<T>> Predicate<X> eq(final Function<X, ? extends T> f, final T val) {
-        return x -> equal(val, f.apply(x));
-    }
+    public static <X, T extends Comparable<T>> Predicate<X> eq(final Function<X, ? extends T> f, final T val) { return x -> equal(val, f.apply(x)); }
 
     @SafeVarargs
     @SuppressWarnings({ "varargs", "RedundantSuppression" })
     public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final T... val) { return in(f, list(val)); }
 
-    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) {
-        return x -> val.contains(f.apply(x));
-    }
+    public static <X, T> Predicate<X> in(final Function<X, ? extends T> f, final Collection<? extends T> val) { return x -> val.contains(f.apply(x)); }
 
     public static DoublePredicate between(final double l, final double u) { return m -> between(l, m, u); }
 
@@ -2995,28 +2943,19 @@ public class Indolently {
         return (x, y) -> x.doubleValue() + y.doubleValue() + z;
     }
 
-    public static int narrow(final int lower, final int x, final int upper) {
-        return (x < lower) ? lower : (upper < x) ? upper : x;
-    }
+    public static int narrow(final int lower, final int x, final int upper) { return (x < lower) ? lower : (upper < x) ? upper : x; }
 
-    public static int narrow(final int lower, final long x, final int upper) {
-        return (int) ((x < lower) ? lower : (upper < x) ? upper : x);
-    }
+    public static int narrow(final int lower, final long x, final int upper) { return (int) ((x < lower) ? lower : (upper < x) ? upper : x); }
 
-    public static long narrow(final long lower, final long x, final long upper) {
-        return (x < lower) ? lower : (upper < x) ? upper : x;
-    }
+    public static long narrow(final long lower, final long x, final long upper) { return (x < lower) ? lower : (upper < x) ? upper : x; }
 
-    public static float narrow(final float lower, final float x, final float upper) {
-        return (x < lower) ? lower : (upper < x) ? upper : x;
-    }
+    public static float narrow(final float lower, final float x, final float upper) { return (x < lower) ? lower : (upper < x) ? upper : x; }
 
-    public static double narrow(final double lower, final double x, final double upper) {
-        return (x < lower) ? lower : (upper < x) ? upper : x;
-    }
+    public static double narrow(final double lower, final double x, final double upper) { return (x < lower) ? lower : (upper < x) ? upper : x; }
 
     public static List<String> split(final String s, final char sep) { return split(s, sep, 0, s.length()); }
 
+    @SuppressWarnings("AssignmentToMethodParameter")
     public static List<String> split(final String s, final char sep, int from, int to) {
         if (from < 0) from = s.length() + from;
         if (to < 0) to = s.length() + to;
@@ -3044,6 +2983,7 @@ public class Indolently {
 
     public static List<String> split(final String s, final String sep) { return split(s, sep, 0, s.length()); }
 
+    @SuppressWarnings("AssignmentToMethodParameter")
     public static List<String> split(final String s, final String sep, int from, int to) {
         final int sl = sep.length();
         if (sl == 0) return list(s);
