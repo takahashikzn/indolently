@@ -24,12 +24,7 @@ import jp.root42.indolently.regex.RegexRe2;
 /**
  * @author takahashikzn
  */
-@SuppressWarnings({ "UnnecessaryFullyQualifiedName", "RegExpSimplifiable" })
 public class Regexive {
-
-    // private static final boolean RE2_AVAIL = ObjFactory.isPresent("com.google.re2j.Pattern");
-
-    private static final boolean AUTOMATON_AVAIL = ObjFactory.isPresent("dk.brics.automaton.RegExp");
 
     /** non private for subtyping. */
     protected Regexive() { }
@@ -72,6 +67,8 @@ public class Regexive {
      */
     public static RegexJDK regex1(final java.util.regex.Pattern pattern) { return new RegexJDK(pattern); }
 
+    // private static final boolean RE2_AVAIL = ObjFactory.isPresent("com.google.re2j.Pattern");
+
     /**
      * create pattern instance.
      *
@@ -79,6 +76,8 @@ public class Regexive {
      * @return enhanced Pattern instance
      */
     public static RegexRe2 regex2(final com.google.re2j.Pattern pattern) { return new RegexRe2(pattern); }
+
+    private static final boolean AUTOMATON_AVAIL = ObjFactory.isPresent("dk.brics.automaton.RegExp");
 
     /**
      * create tester instance.
@@ -88,80 +87,10 @@ public class Regexive {
      */
     public static ReTest tester(final String pattern) {
         if (AUTOMATON_AVAIL) {
-            try {
-                final var pred = automatonTester(pattern);
-
-                if (pred != null) return pred;
-            } catch (IllegalArgumentException ignored) { }
+            final var pred = AutomatonTest.of(pattern);
+            if (pred.present()) return pred.get();
         }
 
         return ReTest.of(regex(pattern));
     }
-
-    private static final RegexJDK JDK_REGEX = regex1("(?ms).*(?:" //
-                                                     + "[^\\\\]?\\$" // unescaped '$'
-                                                     + "|[^\\\\]?\\^" // unescaped '^'
-
-                                                     + "|(?:[^\\\\]|^)\\[\\[" // unescaped '[['
-                                                     + "|[^\\\\]][\\[\\]]" // unescaped ']]' or ']['
-
-                                                     + "|\\(\\?[^:]" //
-                                                     + "|\\\\Q" //
-                                                     + "|\\\\E" //
-                                                     + "|\\\\b" //
-                                                     + "|\\\\B" //
-                                                     + "|\\\\G" //
-                                                     + "|\\\\z" //
-                                                     + "|\\\\Z" //
-                                                     + "|\\\\p" //
-                                                     + "|\\\\n" //
-                                                     + "|\\\\k" //
-                                                     + "|\\\\X" //
-                                                     + "|\\?\\?" //
-                                                     + "|\\*\\?" //
-                                                     + "|\\+\\?" //
-                                                     + "|\\{\\d+(?:,(?:\\d+)?)?}\\?" //
-
-                                                     + "|[~&<\"]" // Automaton meta-characters
-
-                                                     + ").*");
-
-    private static boolean isJDKRegex(final String p) { return JDK_REGEX.test(p); }
-
-    private static final String HORIZONTAL_SPACE = regex1("[ \t\u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000]").pattern();
-
-    private static final String SPACE = regex1("[ \t\n\u000b\f\r]").pattern();
-
-    private static final String VERTICAL_SPACE = regex1("[\n\u000b\f\r\u0085\u2028\u2029]").pattern();
-
-    private static final String WORD = regex1("[A-Za-z0-9_]").pattern();
-
-    private static final String DIGIT = regex1("[0-9]").pattern();
-
-    private static ReTest automatonTester(final String original) {
-
-        final var pt = original //
-            .replaceAll("(?<!\\\\)\\(\\?:", "(") //
-            .replaceAll("(?<!\\\\)\"", "\\\"") //
-            .replace("\\w", WORD) //
-            .replace("\\W", not(WORD)) //
-            .replace("\\d", DIGIT) //
-            .replace("\\D", not(DIGIT)) //
-            .replace("\\h", HORIZONTAL_SPACE) //
-            .replace("\\H", not(HORIZONTAL_SPACE)) //
-            .replace("\\s", SPACE) //
-            .replace("\\S", not(SPACE)) //
-            .replace("\\v", VERTICAL_SPACE) //
-            .replace("\\V", not(VERTICAL_SPACE)) //
-            .replace("\\p{Digit}", "[0-9]") //
-            .replace("\\p{Alpha}", "[A-Za-z]") //
-            .replace("\\p{Alnum}", "[A-Za-z0-9]") //
-            ;
-
-        if (isJDKRegex(pt)) return null;
-
-        return new AutomatonTest(new dk.brics.automaton.RegExp(pt, dk.brics.automaton.RegExp.NONE), original);
-    }
-
-    private static String not(final String word) { return "[^" + word + "]"; }
 }
