@@ -26,7 +26,6 @@ import java.util.function.BiPredicate;
 import java.util.function.BooleanSupplier;
 
 import static java.lang.System.nanoTime;
-import static jp.root42.indolently.Expressive.if_;
 
 
 /**
@@ -82,65 +81,139 @@ public final class AsyncIO {
 
     private static final Semaphore sem = new Semaphore(2048, true);
 
-    @SuppressWarnings("CallToPrintStackTrace")
+    /** Cancellation interrupts pending I/O; callers retain ownership of streams and any required transport abort. */
     public static void transfer(final IOExchange ex, final BiPredicate<Long, Long> cancelled, final int pollIntervalMs, final long ioTimeoutMs)
         throws IOException, CancellationException {
+        run(new Transfer(ex, cancelled, pollIntervalMs, ioTimeoutMs));
+    }
 
-        final var pollingInterval = Duration.ofMillis(Math.max(1, pollIntervalMs));
-        final var ioTimeoutNano = ioTimeoutMs < 0 ? Long.MAX_VALUE : TimeUnit.MILLISECONDS.toNanos(ioTimeoutMs);
+    private static final class Transfer {
+
+        private final IOExchange exchange;
+
+        private final BiPredicate<Long, Long> cancelled;
+
+        private final Duration pollingInterval;
+
+        private final long ioTimeoutNano;
+
+        private final long started = nanoTime();
+
+        private final AtomicLong progress = new AtomicLong(this.started);
+
+        private final AtomicReference<Throwable> failure = new AtomicReference<>();
+
+        private Transfer(final IOExchange exchange, final BiPredicate<Long, Long> cancelled, final int pollIntervalMs, final long ioTimeoutMs) {
+            this.exchange = exchange;
+            this.cancelled = cancelled;
+            this.pollingInterval = Duration.ofMillis(Math.max(1, pollIntervalMs));
+            this.ioTimeoutNano = ioTimeoutMs < 0 ? Long.MAX_VALUE : TimeUnit.MILLISECONDS.toNanos(ioTimeoutMs);
+        }
+    }
+
+    private static void run(final Transfer state) throws IOException {
+
+        Thread pump = null;
+        try {
+            acquire(state);
+            pump = startPump(state);
+            await(state, pump);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            final var interrupted = new CancellationException("interrupted");
+            interrupted.initCause(e);
+            state.failure.compareAndSet(null, interrupted);
+            throw interrupted;
+        } catch (IOException | RuntimeException | Error e) {
+            state.failure.compareAndSet(null, e);
+            throw e;
+        } finally {
+            if (pump != null && pump.isAlive()) {
+                // Publish the stop before waking I/O that may return EOF on interruption.
+                state.failure.compareAndSet(null, new CancellationException("transfer stopped"));
+                pump.interrupt();
+            }
+        }
+    }
+
+    private static void acquire(final Transfer state) throws InterruptedException {
+
+        final var queued = nanoTime();
+        while (true) {
+            checkCancelled(state);
+            final long remaining = Math.max(0L, state.ioTimeoutNano - (nanoTime() - queued));
+            final long wait = Math.min(state.pollingInterval.toNanos(), remaining);
+            if (sem.tryAcquire(wait, TimeUnit.NANOSECONDS)) return;
+            if (remaining == 0 || state.ioTimeoutNano <= nanoTime() - queued) //
+                throw new CancellationException("io pool saturated (semaphore timeout)");
+        }
+    }
+
+    private static Thread startPump(final Transfer state) throws InterruptedException {
+
+        var started = false;
+        try {
+            checkCancelled(state);
+            state.progress.set(nanoTime());
+            final var pump = Thread.ofVirtual().name("async-io-", 0).unstarted(() -> copy(state));
+            pump.start();
+            started = true;
+            return pump;
+        } finally {
+            // Once started, only the pump may release its permit.
+            if (!started) sem.release();
+        }
+    }
+
+    private static void copy(final Transfer state) {
 
         try {
-            if (!sem.tryAcquire(ioTimeoutNano, TimeUnit.NANOSECONDS)) throw new CancellationException("io pool saturated (semaphore timeout)");
-
-            final var startAt = nanoTime();
-            final var progress = new AtomicLong(startAt);
-            final var failure = new AtomicReference<Throwable>();
-
-            try {
-                final var pump = Thread.ofVirtual() //
-                    .name("async-io-", 0) //
-                    .uncaughtExceptionHandler((__, t) -> if_(!failure.compareAndSet(null, t), () -> t.printStackTrace())) //
-                    .start(() -> {
-                        try {
-                            for (int n; (n = ex.read()) != -1; ) {
-                                if (failure.get() != null) return;
-                                if (0 < n) {
-                                    progress.set(nanoTime());
-                                    ex.write();
-                                    progress.set(nanoTime());
-                                }
-                                if (failure.get() != null) return;
-                            }
-
-                            ex.finish();
-                        } catch (Throwable t) {
-                            if_(!failure.compareAndSet(null, t), () -> t.printStackTrace());
-                        }
-                    });
-
-                while (!pump.join(pollingInterval)) {
-                    final var lastProg = progress.get();
-                    final var now = nanoTime();
-                    final var lastProgSince = now - lastProg;
-                    final var totalElapsed = now - startAt;
-
-                    if (cancelled.test(totalElapsed, lastProgSince)) {
-                        pump.interrupt();
-                        failure.compareAndSet(null, new CancellationException("cancel requested"));
-                    } else if (ioTimeoutNano < lastProgSince) {
-                        pump.interrupt();
-                        failure.compareAndSet(null, new CancellationException("io timeout (no progress)"));
-                    }
-
-                    raise(failure);
+            while (true) {
+                checkRunning(state);
+                final int n = state.exchange.read();
+                checkRunning(state);
+                if (n < 0) break;
+                if (n > 0) {
+                    state.progress.set(nanoTime());
+                    checkRunning(state);
+                    state.exchange.write();
+                    state.progress.set(nanoTime());
                 }
+            }
 
-                raise(failure);
-            } finally { sem.release(); }
-        } catch (InterruptedException __) {
-            Thread.currentThread().interrupt();
-            throw new CancellationException("interrupted");
+            checkRunning(state);
+            state.exchange.finish();
+        } catch (Throwable t) {
+            state.failure.compareAndSet(null, t);
+        } finally { sem.release(); }
+    }
+
+    private static void await(final Transfer state, final Thread pump) throws IOException, InterruptedException {
+
+        while (!pump.join(state.pollingInterval)) {
+            checkCancelled(state);
+            raise(state.failure);
+            final long lastProgress = state.progress.get();
+            if (state.ioTimeoutNano < nanoTime() - lastProgress) //
+                throw new CancellationException("io timeout (no progress)");
         }
+
+        checkCancelled(state);
+        raise(state.failure);
+    }
+
+    private static void checkCancelled(final Transfer state) throws InterruptedException {
+
+        if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
+
+        final var lastProgress = state.progress.get();
+        final var now = nanoTime();
+        if (state.cancelled.test(now - state.started, now - lastProgress)) throw new CancellationException("cancel requested");
+    }
+
+    private static void checkRunning(final Transfer state) throws IOException {
+        raise(state.failure);
+        if (Thread.currentThread().isInterrupted()) throw new CancellationException("interrupted");
     }
 
     private static void raise(final AtomicReference<Throwable> failure) throws IOException {
