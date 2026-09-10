@@ -13,8 +13,6 @@
 // limitations under the License.
 package jp.root42.indolently.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -55,7 +53,7 @@ import static jp.root42.indolently.Indolently.*;
  * the buffer explicitly when its owner is finished. A {@link Cleaner} also removes abandoned temporary files.
  * <p>
  * Compression uses {@link Codec#GZIP} unless a codec is configured at application startup. On Linux, available
- * memory is monitored and temporary files can be moved to a secondary directory; see {@link #setSecondaryDir(Path, long)}.
+ * memory is monitored and temporary files can be moved to a secondary directory; see {@link #secondaryDir(Path, long)}.
  * Configuration is shared by all buffers in this class loader and should be completed before concurrent use.
  * Individual buffers are not safe for concurrent reads, writes, or changes to their lifetime.
  *
@@ -136,7 +134,7 @@ public class LargeBuffer
      * @param threshold available-memory threshold in bytes, as reported by the host's {@code /proc/meminfo}
      * @throws IOException if the directory cannot be prepared
      */
-    public static void setSecondaryDir(final Path dir, final long threshold) throws IOException {
+    public static void secondaryDir(final Path dir, final long threshold) throws IOException {
         if (!LinuxLargeBuffer.available()) {
             LOG.log(WARNING, "LinuxLargeBuffer not available");
             return;
@@ -254,7 +252,8 @@ public class LargeBuffer
         if (this.cleanup == null) {
             this.cleanup = new FileCleanup(file);
             this.cleanable = cleaner.register(this, this.cleanup);
-        } else { this.cleanup.file = file; }
+        } else //
+            this.cleanup.file = file;
     }
 
     /**
@@ -364,10 +363,10 @@ public class LargeBuffer
 
         if (this.useMemory()) return bytesIn(this.read());
 
-        if (this.buf != null) {
+        if (this.buf != null) //
             try { return this.codec.decompress(bytesIn(this.buf)); } //
             finally { if (!this.repeatable) this.close(); }
-        } else {
+        else //
             return new FilterInputStream(this.openFile()) {
 
                 @Override
@@ -390,7 +389,6 @@ public class LargeBuffer
                     if (!LargeBuffer.this.repeatable) LargeBuffer.this.close();
                 }
             };
-        }
     }
 
     private InputStream openFile() throws IOException {
@@ -448,7 +446,7 @@ public class LargeBuffer
             @SuppressWarnings("DoubleBraceInitialization")
             @Override
             public byte[] compress(final byte[] raw) throws IOException {
-                final var out = new ByteArrayOutputStream();
+                final var out = bytesOut();
                 try (var gzip = new GZIPOutputStream(out) {
 
                     { this.def.setLevel(Deflater.BEST_SPEED); }
@@ -458,7 +456,7 @@ public class LargeBuffer
 
             @Override
             public byte[] decompress(final byte[] stored) throws IOException {
-                try (var in = new GZIPInputStream(new ByteArrayInputStream(stored))) { return in.readAllBytes(); }
+                try (var in = new GZIPInputStream(bytesIn(stored))) { return in.readAllBytes(); }
             }
         };
 
@@ -489,9 +487,7 @@ public class LargeBuffer
          * @return a stream containing the decoded bytes
          * @throws IOException if reading or decoding fails
          */
-        default InputStream decompress(final InputStream in) throws IOException {
-            return new ByteArrayInputStream(this.decompress(in.readAllBytes()));
-        }
+        default InputStream decompress(final InputStream in) throws IOException { return bytesIn(this.decompress(in.readAllBytes())); }
     }
 }
 
