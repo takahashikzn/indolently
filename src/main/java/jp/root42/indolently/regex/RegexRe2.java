@@ -35,6 +35,22 @@ public final class RegexRe2
 
     public RegexRe2(final Pattern pattern) { this.pattern = pattern; }
 
+    /**
+     * Compiles an RE2 pattern, reporting syntax errors through the JDK exception type.
+     *
+     * @param pattern pattern string
+     * @return compiled RE2 pattern
+     * @throws java.util.regex.PatternSyntaxException if RE2 cannot compile the pattern
+     */
+    public static RegexRe2 compile(final String pattern) {
+        // Keep the optional exception type out of classes used by the JDK regex entry points.
+        try {
+            return new RegexRe2(Pattern.compile(pattern));
+        } catch (com.google.re2j.PatternSyntaxException e) {
+            throw new java.util.regex.PatternSyntaxException(e.getDescription(), e.getPattern(), e.getIndex());
+        }
+    }
+
     @Override
     public Pattern ptrn() { return this.pattern; }
 

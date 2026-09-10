@@ -51,13 +51,7 @@ public class Regexive {
      * @param pattern pattern string
      * @return enhanced Pattern instance
      */
-    public static RegexRe2 regex2(final String pattern) {
-        try {
-            return regex2(com.google.re2j.Pattern.compile(pattern));
-        } catch (com.google.re2j.PatternSyntaxException e) {
-            throw new java.util.regex.PatternSyntaxException(e.getDescription(), e.getPattern(), e.getIndex());
-        }
-    }
+    public static RegexRe2 regex2(final String pattern) { return RegexRe2.compile(pattern); }
 
     /**
      * create pattern instance.
