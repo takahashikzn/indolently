@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @author Docurain Inc.
+ * @author takahashikzn
  */
 public interface RateLimitGate
     extends Gate {
