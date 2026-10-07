@@ -208,8 +208,5 @@ public interface $set<T>
     @Override
     default $set<T> order(final Comparator<? super T> comp) { return sort(this, comp); }
 
-    @Override
-    default String join(final Function<T, ? extends CharSequence> f, final String sep) { return Indolently.join(this.map(f), sep); }
-
     default <U extends T> $set<U> only(final Class<U> type) { return this.take(type::isInstance).map(type::cast); }
 }
