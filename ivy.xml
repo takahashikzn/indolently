@@ -39,7 +39,7 @@
 
   <dependencies>
 
-    <dependency org="net.jodah" name="typetools" rev="0.6.3" conf="&runtime_conf;" />
+    <dependency org="net.jodah" name="typetools" rev="0.7.0" conf="&runtime_conf;" />
 
     <!-- optional dependencies for optimized performance -->
     <dependency org="com.koloboke" name="koloboke-api-jdk8" rev="1.0.0" conf="&compile_conf;" />
@@ -52,7 +52,7 @@
     <dependency org="io.github.bluuewhale" name="hashsmith" rev="0.2.0" conf="&compile_conf;" />
 
     <dependency org="com.google.re2j" name="re2j" rev="1.8" conf="&compile_conf;" />
-    <dependency org="dk.brics" name="automaton" rev="1.12-4" conf="&compile_conf;" />
+    <dependency org="dk.brics" name="automaton" rev="1.13-1" conf="&compile_conf;" />
     <!--dependency org="com.gliwka.hyperscan" name="hyperscan" rev="0.6.2" conf="&compile_conf;" /-->
 
     <dependency org="commons-io" name="commons-io" rev="2.22.0" conf="&compile_conf;" />
