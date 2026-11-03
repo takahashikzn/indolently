@@ -23,6 +23,8 @@ import java.util.function.Function;
 
 import jp.root42.indolently.conc.lock.PriorityGate.Nice;
 
+import static java.util.Objects.*;
+
 
 /**
  * @author takahashikzn
@@ -37,6 +39,18 @@ public class QoSExecutor
     private final PriorityRateLimitExecutor rateLimit;
 
     private final Runnable closeAction;
+
+    private final ThreadLocal<Long> rateAcquiredAt = new ThreadLocal<>();
+
+    private volatile WaitHook waitHook = (rate, concurrency) -> { };
+
+    /** Receives how long a task waited for each limit before it was handed over. */
+    @FunctionalInterface
+    public interface WaitHook {
+
+        /** Called on the submitting thread right after the task is handed over, or the submission is given up (e.g. interrupted while waiting). */
+        void waited(Duration rate, Duration concurrency);
+    }
 
     private static ExecutorService chooseES() {
 
@@ -76,7 +90,12 @@ public class QoSExecutor
 
     @SuppressWarnings("CallToPrintStackTrace")
     public QoSExecutor(final ConcurrencyLimitExecutor concLimit) {
-        this.rateLimit = PriorityRateLimitExecutor.of(this.concLimit = concLimit);
+        // the rate limiter acquires its permit on the submitting thread and hands the task over here on the same thread
+        this.rateLimit = PriorityRateLimitExecutor.of(task -> {
+            this.rateAcquiredAt.set(System.nanoTime());
+            concLimit.execute(task);
+        });
+        this.concLimit = concLimit;
 
         this.closeAction = () -> {
             if (this.concLimit instanceof AutoCloseable c) try { c.close(); } catch (Exception e) { e.printStackTrace(); }
@@ -93,11 +112,29 @@ public class QoSExecutor
     @Override
     public boolean rateLimit(final int limit, final TimeUnit unit, final Duration timeout) { return this.rateLimit.rateLimit(limit, unit, timeout); }
 
-    @Override
-    public void execute(final Runnable task, final Nice nice) { this.rateLimit.execute(task, nice); }
+    public QoSExecutor onWait(final WaitHook hook) {
+        this.waitHook = requireNonNull(hook, "hook is null");
+        return this;
+    }
 
     @Override
-    public void execute(final Runnable task) { this.rateLimit.execute(task); }
+    public void execute(final Runnable task, final Nice nice) { this.timed(() -> this.rateLimit.execute(task, nice)); }
+
+    @Override
+    public void execute(final Runnable task) { this.timed(() -> this.rateLimit.execute(task)); }
+
+    private void timed(final Runnable submit) {
+
+        this.rateAcquiredAt.remove();
+        final var submittedAt = System.nanoTime();
+
+        try { submit.run(); } //
+        finally {
+            final var now = System.nanoTime();
+            final long rateAcquiredAt = requireNonNullElse(this.rateAcquiredAt.get(), now);
+            this.waitHook.waited(Duration.ofNanos(rateAcquiredAt - submittedAt), Duration.ofNanos(now - rateAcquiredAt));
+        }
+    }
 
     @Override
     public void close() throws Exception { this.closeAction.run(); }
