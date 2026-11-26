@@ -51,7 +51,7 @@
     <dependency org="org.eclipse.collections" name="eclipse-collections" rev="&eclipsecollection_version;" conf="&compile_conf;" />
     <dependency org="io.github.bluuewhale" name="hashsmith" rev="0.2.0" conf="&compile_conf;" />
 
-    <dependency org="com.google.re2j" name="re2j" rev="1.8" conf="&compile_conf;" />
+    <dependency org="com.google.re2j" name="re2j" rev="1.9" conf="&compile_conf;" />
     <dependency org="dk.brics" name="automaton" rev="1.13-1" conf="&compile_conf;" />
     <!--dependency org="com.gliwka.hyperscan" name="hyperscan" rev="0.6.2" conf="&compile_conf;" /-->
 
